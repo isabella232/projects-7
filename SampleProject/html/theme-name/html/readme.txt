@@ -1,0 +1,1 @@
+- this folder holds the theme in HTML format
