@@ -1,0 +1,9 @@
+
+1. Host-X sends an error report to HOST-1
+2. HOST 1 stores the error with MD5 (line+file+message)
+3. check last occurance of this same message (store last occurance and number of occurances)
+4. if same MD5 occures within 1 minute - do not send the message, just increase the occurances
+5. when sending message to dev - send number of occurances
+
+6. in my websites - dev role gets a new TAB to select systems he'll get notifications from
+7. adminsitration module will be allowed to assign instances to user
