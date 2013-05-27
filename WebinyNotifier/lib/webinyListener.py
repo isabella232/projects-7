@@ -15,7 +15,7 @@ from PyQt4.QtCore import QObject
 
 class WebinyListener(threading.Thread, jsonrpc.JsonrpcHandler, QObject):
     port = 5000
-    ip = "192.168.1.28"
+    ip = "192.168.1.10"
     server = None
 
     # CLASS METHODS

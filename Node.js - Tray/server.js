@@ -1,6 +1,5 @@
 var dgram = require("dgram");
 var http = require("http");
-var buffer = require("buffer");
 
 var client = dgram.createSocket("udp4");
 
@@ -25,13 +24,12 @@ server.bind(41234);
 function relay(data) {
 	// Prepare data
 	data = JSON.parse(data);
-	var destination = data.params.destination;
-	delete data.params.destination
+	var destination = data.params.tray;
 
 	var query = {
 		jsonrpc: "2.0",
 		method: data.method,
-		params: data.params
+		params: data.params.request
 	};
 
 	var json = JSON.stringify(query);
