@@ -1,15 +1,19 @@
 import json
 
-class WebinyJSON:
+class JSON:
     
     @staticmethod
     def decode(value):
-        return json.loads(value, object_hook=WebinyJSON._decode_dict)
+        if isinstance(value, basestring):
+            return json.loads(value, object_hook=JSON._decode_dict)
+        return value
     
     @staticmethod
     def encode(value):
+        if isinstance(value, basestring):
+            return value
         return json.dumps(value)
-    
+
     @staticmethod
     def _decode_list(data):
         rv = []
@@ -17,9 +21,9 @@ class WebinyJSON:
             if isinstance(item, unicode):
                 item = item.encode('utf-8')
             elif isinstance(item, list):
-                item = WebinyJSON._decode_list(item)
+                item = JSON._decode_list(item)
             elif isinstance(item, dict):
-                item = WebinyJSON._decode_dict(item)
+                item = JSON._decode_dict(item)
             rv.append(item)
         return rv
     
@@ -32,9 +36,9 @@ class WebinyJSON:
             if isinstance(value, unicode):
                 value = value.encode('utf-8')
             elif isinstance(value, list):
-                value = WebinyJSON._decode_list(value)
+                value = JSON._decode_list(value)
             elif isinstance(value, dict):
-                value = WebinyJSON._decode_dict(value)
+                value = JSON._decode_dict(value)
             rv[key] = value
         return rv
         

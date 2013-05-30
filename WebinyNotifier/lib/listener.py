@@ -9,11 +9,11 @@ from PyQt4 import QtCore
 import threading
 
 from wsgiref.simple_server import make_server
-import lib.simplejsonrpc as jsonrpc
+import lib.tools.simplejsonrpc as jsonrpc
 from PyQt4.QtCore import QObject
 
 
-class WebinyListener(threading.Thread, jsonrpc.JsonrpcHandler, QObject):
+class Listener(threading.Thread, jsonrpc.JsonrpcHandler, QObject):
     port = 5000
     ip = "192.168.1.10"
     server = None

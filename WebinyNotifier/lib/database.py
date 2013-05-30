@@ -1,6 +1,6 @@
 import sqlite3
 
-class WebinyDatabase:
+class Database:
     
     connection = None
     cursor = None

@@ -10,8 +10,7 @@ import httplib
 import types
 import string
 import random
-import traceback
-from lib.webinyJSON import WebinyJSON
+from lib.tools.JSON import JSON
 
 __version__ = "0.3.4"
 
@@ -34,7 +33,7 @@ def jdumps(obj, encoding='utf-8'):
 
 
 def jloads(json_string):
-    return WebinyJSON.decode(json_string)
+    return JSON.decode(json_string)
 
 
 class ProtocolError(Exception):

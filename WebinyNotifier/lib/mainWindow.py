@@ -1,9 +1,10 @@
 from PyQt4 import QtGui, QtCore
-from lib.webinyJSON import WebinyJSON
+from lib.tools.JSON import JSON
 from ui.main_window import Ui_MainWindow
-from lib.webinyDatabase import WebinyDatabase
+from lib.database import Database
+from lib.tools.debugger import Debugger
 
-class WebinyNotifierLog(QtGui.QMainWindow):
+class MainWindow(QtGui.QMainWindow):
     
     model = None
     WebinyNotifier = None
@@ -12,13 +13,15 @@ class WebinyNotifierLog(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         self.WebinyNotifier = parent
         self.ui=Ui_MainWindow()
+        #self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         self.ui.setupUi(self)
         
     def reject(self):
         self.hide()
         
     def show(self):
-        self.ui.processMonitor.setPlainText(self.WebinyNotifier.processMonitorLog)
+        self.ui.processMonitor.setPlainText(Debugger.getLog())
+        # @TODO: Build proper data models and dynamic UI
         self.notifications = self._getNotifications()
         # set the table model
         header = ['Message', 'Reseller slug', 'Reseller name', 'Type', 'File', 'Line']
@@ -28,7 +31,7 @@ class WebinyNotifierLog(QtGui.QMainWindow):
         self.ui.viewNotifications.setModel(self.model)
         
         # Show window
-        super(WebinyNotifierLog, self).show();
+        super(MainWindow, self).show();
         self.ui.viewNotifications.selectionModel().selectionChanged.connect(self.selectionChanged)
         #self.model.insertRow(('Allowed memory size of 134217728 bytes exhausted (tried to allocate 57123364 bytes)', 'NOT!', 'Maritime Connector', 'error', 'skripta.php', '112'))
 
@@ -47,7 +50,7 @@ class WebinyNotifierLog(QtGui.QMainWindow):
         for i in row:
             data.append([i])
 
-        self.WebinyNotifier.logDebugMessage('Changed row: '+str(data[0])+' '+str(data[1]))
+        Debugger.log('Changed row: '+str(data[0])+' '+str(data[1]))
         
         self.ui.viewDetails.horizontalHeader().setVisible(False)
         self.ui.viewDetails.verticalHeader().setVisible(True)
@@ -56,7 +59,7 @@ class WebinyNotifierLog(QtGui.QMainWindow):
         self.ui.viewDetails.setModel(model)
 
         # Notification GET tree
-        data = WebinyJSON.decode(row['data'])
+        data = JSON.decode(row['data'])
         model = MyTreeViewModel(data['get'], self)
         model.setData(QtCore.QModelIndex(), QtCore.QVariant(), role=QtCore.Qt.EditRole)
         self.ui.viewGet.setModel(model)
@@ -68,18 +71,12 @@ class WebinyNotifierLog(QtGui.QMainWindow):
 
         
         # Notification SERVER tree
-        data = WebinyJSON.decode(row['data'])
+        data = JSON.decode(row['data'])
         model = MyTreeViewModel(data['server'], self)
         model.setData(QtCore.QModelIndex(), QtCore.QVariant(), role=QtCore.Qt.EditRole)
         self.ui.viewServer.setModel(model)
         self.ui.viewServer.setAlternatingRowColors(True)
         
-    def _getNotifications(self):
-        db = WebinyDatabase()
-        query = "SELECT * FROM notifications"
-        return db.execute(query).fetchAll()
-
-
 class TreeItem(object):
     '''
     a python object used to return row/column data, and keep note of
