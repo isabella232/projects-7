@@ -1,39 +1,46 @@
 from PyQt4 import QtGui, QtCore
+from lib.entity.request import Request
+from lib.entity.settings import Settings
 from lib.tools.JSON import JSON
-from ui.main_window import Ui_MainWindow
-from lib.database import Database
+from ui.mainWindow import MainWindow as UiMainWindow
 from lib.tools.debugger import Debugger
 
 class MainWindow(QtGui.QMainWindow):
     
     model = None
-    WebinyNotifier = None
 
     def __init__(self, parent):
         QtGui.QMainWindow.__init__(self)
         self.WebinyNotifier = parent
-        self.ui=Ui_MainWindow()
-        #self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        self.settings = Settings()
+        self.ui=UiMainWindow()
         self.ui.setupUi(self)
-        
-    def reject(self):
-        self.hide()
-        
+
     def show(self):
-        self.ui.processMonitor.setPlainText(Debugger.getLog())
-        # @TODO: Build proper data models and dynamic UI
-        self.notifications = self._getNotifications()
-        # set the table model
-        header = ['Message', 'Reseller slug', 'Reseller name', 'Type', 'File', 'Line']
-        self.model = MyTableModel(self.notifications, header, self)
-        self.model.setData(QtCore.QModelIndex(), QtCore.QVariant(), role=QtCore.Qt.EditRole)
-        self.ui.viewNotifications.verticalHeader().setVisible(False)
-        self.ui.viewNotifications.setModel(self.model)
-        
+        self.ui.getRequestsTable().verticalHeader().setVisible(False)
+        self.ui.getRequestsTable().setModel(Request.getTableModel(self))
+        self.ui.getRequestsTable().resizeColumnsToContents()
+        self.ui.getRequestsTable().horizontalHeader().setStretchLastSection(True)
+
         # Show window
         super(MainWindow, self).show();
-        self.ui.viewNotifications.selectionModel().selectionChanged.connect(self.selectionChanged)
-        #self.model.insertRow(('Allowed memory size of 134217728 bytes exhausted (tried to allocate 57123364 bytes)', 'NOT!', 'Maritime Connector', 'error', 'skripta.php', '112'))
+        self.ui.getRequestsTable().selectionModel().selectionChanged.connect(self.selectionChanged)
+
+    def on_actionClose_triggered(self):
+        self.hide()
+
+    def on_actionSettings_triggered(self):
+        self.WebinyNotifier.openSettings()
+
+    def on_actionLog_triggered(self):
+        self.WebinyNotifier.openLog()
+
+
+    """
+    Old code - needs heavy refactoring
+    """
+
+    #TODO
 
     def itemManipulated(self, index):
         view = 'viewGet'
@@ -41,8 +48,9 @@ class MainWindow(QtGui.QMainWindow):
         #self.ui.viewGet.resizeColumnToContents(0)
 
     def selectionChanged(self, item):
+        return
         rowIndex = item.indexes()[0].row()
-        row = self.notifications[rowIndex]
+        row = self._requests[rowIndex]
 
         # Notification details grid
         data = []
@@ -233,41 +241,7 @@ class MyTreeViewModel(QtCore.QAbstractItemModel):
                 self.parents[key] = newparent
                 self.setupModelData(value, key)
 
-class MyTableModel(QtCore.QAbstractTableModel): 
-    def __init__(self, datain, headerdata, parent=None, *args): 
-        QtCore.QAbstractTableModel.__init__(self, parent, *args)
-        self.parent = parent 
-        self.arraydata = datain
-        self.headerdata = headerdata
- 
-    def rowCount(self, parent): 
-        return len(self.arraydata) 
- 
-    def columnCount(self, parent): 
-        return len(self.headerdata)
- 
- 
-    def data(self, index, role): 
-        if not index.isValid(): 
-            return QtCore.QVariant() 
-        elif role != QtCore.Qt.DisplayRole: 
-            return QtCore.QVariant() 
-        return QtCore.QVariant(self.arraydata[index.row()][index.column()]) 
 
-    def headerData(self, col, orientation, role):
-        if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-            return QtCore.QVariant(self.headerdata[col])
-        return QtCore.QVariant()
-    
-    
-    def insertRow(self, row, parent=QtCore.QModelIndex()):
-        self.beginInsertRows(parent, 0, 0)
-        self.arraydata.insert(0, row)
-        self.endInsertRows()
-        
-    def endInsertRows(self):
-        super(MyTableModel, self).endInsertRows()
-        self.parent.ui.viewNotifications.resizeColumnsToContents()
 
 class MyVerticalTableModel(QtCore.QAbstractTableModel): 
     def __init__(self, datain, headerdata, parent=None, *args): 

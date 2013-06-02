@@ -1,8 +1,8 @@
 <RCC>
   <qresource prefix="webiny">
-    <file>exit.png</file>
-    <file>gear.png</file>
     <file>favicon.ico</file>
-	<file>api-robot.png</file>
+    <file>exit-btn.png</file>
+    <file>log-btn.png</file>
+    <file>settings-btn.png</file>
   </qresource>
 </RCC>

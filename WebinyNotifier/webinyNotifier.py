@@ -4,7 +4,6 @@ from lib.settings import Settings
 from lib.mainWindow import MainWindow
 
 from lib.listener import Listener
-from lib.tools.JSON import JSON
 from lib.entity.request import Request
 from lib.entity.settings import Settings as SettingsObj
 from lib.tools.debugger import Debugger
@@ -21,6 +20,8 @@ class WebinyNotifier(QtGui.QApplication, QObject):
         self.setQuitOnLastWindowClosed(False)
         self.tray = Tray(parent=self)
         self.settingsForm = None
+        self.logForm = None
+        self.settings = SettingsObj()
         # Connect slot so Listener can forward request data to main thread
         self.listener = Listener()
         self.connect_slots(self.listener)
@@ -29,29 +30,30 @@ class WebinyNotifier(QtGui.QApplication, QObject):
 
     def connect_slots(self, sender):
         self.connect(sender, QtCore.SIGNAL('newNotification'), self.newNotification)
-        self.connect(Debugger.getInstance(), QtCore.SIGNAL('newDebuggerLog'), self.newDebuggerLog)
+        #self.connect(Debugger.getInstance(), QtCore.SIGNAL('newDebuggerLog'), self.newDebuggerLog)
 
     def newNotification(self, params):
         # Store new request
-        Debugger.log('New notification received! Data: ' + JSON.encode(params))
         request = Request()
         request.createFromNodeJs(params)
 
         # Notification balloon
-        settings = SettingsObj()
-        if bool(settings.show_balloon):
+        if bool(self.settings.show_balloon):
             message = "[" + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "] New notification received!"
             Debugger.log('Showing tray message: ' + message)
             self.tray.showMessage('Webiny Notifier', message, QtGui.QSystemTrayIcon.Information, 10000000)
-
-    def newDebuggerLog(self):
-        if hasattr(self, "mainWindow") and self.mainWindow.isVisible():
-            self.mainWindow.ui.processMonitor.setPlainText(Debugger.getLog())
 
     def openSettings(self):
         if self.settingsForm is None:
             self.settingsForm = Settings()
         self.settingsForm.show()
+
+    def openLog(self):
+        """
+        if self.logForm is None:
+            self.logForm = Log()
+        self.logForm.show()
+        """
 
     def exitApp(self):
         self.listener.stop()

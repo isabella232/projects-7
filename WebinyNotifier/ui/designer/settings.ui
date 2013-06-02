@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>314</width>
+    <height>354</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Webiny Notificator - Settings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Project/favicon.ico</normaloff>Project/favicon.ico</iconset>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinimumSize</enum>
+     </property>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="minimumSize">
+        <size>
+         <width>294</width>
+         <height>305</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>294</width>
+         <height>305</height>
+        </size>
+       </property>
+       <property name="currentIndex">
+        <number>1</number>
+       </property>
+       <widget class="QWidget" name="generalTab">
+        <attribute name="title">
+         <string>General</string>
+        </attribute>
+        <layout class="QFormLayout" name="formLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="labelPort">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Listening on port:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="port">
+           <property name="placeholderText">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labelLatestRequests">
+           <property name="text">
+            <string>Latest requests:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="requestsLimit">
+           <property name="placeholderText">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="showBalloon">
+           <property name="text">
+            <string>Show balloon notifications</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="colorTab">
+        <attribute name="title">
+         <string>Log levels</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QTableWidget" name="logLevelsTable">
+           <attribute name="horizontalHeaderStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>Level</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Balloon</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Color</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
