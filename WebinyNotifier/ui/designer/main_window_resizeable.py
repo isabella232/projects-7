@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from ui.wrappers.messagesTableView import MessagesTableView
 from ui.wrappers.requestsTableView import RequestsTableView
 
 try:
@@ -43,7 +44,7 @@ class Ui_MainWindow(object):
         self.requestsTable.setSizePolicy(sizePolicy)
         self.requestsTable.setStyleSheet(_fromUtf8(""))
         self.requestsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.requestsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.requestsTable.setSelectionBehavior(QtGui.QTableView.SelectRows)
         self.requestsTable.setShowGrid(True)
         self.requestsTable.setObjectName(_fromUtf8("requestsTable"))
         self.requestsTable.horizontalHeader().setStretchLastSection(True)
@@ -55,12 +56,16 @@ class Ui_MainWindow(object):
         self.messagesTab.setObjectName(_fromUtf8("messagesTab"))
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.messagesTab)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.messagesTable = QtGui.QTableView(self.messagesTab)
+        self.messagesTable = MessagesTableView(self.messagesTab)
         self.messagesTable.setObjectName(_fromUtf8("messagesTable"))
-        self.messagesTable.horizontalHeader().setVisible(False)
+        self.messagesTable.horizontalHeader().setVisible(True)
         self.messagesTable.horizontalHeader().setStretchLastSection(True)
+        self.messagesTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.messagesTable.setSelectionBehavior(QtGui.QTableView.SelectRows)
+        self.messagesTable.setShowGrid(True)
         self.verticalLayout_2.addWidget(self.messagesTable)
         self.notificationTabs.addTab(self.messagesTab, _fromUtf8(""))
+        self.messagesTable.tabs = self.notificationTabs
         self.verticalLayout.addWidget(self.splitter)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)

@@ -2,7 +2,7 @@ from PyQt4 import QtGui, QtCore
 from lib.entity.request import Request
 from lib.entity.settings import Settings
 from lib.tools.JSON import JSON
-from ui.mainWindow import MainWindow as UiMainWindow
+from ui.wrappers.mainWindow import MainWindow as UiMainWindow
 from lib.tools.debugger import Debugger
 
 class MainWindow(QtGui.QMainWindow):
@@ -17,6 +17,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.setupUi(self)
 
     def show(self):
+        # Requests table
         self.ui.getRequestsTable().verticalHeader().setVisible(False)
         self.ui.getRequestsTable().setModel(Request.getTableModel(self))
         self.ui.getRequestsTable().resizeColumnsToContents()
@@ -24,7 +25,8 @@ class MainWindow(QtGui.QMainWindow):
 
         # Show window
         super(MainWindow, self).show();
-        self.ui.getRequestsTable().selectionModel().selectionChanged.connect(self.selectionChanged)
+        # Attach handler for Requests row selection
+        self.ui.getRequestsTable().selectionModel().selectionChanged.connect(self.ui.getMessagesTable().refreshModelFromRequest)
 
     def on_actionClose_triggered(self):
         self.hide()
@@ -48,9 +50,8 @@ class MainWindow(QtGui.QMainWindow):
         #self.ui.viewGet.resizeColumnToContents(0)
 
     def selectionChanged(self, item):
-        return
         rowIndex = item.indexes()[0].row()
-        row = self._requests[rowIndex]
+        request = self._requests[rowIndex]
 
         # Notification details grid
         data = []

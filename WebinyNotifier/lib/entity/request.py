@@ -139,4 +139,5 @@ class Request(object):
     @staticmethod
     def _refreshModel():
         if Request._TABLE_MODEL is not None:
+            Request._TABLE_MODEL.arrayData = Request._RECORDS
             Request._TABLE_MODEL.refreshModel()

@@ -9,13 +9,14 @@ from PyQt4 import QtCore
 import threading
 
 from wsgiref.simple_server import make_server
+from lib.entity.settings import Settings
 import lib.tools.simplejsonrpc as jsonrpc
 from PyQt4.QtCore import QObject
 
 
 class Listener(threading.Thread, jsonrpc.JsonrpcHandler, QObject):
     port = 5000
-    ip = "192.168.1.10"
+    ip = "0.0.0.0"
     server = None
 
     # CLASS METHODS
@@ -24,10 +25,12 @@ class Listener(threading.Thread, jsonrpc.JsonrpcHandler, QObject):
         threading.Thread.__init__(self)
         jsonrpc.JsonrpcHandler.__init__(self)
         QObject.__init__(self)
+        settings = Settings()
+        self.port = settings.port
 
     def run(self):
         self.server = make_server(self.ip, self.port, self.application)
-        print "Serving on port "+str(self.port)+"..."
+        print "Listening on port "+str(self.port)+"..."
         self.server.serve_forever()
 
     def application(self, environ, start_response):

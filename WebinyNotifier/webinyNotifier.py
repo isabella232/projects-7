@@ -28,9 +28,15 @@ class WebinyNotifier(QtGui.QApplication, QObject):
         self.listener.start()
         self.exec_()
 
+    def restartListener(self):
+        print "Restarting listener..."
+        self.listener.stop()
+        self.listener = Listener()
+        self.connect_slots(self.listener)
+        self.listener.start()
+
     def connect_slots(self, sender):
         self.connect(sender, QtCore.SIGNAL('newNotification'), self.newNotification)
-        #self.connect(Debugger.getInstance(), QtCore.SIGNAL('newDebuggerLog'), self.newDebuggerLog)
 
     def newNotification(self, params):
         # Store new request
@@ -45,7 +51,7 @@ class WebinyNotifier(QtGui.QApplication, QObject):
 
     def openSettings(self):
         if self.settingsForm is None:
-            self.settingsForm = Settings()
+            self.settingsForm = Settings(self)
         self.settingsForm.show()
 
     def openLog(self):

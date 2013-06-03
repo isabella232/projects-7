@@ -1,15 +1,16 @@
-from PyQt4 import QtGui, Qt
+from PyQt4 import QtGui
 from lib.entity.request import Request
-from ui.settingsWindow import SettingsWindow
+from ui.wrappers.settingsWindow import SettingsWindow
 from lib.entity.settings import Settings as SettingsObj
 
 
 class Settings(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, WebinyNotifier):
         QtGui.QDialog.__init__(self)
         self.ui = SettingsWindow()
         self.ui.setupUi(self)
         self._settings = SettingsObj()
+        self.parent = WebinyNotifier
 
     def show(self):
         self.ui.getPort().setText(str(self._settings.port))
@@ -31,20 +32,23 @@ class Settings(QtGui.QDialog):
 
     def _save(self):
         # Store some data for extra processing
-        requestsLimit = int(self.ui.requestsLimit.text())
         oldRequestsLimit = self._settings.requests_limit
-        # Assign new settings
-        self._settings.port = int(self.ui.port.text())
-        self._settings.requests_limit = requestsLimit
-        self._settings.show_balloon = int(self.ui.showBalloon.isChecked())
+        # Assign new port and restart listener if port is changed
+        oldPort = self._settings.port
+        self._settings.port = int(self.ui.getPort().text())
+        self._settings.requests_limit = int(self.ui.getRequestsLimit().text())
+        self._settings.show_balloon = int(self.ui.getShowBalloon().isChecked())
         # Get data from model
         self._settings.log_levels = self._settings._LOG_LEVELS_TABLE_MODEL.getData()
         # Save to DB
         self._settings.save()
+
         # Extra processing
-        if requestsLimit != oldRequestsLimit:
+        if self._settings.requests_limit != oldRequestsLimit:
             Request.all(True)
 
+        if self._settings.port != oldPort:
+            self.parent.restartListener()
         self.hide()
 
     def btnCancel(self):

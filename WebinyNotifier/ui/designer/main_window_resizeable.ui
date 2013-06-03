@@ -14,7 +14,7 @@
    <string>Webiny Tray Logger</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../resources/webiny.qrc">
+   <iconset resource="../../resources/webiny.qrc">
     <normaloff>:/webiny/favicon.ico</normaloff>:/webiny/favicon.ico</iconset>
   </property>
   <property name="toolButtonStyle">
@@ -78,8 +78,14 @@
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QTableView" name="messagesTable">
+             <property name="selectionMode">
+              <enum>QAbstractItemView::SingleSelection</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
              <attribute name="horizontalHeaderVisible">
-              <bool>false</bool>
+              <bool>true</bool>
              </attribute>
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
@@ -117,7 +123,7 @@
   </widget>
   <action name="actionClose">
    <property name="icon">
-    <iconset resource="../resources/webiny.qrc">
+    <iconset resource="../../resources/webiny.qrc">
      <normaloff>:/webiny/exit-btn.png</normaloff>:/webiny/exit-btn.png</iconset>
    </property>
    <property name="text">
@@ -126,7 +132,7 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset resource="../resources/webiny.qrc">
+    <iconset resource="../../resources/webiny.qrc">
      <normaloff>:/webiny/settings-btn.png</normaloff>:/webiny/settings-btn.png</iconset>
    </property>
    <property name="text">
@@ -135,7 +141,7 @@
   </action>
   <action name="actionLog">
    <property name="icon">
-    <iconset resource="../resources/webiny.qrc">
+    <iconset resource="../../resources/webiny.qrc">
      <normaloff>:/webiny/log-btn.png</normaloff>:/webiny/log-btn.png</iconset>
    </property>
    <property name="text">
@@ -144,7 +150,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../resources/webiny.qrc"/>
+  <include location="../../resources/webiny.qrc"/>
  </resources>
  <connections/>
 </ui>

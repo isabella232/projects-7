@@ -5,3 +5,6 @@ class MainWindow(Ui_MainWindow):
 
     def getRequestsTable(self):
         return self.requestsTable
+
+    def getMessagesTable(self):
+        return self.messagesTable

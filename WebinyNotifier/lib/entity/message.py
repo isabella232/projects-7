@@ -25,8 +25,9 @@ class Message(object):
         # Storing main table
         query = "INSERT INTO messages (`group`, message, level, datetime, context, extra, request) VALUES (?,?,?,?,?,?,?)"
         bind = (
-        self._group, self._message, self._level, self._datetime, JSON.encode(self._context), JSON.encode(self._extra),
-        self._request)
+            self._group, self._message, self._level, self._datetime, JSON.encode(self._context),
+            JSON.encode(self._extra),
+            self._request)
         db.execute(query, bind)
         self._id = db.last_inserted_id
         return True
@@ -43,7 +44,6 @@ class Message(object):
                 bind.append(where[key])
             query += whereSql
         results = db.execute(query, bind).fetchAll()
-        print results
 
         messages = []
         for data in results:
@@ -92,8 +92,9 @@ class Message(object):
             'name': 'group'
         }
         for k in data:
+            value = data[k]
             if k in map:
-                pk = map[k]
-            setattr(self, '_' + pk, data[k])
+                k = map[k]
+            setattr(self, '_' + k, value)
         self._context = JSON.decode(self._context)
         self._extra = JSON.decode(self._extra)
