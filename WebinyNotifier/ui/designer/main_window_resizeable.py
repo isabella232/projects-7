@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main_window_resizeable.ui'
 #
-# Created: Sun Jun 02 13:33:51 2013
+# Created: Thu Jun 06 20:17:18 2013
 #      by: PyQt4 UI code generator 4.9.5
 #
 # WARNING! All changes made in this file will be lost!
@@ -10,6 +10,7 @@
 from PyQt4 import QtCore, QtGui
 from ui.wrappers.messagesTableView import MessagesTableView
 from ui.wrappers.requestsTableView import RequestsTableView
+from ui.wrappers.treeView import TreeView
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -18,6 +19,10 @@ except AttributeError:
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        """
+
+        @param MainWindow:
+        """
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(995, 730)
         icon = QtGui.QIcon()
@@ -44,7 +49,7 @@ class Ui_MainWindow(object):
         self.requestsTable.setSizePolicy(sizePolicy)
         self.requestsTable.setStyleSheet(_fromUtf8(""))
         self.requestsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.requestsTable.setSelectionBehavior(QtGui.QTableView.SelectRows)
+        self.requestsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.requestsTable.setShowGrid(True)
         self.requestsTable.setObjectName(_fromUtf8("requestsTable"))
         self.requestsTable.horizontalHeader().setStretchLastSection(True)
@@ -57,15 +62,53 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.messagesTab)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.messagesTable = MessagesTableView(self.messagesTab)
+        self.messagesTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.messagesTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.messagesTable.setObjectName(_fromUtf8("messagesTable"))
         self.messagesTable.horizontalHeader().setVisible(True)
         self.messagesTable.horizontalHeader().setStretchLastSection(True)
-        self.messagesTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.messagesTable.setSelectionBehavior(QtGui.QTableView.SelectRows)
-        self.messagesTable.setShowGrid(True)
         self.verticalLayout_2.addWidget(self.messagesTable)
         self.notificationTabs.addTab(self.messagesTab, _fromUtf8(""))
-        self.messagesTable.tabs = self.notificationTabs
+        self.contextTab = QtGui.QWidget()
+        self.contextTab.setObjectName(_fromUtf8("contextTab"))
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.contextTab)
+        self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
+        self.contextTreeView = TreeView(self.contextTab)
+        self.contextTreeView.setObjectName(_fromUtf8("contextTreeView"))
+        self.verticalLayout_3.addWidget(self.contextTreeView)
+        #self.notificationTabs.addTab(self.contextTab, _fromUtf8(""))
+        self.extraTab = QtGui.QWidget()
+        self.extraTab.setObjectName(_fromUtf8("extraTab"))
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.extraTab)
+        self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
+        self.extraTreeView = TreeView(self.extraTab)
+        self.extraTreeView.setObjectName(_fromUtf8("extraTreeView"))
+        self.verticalLayout_4.addWidget(self.extraTreeView)
+        #self.notificationTabs.addTab(self.extraTab, _fromUtf8(""))
+        self.getTab = QtGui.QWidget()
+        self.getTab.setObjectName(_fromUtf8("getTab"))
+        self.verticalLayout_5 = QtGui.QVBoxLayout(self.getTab)
+        self.verticalLayout_5.setObjectName(_fromUtf8("verticalLayout_5"))
+        self.getTreeView = TreeView(self.getTab)
+        self.getTreeView.setObjectName(_fromUtf8("getTreeView"))
+        self.verticalLayout_5.addWidget(self.getTreeView)
+        #self.notificationTabs.addTab(self.getTab, _fromUtf8(""))
+        self.postTab = QtGui.QWidget()
+        self.postTab.setObjectName(_fromUtf8("postTab"))
+        self.verticalLayout_6 = QtGui.QVBoxLayout(self.postTab)
+        self.verticalLayout_6.setObjectName(_fromUtf8("verticalLayout_6"))
+        self.postTreeView = TreeView(self.postTab)
+        self.postTreeView.setObjectName(_fromUtf8("postTreeView"))
+        self.verticalLayout_6.addWidget(self.postTreeView)
+        #self.notificationTabs.addTab(self.postTab, _fromUtf8(""))
+        self.serverTab = QtGui.QWidget()
+        self.serverTab.setObjectName(_fromUtf8("serverTab"))
+        self.verticalLayout_7 = QtGui.QVBoxLayout(self.serverTab)
+        self.verticalLayout_7.setObjectName(_fromUtf8("verticalLayout_7"))
+        self.serverTreeView = TreeView(self.serverTab)
+        self.serverTreeView.setObjectName(_fromUtf8("serverTreeView"))
+        self.verticalLayout_7.addWidget(self.serverTreeView)
+        #self.notificationTabs.addTab(self.serverTab, _fromUtf8(""))
         self.verticalLayout.addWidget(self.splitter)
         self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -103,6 +146,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "Webiny Tray Logger", None, QtGui.QApplication.UnicodeUTF8))
         self.notificationTabs.setTabText(self.notificationTabs.indexOf(self.messagesTab), QtGui.QApplication.translate("MainWindow", "Messages", None, QtGui.QApplication.UnicodeUTF8))
+        self.notificationTabs.setTabText(self.notificationTabs.indexOf(self.contextTab), QtGui.QApplication.translate("MainWindow", "Context", None, QtGui.QApplication.UnicodeUTF8))
+        self.notificationTabs.setTabText(self.notificationTabs.indexOf(self.extraTab), QtGui.QApplication.translate("MainWindow", "Extra", None, QtGui.QApplication.UnicodeUTF8))
+        self.notificationTabs.setTabText(self.notificationTabs.indexOf(self.getTab), QtGui.QApplication.translate("MainWindow", "$_GET", None, QtGui.QApplication.UnicodeUTF8))
+        self.notificationTabs.setTabText(self.notificationTabs.indexOf(self.postTab), QtGui.QApplication.translate("MainWindow", "$_POST", None, QtGui.QApplication.UnicodeUTF8))
+        self.notificationTabs.setTabText(self.notificationTabs.indexOf(self.serverTab), QtGui.QApplication.translate("MainWindow", "$_SERVER", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "Menu", None, QtGui.QApplication.UnicodeUTF8))
         self.actionClose.setText(QtGui.QApplication.translate("MainWindow", "Close", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))

@@ -45,5 +45,9 @@ class MessagesTableModel(QtCore.QAbstractTableModel):
             return QtCore.QVariant(self.headerData[col])
         return QtCore.QVariant()
 
-    def refreshModel(self):
+    def refreshModelFromRequest(self, item, request):
+        self.arrayData = request.getMessages()
         self.reset()
+
+    def getMessageAtIndex(self, rowIndex):
+        return self.arrayData[rowIndex]

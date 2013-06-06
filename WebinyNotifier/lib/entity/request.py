@@ -1,17 +1,12 @@
-from PyQt4 import QtCore
 from lib.database import Database
 from lib.entity.message import Message
 from lib.entity.settings import Settings
-from lib.entity.viewModel.requestTableModel import RequestTableModel
 from lib.tools.JSON import JSON
 from lib.tools.debugger import Debugger
 
 
 class Request(object):
     _RECORDS = None
-
-    """:type: RequestTableModel"""
-    _TABLE_MODEL = None
 
     def __init__(self):
         self._id = ''
@@ -20,16 +15,9 @@ class Request(object):
         self._datetime = ''
         self._stats = ''
         self._messages = []
-
-    @staticmethod
-    def getTableModel(parent):
-        """
-        Get request table model
-        """
-        if Request._TABLE_MODEL is None:
-            Request._TABLE_MODEL = RequestTableModel(Request.all(), parent)
-            Request._TABLE_MODEL.setData(QtCore.QModelIndex(), QtCore.QVariant(), role=QtCore.Qt.EditRole)
-        return Request._TABLE_MODEL
+        self._get = []
+        self._post = []
+        self._server = []
 
     @staticmethod
     def all(force=False):
@@ -53,9 +41,6 @@ class Request(object):
                 req._populateFromDb(data)
                 Request._RECORDS.append(req)
 
-            if force and Request._TABLE_MODEL is not None:
-                Request._refreshModel()
-
         return Request._RECORDS
 
     def createFromNodeJs(self, data):
@@ -67,8 +52,9 @@ class Request(object):
         db = Database()
 
         # Storing main table
-        query = "INSERT INTO requests (id, datetime, url, memory, stats) VALUES (NULL, ?,?,?,?)"
-        bind = (self._datetime, self._url, self._memory, JSON.encode(self._stats))
+        query = "INSERT INTO requests (id, datetime, url, memory, stats, get, post, server) VALUES (NULL, ?,?,?,?,?,?,?)"
+        bind = (self._datetime, self._url, self._memory, JSON.encode(self._stats), JSON.encode(self._get),
+                JSON.encode(self._post), JSON.encode(self._server))
         db.execute(query, bind)
         self._id = db.last_inserted_id
 
@@ -88,14 +74,13 @@ class Request(object):
             Request._RECORDS.insert(0, self)
             del Request._RECORDS[-1]
 
-        Request._refreshModel()
         return True
 
     def getId(self):
         return self._id
 
     def getMemory(self):
-        return self._memory
+        return self._format(self._memory)
 
     def getDateTime(self):
         return self._datetime
@@ -117,14 +102,26 @@ class Request(object):
             self._messages = Message.find({'request': self._id})
         return self._messages
 
+    def getGet(self):
+        return self._get
+
+    def getPost(self):
+        return self._post
+
+    def getServer(self):
+        return self._server
+
     def _populateFromDb(self, data):
         for k in data:
             setattr(self, '_' + k, data[k])
         self._stats = JSON.decode(self._stats)
+        self._get = JSON.decode(self._get)
+        self._post = JSON.decode(self._post)
+        self._server = JSON.decode(self._server)
 
     def _validateNodeJsData(self, data):
         valid = True
-        keys = ['memory', 'url', 'datetime', 'messages', 'stats']
+        keys = ['memory', 'url', 'datetime', 'messages', 'stats', 'get', 'post', 'server']
         for key in keys:
             if key not in data:
                 Debugger.log("Key '" + key + "' is missing in Request data!", 'error')
@@ -136,8 +133,9 @@ class Request(object):
             setattr(self, '_' + k, data[k])
         self._stats = JSON.decode(self._stats)
 
-    @staticmethod
-    def _refreshModel():
-        if Request._TABLE_MODEL is not None:
-            Request._TABLE_MODEL.arrayData = Request._RECORDS
-            Request._TABLE_MODEL.refreshModel()
+    def _format(self, num):
+        for x in ['bytes','KB','MB','GB']:
+            if num < 1024.0:
+                return "%3.2f %s" % (num, x)
+            num /= 1024.0
+        return "%3.2f %s" % (num, 'TB')

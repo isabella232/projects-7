@@ -77,6 +77,8 @@ class Message(object):
     def _populateFromDb(self, data):
         for k in data:
             setattr(self, '_' + k, data[k])
+        self._context = JSON.decode(self._context)
+        self._extra = JSON.decode(self._extra)
 
     def _validateNodeJsData(self, data):
         valid = True

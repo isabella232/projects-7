@@ -1,6 +1,4 @@
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QFrame, QColor
-
 
 class RequestTableModel(QtCore.QAbstractTableModel):
     def __init__(self, dataIn, parent=None, *args):
