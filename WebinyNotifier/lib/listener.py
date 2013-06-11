@@ -13,7 +13,6 @@ from lib.entity.settings import Settings
 import lib.tools.simplejsonrpc as jsonrpc
 from PyQt4.QtCore import QObject
 
-
 class Listener(threading.Thread, jsonrpc.JsonrpcHandler, QObject):
     port = 5000
     ip = "0.0.0.0"

@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(995, 730)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/webiny/favicon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/webiny/webiny.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonTextOnly)
         MainWindow.setUnifiedTitleAndToolBarOnMac(False)
@@ -155,5 +155,3 @@ class Ui_MainWindow(object):
         self.actionClose.setText(QtGui.QApplication.translate("MainWindow", "Close", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
         self.actionLog.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
-
-import webiny_rc

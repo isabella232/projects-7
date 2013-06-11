@@ -1,7 +1,7 @@
 <RCC>
   <qresource prefix="webiny">
-    <file>favicon.ico</file>
     <file>exit-btn.png</file>
+    <file>webiny.png</file>
     <file>log-btn.png</file>
     <file>settings-btn.png</file>
   </qresource>

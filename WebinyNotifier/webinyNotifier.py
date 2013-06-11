@@ -48,6 +48,7 @@ class WebinyNotifier(QtGui.QApplication, QObject):
             message = "[" + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "] New notification received!"
             Debugger.log('Showing tray message: ' + message)
             self.tray.showMessage('Webiny Notifier', message, QtGui.QSystemTrayIcon.Information, 10000000)
+        self.refreshRequestsModel()
 
     def openSettings(self):
         if self.settingsForm is None:
@@ -61,7 +62,12 @@ class WebinyNotifier(QtGui.QApplication, QObject):
         self.logForm.show()
         """
 
+    def refreshRequestsModel(self):
+        if hasattr(self, "mainWindow"):
+            self.mainWindow.refreshRequestModel()
+
     def exitApp(self):
+        del self.tray
         self.listener.stop()
         self.quit()
 

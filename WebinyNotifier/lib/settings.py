@@ -46,6 +46,7 @@ class Settings(QtGui.QDialog):
         # Extra processing
         if self._settings.requests_limit != oldRequestsLimit:
             Request.all(True)
+            self.parent.refreshRequestsModel()
 
         if self._settings.port != oldPort:
             self.parent.restartListener()

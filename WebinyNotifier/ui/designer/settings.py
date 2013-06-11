@@ -27,7 +27,7 @@ class Ui_Form(object):
         Form.setSizePolicy(sizePolicy)
         Form.setMinimumSize(QtCore.QSize(250, 0))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("Project/favicon.ico")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/webiny/webiny.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
         Form.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
         self.verticalLayout_3 = QtGui.QVBoxLayout(Form)

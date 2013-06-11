@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/webiny.qrc">
-    <normaloff>:/webiny/favicon.ico</normaloff>:/webiny/favicon.ico</iconset>
+    <normaloff>:/webiny/webiny.png</normaloff>:/webiny/webiny.png</iconset>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextOnly</enum>

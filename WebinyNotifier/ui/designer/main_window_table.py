@@ -133,4 +133,3 @@ class Ui_MainWindow(object):
         self.actionClose.setText(QtGui.QApplication.translate("MainWindow", "Close", None, QtGui.QApplication.UnicodeUTF8))
         self.actionClose.setToolTip(QtGui.QApplication.translate("MainWindow", "Close", None, QtGui.QApplication.UnicodeUTF8))
 
-import webiny_rc

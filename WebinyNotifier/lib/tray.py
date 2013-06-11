@@ -5,7 +5,7 @@ class Tray(QtGui.QSystemTrayIcon):
     def __init__(self, parent):
         # Create main widget
         self.widget = QtGui.QWidget()
-        self.icon = QtGui.QIcon("resources/favicon.ico")
+        self.icon = QtGui.QIcon(":/webiny/webiny.png")
         super(Tray, self).__init__(self.icon, self.widget)
         self.setParent(parent)
         

@@ -70,9 +70,11 @@ class Request(object):
         """
         Modify data (this will also affect the Request table model)
         """
+        settings = Settings()
         if Request._RECORDS is not None:
             Request._RECORDS.insert(0, self)
-            del Request._RECORDS[-1]
+            if len(Request._RECORDS) > settings.requests_limit:
+                del Request._RECORDS[-1]
 
         return True
 

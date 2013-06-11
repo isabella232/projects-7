@@ -56,6 +56,12 @@ class MainWindow(QtGui.QMainWindow):
     def on_actionLog_triggered(self):
         self.WebinyNotifier.openLog()
 
+    def refreshRequestModel(self):
+        self._requestModel.reset()
+        self.ui.getRequestsTable().resizeColumnsToContents()
+        self.ui.getRequestsTable().horizontalHeader().setStretchLastSection(True)
+
+
     def _loadMessages(self, item):
         request = self._requestModel.getRequestAtIndex(item.indexes()[0].row())
         self._messagesModel.refreshModelFromRequest(item, request)
