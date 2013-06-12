@@ -62,6 +62,9 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.getRequestsTable().resizeColumnsToContents()
         self.ui.getRequestsTable().horizontalHeader().setStretchLastSection(True)
 
+    def selectFirstRow(self):
+        self.ui.getRequestsTable().selectRow(0)
+
     def _loadMessages(self, item):
         request = self._requestModel.getRequestAtIndex(item.indexes()[0].row())
         self._messagesModel.refreshModelFromRequest(item, request)

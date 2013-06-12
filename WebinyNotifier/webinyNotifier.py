@@ -75,13 +75,11 @@ class WebinyNotifier(QtGui.QApplication, QObject):
         Debugger.log('Balloon clicked')
         if not hasattr(self, "mainWindow"):
             self.mainWindow = MainWindow(self)
-            self.mainWindow.activateWindow()
-        if self.mainWindow.isVisible():
-            self.mainWindow.activateWindow()
-            return
-        else:
+        if not self.mainWindow.isVisible():
             self.mainWindow.show()
-            self.mainWindow.activateWindow()
+
+        self.mainWindow.activateWindow()
+        self.mainWindow.selectFirstRow()
 
     def iconClicked(self, reason):
         if reason == 2:
