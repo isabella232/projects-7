@@ -18,6 +18,7 @@ class Request(object):
         self._get = []
         self._post = []
         self._server = []
+        self._read = 0
 
     @staticmethod
     def all(force=False):
@@ -43,6 +44,33 @@ class Request(object):
 
         return Request._RECORDS
 
+    @staticmethod
+    def delete(index):
+        if len(Request._RECORDS) == 0:
+            return
+
+        request = Request._RECORDS[index]
+
+        db = Database()
+        settings = Settings()
+
+        query = "DELETE FROM requests WHERE id = ?"
+        db.execute(query, [request.getId()])
+
+        query = "DELETE FROM messages WHERE request = ?"
+        db.execute(query, [request.getId()])
+
+        del Request._RECORDS[index]
+
+        # Restore 1 item from database is possible
+        query = "SELECT * FROM requests ORDER BY id DESC LIMIT ?, 1"
+        results = db.execute(query, [settings.requests_limit-1]).fetchAll()
+
+        if results:
+            req = Request()
+            req._populateFromDb(results.pop())
+            Request._RECORDS.append(req)
+
     def createFromNodeJs(self, data):
         if not self._validateNodeJsData(data):
             return False
@@ -52,7 +80,7 @@ class Request(object):
         db = Database()
 
         # Storing main table
-        query = "INSERT INTO requests (id, datetime, url, memory, stats, get, post, server) VALUES (NULL, ?,?,?,?,?,?,?)"
+        query = "INSERT INTO requests (id, datetime, url, memory, stats, get, post, server, read) VALUES (NULL, ?,?,?,?,?,?,?,0)"
         bind = (self._datetime, self._url, self._memory, JSON.encode(self._stats), JSON.encode(self._get),
                 JSON.encode(self._post), JSON.encode(self._server))
         db.execute(query, bind)
@@ -77,6 +105,13 @@ class Request(object):
                 del Request._RECORDS[-1]
 
         return True
+
+    def markAsRead(self):
+        db = Database()
+        query = "UPDATE requests SET read = 1 WHERE id = ?"
+        bind = (self._id,)
+        db.execute(query, bind)
+        self._read = True
 
     def getId(self):
         return self._id
@@ -112,6 +147,9 @@ class Request(object):
 
     def getServer(self):
         return self._server
+
+    def getRead(self):
+        return bool(self._read)
 
     def _populateFromDb(self, data):
         for k in data:

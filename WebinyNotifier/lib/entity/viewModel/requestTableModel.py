@@ -1,4 +1,6 @@
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import QModelIndex
+
 
 class RequestTableModel(QtCore.QAbstractTableModel):
     def __init__(self, dataIn, parent=None, *args):
@@ -15,6 +17,18 @@ class RequestTableModel(QtCore.QAbstractTableModel):
     def columnCount(self, parent):
         return len(self.headerData)
 
+    def removeRow(self, index, newItem):
+        del self.arrayData[index]
+        self.arrayData.append(newItem)
+        self.dataChanged(QModelIndex(), QModelIndex())
+
+    def setData(self, index, value, role):
+        if role == QtCore.Qt.FontRole:
+            font = QtGui.QFont()
+            font.setBold(not value.getRead())
+            return font
+        return True
+
     def data(self, index, role):
         """:type: Request Current instance"""
         request = self.arrayData[index.row()]
@@ -22,8 +36,13 @@ class RequestTableModel(QtCore.QAbstractTableModel):
         if not index.isValid():
             return self._emptyVariant
         elif role == QtCore.Qt.BackgroundColorRole:
-            color = QtGui.QColor(177, 199, 235)
-            return QtCore.QVariant(color)
+            pass
+            #color = QtGui.QColor(177, 199, 235)
+            #return QtCore.QVariant(color)
+        elif role == QtCore.Qt.FontRole:
+             font = QtGui.QFont()
+             font.setBold(not request.getRead())
+             return font
         elif role == QtCore.Qt.DisplayRole:
             method = self.tableData[index.column()]
             data = getattr(request, method)()

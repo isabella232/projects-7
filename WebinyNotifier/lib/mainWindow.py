@@ -43,6 +43,7 @@ class MainWindow(QtGui.QMainWindow):
         # Attach events for Requests adn Messages row selection
         self.ui.getRequestsTable().selectionModel().selectionChanged.connect(self._loadMessages)
         self.ui.getMessagesTable().selectionModel().selectionChanged.connect(self._loadMessageData)
+        self.connect(self.ui.getRequestsTable(), QtCore.SIGNAL("requestDeleted"), self._requestDeleted)
 
         # Show window
         super(MainWindow, self).show();
@@ -61,7 +62,6 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.getRequestsTable().resizeColumnsToContents()
         self.ui.getRequestsTable().horizontalHeader().setStretchLastSection(True)
 
-
     def _loadMessages(self, item):
         request = self._requestModel.getRequestAtIndex(item.indexes()[0].row())
         self._messagesModel.refreshModelFromRequest(item, request)
@@ -72,6 +72,11 @@ class MainWindow(QtGui.QMainWindow):
         self._setTreeView(self.ui.getTab, "$_GET", self.ui.getTreeView, request.getGet())
         self._setTreeView(self.ui.postTab, "$_POST", self.ui.postTreeView, request.getPost())
         self._setTreeView(self.ui.serverTab, "$_SERVER", self.ui.serverTreeView, request.getServer())
+
+        if not request.getRead():
+            request.markAsRead()
+            self._requestModel.setData(item, request, QtCore.Qt.FontRole)
+            #self._requestModel.refreshRow(item)
 
 
     def _loadMessageData(self, item):
@@ -99,3 +104,17 @@ class MainWindow(QtGui.QMainWindow):
         #for i in range(1, 5):
         #    if self.ui.notificationTabs.indexOf(tabs[k]) > -1:
         #        i.setTabOrder(self.textboxA, self.textboxB)
+
+    def _requestDeleted(self, index):
+        Request.delete(index)
+        self._requestModel.refreshModel()
+        self.ui.getRequestsTable().selectRow(index)
+
+        if len(self._requestModel.arrayData) == 0:
+            self._messagesModel.arrayData = []
+            self._messagesModel.reset()
+            # Hide all tabs if no more requests exist
+            self.ui.notificationTabs.removeTab(1)
+            self.ui.notificationTabs.removeTab(2)
+            self.ui.notificationTabs.removeTab(3)
+            self.ui.notificationTabs.removeTab(4)

@@ -77,7 +77,7 @@ class WebinyNotifier(QtGui.QApplication, QObject):
             self.mainWindow = MainWindow(self)
             self.mainWindow.activateWindow()
         if self.mainWindow.isVisible():
-            self.mainWindow.focusWidget()
+            self.mainWindow.activateWindow()
             return
         else:
             self.mainWindow.show()

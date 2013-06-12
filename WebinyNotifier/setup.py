@@ -1,4 +1,5 @@
 from distutils.core import setup
+import py2exe
 
 setup(
     name='WebinyTrayNotifier',
@@ -11,8 +12,8 @@ setup(
     author_email='pavel@webiny.com',
     description='',
     windows=[{"script": "main.py",
-              "icon_resources": [(1, "C:\Users\Pavel\Desktop\webiny-logo-icon.ico")],
+              "icon_resources": [(1, "X:\webiny\extra\webiny-logo-icon.ico")],
               "dest_base": "WebinyTrayNotifier"}
     ],
-    options={"py2exe": {"includes": ["sip"], "bundle_files": 1}}
+    options={"py2exe": {"includes": ["sip"], "bundle_files": 1, 'dll_excludes': ['w9xpopen.exe']}}
 )
