@@ -23,7 +23,8 @@ class Message(object):
         db = Database()
 
         # Storing main table
-        query = "INSERT INTO messages (`group`, message, level, datetime, context, extra, request) VALUES (?,?,?,?,?,?,?)"
+        query = "INSERT INTO messages (`group`, message, level, datetime, context, extra, request) " \
+                "VALUES (?,?,?,?,?,?,?)"
         bind = (
             self._group, self._message, self._level, self._datetime, JSON.encode(self._context),
             JSON.encode(self._extra),
@@ -51,7 +52,6 @@ class Message(object):
             message._populateFromDb(data)
             messages.append(message)
         return messages
-
 
     def getId(self):
         return self._id

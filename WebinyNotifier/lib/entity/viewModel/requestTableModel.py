@@ -1,5 +1,6 @@
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import QModelIndex
+from lib.entity.settings import Settings
 
 
 class RequestTableModel(QtCore.QAbstractTableModel):
@@ -10,6 +11,7 @@ class RequestTableModel(QtCore.QAbstractTableModel):
         self.headerData = ['Datetime', 'URL', 'Memory', 'Stats']
         self.tableData = ['getDateTime', 'getUrl', 'getMemory', 'getStats']
         self._emptyVariant = QtCore.QVariant()
+        self._settings = Settings()
 
     def rowCount(self, parent):
         return len(self.arrayData)
@@ -36,13 +38,13 @@ class RequestTableModel(QtCore.QAbstractTableModel):
         if not index.isValid():
             return self._emptyVariant
         elif role == QtCore.Qt.BackgroundColorRole:
-            pass
-            #color = QtGui.QColor(177, 199, 235)
-            #return QtCore.QVariant(color)
+            colorCode = self._settings.log_levels[request.getLevel()]['color']
+            color = QtGui.QColor(colorCode)
+            return QtCore.QVariant(color)
         elif role == QtCore.Qt.FontRole:
-             font = QtGui.QFont()
-             font.setBold(not request.getRead())
-             return font
+            font = QtGui.QFont()
+            font.setBold(not request.getRead())
+            return font
         elif role == QtCore.Qt.DisplayRole:
             method = self.tableData[index.column()]
             data = getattr(request, method)()

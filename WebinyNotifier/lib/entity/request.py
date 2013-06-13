@@ -1,6 +1,7 @@
 from lib.database import Database
 from lib.entity.message import Message
 from lib.entity.settings import Settings
+from lib.logLevel import LogLevel
 from lib.tools.JSON import JSON
 from lib.tools.debugger import Debugger
 
@@ -19,6 +20,7 @@ class Request(object):
         self._post = []
         self._server = []
         self._read = 0
+        self._level = ''
 
     @staticmethod
     def all(force=False):
@@ -80,9 +82,10 @@ class Request(object):
         db = Database()
 
         # Storing main table
-        query = "INSERT INTO requests (id, datetime, url, memory, stats, get, post, server, read) VALUES (NULL, ?,?,?,?,?,?,?,0)"
+        query = "INSERT INTO requests (id, datetime, url, memory, stats, get, post, server, level, read)" \
+                " VALUES (NULL, ?,?,?,?,?,?,?,?,0)"
         bind = (self._datetime, self._url, self._memory, JSON.encode(self._stats), JSON.encode(self._get),
-                JSON.encode(self._post), JSON.encode(self._server))
+                JSON.encode(self._post), JSON.encode(self._server), self._level)
         db.execute(query, bind)
         self._id = db.last_inserted_id
 
@@ -151,6 +154,9 @@ class Request(object):
     def getRead(self):
         return bool(self._read)
 
+    def getLevel(self):
+        return self._level
+
     def _populateFromDb(self, data):
         for k in data:
             setattr(self, '_' + k, data[k])
@@ -161,7 +167,7 @@ class Request(object):
 
     def _validateNodeJsData(self, data):
         valid = True
-        keys = ['memory', 'url', 'datetime', 'messages', 'stats', 'get', 'post', 'server']
+        keys = ['memory', 'url', 'datetime', 'messages', 'stats', 'get', 'post', 'server', 'level']
         for key in keys:
             if key not in data:
                 Debugger.log("Key '" + key + "' is missing in Request data!", 'error')

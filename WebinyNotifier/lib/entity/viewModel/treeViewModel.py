@@ -4,14 +4,13 @@ from lib.entity.viewModel.treeItem import TreeItem
 
 
 class TreeViewModel(QtCore.QAbstractItemModel):
-
-    def walk_dict(self, d,depth=0):
+    def walk_dict(self, d, depth=0):
         tmp = []
-        for k,v in sorted(d.items(),key=lambda x: x[0]):
+        for k, v in sorted(d.items(), key=lambda x: x[0]):
             if isinstance(v, dict):
-                tmp.append((k,self.walk_dict(v,depth+1)))
+                tmp.append((k, self.walk_dict(v, depth + 1)))
             else:
-                tmp.append((k,v))
+                tmp.append((k, v))
         return tmp
 
     def __init__(self, data, parent=None):
@@ -19,7 +18,7 @@ class TreeViewModel(QtCore.QAbstractItemModel):
         self.parent = parent
         self.header = ['Key', 'Value']
         self.rootItem = TreeItem(None, "ALL", None)
-        self.parents = {0 : self.rootItem}
+        self.parents = {0: self.rootItem}
         self.setNewData(data)
 
     def setNewData(self, data):
@@ -27,7 +26,7 @@ class TreeViewModel(QtCore.QAbstractItemModel):
             data = []
         else:
             data = self.walk_dict(data)
-        self.parents = {0 : self.rootItem}
+        self.parents = {0: self.rootItem}
         self._setupModelData(data)
         self.dataChanged.emit(QModelIndex(), QModelIndex())
 
@@ -48,7 +47,7 @@ class TreeViewModel(QtCore.QAbstractItemModel):
 
     def headerData(self, column, orientation, role):
         if (orientation == QtCore.Qt.Horizontal and
-            role == QtCore.Qt.DisplayRole):
+                    role == QtCore.Qt.DisplayRole):
             try:
                 return QtCore.QVariant(self.header[column])
             except IndexError:
@@ -95,20 +94,35 @@ class TreeViewModel(QtCore.QAbstractItemModel):
             p_Item = parent.internalPointer()
         return p_Item.childCount()
 
-    def _setupModelData(self, data, parent = 0):
+    def _setupModelData(self, data, parent=0):
 
         for key, value in data:
 
-            if self.parents.has_key(parent):
+            if parent in self.parents:
                 parentItem = self.parents[parent]
             else:
                 parentItem = self.rootItem
 
-            if not isinstance(value, dict) and not isinstance(value, list):
+            if not isinstance(value, (dict, list)):
                 item = TreeItem({'key': key, 'value': value}, "", parentItem)
                 parentItem.appendChild(item)
             else:
-                newparent = TreeItem({'key': key, 'value': value}, "", parentItem)
-                parentItem.appendChild(newparent)
-                self.parents[key] = newparent
-                self._setupModelData(value, key)
+                if isinstance(value, list) and self._isSimpleList(value):
+                    item = TreeItem({'key': key, 'value': str(value)}, "", parentItem)
+                    parentItem.appendChild(item)
+                else:
+                    newparent = TreeItem({'key': key, 'value': value}, "", parentItem)
+                    parentItem.appendChild(newparent)
+                    self.parents[key] = newparent
+                    self._setupModelData(value, key)
+
+    """
+    List is considered 'simple' if there is at least 1 simple data type
+    This list is considered simple: [{a: 'b'}, 'b', 'c']
+    """
+    def _isSimpleList(self, data):
+        simple = False
+        for value in data:
+            if isinstance(value, (str, int, float, bool)):
+                simple = True
+        return simple

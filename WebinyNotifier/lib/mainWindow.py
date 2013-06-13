@@ -6,15 +6,16 @@ from lib.entity.viewModel.requestTableModel import RequestTableModel
 from lib.entity.viewModel.treeViewModel import TreeViewModel
 from ui.wrappers.mainWindow import MainWindow as UiMainWindow
 
+
 class MainWindow(QtGui.QMainWindow):
-    
     model = None
 
     def __init__(self, parent):
         QtGui.QMainWindow.__init__(self)
         self.WebinyNotifier = parent
         self.settings = Settings()
-        self.ui=UiMainWindow()
+        self.geometry = None
+        self.ui = UiMainWindow()
         self.ui.setupUi(self)
 
         # Setup table models
@@ -26,9 +27,9 @@ class MainWindow(QtGui.QMainWindow):
         if self.isMinimized():
             self.geometry = bytearray(self.saveGeometry())
         else:
-            if self.geometry:
+            if self.geometry is not None:
                 self.restoreGeometry(self.geometry)
-            self.geometry = None
+                self.geometry = None
 
     def show(self):
         # Requests table
@@ -43,7 +44,8 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.getMessagesTable().resizeColumnsToContents()
         self.ui.getMessagesTable().horizontalHeader().setStretchLastSection(True)
 
-        for view in [self.ui.contextTreeView, self.ui.extraTreeView, self.ui.getTreeView, self.ui.postTreeView, self.ui.serverTreeView]:
+        for view in [self.ui.contextTreeView, self.ui.extraTreeView, self.ui.getTreeView, self.ui.postTreeView,
+                     self.ui.serverTreeView]:
             view.setModel(TreeViewModel([]))
             view.expanded.connect(view.itemManipulated)
             view.collapsed.connect(view.itemManipulated)
@@ -54,7 +56,7 @@ class MainWindow(QtGui.QMainWindow):
         self.connect(self.ui.getRequestsTable(), QtCore.SIGNAL("requestDeleted"), self._requestDeleted)
 
         # Show window
-        super(MainWindow, self).show();
+        super(MainWindow, self).show()
 
     def on_actionClose_triggered(self):
         self.hide()
@@ -74,47 +76,39 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.getRequestsTable().selectRow(0)
 
     def _loadMessages(self, item):
+        self._hideAllTabs()
         request = self._requestModel.getRequestAtIndex(item.indexes()[0].row())
         self._messagesModel.refreshModelFromRequest(item, request)
         self.ui.getMessagesTable().resizeColumnsToContents()
         self.ui.getMessagesTable().horizontalHeader().setStretchLastSection(True)
 
         # Set tree views
-        self._setTreeView(self.ui.getTab, "$_GET", self.ui.getTreeView, request.getGet())
-        self._setTreeView(self.ui.postTab, "$_POST", self.ui.postTreeView, request.getPost())
-        self._setTreeView(self.ui.serverTab, "$_SERVER", self.ui.serverTreeView, request.getServer())
+        self._setTreeView(3, self.ui.getTab, "$_GET", self.ui.getTreeView, request.getGet())
+        self._setTreeView(4, self.ui.postTab, "$_POST", self.ui.postTreeView, request.getPost())
+        self._setTreeView(5, self.ui.serverTab, "$_SERVER", self.ui.serverTreeView, request.getServer())
+
+        self.ui.notificationTabs.setCurrentIndex(0)
 
         if not request.getRead():
             request.markAsRead()
             self._requestModel.setData(item, request, QtCore.Qt.FontRole)
-            #self._requestModel.refreshRow(item)
-
 
     def _loadMessageData(self, item):
         message = self._messagesModel.getMessageAtIndex(item.indexes()[0].row())
-        self._setTreeView(self.ui.contextTab, "Context", self.ui.contextTreeView, message.getContext())
-        self._setTreeView(self.ui.extraTab, "Extra", self.ui.extraTreeView, message.getExtra())
+        self._setTreeView(1, self.ui.contextTab, "Context", self.ui.contextTreeView, message.getContext())
+        self._setTreeView(2, self.ui.extraTab, "Extra", self.ui.extraTreeView, message.getExtra())
 
-    def _setTreeView(self, tab, tabName, view, data):
-        if len(data) < 1:
-            self._hideTab(tab)
-        else:
-            self._showTab(tab, tabName)
+    def _setTreeView(self, index, tab, tabName, view, data):
+        if len(data) > 0:
+            self._showTab(index, tab, tabName)
             view.setModel(TreeViewModel(data))
             view.setAlternatingRowColors(True)
             view.resizeColumnToContents(0)
+        else:
+            self.ui.notificationTabs.removeTab(self.ui.notificationTabs.indexOf(tab))
 
-    def _hideTab(self, tab):
-        self.ui.notificationTabs.removeTab(self.ui.notificationTabs.indexOf(tab))
-
-    def _showTab(self, tab, name):
-        self.ui.notificationTabs.addTab(tab, name)
-
-        # Reorder tabs
-        #tabs = [self.ui.contextTab, self.ui.extraTab, self.ui.getTab, self.ui.postTab, self.ui.serverTab]
-        #for i in range(1, 5):
-        #    if self.ui.notificationTabs.indexOf(tabs[k]) > -1:
-        #        i.setTabOrder(self.textboxA, self.textboxB)
+    def _showTab(self, index, tab, name):
+        self.ui.notificationTabs.insertTab(index, tab, name)
 
     def _requestDeleted(self, index):
         Request.delete(index)
@@ -125,7 +119,10 @@ class MainWindow(QtGui.QMainWindow):
             self._messagesModel.arrayData = []
             self._messagesModel.reset()
             # Hide all tabs if no more requests exist
-            self.ui.notificationTabs.removeTab(1)
-            self.ui.notificationTabs.removeTab(2)
-            self.ui.notificationTabs.removeTab(3)
-            self.ui.notificationTabs.removeTab(4)
+            self._hideAllTabs()
+
+    def _hideAllTabs(self):
+        self.ui.notificationTabs.removeTab(1)
+        self.ui.notificationTabs.removeTab(2)
+        self.ui.notificationTabs.removeTab(3)
+        self.ui.notificationTabs.removeTab(4)

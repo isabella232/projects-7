@@ -44,7 +44,7 @@ class WebinyNotifier(QtGui.QApplication, QObject):
         request.createFromNodeJs(params)
 
         # Notification balloon
-        if bool(self.settings.show_balloon):
+        if bool(self.settings.show_balloon) and bool(self.settings.log_levels[request.getLevel()]['balloon']):
             message = "[" + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "] New notification received!"
             Debugger.log('Showing tray message: ' + message)
             self.tray.showMessage('Webiny Notifier', message, QtGui.QSystemTrayIcon.Information, 10000000)
