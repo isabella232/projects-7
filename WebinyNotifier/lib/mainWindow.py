@@ -22,6 +22,14 @@ class MainWindow(QtGui.QMainWindow):
         self._messagesModel = MessagesTableModel([])
         self._serverModel = TreeViewModel([])
 
+    def changeEvent(self, event):
+        if self.isMinimized():
+            self.geometry = bytearray(self.saveGeometry())
+        else:
+            if self.geometry:
+                self.restoreGeometry(self.geometry)
+            self.geometry = None
+
     def show(self):
         # Requests table
         self.ui.getRequestsTable().verticalHeader().setVisible(False)

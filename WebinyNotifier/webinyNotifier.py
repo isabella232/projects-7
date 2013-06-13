@@ -78,6 +78,9 @@ class WebinyNotifier(QtGui.QApplication, QObject):
         if not self.mainWindow.isVisible():
             self.mainWindow.show()
 
+        if self.mainWindow.isMinimized():
+            self.mainWindow.showNormal()
+
         self.mainWindow.activateWindow()
         self.mainWindow.selectFirstRow()
 
