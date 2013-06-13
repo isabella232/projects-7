@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.requestsTable.sizePolicy().hasHeightForWidth())
         self.requestsTable.setSizePolicy(sizePolicy)
         self.requestsTable.setStyleSheet(_fromUtf8(""))
-        self.requestsTable.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.requestsTable.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.requestsTable.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.requestsTable.setShowGrid(True)
         self.requestsTable.setObjectName(_fromUtf8("requestsTable"))

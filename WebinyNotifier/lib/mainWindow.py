@@ -77,6 +77,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def _loadMessages(self, item):
         self._hideAllTabs()
+        if not item.indexes():
+            return
+
         request = self._requestModel.getRequestAtIndex(item.indexes()[0].row())
         self._messagesModel.refreshModelFromRequest(item, request)
         self.ui.getMessagesTable().resizeColumnsToContents()
@@ -110,10 +113,16 @@ class MainWindow(QtGui.QMainWindow):
     def _showTab(self, index, tab, name):
         self.ui.notificationTabs.insertTab(index, tab, name)
 
-    def _requestDeleted(self, index):
-        Request.delete(index)
+    def _requestDeleted(self, indexes):
+        # Order row indexes in ascending order
+        indexes.sort(reverse=True)
+
+        # delete in loop
+        for i in indexes:
+            Request.delete(i)
+
         self._requestModel.refreshModel()
-        self.ui.getRequestsTable().selectRow(index)
+        self.ui.getRequestsTable().selectRow(i)
 
         if len(self._requestModel.arrayData) == 0:
             self._messagesModel.arrayData = []
