@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Handlers;
 
 use App\Entities\User\UserEntity;
-use App\Lib\Controller;
+use App\Lib\AbstractHandler;
 
-class PagesController extends Controller
+class PagesHandler extends AbstractHandler
 {
     public function about()
     {

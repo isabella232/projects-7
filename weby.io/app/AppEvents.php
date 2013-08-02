@@ -8,8 +8,7 @@ class AppEvents
 {
 	use SingletonTrait, EventManagerTrait;
 
-	public function init() {
-        //$this->eventManager()->listen("wf.storage.file_saved")->handler("")->method("fileSaved");
+	public function subscribe(){
+		//$this->eventManager()->listen("wf.storage.file_saved")->handler("")->method("fileSaved");
 	}
-
 }

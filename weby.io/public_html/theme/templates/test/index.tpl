@@ -1,0 +1,1 @@
+{$cars|render:'test/car'}

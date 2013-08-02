@@ -1,0 +1,4 @@
+routes:
+    - ['', \App\Handlers\PagesHandler, index]
+    - [files/upload, \App\Handlers\FilesHandler, upload]
+    - [database, \App\Handlers\TestHandler, index]

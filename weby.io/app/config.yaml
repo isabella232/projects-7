@@ -1,18 +1,15 @@
 app:
-    abs_path: /var/www/sandbox/weby.io/app/
+    abs_path: /var/www/newwebiny/projects/weby.io/app/
     web_path: http://weby.loc/
-    theme_path: /var/www/sandbox/weby.io/public_html/
-    storage_abs_path: ../storage/
+    public_html: /var/www/newwebiny/projects/weby.io/public_html/
+    theme_path: /var/www/newwebiny/projects/weby.io/public_html/theme/
+    storage_abs_path: /var/www/newwebiny/projects/weby.io/public_html/storage/
     storage_web_path: http://weby.loc/storage/
-    default_class: PagesController
+    default_class: '\App\Handlers\PagesHandler'
     default_method: page404
 
-routes:
-    - ['', PagesController, index]
-    - [files/upload, FilesController, upload]
-
 database:
-    name: weby.io
+    name: postgres
     user: root
-    password: ''
+    password: 'paveL!'
     host: localhost

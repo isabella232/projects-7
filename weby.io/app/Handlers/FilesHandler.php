@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Controller;
+namespace App\Handlers;
 
 use App\AppTrait;
+use App\Lib\AbstractHandler;
 use App\Lib\Controller;
+use App\Lib\OutputInterface;
 use Webiny\Component\Storage\Storage;
 use Webiny\Component\Storage\Driver\Local\Local;
 use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\Directory\Directory;
 
-class FilesController extends Controller
+class FilesHandler extends AbstractHandler
 {
     use AppTrait;
 
@@ -38,6 +40,5 @@ class FilesController extends Controller
 
         die(print_r('gotovo'));
     }
-
 }
 

@@ -11,7 +11,10 @@ class View
 {
     use SingletonTrait, AppTrait, StdLibTrait, HttpTrait;
 
-    private $_smarty;
+	/**
+	 * @var \Smarty
+	 */
+	private $_smarty;
     private $_config;
     private $_viewObject;
 
@@ -23,10 +26,11 @@ class View
         require($this->_config->abs_path . 'Lib/Smarty/Smarty.class.php');
         $this->_smarty = new \Smarty();
 
-        $this->_smarty->setTemplateDir($this->_config->theme_path . 'theme/templates/');
-        $this->_smarty->setCompileDir($this->_config->abs_path . 'Lib/Smarty/smarty/templates_c/');
-        $this->_smarty->setCacheDir($this->_config->abs_path . 'Lib/Smarty/smarty/cache/');
+        $this->_smarty->setTemplateDir($this->_config->theme_path . 'templates/');
+        $this->_smarty->setCompileDir($this->_config->public_html . 'smarty/compile/');
+        $this->_smarty->setCacheDir($this->_config->public_html. 'smarty/cache/');
         $this->_smarty->setConfigDir($this->_config->abs_path . 'Lib/Smarty/smarty/configs/');
+		$this->_smarty->force_compile = true;
 
         // Get site's paths
         $this->_viewObject->webPath = $this->_config->web_path;
@@ -35,6 +39,8 @@ class View
         $this->_viewObject->storageWebPath = $this->_config->storage_web_path;
 
         $this->_smarty->assign('viewObject', $this->_viewObject);
+
+		$this->_smarty->registerPlugin("modifier","render", "\\App\\Lib\\View::renderTemplate");
     }
 
     public function display($template = false, $data = array(), $templatePath)
@@ -46,10 +52,27 @@ class View
                 $this->_smarty->assign($k, $v);
             }
 
-            $templatePath = $this->str($templatePath)->trimRight('controller');
-            $templatePath = $this->_config->theme_path . 'theme/' . $templatePath . '/' . $template . '.tpl';
+            $templatePath = $this->str($templatePath)->replace('controller','');
+            $templatePath = $this->_config->theme_path . $templatePath . '/' . $template . '.tpl';
             $this->_smarty->display($templatePath);
         }
 
     }
+
+	public function fetch($template, $data){
+		return $this->_smarty->fetch($template, $data);
+	}
+
+	public static function renderTemplate($params, $template)
+	{
+		if(!self::str($template)->endsWith('.tpl')){
+			$template .= '.tpl';
+		}
+
+		$html = '';
+		foreach($params as $p){
+			$html .= View::getInstance()->fetch($template, ['item' => $p]);
+		}
+		return $html;
+	}
 }
