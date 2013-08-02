@@ -1,0 +1,38 @@
+#sketch-canvas {
+	position: absolute;
+	top:75px;
+}
+
+#sketch-canvas:hover {
+	cursor: default;
+}
+
+#sketch-toolbar .handle{
+	height:10px;
+	width:32px;
+	background-color: #6b6c6f;
+	display:block;
+	margin: 0 0 2px 0;
+	moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+#sketch-toolbar .k-button{
+	margin:0 0 2px 0;
+}
+
+#sketch-toolbar .k-icon{
+	background: no-repeat 0 -1px;
+}
+
+#sketch-brush {
+	display: block;
+	position: absolute;
+	z-index: 999999;
+	border-radius: 50%;
+}
+
+.k-colorpicker .k-picker-wrap{
+	padding:0 !important;
+}

@@ -1,0 +1,6 @@
+NOTES ON JS MODIFICATIONS
+===============================
+File: jquery-ui-1.9.2.custom.js
+Line: 2852 is replace with 2853 for correct offset calculation when element is rotated:
+
+var o = this.options, iniPos = {top:this.element[0].offsetTop,left:this.element[0].offsetLeft}, el = this.element;

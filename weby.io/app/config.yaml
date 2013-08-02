@@ -1,0 +1,18 @@
+app:
+    abs_path: /var/www/sandbox/weby.io/app/
+    web_path: http://weby.loc/
+    theme_path: /var/www/sandbox/weby.io/public_html/
+    storage_abs_path: ../storage/
+    storage_web_path: http://weby.loc/storage/
+    default_class: PagesController
+    default_method: page404
+
+routes:
+    - ['', PagesController, index]
+    - [files/upload, FilesController, upload]
+
+database:
+    name: weby.io
+    user: root
+    password: ''
+    host: localhost
