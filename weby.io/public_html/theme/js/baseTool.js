@@ -26,6 +26,7 @@ BaseTool.prototype = {
 		this.createMouseIcon();
 		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
 
+		App.addContentOverlay();
 		$('body').addClass('unselectable');
 		$('body').mousemove(function (e) {
 			App.fireEvent("document.mouse.move", e);
@@ -66,8 +67,6 @@ BaseTool.prototype = {
 		App.getContent().append(html);
 		App.addWidget(widget);
 		widget.onWidgetInserted();
-		// Drag will trigger header recalculation
-		App.fireEvent("widget.drag", {element: html});
 	},
 
 	onWidgetInserted: function () {

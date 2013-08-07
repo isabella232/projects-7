@@ -24,16 +24,16 @@ class Router
 		$this->_registerRoutes();
 	}
 
-	public function route(){
+	public function route() {
 		$this->_parseRequest();
 		$this->_run();
 	}
 
-	public function getMethod(){
+	public function getMethod() {
 		return $this->str($this->_handlerMethod);
 	}
 
-	public function getHandler(){
+	public function getHandler() {
 		return $this->str($this->_handlerClass);
 	}
 
@@ -50,8 +50,9 @@ class Router
 			return $handlerClass();
 		} else {
 			$handler = new $handlerClass;
-			if($this->isInstanceOf($handler, '\App\Lib\AbstractHandler')){
+			if($this->isInstanceOf($handler, '\App\Lib\AbstractHandler')) {
 				$handler->{$this->_handlerMethod}($this->_requestParams);
+
 				return $handler->output();
 			}
 			throw new \Exception('Handler class must implement `AbstractHandler`');
@@ -78,7 +79,7 @@ class Router
 
 	private function _parseRequest() {
 		// Get URL
-		$request = $this->str($this->request()->query('r', ''))->val();
+		$request = $this->str($this->request()->query('r', ''))->trimRight('/')->val();
 
 		// Check routes
 		foreach ($this->_routes as $regex => $route) {

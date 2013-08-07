@@ -1,10 +1,10 @@
-mouse-icon {
+.mouse-icon {
 	color: #808184;
 	font-size: 12px;
 	font-family: SourceSansPro;
 	display: block;
 	position: absolute;
-	z-index: 999999;
+	z-index: 1000001;
 	cursor: default;
 }
 
@@ -51,6 +51,7 @@ mouse-icon {
 
 .widget .widget-body {
 	height: 100%;
+	margin-bottom: -4px;
 }
 
 .widget .control {
@@ -158,4 +159,38 @@ mouse-icon {
 	display:block;
 	text-align: center;
 	vertical-align: middle;
+}
+
+.widget-body input{
+	float:left;
+	width: 320px;
+	-webkit-border-radius: 4px;
+	padding: 5px;
+	box-shadow: 0px 1px 5px -1px gray inset;
+	border: none;
+	outline-color: #f05929;
+}
+
+.widget-body textarea{
+	float:left;
+	width: 420px;
+	height: 220px;
+	-webkit-border-radius: 4px;
+	padding: 5px;
+	box-shadow: 0px 1px 5px -1px gray inset;
+	border: none;
+	outline-color: #f05929;
+}
+
+.widget-body span.message{
+	float: left;
+	width: 100%;
+	color: #f05929 !important;
+	font-size:12px;
+	font-family: SourceSansPro;
+	clear:left;
+}
+
+.widget-body .overlay{
+	position:absolute;
 }

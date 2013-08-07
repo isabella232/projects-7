@@ -75,6 +75,7 @@ body.unselectable * {
 	overflow: scroll;
 	top: 70px;
 	left: 116px;
+	z-index: 0;
 }
 
 ::-webkit-scrollbar {
@@ -122,3 +123,8 @@ body:after {
 	height: 1px;
 }
 
+.puff {
+	position: absolute;
+	width: 0px;
+	height: 0px;
+}

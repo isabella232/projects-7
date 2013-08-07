@@ -16,6 +16,14 @@ var AppClass = function () {
 
 	}, {propagate: true});
 
+	$(window).keydown(function (e) {
+		if (e.keyCode == 46) {
+			if (_activeWidget != null && !_activeWidget._isEditable) {
+				_activeWidget.delete();
+			}
+		}
+	});
+
 	this.init = function () {
 		_appToolbar = new AppToolbar();
 		_appToolbar.init();
@@ -46,6 +54,8 @@ var AppClass = function () {
 		_content.dragOn({
 			cursor: 'default'
 		});
+		// Make sure dragging is ON
+		App.getContent().trigger("DragOn.turnOn");
 
 	}
 
@@ -107,9 +117,9 @@ var AppClass = function () {
 	}
 
 	this.removeWidget = function (id) {
-		var widget = _widgets[id];
-		widget.delete();
+		_activeWidget = null;
 		delete _widgets[id];
+
 	}
 
 	this.deactivateTool = function () {
@@ -168,7 +178,7 @@ var AppClass = function () {
 		App.getContent().trigger("DragOn.turnOff");
 	}
 
-	this.widgetDragStop = function(data){
+	this.widgetDragStop = function (data) {
 		App.getContent().trigger("DragOn.turnOn");
 		this.removeContentOverlay();
 	}
@@ -183,7 +193,7 @@ var AppClass = function () {
 		this.removeContentOverlay();
 	}
 
-	this.widgetResizeStart = function(){
+	this.widgetResizeStart = function () {
 		this.addContentOverlay();
 		App.getContent().trigger("DragOn.turnOff");
 	}
@@ -197,20 +207,20 @@ var AppClass = function () {
 		this.removeContentOverlay();
 	}
 
-	this.contentClick = function(data){
+	this.contentClick = function (data) {
 		// Deactivate active widget
-		if(_activeWidget != null){
+		if (_activeWidget != null) {
 			$(':focus').blur();
 			_activeWidget.deactivate();
 			_activeWidget = null;
 		}
 	}
 
-	this.widgetClick = function(e){
+	this.widgetClick = function (e) {
 		e.stopPropagation();
 		// Activate clicked widget
 		var id = $(e.target).closest('.widget').attr('data-id');
-		if(_activeWidget != null && _activeWidget.getId() != id){
+		if (_activeWidget != null && _activeWidget.getId() != id) {
 			$(':focus').blur();
 			_activeWidget.deactivate();
 		}
@@ -218,7 +228,7 @@ var AppClass = function () {
 		_activeWidget.activate();
 	}
 
-	this.widgetDblclick = function(e){
+	this.widgetDblclick = function (e) {
 		e.stopPropagation();
 		_activeWidget.makeEditable();
 	}

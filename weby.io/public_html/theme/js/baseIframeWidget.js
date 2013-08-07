@@ -37,14 +37,9 @@ var BaseIframeWidget = function () {
 				}
 
 				var iframeWidth = $(iframe).attr("width");
-				var iframeHeight= $(iframe).attr("height");
-				
-				try{
-					$(this).replaceWith(iframe);	
-				} catch(e){
-					console.log("Exception!!!!")
-				}
-				
+				var iframeHeight = $(iframe).attr("height");
+				$(this).replaceWith(iframe);
+
 				// Append LOADING screen (move to BaseWidget)
 				$this._html.find('.widget-body').prepend('<div class="loading">' + $this._loadingMessage +
 					'<br /><span>This may take a few moments, please be patient.</span></div>');
@@ -54,8 +49,10 @@ var BaseIframeWidget = function () {
 				loading.css("margin", "0 auto");
 				loading.css("padding-top", top + "px");
 				$('#' + $(iframe).attr('id')).bind('load', function () {
-					$this._html.find('.loading').remove();
-					$this.showResizeHandle();
+					setTimeout(function(){
+						$this._html.find('.loading').remove();
+						$this.showResizeHandle();
+					}, 100);
 				});
 
 				if ($this._alsoResize) {

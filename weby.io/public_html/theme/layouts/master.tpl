@@ -1,9 +1,17 @@
+{* Description: Weby.io Master Layout
+
+ Available blocks:
+    - title
+    - head
+    - content
+*}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Weby.io</title>
+    <title>{block name="title"}{/block} | Weby.io</title>
     <meta charset='utf-8'>
     {include file="layouts/includes.tpl"}
+    {block name="head"}{/block}
 </head>
 <body>
 <div id="header">

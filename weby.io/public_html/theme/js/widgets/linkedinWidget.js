@@ -2,48 +2,20 @@ function LinkedInWidget() {
 
 	this._isResizable = false;
 	this._widgetClass = 'linkedin-widget';
+	this._parseErrorMessage = 'We couldn\'t insert this LinkedIn profile. Please try a different one.';
+	this._inputElement = 'input';
+	this._loadingMessage = 'Loading LinkedIn profile...';
 
 	this.getHTML = function () {
-		this._html = '<input type="text" placeholder="Enter a public profile URL of a LinkedIn member"/>' +
+		this._html = '<input type="text" placeholder="Enter a public profile URL of a LinkedIn member" value="gorancandrlic"/>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
-	this.onWidgetInserted = function () {
-		var $this = this;
-
-		BaseWidget.prototype.onWidgetInserted.call(this);
-
-		this._html.find('input').blur(function () {
-			if ($(this).val() != '') {
-				var name = $this.parseLinkedInLink($(this).val());
-				if (name == '') {
-					$this._html.find('.message').html('We couldn\'t insert the given profile. Please try a different one.');
-					$(this).val('').focus();
-					return;
-				}
-
-				var script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src = 'http://wf.com/Weby.io/js/in.js';
-				$('head',document).append( script );
-
-				var script = document.createElement('script');
-				script.type = 'IN/MemberProfile';
-				script.setAttribute("data-id", "http://www.linkedin.com/in/"+name);
-				script.setAttribute("data-format", "inline");
-				script.setAttribute("data-related", false);
-
-				$(this).replaceWith(script);
-				$this.showResizeHandle();
-				$this._html.draggable($this._baseDraggableOptions);
-				$this._html.find('.message').remove();
-				$this._html.css('padding-bottom', 0);
-			}
-		});
-
-		App.deactivateTool();
-		this._html.find('input').focus();
+	this.getIframe = function (input) {
+		var name = this.parseLinkedInLink(input);
+		var id = 'linkedin-iframe-' + this._id;
+		return '<iframe id="' + id + '" src="' + WEB + 'embed/linkedin/?name=' + name + '&id=' + id + '" width="370" frameborder="0"></iframe>';
 	}
 
 	this.parseLinkedInLink = function (link) {
@@ -52,9 +24,9 @@ function LinkedInWidget() {
 		return name;
 	}
 
-	BaseWidget.prototype.init.call(this);
+	BaseIframeWidget.prototype.init.call(this);
 }
 
 
-LinkedInWidget.prototype = new BaseWidget();
+LinkedInWidget.prototype = new BaseIframeWidget();
 LinkedInWidget.prototype.constructor = LinkedInWidget;

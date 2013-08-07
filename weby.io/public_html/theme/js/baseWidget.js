@@ -107,6 +107,8 @@ BaseWidget.prototype = {
 
 	delete: function () {
 		// Override if need to perform cleanup actions
+		this._html.remove();
+		App.removeWidget(this._id);
 	},
 
 	getId: function () {
@@ -134,8 +136,7 @@ BaseWidget.prototype = {
 
 		_widget.append('<div class="control remove-handle"><i class="icon-remove"></i></div>');
 		_widget.find('.remove-handle').click(function(){
-			_widget.remove();
-			App.removeWidget($this._id);
+			$this.delete();
 		});
 
 		if (this._isDraggable) {
@@ -158,7 +159,7 @@ BaseWidget.prototype = {
 	onWidgetInserted: function () {
 		var $this = this;
 		if (this._isDraggable) {
-			this._html.data('widget', this).draggable(this._baseDraggableOptions).trigger("drag");
+			this._html.data('widget', this).draggable(this._baseDraggableOptions);
 		}
 		if (this._isResizable) {
 			this._html.data('widget', this).resizable(this._baseResizableOptions);
@@ -183,6 +184,7 @@ BaseWidget.prototype = {
 
 		this.setZIndex(this.getNextZIndex());
 
+		this._isEditable = true;
 		this._html.click();
 
 		/*
@@ -229,7 +231,7 @@ BaseWidget.prototype = {
 	},
 
 	showResizeHandle: function () {
-		if(this._isResizable){
+		if(this._isResizable && this._isEditable){
 			this._html.find('.resize-handle').show();
 		}
 	},

@@ -16,6 +16,11 @@ Tu treba napraviti onaj plugin za minify
 Path pisem od css root foldera ili od js root foldera, pa ti interno dodavaj root path.
 *}
 
+<script type="text/javascript">
+    var THEME = '{$viewObject->themeWebPath}';
+    var WEB = '{$viewObject->webPath}';
+</script>
+
 <!-- Main CSS -->
 <link href="{$viewObject->themeWebPath}css/kendo.common.min.css" rel="stylesheet">
 <link href="{$viewObject->themeWebPath}css/kendo.default.min.css" rel="stylesheet">
@@ -26,19 +31,14 @@ Path pisem od css root foldera ili od js root foldera, pa ti interno dodavaj roo
 <!-- Widgets CSS -->
 <link href="{$viewObject->themeWebPath}css/widgets/textWidget.css" rel="stylesheet">
 <link href="{$viewObject->themeWebPath}css/widgets/mapWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/videoWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/preziWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/slideShareWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/googleDriveWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/skyDriveWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/soundCloudWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/linkedInWidget.css" rel="stylesheet">
 <link href="{$viewObject->themeWebPath}css/widgets/twitterWidget.css" rel="stylesheet">
 <link href="{$viewObject->themeWebPath}css/widgets/fileWidget.css" rel="stylesheet">
 <!-- Libs JS -->
 <script src="{$viewObject->themeWebPath}js/jquery-1.8.3.js"></script>
 <script src="{$viewObject->themeWebPath}js/jquery-ui-1.9.2.custom.js"></script>
+<script src="{$viewObject->themeWebPath}js/jquery.transit.min.js"></script>
 <script src="{$viewObject->themeWebPath}js/drag-on.js"></script>
+<script src="{$viewObject->themeWebPath}js/smokeEffect.js"></script>
 <script src="{$viewObject->themeWebPath}js/kendo.web.min.js"></script>
 <script src="{$viewObject->themeWebPath}js/shortcut.js"></script>
 <script src="{$viewObject->themeWebPath}js/mouseEvent.js"></script>
@@ -72,12 +72,8 @@ Path pisem od css root foldera ili od js root foldera, pa ti interno dodavaj roo
 <script src="{$viewObject->themeWebPath}js/widgets/skyDriveWidget.js"></script>
 <script src="{$viewObject->themeWebPath}js/widgets/soundCloudWidget.js"></script>
 <script src="{$viewObject->themeWebPath}js/widgets/twitterWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/linkedinWidget.js"></script>
+<script src="{$viewObject->themeWebPath}js/widgets/linkedInWidget.js"></script>
 <script src="{$viewObject->themeWebPath}js/widgets/fileWidget.js"></script>
 <!-- Other JS -->
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <script src="{$viewObject->themeWebPath}js/init.js"></script>
-
-<script type="text/javascript">
-    var THEME = '{$viewObject->themeWebPath}';
-</script>

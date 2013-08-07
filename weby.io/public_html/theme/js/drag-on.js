@@ -111,10 +111,14 @@ $(function () {
 					if ($(e.target).closest('.widget').length !== 0) {
 						return;
 					}
-					if (et in $this.opt.exclusion) return;
+					if (et in $this.opt.exclusion){
+						return;
+					}
 
 					el.too = el.to = $((this === e.target) ? this : e.target);
-					if (el.too.parents($this.opt.exclusion.id).length) return;
+					if (el.too.parents($this.opt.exclusion.id).length){
+						return;
+					}
 
 					(e.type == 'mousedown') && (e.preventDefault(), e.stopPropagation());
 

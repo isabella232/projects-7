@@ -6,8 +6,10 @@ MouseEvent.normalize = function(e){
 		e.offsetY = e.pageY - App.getContent().offset().top;
 	}
 
-	e.offsetX += App.getContent()[0].scrollLeft;
-	e.offsetY += App.getContent()[0].scrollTop;
+	if(e.target.id == 'content'){
+		e.offsetX += App.getContent()[0].scrollLeft;
+		e.offsetY += App.getContent()[0].scrollTop;		
+	}
 
 	return e;
 };
