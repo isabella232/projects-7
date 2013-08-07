@@ -1,10 +1,11 @@
 app:
-    abs_path: /var/www/newwebiny/projects/weby.io/app/
-    web_path: http://weby.loc/
-    public_html: /var/www/newwebiny/projects/weby.io/public_html/
-    theme_path: /var/www/newwebiny/projects/weby.io/public_html/theme/
-    storage_abs_path: /var/www/newwebiny/projects/weby.io/public_html/storage/
-    storage_web_path: http://weby.loc/storage/
+    abs_path: /www/webiny/projects/weby.io/app/
+    web_path: http://mrcina.ath.cx/weby.io/
+    public_html: /www/webiny/projects/weby.io/public_html/
+    theme_abs_path: /www/webiny/projects/weby.io/public_html/theme/
+    theme_web_path: http://mrcina.ath.cx/weby.io/theme/
+    storage_abs_path: /www/webiny/projects/weby.io/public_html/storage/
+    storage_web_path: http://mrcina.ath.cx/weby.io/storage/
     default_class: '\App\Handlers\PagesHandler'
     default_method: page404
 

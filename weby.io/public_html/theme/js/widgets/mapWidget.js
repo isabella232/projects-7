@@ -39,7 +39,6 @@ var MapWidget = function () {
 		App.deactivateTool();
 		this._html.find('input').focus();
 		this.hideResizeHandle();
-		this.hideIndexHandle();
 		this._html.find('input').blur(function () {
 			if ($(this).val() != '') {
 				_initializeMap();
@@ -128,10 +127,12 @@ var MapWidget = function () {
 				if ($this._firstLoad) {
 					$this._firstLoad = false;
 					mapHeight = 300;
-					$this.showResizeHandle();
-					$this.showIndexHandle();
+					if($this._isActive && $this._isEditable){
+						$this.showResizeHandle();
+					}
 				}
 				$this._html.find('.map').height(mapHeight - 28);
+				$this.resize();
 				_centerMarker();
 			} else {
 				$this._html.find('.message').html("We couldn't locate your address! Please try a different one!").show();

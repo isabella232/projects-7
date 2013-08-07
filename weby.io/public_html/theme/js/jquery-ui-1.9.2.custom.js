@@ -2849,8 +2849,10 @@ $.widget("ui.resizable", $.ui.mouse, {
 
 	_mouseStart: function(event) {
 
+		var marginTop = this.element.css('margin-top');
+		var marginLeft = this.element.css('margin-left');
 		/*var o = this.options, iniPos = this.element.position(), el = this.element;*/
-		var o = this.options, iniPos = {top:this.element[0].offsetTop,left:this.element[0].offsetLeft}, el = this.element;
+		var o = this.options, iniPos = {top:this.element[0].offsetTop - marginTop,left:this.element[0].offsetLeft - marginLeft}, el = this.element;
 
 		this.resizing = true;
 		this.documentScroll = { top: $(document).scrollTop(), left: $(document).scrollLeft() };

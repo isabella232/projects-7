@@ -7,7 +7,7 @@ function VideoWidget() {
 	this._loadingMessage = 'Loading your video...';
 
 	this.getHTML = function () {
-		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here"/>' +
+		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="youtube.com/watch?v=57--LRvGgKQ"/>' +
 			'<span class="message"></span>';
 		return BaseIframeWidget.prototype.getHTML.call(this);
 	};

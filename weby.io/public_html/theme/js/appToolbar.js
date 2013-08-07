@@ -7,7 +7,6 @@ var AppToolbar = function () {
 	this.init = function(){
 		_tools = {
 			text: new TextTool(self),
-			file: new FileTool(self),
 			map: new MapTool(self),
 			video: new VideoTool(self),
 			prezi: new PreziTool(self),
@@ -16,8 +15,7 @@ var AppToolbar = function () {
 			skydrive: new SkyDriveTool(self),
 			soundcloud: new SoundCloudTool(self),
 			linkedin: new LinkedInTool(self),
-			twitter: new TwitterTool(self),
-			eraser: new EraserTool(self)
+			twitter: new TwitterTool(self)
 		};
 
 		$.each(_tools, function (index, object) {
@@ -26,12 +24,6 @@ var AppToolbar = function () {
 		});
 
 		$('#toolbar-wrapper').append(_toolBar);
-
-		_toolBar.kendoTooltip({
-			filter: "a",
-			width: 120,
-			position: "bottom"
-		}).data("kendoTooltip");
 
 		_toolBar.find('a.tool-icon').click(function (e) {
 			App.fireEvent("tool.icon.clicked", e, true);
@@ -54,7 +46,7 @@ var AppToolbar = function () {
 				_deactivateTool();
 			}
 		});
-	},
+	}
 
 	this.getElement = function(){
 		return _toolBar;
@@ -76,13 +68,8 @@ var AppToolbar = function () {
 			_deactivateTool();
 		}
 		_activeTool = tool;
+		App.getContent().trigger('DragOn.toggle');
 		self.getActiveTool().activate();
-
-		$('#toolbar-wrapper').mouseover(function (e) {
-			App.fireEvent("toolbar.mouse.over", e);
-		}).mouseout(function (e) {
-				App.fireEvent("toolbar.mouse.out", e);
-			});
 	}
 
 	var _deactivateTool = function () {
@@ -90,7 +77,7 @@ var AppToolbar = function () {
 			return;
 		}
 		self.getActiveTool().deactivate();
-		$('#toolbar-wrapper').unbind("mouseover mouseout");
+		App.getContent().trigger('DragOn.toggle');
 		_activeTool = null;
 	}
 

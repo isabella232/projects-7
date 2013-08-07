@@ -2,9 +2,15 @@ var AppClass = function () {
 	var _content = $('#content');
 	var _header = $('#header');
 	var _appToolbar;
+	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _widgets = {};
 	var _viewportHeight;
 	var _viewportWidth;
+	var _activeWidget = null
+	// Manual height offset for tweaking purposes
+	var _heightOffset = 1;
+	// Manual width offset for tweaking purposes
+	var _widthOffset = 7;
 
 	shortcut.add('Ctrl+V', function (e) {
 
@@ -15,17 +21,32 @@ var AppClass = function () {
 		_appToolbar.init();
 
 		// Bind events
-
 		_content.click(function (e) {
 			App.fireEvent("content.click", e);
+		});
+
+		// Widget is clicked
+		$('#content').on('click', '.widget', function (e) {
+			App.fireEvent("widget.click", e);
+		});
+
+		// Widget is double clicked
+		$('#content').on('dblclick', '.widget', function (e) {
+			App.fireEvent("widget.dblclick", e);
 		});
 
 		$(window).resize(function () {
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
-			_content.width(_viewportWidth);
-			_content.height(_viewportHeight - 75);
+			_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+			_content.height(_viewportHeight - _header.height() - _heightOffset);
+			_toolbarWrapper.height(_viewportHeight - _header.height() - _heightOffset);
 		}).resize();
+
+		_content.dragOn({
+			cursor: 'default'
+		});
+
 	}
 
 	this.getViewportHeight = function () {
@@ -42,7 +63,7 @@ var AppClass = function () {
 
 	this.fireEvent = function (event, data, all) {
 		// Make sure mouse event has 'offsetX' and 'offsetY' set (for Firefox)
-		if('offsetX' in data){
+		if ('offsetX' in data) { // This is to verify it's a mouse event
 			data = MouseEvent.normalize(data);
 		}
 		//tool = typeof tool == "undefined" ? null : tool;
@@ -107,28 +128,11 @@ var AppClass = function () {
 		$('#content-overlay').remove();
 	}
 
-	// EVENTS //
+	this.getMaxDistance = function () {
+		if (Object.keys(_widgets).length == 0) {
+			return {top: 0, left: 0}
+		}
 
-	this.widgetDrag = function (data) {
-		this._resizeContent(data.element);
-	}
-
-	this.widgetResizeStart = this.widgetDragStart = this.widgetRotateStart = function (data) {
-		this.addContentOverlay();
-	}
-
-	this.widgetDragStop = this.widgetRotateStop = function (data) {
-		this.removeContentOverlay();
-		this._resizeContent(data.element);
-	}
-
-	this.widgetResizeStop = function (data) {
-		this.removeContentOverlay();
-
-		this._resizeContent(data.element);
-	}
-
-	this._resizeContent = function ($this) {
 		var farRight = function () {
 			var element;
 			var max = 0;
@@ -155,37 +159,67 @@ var AppClass = function () {
 			return max + element.height();
 		}
 
-		// $this is an element which triggered recalculation
-		try {
-			var right = farRight();
-		} catch (e) {
-			var right = this.getViewportWidth();
-		}
+		return {top: farBottom(), left: farRight()};
+	}
 
-		try {
-			var bottom = farBottom();
-		} catch (e) {
-			var bottom = this.getViewportHeight();
-		}
+	// EVENTS //
+	this.widgetDragStart = function (data) {
+		this.addContentOverlay();
+		App.getContent().trigger("DragOn.turnOff");
+	}
 
-		if (right + 100 > _content.width()) {
-			_content.width(right + 65);
-		} else if (right < this.getViewportWidth()) {
-			_content.width(this.getViewportWidth() - 17);
-		} else {
-			_content.width(right - 20);
-		}
+	this.widgetDragStop = function(data){
+		App.getContent().trigger("DragOn.turnOn");
+		this.removeContentOverlay();
+	}
 
-		if (bottom > _content.height()) {
-			_content.height(bottom + 65);
-		}
+	this.widgetRotateStart = function (data) {
+		this.addContentOverlay();
+		App.getContent().trigger("DragOn.turnOff");
+	}
 
-		if (bottom + 100 > _content.height()) {
-			_content.height(bottom + 65);
-		} else if (bottom < this.getViewportHeight()) {
-			_content.height(this.getViewportHeight() - 17);
-		} else {
-			_content.height(bottom - 20);
+	this.widgetRotateStop = function (data) {
+		App.getContent().trigger("DragOn.turnOn");
+		this.removeContentOverlay();
+	}
+
+	this.widgetResizeStart = function(){
+		this.addContentOverlay();
+		App.getContent().trigger("DragOn.turnOff");
+	}
+
+	this.widgetResize = function (data) {
+		_activeWidget.resize();
+	}
+
+	this.widgetResizeStop = function (data) {
+		App.getContent().trigger("DragOn.turnOn");
+		this.removeContentOverlay();
+	}
+
+	this.contentClick = function(data){
+		// Deactivate active widget
+		if(_activeWidget != null){
+			$(':focus').blur();
+			_activeWidget.deactivate();
+			_activeWidget = null;
 		}
+	}
+
+	this.widgetClick = function(e){
+		e.stopPropagation();
+		// Activate clicked widget
+		var id = $(e.target).closest('.widget').attr('data-id');
+		if(_activeWidget != null && _activeWidget.getId() != id){
+			$(':focus').blur();
+			_activeWidget.deactivate();
+		}
+		_activeWidget = _widgets[id];
+		_activeWidget.activate();
+	}
+
+	this.widgetDblclick = function(e){
+		e.stopPropagation();
+		_activeWidget.makeEditable();
 	}
 }

@@ -2,7 +2,7 @@ var TextTool = function (parent) {
 	this._toolTag = 'text';
 	this._mouseIcon = 'images/text.png';
 	this._mouseText = 'Click to create text';
-	this._tooltipText = 'Insert a text block';
+	this._tooltipText = 'Text';
 	this._parent = parent;
 
 	this.contentClick = function (e) {

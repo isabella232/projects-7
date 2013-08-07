@@ -1,12 +1,12 @@
 @font-face {
 	font-family: SourceSansPro;
-	src: url('SourceSansPro-Regular.ttf');
+	src: url('../font/SourceSansPro-Regular.ttf');
 	font-weight: normal;
 }
 
 @font-face {
 	font-family: SourceSansPro;
-	src: url('SourceSansPro-Bold.ttf');
+	src: url('../font/SourceSansPro-Bold.ttf');
 	font-weight: bold;
 }
 
@@ -15,11 +15,14 @@ html, body {
 	padding: 0;
 	min-height: 100%;
 	min-width: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 body {
 	background-image: url(../images/ticks.png);
-	position: absolute;
+	position: relative;
+	overflow: hidden;
 }
 
 body.unselectable * {
@@ -35,9 +38,10 @@ body.unselectable * {
 	font-family: SourceSansPro;
 	width: 100%;
 	border-bottom: 1px solid #ccc;
-	box-shadow: 0px -3px 19px #888888;
-	height: 110px;
-	padding-left:5px;
+	/*box-shadow: 0px -3px 19px #888888;*/
+	height: 70px;
+	padding-left: 5px;
+	z-index: 1000000;
 }
 
 #header-content {
@@ -45,44 +49,44 @@ body.unselectable * {
 	padding-top: 8px;
 }
 
-#header h2 {
+#header-content h2 {
 	color: #808184;
 	margin: 0 0 0 10px;
-	float: left;
 	font-size: 27px;
 	font-weight: normal;
+	width: 114px;
+}
+
+#header-content h2 img {
+	height: 10px;
+	float: right;
+	margin: 8px 0 0 3px;
 }
 
 #header h4 {
-	float: left;
-	clear: left;
 	margin: 0 0 0 10px;
 	color: #808184;
 	font-size: 12px;
 	font-weight: normal;
 }
 
-#toolbar-wrapper {
-	height: 32px;
-	position: relative;
-	float: left;
-	clear: left;
-	margin: 8px 0 0 10px;
-}
-
-#toolbar .k-button {
-	margin: 0 2px 2px 0;
-}
-
-#toolbar .k-icon {
-	background: no-repeat 0 0px;
-	margin-top: -2px;
-}
-
 #content {
-	width: 100%;
-	height: 100%;
-	position: relative;
+	position: absolute;
+	overflow: scroll;
+	top: 70px;
+	left: 116px;
+}
+
+::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 6px;
+	height: 6px
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(0, 0, 0, .5);
+	-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5)
 }
 
 #content-overlay {
@@ -92,142 +96,17 @@ body.unselectable * {
 	z-index: 999998;
 }
 
-.k-tooltip {
-	background-color: #fff !important;
-	margin: 10px 0 0 0;
-	color: #6b6c6f !important;
+.loading {
+	position: absolute;
+	width: 100%;
+	background-image: url(../images/ticks.png);
+	text-align: center;
+}
+
+.loading span {
 	font-size: 12px;
-	font-family: SourceSansPro;
-}
-
-.mouse-icon {
-	color: #808184;
-	font-size: 12px;
-	font-family: SourceSansPro;
-	display: block;
-	position: absolute;
-	z-index: 999999;
-	cursor: default;
-}
-
-.mouse-icon img {
-	display: block;
-	float: left;
-	margin-right: 2px;
-}
-
-.mouse-icon span.action {
-	display: block;
-	float: left;
-	color: #000;
-	text-shadow: 1px 1px #C0C0C0;
-}
-
-.mouse-icon span.cancel {
-	clear: left;
-	float: left;
-	font-size: 10px;
-	margin-left: 16px;
-}
-
-.inactive-widget {
-	opacity: 0.3 !important;
-}
-
-.widget {
-	opacity: 1;
-	/*-webkit-transition: opacity 0.5s ease;
-	-moz-transition: opacity 0.5s ease;
-	-o-transition: opacity 0.5s ease;
-	transition: opacity 0.5s ease;*/
-	position: absolute;
-	background-color: #fff;
-	font-family: SourceSansPro;
-	box-shadow: 0px 3px 12px #888888;
-	padding: 10px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-}
-
-.widget .widget-body {
-	height: 100%;
-}
-
-.widget .control {
-	background-color: #fff;
-	width: 17px;
-	height: 17px;
-	box-shadow: 0px 0px 2px #888889;
-	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	border-radius: 50%;
-	position: absolute;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	z-index: 11000;
-}
-
-.widget .control i {
-	pointer-events: none;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-}
-
-.widget .control.drag-handle {
-	top: -17px;
-	right: -17px;
-	padding: 4px 6px 7px 6px;
-}
-
-.widget .control.resize-handle {
-	bottom: -17px;
-	right: -17px;
-	padding: 4px 5px 8px 7px;
-}
-
-.widget .control.rotate-handle {
-	bottom: -17px;
-	left: -17px;
-	padding: 4px 4px 7px 7px;
-}
-
-.widget .control.lock-handle{
-	width: 22px;
-	height: 22px;
-	right: -27px;
-	top: 75px;
-}
-.widget .control.lock-handle i{
-	margin: 3px 0 0 5px;
-	float:left;
-}
-
-.widget .control.index-handle{
-	width: 22px;
-	height: 22px;
-	right: -27px;
-}
-
-.widget .control.index-handle.up{
-	top: 15px;
-}
-
-.widget .control.index-handle.down{
-	top: 41px;
-}
-.widget .control.index-handle.up i{
-	margin: 2px 0 0 3px;
-	float:left;
-}
-
-.widget .control.index-handle.down i{
-	margin: 3px 0 0 3px;
-	float:left;
+	color: #888888;
+	margin: 0 auto;
 }
 
 body:after {
@@ -243,15 +122,3 @@ body:after {
 	height: 1px;
 }
 
-.loading{
-	position:absolute;
-	width:100%;
-	background-image: url(../images/ticks.png);
-	text-align: center;
-}
-
-.loading span{
-	font-size:12px;
-	color: #888888;
-	margin: 0 auto;
-}

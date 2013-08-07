@@ -8,12 +8,15 @@ var BaseWidget = function () {
 	this._isDraggable = true;
 	this._isResizable = true;
 	this._isRotatable = true;
-	this._locked = false;
+	this._isActive = false;
+	this._isEditable = false;
+	this._isLocked = false;
 	this._zindex = 1;
 	this._mouseUpAfterDrag = false;
 	this._baseDraggableOptions = {
-		handle: '.drag-handle',
-		containment: [22, 130],
+		//handle: '.drag-handle'
+		cancel: '.resize-handle, .widget-body',
+		containment: [117, 72],
 		scroll: true,
 		scrollSensitivity: 100,
 		start: function (event, ui) {
@@ -57,7 +60,7 @@ var BaseWidget = function () {
 			$this._rotation = degree;
 
 			$(this).css({
-				'-moz-transform': rotateCSS,
+				'transform': rotateCSS,
 				'-webkit-transform': rotateCSS
 			});
 		},
@@ -78,7 +81,7 @@ var BaseWidget = function () {
 			se: '.resize-handle'
 		},
 		resize: function (event, ui) {
-
+			App.fireEvent("widget.resize", {element: $(this), event: event, ui: ui});
 		},
 
 		start: function (event, ui) {
@@ -125,8 +128,16 @@ BaseWidget.prototype = {
 	},
 
 	getHTML: function () {
+		var $this = this;
 		var _widget = $('<div data-id="' + this._id + '" class="widget"><div class="widget-body ' + this._widgetClass + '">' +
 			'</div></div>');
+
+		_widget.append('<div class="control remove-handle"><i class="icon-remove"></i></div>');
+		_widget.find('.remove-handle').click(function(){
+			_widget.remove();
+			App.removeWidget($this._id);
+		});
+
 		if (this._isDraggable) {
 			_widget.append('<div class="control drag-handle"><i class="icon-move"></i></div>');
 		}
@@ -137,13 +148,10 @@ BaseWidget.prototype = {
 			_widget.append('<div class="control rotate-handle"><i class="icon-undo"></i></div>');
 		}
 
-		_widget.append('<div class="control index-handle up"><i class="icon-chevron-up"></i></div><div class="control index-handle down"><i class="icon-chevron-down"></i></div>');
-		_widget.append('<div class="control index-handle up"><i class="icon-chevron-up"></i></div><div class="control index-handle down"><i class="icon-chevron-down"></i></div>');
-		_widget.append('<div class="control lock-handle"><i class="icon-unlock-alt"></i></div>');
-
 		_widget.find('.widget-body').append(this._html);
 		_widget.attr('style', 'top: '+this._y + 'px; left: '+this._x + 'px; z-index: '+this._zindex);
 		this._html = _widget;
+		this._html.find('.control').hide();
 		return this._html;
 	},
 
@@ -169,10 +177,17 @@ BaseWidget.prototype = {
 					}, 50);
 				}).dblclick(function () {
 					$this._html.css('-webkit-transform', 'none');
+					$this._html.css('transform', 'none');
 				});
 		}
 
 		this.setZIndex(this.getNextZIndex());
+
+		this._html.click();
+
+		/*
+
+		MOVE TO WIDGET TOOLBAR
 
 		this._html.find('.index-handle.up').click(function(){
 			$this.increaseZIndex();
@@ -188,7 +203,7 @@ BaseWidget.prototype = {
 			} else {
 				$this.lockWidget();
 			}
-		});
+		});*/
 
 	},
 
@@ -217,14 +232,6 @@ BaseWidget.prototype = {
 		if(this._isResizable){
 			this._html.find('.resize-handle').show();
 		}
-	},
-
-	showIndexHandle: function () {
-		this._html.find('.index-handle').show();
-	},
-
-	hideIndexHandle: function () {
-		this._html.find('.index-handle').hide();
 	},
 
 	hideResizeHandle: function () {
@@ -267,5 +274,35 @@ BaseWidget.prototype = {
 			}
 		});
 		return ++maxZ;
+	},
+
+	activate: function(){
+		if(this._isActive){
+			return;
+		}
+		this._isActive = true;
+		this._html.find('.control').show();
+		this._html.addClass('active');
+	},
+
+	makeEditable: function(){
+		this._isEditable = true;
+		this._html.find('.widget-disabled-overlay').remove();
+		this._html.addClass('editable');
+	},
+
+	deactivate: function(){
+		this._isActive = this._isEditable = false;
+		this._html.find('.control').hide();
+		this._html.removeClass('active');
+		this._html.removeClass('editable');
+		if(this._html.find('.widget-disabled-overlay').length === 0){
+			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to edit</span></div>');
+			this.resize();
+		}
+	},
+
+	resize: function(){
+		this._html.find('span.text').css('line-height', this._html.outerHeight()+'px');
 	}
 };

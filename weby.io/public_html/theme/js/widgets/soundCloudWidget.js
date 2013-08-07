@@ -21,7 +21,7 @@ function SoundCloudWidget() {
 	};
 
 	this.getHTML = function () {
-		this._html = '<textarea type="text" placeholder="Paste a SoundCloud embed code"></textarea>' +
+		this._html = '<textarea type="text" placeholder="Paste a SoundCloud embed code">'+test+'</textarea>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
@@ -73,6 +73,7 @@ function SoundCloudWidget() {
 		if (link.indexOf('iframe') >= 0) {
 			var regex = /src=['|"](.*?)['|"]/;
 			link = original.match(regex) ? RegExp.$1 : false;
+			link = link.replace('auto_play=true', 'auto_play=false')
 		} else {
 			return false;
 		}
@@ -82,12 +83,10 @@ function SoundCloudWidget() {
 		return '<iframe id="' + id + '" src="' + link + '" width="' + width + '" height="' + height + '" scrolling="no" frameborder="0"></iframe>';
 	}
 
-	// <iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F70703171&amp;color=ff0000&amp;auto_play=false&amp;show_artwork=false"></iframe>
 	BaseWidget.prototype.init.call(this);
+
+	var test = '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F70703171&amp;color=ff0000&amp;auto_play=true&amp;show_artwork=false"></iframe>';
 }
 
 SoundCloudWidget.prototype = new BaseWidget();
 SoundCloudWidget.prototype.constructor = SoundCloudWidget;
-
-/*
-<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F70703171&amp;color=ff0000&amp;auto_play=true&amp;show_artwork=false"></iframe>*/

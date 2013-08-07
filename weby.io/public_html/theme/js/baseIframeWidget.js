@@ -39,7 +39,12 @@ var BaseIframeWidget = function () {
 				var iframeWidth = $(iframe).attr("width");
 				var iframeHeight= $(iframe).attr("height");
 				
-				$(this).replaceWith(iframe);
+				try{
+					$(this).replaceWith(iframe);	
+				} catch(e){
+					console.log("Exception!!!!")
+				}
+				
 				// Append LOADING screen (move to BaseWidget)
 				$this._html.find('.widget-body').prepend('<div class="loading">' + $this._loadingMessage +
 					'<br /><span>This may take a few moments, please be patient.</span></div>');

@@ -19,7 +19,7 @@ function SlideShareWidget() {
 	};
 
 	this.getHTML = function () {
-		this._html = '<input type="text" placeholder="Paste a Slideshare ID, embed URL or an iframe code"/>' +
+		this._html = '<input type="text" placeholder="Paste a Slideshare ID, embed URL or an iframe code" value="'+test+'"/>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
@@ -81,7 +81,7 @@ function SlideShareWidget() {
 		return '<iframe id="'+id+'" src="'+link+'" width="'+width+'" height="'+height+'" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>';
 	}
 
-	// <iframe src="http://www.slideshare.net/slideshow/embed_code/24621277?rel=0&startSlide=3" width="342" height="291" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe>
+	var test = '24621277';
 	BaseWidget.prototype.init.call(this);
 }
 

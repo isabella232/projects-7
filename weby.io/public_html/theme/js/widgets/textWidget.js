@@ -61,12 +61,6 @@ function TextWidget() {
 
 		var $this = this;
 		this._html.find(".text-editable").click(function () {
-			// Check if EraserTool is activated
-			var activeTool = App.getActiveTool();
-			if (activeTool != null && activeTool.getTag() == 'eraser') {
-				return;
-			}
-
 			if ($this._mouseUpAfterDrag) {
 				return $this._mouseUpAfterDrag = false;
 			}

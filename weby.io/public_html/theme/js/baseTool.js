@@ -26,12 +26,8 @@ BaseTool.prototype = {
 		this.createMouseIcon();
 		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
 
-		if (this._toolTag != 'eraser') {
-			App.addContentOverlay();
-		}
-
 		$('body').addClass('unselectable');
-		$(document).mousemove(function (e) {
+		$('body').mousemove(function (e) {
 			App.fireEvent("document.mouse.move", e);
 		});
 	},
@@ -42,12 +38,12 @@ BaseTool.prototype = {
 		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
 		App.removeContentOverlay();
 		$('body').removeClass('unselectable');
-		$(document).unbind("mousemove");
+		$('body').unbind("mousemove");
 	},
 
 	getToolbarIcon: function () {
-		var _icon = $('<a data-tool="' + this._toolTag + '" class="k-button tool-icon" title="' + this._tooltipText + '"><span class="k-icon text"></span></a>');
-		_icon.find('.k-icon').css('background-image', 'url(' + this._mouseIcon + ')');
+		var _icon = $('<a data-tool="' + this._toolTag + '" class="tool-icon" title="' + this._tooltipText + '">' + this._tooltipText + '</a>');
+		_icon.css('background-image', 'url('+THEME + this._mouseIcon + ')');
 		return _icon;
 	},
 
@@ -56,9 +52,11 @@ BaseTool.prototype = {
 	},
 
 	createMouseIcon: function () {
-		this._mouseIconObject = $('<a class="mouse-icon" ><img src="' + this._mouseIcon + '">' +
+		this._mouseIconObject = $('<a class="mouse-icon" ><img src="' + THEME + this._mouseIcon + '">' +
 			'<span class="action">' + this._mouseText + '</span><span class="cancel">(Press ESC to cancel)</span>' +
 			'</a>');
+
+		this._mouseIconObject.css('position', 'absolute');
 
 		$('body').append(this._mouseIconObject);
 	},
@@ -72,7 +70,8 @@ BaseTool.prototype = {
 		App.fireEvent("widget.drag", {element: html});
 	},
 
-	onWidgetInserted: function () {},
+	onWidgetInserted: function () {
+	},
 
 	documentMouseMove: function (e) {
 		this._mouseIconObject.offset({ top: e.pageY, left: e.pageX + 18});
