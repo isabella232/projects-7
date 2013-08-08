@@ -170,6 +170,7 @@ pip-log.txt
 
 # Project excludes
 library/
-public_html/smarty/
+public_html/cache/minify/*
+public_html/cache/smarty/compile/*
 public_html/uploads/*
 app/config.yaml

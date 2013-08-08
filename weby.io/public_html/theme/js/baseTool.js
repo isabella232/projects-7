@@ -28,9 +28,6 @@ BaseTool.prototype = {
 
 		App.addContentOverlay();
 		$('body').addClass('unselectable');
-		$('body').mousemove(function (e) {
-			App.fireEvent("document.mouse.move", e);
-		});
 	},
 
 	deactivate: function () {
@@ -39,17 +36,12 @@ BaseTool.prototype = {
 		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
 		App.removeContentOverlay();
 		$('body').removeClass('unselectable');
-		$('body').unbind("mousemove");
 	},
 
 	getToolbarIcon: function () {
 		var _icon = $('<a data-tool="' + this._toolTag + '" class="tool-icon" title="' + this._tooltipText + '">' + this._tooltipText + '</a>');
 		_icon.css('background-image', 'url('+THEME + this._mouseIcon + ')');
 		return _icon;
-	},
-
-	getToolbar: function () {
-		return null;
 	},
 
 	createMouseIcon: function () {

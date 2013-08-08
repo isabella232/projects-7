@@ -1,6 +1,9 @@
 routes:
     - ['', \App\Handlers\PagesHandler, index]
+    - ['editor/templates', \App\Handlers\EditorHandler, templates]
     - ['editor', \App\Handlers\EditorHandler, index]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
+    - ['embed/prezi', \App\Handlers\EmbedHandler, prezi]
+    - [files/upload, \App\Handlers\FilesHandler, upload]
     - ['files/get', \App\Handlers\FilesHandler, getFileInfo]
     - [database, \App\Handlers\TestHandler, index]

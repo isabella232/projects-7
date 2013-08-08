@@ -29,6 +29,10 @@ var AppClass = function () {
 		_appToolbar.init();
 
 		// Bind events
+		$('body').mousemove(function (e) {
+			App.fireEvent("document.mouse.move", e);
+		});
+
 		_content.click(function (e) {
 			App.fireEvent("content.click", e);
 		});

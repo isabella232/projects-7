@@ -92,6 +92,7 @@ function VideoWidget() {
 		});
 		this._html.find('.widget-body').prepend(playOverlay);
 		this._html.resizable("option", "alsoResize", '#video-preview-' + this._id + ', #video-preview-overlay-' + this._id);
+		this._isContentLoaded = true;
 	}
 
 	this.parseYoutubeLink = function (link) {

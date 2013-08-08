@@ -13,6 +13,5 @@ class EditorHandler extends AbstractHandler
 	public function index() {
 
 	}
-
 }
 

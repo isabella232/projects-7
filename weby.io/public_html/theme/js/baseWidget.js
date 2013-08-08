@@ -180,8 +180,7 @@ BaseWidget.prototype = {
 						$this._html.data('widget', $this).draggable($this._baseDraggableOptions);
 					}, 50);
 				}).dblclick(function () {
-					$this._html.css('-webkit-transform', 'none');
-					$this._html.css('transform', 'none');
+					$this._html.css('-webkit-transform', 'none').css('transform', 'none');;
 				});
 		}
 
@@ -227,10 +226,6 @@ BaseWidget.prototype = {
 			var angle = 0;
 		}
 		return angle;
-	},
-
-	setResizableAspectRatio: function (ratio) {
-		this._html.resizable("option", "aspectRatio", ratio);
 	},
 
 	showResizeHandle: function () {

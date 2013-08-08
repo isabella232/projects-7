@@ -201,8 +201,11 @@ $(function () {
 					;
 
 					$this.onReleaseEasing();
-					e.preventDefault();
-					e.stopPropagation();
+					// If it's DELETE button - do not stop propagation
+					if(e.keyCode != 46){
+						e.preventDefault();
+						e.stopPropagation();
+					}
 				}
 			};
 

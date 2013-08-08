@@ -15,7 +15,6 @@ function LinkedInWidget() {
 	};
 
 	this.getIframe = function (input) {
-		console.log("get iframe")
 		this._name = this.parseLinkedInLink(input);
 		var id = 'linkedin-iframe-' + this._id;
 		return '<iframe id="' + id + '" src="' + WEB + 'embed/linkedin/?name=' + this._name + '&id=' + this._id + '" width="0" height="0" frameborder="0"></iframe>';

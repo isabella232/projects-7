@@ -13,4 +13,5 @@
     <div id="toolbar-wrapper"></div>
     <div id="content"></div>
     <div class="clearfix"></div>
+    {include file="templates/editor/includes/templates.tpl"}
 {/block}
