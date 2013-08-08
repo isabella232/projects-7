@@ -33,6 +33,7 @@ Path pisem od css root foldera ili od js root foldera, pa ti interno dodavaj roo
 <link href="{$viewObject->themeWebPath}css/widgets/mapWidget.css" rel="stylesheet">
 <link href="{$viewObject->themeWebPath}css/widgets/twitterWidget.css" rel="stylesheet">
 <link href="{$viewObject->themeWebPath}css/widgets/fileWidget.css" rel="stylesheet">
+<link href="{$viewObject->themeWebPath}css/widgets/videoWidget.css" rel="stylesheet">
 <!-- Libs JS -->
 <script src="{$viewObject->themeWebPath}js/jquery-1.8.3.js"></script>
 <script src="{$viewObject->themeWebPath}js/jquery-ui-1.9.2.custom.js"></script>
@@ -43,6 +44,7 @@ Path pisem od css root foldera ili od js root foldera, pa ti interno dodavaj roo
 <script src="{$viewObject->themeWebPath}js/shortcut.js"></script>
 <script src="{$viewObject->themeWebPath}js/mouseEvent.js"></script>
 <script src="{$viewObject->themeWebPath}js/jQueryFix.js"></script>
+<script src="{$viewObject->themeWebPath}js/jquery.flip.min.js"></script>
 <!-- App JS -->
 <script src="{$viewObject->themeWebPath}js/app.js"></script>
 <script src="{$viewObject->themeWebPath}js/appToolbar.js"></script>

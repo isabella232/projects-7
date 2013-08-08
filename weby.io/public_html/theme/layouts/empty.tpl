@@ -5,6 +5,12 @@
     <meta charset='utf-8'>
     <script src="{$viewObject->themeWebPath}js/jquery-1.8.3.js"></script>
     <style type="text/css">
+        html, body{
+            min-width: 100%;
+            min-height: 100%;
+            width: 100%;
+            height: 100%;
+        }
         body{
             margin:0;
             padding:0;

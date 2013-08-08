@@ -37,7 +37,7 @@ function GoogleDriveWidget() {
 		return '<iframe id="' + id + '" src="' + link + '" width="' + width + '" height="' + height + '" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
 	}
 
-	BaseWidget.prototype.init.call(this);
+	BaseIframeWidget.prototype.init.call(this);
 }
 
 GoogleDriveWidget.prototype = new BaseIframeWidget();

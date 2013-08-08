@@ -1,6 +1,7 @@
 function TextWidget() {
 
 	this._widgetClass = 'text-widget';
+	this._isContentLoaded = true;
 
 	this._resizableOptions = {
 		minHeight: 63,
@@ -15,6 +16,10 @@ function TextWidget() {
 		this._html = '<div class="text-editable"></div>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
+
+	this.onMakeEditable = function(){
+		this._html.find(".text-editable").click();
+	}
 
 	this.onWidgetInserted = function () {
 		var $this = this;
@@ -59,7 +64,6 @@ function TextWidget() {
 
 		BaseWidget.prototype.onWidgetInserted.call(this);
 
-		var $this = this;
 		this._html.find(".text-editable").click(function () {
 			if ($this._mouseUpAfterDrag) {
 				return $this._mouseUpAfterDrag = false;

@@ -36,7 +36,7 @@ function SlideShareWidget() {
 			}
 		}
 		var id = 'slideshare-iframe-' + this._id;
-		this._html.resizable("option", "alsoResize", "#" + id);
+		this._alsoResize = "#" + id;
 		return '<iframe id="' + id + '" src="' + link + '" width="' + width + '" height="' + height + '" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>';
 	}
 

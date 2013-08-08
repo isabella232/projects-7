@@ -4,6 +4,8 @@ var BaseIframeWidget = function () {
 	this._parseErrorMessage = '';
 	this._alsoResize = false;
 	this._aspectRatio = false;
+	this._customOnLoadHandler = false;
+	this._isContentLoaded = false;
 
 	this._resizableOptions = {
 		start: function (event, ui) {
@@ -20,6 +22,16 @@ var BaseIframeWidget = function () {
 		}
 	};
 
+	this.init = function(){
+		BaseWidget.prototype.init.call(this);
+	}
+
+	this.onActivate = function(){
+		if(!this._isContentLoaded){
+			this._html.find(this._inputElement).focus();
+		}
+	}
+
 	this.onWidgetInserted = function () {
 		var $this = this;
 
@@ -28,32 +40,39 @@ var BaseIframeWidget = function () {
 		this.hideResizeHandle();
 
 		this._html.find(this._inputElement).blur(function () {
-			if ($(this).val() != '') {
-				var iframe = $this.getIframe($(this).val())
+			var input = $(this);
+			if (input.val() != '') {
+				var iframe = $this.getIframe(input.val())
 				if (!iframe) {
 					$this._html.find('.message').html($this._parseErrorMessage);
-					$(this).val('').focus();
+					input.val('').focus();
 					return;
 				}
 
 				var iframeWidth = $(iframe).attr("width");
 				var iframeHeight = $(iframe).attr("height");
-				$(this).replaceWith(iframe);
+
+				iframe = $(iframe)[0];
+				iframe.setAttribute("width", 0);
+				iframe.setAttribute("height", 0);
+
+				input.hide();
+				$this._html.find('.message').hide();
+				$(iframe).insertBefore(input);
 
 				// Append LOADING screen (move to BaseWidget)
 				$this._html.find('.widget-body').prepend('<div class="loading">' + $this._loadingMessage +
 					'<br /><span>This may take a few moments, please be patient.</span></div>');
-				var top = iframeHeight / 2 - 20;
-				var loading = $this._html.find('.loading');
-				loading.css('height', iframeHeight - top).css('width', iframeWidth);
-				loading.css("margin", "0 auto");
-				loading.css("padding-top", top + "px");
-				$('#' + $(iframe).attr('id')).bind('load', function () {
-					setTimeout(function(){
+				if (!$this._customOnLoadHandler) {
+					$('#' + $(iframe).attr('id')).bind('load', function () {
+						$(iframe).attr("width", iframeWidth).attr("height", iframeHeight);
 						$this._html.find('.loading').remove();
+						input.remove();
 						$this.showResizeHandle();
-					}, 100);
-				});
+						$this._html.find('.message').remove();
+						$this._isContentLoaded = true;
+					});
+				}
 
 				if ($this._alsoResize) {
 					$this._html.resizable("option", "alsoResize", $this._alsoResize);
@@ -61,9 +80,6 @@ var BaseIframeWidget = function () {
 				if ($this._aspectRatio) {
 					$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
 				}
-
-				//$this._html.draggable($this._baseDraggableOptions);
-				$this._html.find('.message').remove();
 				App.fireEvent("widget.resize.stop", {element: $this._html});
 			}
 		});

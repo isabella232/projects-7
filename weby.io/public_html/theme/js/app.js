@@ -92,6 +92,10 @@ var AppClass = function () {
 			this[event](data);
 		}
 
+		if(_activeWidget != null && event in _activeWidget){
+			_activeWidget[event](data);
+		}
+
 		if (all) {
 			var tools = _appToolbar.getAllTools()
 			$.each(tools, function (i, tool) {
@@ -109,6 +113,13 @@ var AppClass = function () {
 
 	this.getWidgets = function () {
 		return _widgets;
+	}
+
+	this.getWidget = function (id) {
+		if(id in _widgets){
+			return _widgets[id];
+		}
+		return false;
 	}
 
 	this.addWidget = function (widget) {

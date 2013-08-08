@@ -27,6 +27,16 @@ var MapWidget = function () {
 		}
 	};
 
+	this.onActivate = function(){
+		if(!this._isContentLoaded){
+			this._html.find('input').focus();
+		}
+	}
+
+	this.onMakeEditable = function(){
+		this._html.find('input').focus();
+	}
+
 	this.getHTML = function () {
 		this._html = '<input class="address" type="text" placeholder="Type your desired address here" value="Tibljaška cesta 11"/>' +
 			'<span class="message"></span>' +
@@ -134,6 +144,7 @@ var MapWidget = function () {
 				$this._html.find('.map').height(mapHeight - 28);
 				$this.resize();
 				_centerMarker();
+				$this._isContentLoaded = true;
 			} else {
 				$this._html.find('.message').html("We couldn't locate your address! Please try a different one!").show();
 				delete $this._map;
