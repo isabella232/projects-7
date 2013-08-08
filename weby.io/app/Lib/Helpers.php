@@ -25,16 +25,6 @@ function removeTrailingSlash($string)
 }
 
 /**
- * Response as a json object
- * @param $array
- */
-function jsonResponse($array)
-{
-    header('Content-type: application/json; charset=utf-8;');
-    die(json_encode($array));
-}
-
-/**
  * Returns browser IP address
  * @return String
  */

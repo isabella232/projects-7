@@ -1,45 +1,107 @@
+.file-widget.widget-body {
+    width: auto;
+}
+
 .file-widget input {
-    width: 300px;
-    -webkit-border-radius: 4px;
     padding: 5px;
-    box-shadow: 0px 1px 5px -1px gray inset;
-    border: none;
-    outline-color: #f05929;
+    margin: 0px 4px 0;
 }
 
-/* hide everything inside dropzone that has kendo class on it */
-div.k-dropzone *[class^="k-"] {
-    display: none;
+.file-widget-type-icon {
+    display: inline-block;
+    width: 74px;
+    height: 101px;
+    background-image: url("../../images/file_widget_types1.png");
 }
 
-div.k-dropzone {
-    border: 2px dashed #c5c5c5;
-    height: 150px;
-    width: 280px;
+.file-widget-details {
+    display: inline-block;
+    vertical-align: top;
 }
 
-/* hide kendo text msg */
-div.k-dropzone em {
-    display: none;
-}
-
-div.display-image {
-    border: 5px solid white;
-    background-color: gray;
+.file-widget-error {
     display: block;
-    -moz-box-shadow: 0 0 5px 5px lightgrey;
-    -webkit-box-shadow: 0 0 5px 5px lightgrey;
-    box-shadow: 0 0 5px 5px lightgrey;
 }
 
-div.k-dropzone div.display-image {
-    background-color: gray;
-    display: block;
-    width: 200px;
-    height: 200px;
+.dropbox-button {
+    width: 27px;
+    height: 24px;
+    display: inline-block;
+    background-image: url('../../images/dbox_button.png');
+    cursor: pointer;
 }
 
-div.k-dropzone div.display-image img {
-    width: 200px;
-    height: 200px;
+.gdrive-button {
+    width: 27px;
+    height: 24px;
+    display: inline-block;
+    background-image: url('../../images/gdrive_button.png');
+    cursor: pointer;
+}
+
+.file-widget-image {
+    width: 400px;
+    height: auto;
+}
+
+/*  ----- FILE TYPES -----  */
+
+.file-widget-type-icon.type-dbx {
+    background-position: -990px -237px;
+}
+
+.file-widget-type-icon.type-gdrv {
+    background-position: -999px -118px;
+}
+
+.file-widget-type-icon.type-css {
+    background-position: -274px -1px;
+}
+
+.file-widget-type-icon.type-dmg {
+    background-position: -2px -1px;
+}
+
+.file-widget-type-icon.type-rtf {
+    background-position: -544px -1px;
+}
+
+.file-widget-type-icon.type-exe {
+    background-position: -729px -1px;
+}
+
+.file-widget-type-icon.type-doc {
+    background-position: -184px -236px;
+}
+
+.file-widget-type-icon.type-html {
+    background-position: -364px -1px;
+}
+
+.file-widget-type-icon.type-pdf {
+    background-position: -94px -236px;
+}
+
+.file-widget-type-icon.type-ppt {
+    background-position: -273px -236px;
+}
+
+.file-widget-type-icon.type-psd {
+    background-position: -900px -236px;
+}
+
+.file-widget-type-icon.type-rar {
+    background-position: -94px -1px;
+}
+
+.file-widget-type-icon.type-txt {
+    background-position: -454px -1px;
+}
+
+.file-widget-type-icon.type-xls {
+    background-position: -4px -236px;
+}
+
+.file-widget-type-icon.type-zip {
+    background-position: -184px -1px;
 }

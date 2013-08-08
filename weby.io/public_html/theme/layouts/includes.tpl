@@ -1,81 +1,73 @@
-{*
-
-Tu treba napraviti onaj plugin za minify
-
-{minify type="css"}
-    kendo.common.min.css,
-    kendo.common.min.css,
-{/minify}
-
-{minify type="js"}
-    jquery.js,
-    tools/textTool.js,
-    widgets/textWidget.js
-{/minify}
-
-Path pisem od css root foldera ili od js root foldera, pa ti interno dodavaj root path.
-*}
-
 <script type="text/javascript">
-    var THEME = '{$viewObject->themeWebPath}';
-    var WEB = '{$viewObject->webPath}';
+    var THEME = '{$viewObject.themeWebPath}';
+    var WEB = '{$viewObject.webPath}';
 </script>
 
-<!-- Main CSS -->
-<link href="{$viewObject->themeWebPath}css/kendo.common.min.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/kendo.default.min.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/font-awesome.min.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/main.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/toolbar.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widget.css" rel="stylesheet">
-<!-- Widgets CSS -->
-<link href="{$viewObject->themeWebPath}css/widgets/textWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/mapWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/twitterWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/fileWidget.css" rel="stylesheet">
-<link href="{$viewObject->themeWebPath}css/widgets/videoWidget.css" rel="stylesheet">
-<!-- Libs JS -->
-<script src="{$viewObject->themeWebPath}js/jquery-1.8.3.js"></script>
-<script src="{$viewObject->themeWebPath}js/jquery-ui-1.9.2.custom.js"></script>
-<script src="{$viewObject->themeWebPath}js/jquery.transit.min.js"></script>
-<script src="{$viewObject->themeWebPath}js/drag-on.js"></script>
-<script src="{$viewObject->themeWebPath}js/smokeEffect.js"></script>
-<script src="{$viewObject->themeWebPath}js/kendo.web.min.js"></script>
-<script src="{$viewObject->themeWebPath}js/shortcut.js"></script>
-<script src="{$viewObject->themeWebPath}js/mouseEvent.js"></script>
-<script src="{$viewObject->themeWebPath}js/jQueryFix.js"></script>
-<script src="{$viewObject->themeWebPath}js/jquery.flip.min.js"></script>
-<!-- App JS -->
-<script src="{$viewObject->themeWebPath}js/app.js"></script>
-<script src="{$viewObject->themeWebPath}js/appToolbar.js"></script>
-<script src="{$viewObject->themeWebPath}js/baseTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/baseWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/baseIframeWidget.js"></script>
-<!-- Tools JS -->
-<script src="{$viewObject->themeWebPath}js/tools/textTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/mapTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/videoTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/preziTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/slideShareTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/googleDriveTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/skyDriveTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/soundCloudTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/twitterTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/linkedInTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/fileTool.js"></script>
-<script src="{$viewObject->themeWebPath}js/tools/fileDragListener.js"></script>
-<!-- Widgets JS -->
-<script src="{$viewObject->themeWebPath}js/widgets/textWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/mapWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/videoWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/preziWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/slideShareWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/googleDriveWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/skyDriveWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/soundCloudWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/twitterWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/linkedInWidget.js"></script>
-<script src="{$viewObject->themeWebPath}js/widgets/fileWidget.js"></script>
-<!-- Other JS -->
+{minify params="type=css&files=
+                kendo.common.min.css,
+                kendo.default.min.css,
+                font-awesome.min.css,
+                main.css,
+                toolbar.css,
+                widget.css,
+                widgets/textWidget.css,
+                widgets/fileWidget.css"}
+
+<!-- Outer JS -->
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-<script src="{$viewObject->themeWebPath}js/init.js"></script>
+<script src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs"
+        data-app-key="685m5csc17munwq"></script>
+
+
+<!-- for now, Kendo manually included -->
+<script src="{$viewObject.themeWebPath}js/kendo.web.min.js"></script>
+
+{minify params="type=js&files=
+                jquery-1.8.3.js,
+                jquery-ui-1.9.2.custom.js,
+                jquery.transit.min.js,
+                drag-on.js,
+                shortcut.js,
+                mouseEvent.js,
+                jQueryFix.js,
+                app.js,
+                appToolbar.js,
+                baseTool.js,
+                baseWidget.js,
+                baseIframeWidget.js,
+                tools/textTool.js,
+                tools/mapTool.js,
+                tools/instagramTool.js,
+                tools/videoTool.js,
+                tools/preziTool.js,
+                tools/slideShareTool.js,
+                tools/googleDriveTool.js,
+                tools/skyDriveTool.js,
+                tools/soundCloudTool.js,
+                tools/twitterTool.js,
+                tools/linkedInTool.js,
+                tools/fileTool.js,
+                widgets/textWidget.js,
+                widgets/mapWidget.js,
+                widgets/instagramWidget.js,
+                widgets/videoWidget.js,
+                widgets/preziWidget.js,
+                widgets/slideShareWidget.js,
+                widgets/googleDriveWidget.js,
+                widgets/skyDriveWidget.js,
+                widgets/soundCloudWidget.js,
+                widgets/twitterWidget.js,
+                widgets/fileWidget.js,
+                init.js"}
+{* also include >>>>>>> smokeEffect.js, widgets/linkedInWidget.js*}
+
+
+<!-- The standard Google Loader script. -->
+    <script type="text/javascript">
+        // TODO: move this to a more convinient place
+        google.load('picker', '1');
+    </script>
+
+<!-- also refactor !? -->
+{include file="../templates/fileWidgetTemplates.tpl"}

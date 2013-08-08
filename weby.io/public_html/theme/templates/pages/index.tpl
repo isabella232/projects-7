@@ -1,8 +1,8 @@
-{extends file="../../index.tpl"}
+{extends file="layouts/master.tpl"}
 
+{block name="title"}Weby editor{/block}
+{block name="head"}
+{/block}
 {block name="content"}
-
-    <div id="content"></div>
-    <div class="clearfix"></div>
-
+Join Weby.io!!!
 {/block}

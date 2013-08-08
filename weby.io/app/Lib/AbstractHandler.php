@@ -76,7 +76,8 @@ abstract class AbstractHandler
 			'data'  => $data
 		);
 
-		jsonResponse($response);
+        header('Content-type: application/json; charset=utf-8;');
+        die(json_encode($response));
 	}
 }
 

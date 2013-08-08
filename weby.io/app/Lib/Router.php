@@ -80,7 +80,6 @@ class Router
 	private function _parseRequest() {
 		// Get URL
 		$request = $this->str($this->request()->query('r', ''))->trimRight('/')->val();
-
 		// Check routes
 		foreach ($this->_routes as $regex => $route) {
 			$match = false;

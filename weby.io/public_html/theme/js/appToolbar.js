@@ -7,8 +7,10 @@ var AppToolbar = function () {
 	this.init = function(){
 		_tools = {
 			text: new TextTool(self),
-			map: new MapTool(self),
+            file: new FileTool(self),
+            map: new MapTool(self),
 			video: new VideoTool(self),
+			instagram: new InstagramTool(self),
 			prezi: new PreziTool(self),
 			slideshare: new SlideShareTool(self),
 			googledrive: new GoogleDriveTool(self),
