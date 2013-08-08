@@ -22,6 +22,7 @@
 namespace App\Lib\Minify;
 class MinifyCSSCompressor {
 
+
     /**
      * Minify a CSS string
      * 

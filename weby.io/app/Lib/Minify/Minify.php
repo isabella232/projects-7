@@ -40,6 +40,7 @@ class Minify{
 	
 	private $customCacheFolder = false;
 
+
     /**
      * Minify constructor
      * @param bool $init
