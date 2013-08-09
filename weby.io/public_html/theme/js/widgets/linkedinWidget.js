@@ -6,7 +6,6 @@ function LinkedInWidget() {
 	this._inputElement = 'input';
 	this._loadingMessage = 'Loading LinkedIn profile...';
 	this._customOnLoadHandler = true;
-	this._isRotatable = false;
 
 	this.getHTML = function () {
 		this._html = '<input type="text" placeholder="Enter a public profile URL of a LinkedIn member" value="gorancandrlic"/>' +
@@ -16,11 +15,12 @@ function LinkedInWidget() {
 
 	// Only called if target URL is a valid, existing URL
 	this.getIframe = function () {
-		return '<iframe id="linkedin-iframe-' + this._id + '" src="' + WEB + 'embed/linkedin/?name=' + this._name + '&id=' + this._id + '" width="0" height="0" frameborder="0"></iframe>';
+		this._embedUrl = WEB + 'embed/linkedin/?name=' + this._name + '&id=' + this._id;
+		return '<iframe id="linkedin-iframe-' + this._id + '" src="' + this._embedUrl + '" width="0" height="0" frameborder="0"></iframe>';
 	}
 
 	// This is called to construct an embed URL which will then be validated
-	this.getTargetUrl = function(inputValue){
+	this.getTargetUrl = function (inputValue) {
 		this.parseLinkedInLink(inputValue);
 		return 'http://www.linkedin.com/in/' + this._name;
 	}

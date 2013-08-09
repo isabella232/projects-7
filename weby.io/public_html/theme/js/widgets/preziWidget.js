@@ -17,7 +17,7 @@ function PreziWidget() {
 	this.getIframe = function (targetUrl) {
 		var id = 'prezi-iframe-' + this._id;
 		this._alsoResize = "#" + id;
-		return '<iframe id="' + id + '" src="' + WEB + 'embed/prezi/?preziId=' + this._preziId + '" width="" height="" frameBorder="0"></iframe>';
+		return '<iframe id="' + id + '" src="' + WEB + 'embed/prezi/?preziId=' + this._preziId + '" width="550" height="400" frameBorder="0"></iframe>';
 	}
 
 	// This is called to construct an embed URL which will then be validated

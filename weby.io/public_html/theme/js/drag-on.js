@@ -82,6 +82,9 @@ $(function () {
 					}
 				},
 				setCurrentPosition: function (dx, dy) {
+					if(typeof el.to[0] == "undefined"){
+						return;
+					}
 					var t, l, cp, ddy, ddx;
 					do {
 						el.to = $this.scrollParent(el.to);
@@ -111,12 +114,12 @@ $(function () {
 					if ($(e.target).closest('.widget').length !== 0) {
 						return;
 					}
-					if (et in $this.opt.exclusion){
+					if (et in $this.opt.exclusion) {
 						return;
 					}
 
 					el.too = el.to = $((this === e.target) ? this : e.target);
-					if (el.too.parents($this.opt.exclusion.id).length){
+					if (el.too.parents($this.opt.exclusion.id).length) {
 						return;
 					}
 
@@ -161,10 +164,6 @@ $(function () {
 						sm.speedY = ((sm.vector.y > 0) ? 1 : -1) * sm.vector.y * sm.vector.y / (2 * sm.snatch),
 						(sm.snatch < 350) && (sm.ORE = setTimeout($this.onReleaseEasing, 10)));
 
-					/*if (e.type in { 'mouseup': '', 'mouseleave': '' }) {
-						(e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation());
-					}*/
-
 					$this.SAH && ($this.SAH.off('scroll', $this.onScrollAfterHold), $this.SAH = null);
 					el.off({'mouseleave mouseup': $this.onRelease, 'mousemove': $this.onDrag});
 					el.too && el.too.off('mouseup', $this.onRelease);
@@ -179,6 +178,17 @@ $(function () {
 					sm.ORE = (Math.round(sm.speedX) || Math.round(sm.speedY)) ? setTimeout($this.onReleaseEasing, 10) : null;
 				},
 				onKeyDown: function (e) {
+					// Ignore key press on input elements
+					var targetElement = e.target.nodeName.toLowerCase();
+					if (['input', 'textarea'].indexOf(targetElement) > -1) {
+						return;
+					}
+
+					// Don't catch DELETE button
+					if (e.keyCode == 46) {
+						return;
+					}
+
 					var so, to, too, ek = e.which, sm = $this.moment, wh = $(window).innerHeight();
 
 					sm.speedX = (ek in {37: 0, 100: 0} ? 2 : (ek in {39: 0, 102: 0} ? -2 : 0 ) );
@@ -201,11 +211,8 @@ $(function () {
 					;
 
 					$this.onReleaseEasing();
-					// If it's DELETE button - do not stop propagation
-					if(e.keyCode != 46){
-						e.preventDefault();
-						e.stopPropagation();
-					}
+					e.preventDefault();
+					e.stopPropagation();
 				}
 			};
 

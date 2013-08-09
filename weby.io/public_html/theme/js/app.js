@@ -253,6 +253,8 @@ var AppClass = function () {
 
 	this.contentClick = function (data) {
 		$(':focus').blur();
+		// In case iframe was focused - return focus to main window
+		window.focus();
 		// Deactivate active widget
 		if (_activeWidget != null) {
 			_activeWidget.deactivate();
@@ -261,6 +263,8 @@ var AppClass = function () {
 	}
 
 	this.widgetClick = function (e) {
+		// In case iframe was focused - return focus to main window
+		window.focus();
 		e.stopPropagation();
 		// Activate clicked widget
 		var id = $(e.target).closest('.widget').attr('data-id');

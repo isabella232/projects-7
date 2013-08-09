@@ -106,13 +106,13 @@ function VideoWidget() {
 		});
 	}
 
-	this.attachLoading = function(){
+	this.attachLoading = function () {
 		this._html.find('.widget-body *').hide();
-		this._html.find('.widget-body').prepend('<div class="loading">Let\'s see what we have here...'+
+		this._html.find('.widget-body').prepend('<div class="loading">Let\'s see what we have here...' +
 			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
 	}
 
-	this.removeLoading = function(){
+	this.removeLoading = function () {
 		this._html.find('.widget-body .loading').remove();
 		this._html.find('.widget-body *').show();
 	}
@@ -145,21 +145,21 @@ function VideoWidget() {
 			var tmp = link.split('#');
 			link = tmp[0];
 		}
-		var p = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/
+		var p = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/;
 		return (link.match(p)) ? RegExp.$3 : false;
 	}
 
 	this.getIframe = function () {
 		var id = 'video-iframe-' + this._id;
 		if (this._videoType == 'youtube') {
-			return $('<iframe id="' + id + '" src="http://www.youtube.com/embed/' + this._videoId + '?wmode=transparent&autoplay=1" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
+			this._embedUrl = 'http://www.youtube.com/embed/' + this._videoId + '?wmode=transparent&autoplay=1';
+			return $('<iframe id="' + id + '" src="' + this._embedUrl + '" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
 		}
-		return $('<iframe id="' + id + '" src="http://player.vimeo.com/video/' + this._videoId + '?wmode=transparent&autoplay=1" frameborder="0" wmode="Opaque" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
+		this._embedUrl = 'http://player.vimeo.com/video/' + this._videoId + '?wmode=transparent&autoplay=1';
+		return $('<iframe id="' + id + '" src="' + this._embedUrld + '" frameborder="0" wmode="Opaque" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
 
 	}
-
 	BaseWidget.prototype.init.call(this);
-
 }
 
 

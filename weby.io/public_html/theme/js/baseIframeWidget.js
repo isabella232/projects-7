@@ -103,7 +103,6 @@ var BaseIframeWidget = function () {
 				input.remove();
 				$this.showResizeHandle();
 				$this._html.find('.message').remove();
-				$this._isContentLoaded = true;
 			});
 		}
 
