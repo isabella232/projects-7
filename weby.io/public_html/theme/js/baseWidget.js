@@ -1,4 +1,5 @@
 var BaseWidget = function () {
+	this._urlChecker = 'http://mrcina.ath.cx:8080';
 	this._html;
 	this._id;
 	this._top;
@@ -159,6 +160,12 @@ BaseWidget.prototype = {
 		return this._html;
 	},
 
+	checkUrl: function (url, callback) {
+		$.get(this._urlChecker+'/?url=' + url, function(data){
+			callback(data);
+		});
+	},
+
 	onWidgetInserted: function () {
 		var $this = this;
 		if (this._isDraggable) {
@@ -180,14 +187,15 @@ BaseWidget.prototype = {
 						$this._html.data('widget', $this).draggable($this._baseDraggableOptions);
 					}, 50);
 				}).dblclick(function () {
-					$this._html.css('-webkit-transform', 'none').css('transform', 'none');;
+					$this._html.css('-webkit-transform', 'none').css('transform', 'none');
+					;
 				});
 		}
 
 		this.setZIndex(this.getNextZIndex());
 
-		this._isEditable = true;
-		this._html.click();
+		App.setActiveWidget(this);
+		this.activate();
 
 		/*
 
@@ -276,21 +284,25 @@ BaseWidget.prototype = {
 		return ++maxZ;
 	},
 
-	activate: function () {
+	activate: function (e) {
 		if (this._isActive) {
+			// Don't remove input focus if input element was clicked
+			if(e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea'){
+				this._html.find(':focus').blur();
+			}
 			return;
 		}
 		this._isActive = true;
 		this._html.find('.control').show();
-		if(!this._isContentLoaded){
+		if (!this._isContentLoaded) {
 			this.hideResizeHandle();
 		}
 		this._html.addClass('active');
-		if(!this._isContentLoaded){
+		if (!this._isContentLoaded) {
 			this.makeEditable();
 		}
 
-		if('onActivate' in this){
+		if ('onActivate' in this) {
 			this.onActivate();
 		}
 	},
@@ -300,7 +312,7 @@ BaseWidget.prototype = {
 		this._html.find('.widget-disabled-overlay').remove();
 		this._html.addClass('editable');
 
-		if('onMakeEditable' in this){
+		if ('onMakeEditable' in this) {
 			this.onMakeEditable();
 		}
 	},
@@ -326,7 +338,8 @@ BaseWidget.prototype = {
 	},
 
 	widgetDragStop: function (data) {
-		this._top = data.element.css('top').replace('px','');
+		this._top = data.element.css('top').replace('px', '');
 		this._left = data.element.css('left').replace('px', '');
 	}
-};
+}
+;

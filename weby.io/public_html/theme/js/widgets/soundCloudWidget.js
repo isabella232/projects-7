@@ -5,9 +5,11 @@ function SoundCloudWidget() {
 	this._inputElement = 'textarea';
 	this._loadingMessage = 'Loading your sound...';
 
-	this._resizableOptions['minHeight'] = 166;
-	this._resizableOptions['maxHeight'] = 166;
-	this._resizableOptions['minWidth'] = 300;
+	this._resizableOptions = {
+		minHeight: 166,
+		maxHeight: 166,
+		minWidth: 300
+	}
 
 	this.getHTML = function () {
 		this._html = '<textarea type="text" placeholder="Paste a SoundCloud embed code">'+test+'</textarea>' +

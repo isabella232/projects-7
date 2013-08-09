@@ -18,7 +18,7 @@ var AppClass = function () {
 
 	$(window).keydown(function (e) {
 		if (e.keyCode == 46) {
-			if (_activeWidget != null && !_activeWidget._isEditable) {
+			if (_activeWidget != null && _activeWidget._html.find(':focus').length === 0) {
 				_activeWidget.delete();
 			}
 		}
@@ -40,6 +40,7 @@ var AppClass = function () {
 		// Widget is clicked
 		$('#content').on('click', '.widget', function (e) {
 			App.fireEvent("widget.click", e);
+			8
 		});
 
 		// Widget is double clicked
@@ -96,7 +97,7 @@ var AppClass = function () {
 			this[event](data);
 		}
 
-		if(_activeWidget != null && event in _activeWidget){
+		if (_activeWidget != null && event in _activeWidget) {
 			_activeWidget[event](data);
 		}
 
@@ -120,7 +121,7 @@ var AppClass = function () {
 	}
 
 	this.getWidget = function (id) {
-		if(id in _widgets){
+		if (id in _widgets) {
 			return _widgets[id];
 		}
 		return false;
@@ -143,6 +144,13 @@ var AppClass = function () {
 
 	this.getActiveTool = function () {
 		return _appToolbar.getActiveTool();
+	}
+
+	this.setActiveWidget = function (widget) {
+		if (_activeWidget != null) {
+			_activeWidget.deactivate();
+		}
+		_activeWidget = widget;
 	}
 
 	this.addContentOverlay = function () {
@@ -187,6 +195,27 @@ var AppClass = function () {
 		return {top: farBottom(), left: farRight()};
 	}
 
+	/**
+	 * Format file size
+	 * @param number Number in bytes
+	 * @param format (Optional) Default: "%3.2f %s" (Ex: 9.60 KB)
+	 */
+	this.formatFileSize = function(number, format){
+		if(typeof format == "undefined"){
+			format = "%3.2f %s";
+		}
+		function formatMemory(num) {
+			var size = ['bytes', 'KB', 'MB', 'GB'];
+			for(var i in size){
+				if(num < 1024.0){
+					return sprintf(format, num, size[i]);
+				}
+				num /= 1024.0
+			}
+			return sprintf(format, num, 'TB');
+		}
+	}
+
 	// EVENTS //
 	this.widgetDragStart = function (data) {
 		this.addContentOverlay();
@@ -223,9 +252,9 @@ var AppClass = function () {
 	}
 
 	this.contentClick = function (data) {
+		$(':focus').blur();
 		// Deactivate active widget
 		if (_activeWidget != null) {
-			$(':focus').blur();
 			_activeWidget.deactivate();
 			_activeWidget = null;
 		}
@@ -240,11 +269,13 @@ var AppClass = function () {
 			_activeWidget.deactivate();
 		}
 		_activeWidget = _widgets[id];
-		_activeWidget.activate();
+		_activeWidget.activate(e);
 	}
 
 	this.widgetDblclick = function (e) {
 		e.stopPropagation();
-		_activeWidget.makeEditable();
+		if (_activeWidget != null) {
+			_activeWidget.makeEditable();
+		}
 	}
 }

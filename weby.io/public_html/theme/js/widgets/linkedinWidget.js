@@ -14,16 +14,19 @@ function LinkedInWidget() {
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
-	this.getIframe = function (input) {
-		this._name = this.parseLinkedInLink(input);
-		var id = 'linkedin-iframe-' + this._id;
-		return '<iframe id="' + id + '" src="' + WEB + 'embed/linkedin/?name=' + this._name + '&id=' + this._id + '" width="0" height="0" frameborder="0"></iframe>';
+	// Only called if target URL is a valid, existing URL
+	this.getIframe = function () {
+		return '<iframe id="linkedin-iframe-' + this._id + '" src="' + WEB + 'embed/linkedin/?name=' + this._name + '&id=' + this._id + '" width="0" height="0" frameborder="0"></iframe>';
+	}
+
+	// This is called to construct an embed URL which will then be validated
+	this.getTargetUrl = function(inputValue){
+		this.parseLinkedInLink(inputValue);
+		return 'http://www.linkedin.com/in/' + this._name;
 	}
 
 	this.parseLinkedInLink = function (link) {
-		var regex = /http:\/\/www\.linkedin\.com\/in\/(\S+)/;
-		var name = link.match(regex) ? RegExp.$1 : link;
-		return name;
+		this._name = link.match(/(?:https?:\/\/)?www\.linkedin\.com\/in\/(\S+)/) ? RegExp.$1 : link;
 	}
 
 	this.onIframeLoaded = function (width, height) {
@@ -33,15 +36,6 @@ function LinkedInWidget() {
 		this.showResizeHandle();
 		$('#linkedin-iframe-' + this._id).attr("width", width).attr("height", height).attr("disabled", "disabled");
 		this._isContentLoaded = true;
-	}
-	
-	this.profileNotFound = function(){
-		$('#linkedin-iframe-' + this._id).remove();
-		this._html.find('.loading').remove();
-		this._html.find('input').show().val('');
-		this._html.find('span.message').html('The profile could not be found!').show();
-		this._html.click();
-		this.makeEditable();
 	}
 
 	BaseIframeWidget.prototype.init.call(this);

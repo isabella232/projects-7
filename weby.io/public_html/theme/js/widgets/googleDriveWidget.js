@@ -23,7 +23,7 @@ function GoogleDriveWidget() {
 		var height = 327;
 		if (link.indexOf('iframe') >= 0) {
 			// Iframe embed
-			var regex = /src=['|"](.*?)['|"]/;
+			var regex = /src=['|"]?(.*?)['|"]?/;
 			link = original.match(regex) ? RegExp.$1 : false;
 			width = original.match(/width="?(\d+)"?/) ? RegExp.$1 : width;
 			height = original.match(/height="?(\d+)"?/) ? RegExp.$1 : height;

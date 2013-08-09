@@ -24,6 +24,7 @@
     shortcut.js,
     mouseEvent.js,
     jQueryFix.js,
+    sprintf.min.js,
     app.js,
     appToolbar.js,
     baseTool.js,

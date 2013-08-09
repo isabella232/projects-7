@@ -6,16 +6,24 @@ function VideoWidget() {
 	this._widgetClass = 'video-widget';
 	this._resizableOptions['minHeight'] = 250;
 	this._resizableOptions['minWidth'] = 333;
+	this._parseErrorMessage = "Looks like this video doesn't exist! Try a different URL.";
+	this._vimeoApiUrl = 'http://vimeo.com/api/v2/video/';
 
 	this.init = function () {
 		BaseWidget.prototype.init.call(this);
 	};
 
 	this.getHTML = function () {
-		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="youtube.com/watch?v=57--LRvGgKQ"/>' +
+		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="http://www.youtube.com/watch?v=FNQowwwwYa0"/>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
+
+	this.onActivate = function () {
+		if (!this._isContentLoaded) {
+			this._html.find('input').focus();
+		}
+	}
 
 	this.onWidgetInserted = function () {
 		var $this = this;
@@ -37,7 +45,7 @@ function VideoWidget() {
 					$this.createVimeoPreview();
 				} else {
 					// Invalid input
-					$this._html.find('.widget-body span.message').html('Sorry, there seems to be a problem with your link.');
+					$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
 					$(this).val('').focus();
 				}
 			}
@@ -48,33 +56,65 @@ function VideoWidget() {
 
 	this.createYoutubePreview = function () {
 		var $this = this;
+		this.attachLoading();
 		this._html.resizable("option", "aspectRatio", 333 / 250);
 		this._previewUrl = 'http://img.youtube.com/vi/' + this._videoId + '/0.jpg';
-		var img = $('<img id="video-preview-' + this._id + '" src="' + this._previewUrl + '">');
-		img.bind("load", function(){
-			$this.createPlayOverlay();
+
+		$this.checkUrl(this._previewUrl, function (data) {
+			if (data.urlExists) {
+				var img = $('<img id="video-preview-' + $this._id + '" src="' + $this._previewUrl + '">');
+				img.bind("load", function () {
+					$this.removeLoading();
+					$this.createPlayOverlay();
+				});
+				$this._html.find('input').replaceWith(img);
+			} else {
+				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
+				$this._html.find('input').val('').focus();
+				$this.removeLoading();
+			}
 		});
-		this._html.find('input').replaceWith(img);
 	}
 
 	this.createVimeoPreview = function () {
 		var $this = this;
-		$.ajax({
-			type: 'GET',
-			url: 'http://vimeo.com/api/v2/video/' + $this._videoId + '.json',
-			jsonp: 'callback',
-			dataType: 'jsonp',
-			success: function (data) {
-				data = data[0];
-				$this._previewUrl = data.thumbnail_large;
-				var img = $('<img id="video-preview-' + $this._id + '" src="' + $this._previewUrl + '">');
-				img.bind("load", function(){
-					$this.createPlayOverlay();
+		this.attachLoading();
+		this.checkUrl(this._vimeoApiUrl + $this._videoId + '.json', function (data) {
+			if (data.urlExists) {
+				$.ajax({
+					type: 'GET',
+					url: $this._vimeoApiUrl + $this._videoId + '.json',
+					jsonp: 'callback',
+					dataType: 'jsonp',
+					success: function (data) {
+						data = data[0];
+						$this._previewUrl = data.thumbnail_large;
+						var img = $('<img id="video-preview-' + $this._id + '" src="' + $this._previewUrl + '">');
+						img.bind("load", function () {
+							$this.removeLoading();
+							$this.createPlayOverlay();
+						});
+						$this._html.find('input').replaceWith(img);
+						$this._html.resizable("option", "aspectRatio", data.width / data.height);
+					}
 				});
-				$this._html.find('input').replaceWith(img);
-				$this._html.resizable("option", "aspectRatio", data.width / data.height);
+			} else {
+				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
+				$this._html.find('input').val('').focus();
+				$this.removeLoading();
 			}
 		});
+	}
+
+	this.attachLoading = function(){
+		this._html.find('.widget-body *').hide();
+		this._html.find('.widget-body').prepend('<div class="loading">Let\'s see what we have here...'+
+			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
+	}
+
+	this.removeLoading = function(){
+		this._html.find('.widget-body .loading').remove();
+		this._html.find('.widget-body *').show();
 	}
 
 	this.createPlayOverlay = function () {
