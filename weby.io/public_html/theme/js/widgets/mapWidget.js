@@ -11,21 +11,23 @@ var MapWidget = function () {
 	this._panoramaPov; // heading, pitch, zoom
 	this._firstLoad = true;
 
+	// Only set options we need (handle methods using callbacks - see below)
 	this._resizableOptions = {
 		minHeight: 150,
-		minWidth: 300,
-		resize: function (event, ui) {
-			var $this = $(this).data('widget');
-			var _widget = $this._html;
-			_widget.find('.address').width(_widget.width() - 12);
-			_widget.find('.map').width(_widget.width()).height(_widget.height() - 28);
-			google.maps.event.trigger($this._map, "resize");
-		},
-		stop: function (event, ui) {
-			App.fireEvent("widget.resize.stop", {element: $(this), event: event, ui: ui});
-			_centerMarker();
-		}
+		minWidth: 300
 	};
+
+	this.widgetResize = function(data){
+		// data contains: element, event, ui
+		var _widget = this._html;
+		_widget.find('.address').width(_widget.width() - 12);
+		_widget.find('.map').width(_widget.width()).height(_widget.height() - 28);
+		google.maps.event.trigger(this._map, "resize");
+	}
+
+	this.widgetResizeStop = function(data){
+		_centerMarker();
+	}
 
 	this.onActivate = function(){
 		if(!this._isContentLoaded){
