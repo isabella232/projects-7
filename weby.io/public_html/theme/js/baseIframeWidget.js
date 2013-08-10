@@ -53,8 +53,9 @@ var BaseIframeWidget = function () {
 					return;
 				}
 				// If targetUrl was received - check if it really exists
+				var loadingHtml = $this.getLoadingHtml();
 				$this._html.find('.widget-body *').hide();
-				$this._html.find('.widget-body').prepend($this.getLoadingHtml());
+				$this._html.find('.widget-body').prepend(loadingHtml);
 
 				$this.checkUrl(targetUrl, function (data) {
 					$this._html.find('.loading').remove();
