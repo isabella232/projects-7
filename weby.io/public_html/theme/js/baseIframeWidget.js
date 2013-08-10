@@ -54,8 +54,8 @@ var BaseIframeWidget = function () {
 				}
 				// If targetUrl was received - check if it really exists
 				$this._html.find('.widget-body *').hide();
-				$this._html.find('.widget-body').prepend('<div class="loading">Let\'s see what we have here...'+
-					'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
+				$this._html.find('.widget-body').prepend($this.getLoadingHtml());
+
 				$this.checkUrl(targetUrl, function (data) {
 					$this._html.find('.loading').remove();
 					if (data.urlExists) {
@@ -103,6 +103,7 @@ var BaseIframeWidget = function () {
 				input.remove();
 				$this.showResizeHandle();
 				$this._html.find('.message').remove();
+				$this._isContentLoaded = true;
 			});
 		}
 

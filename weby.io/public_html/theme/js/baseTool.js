@@ -27,7 +27,6 @@ BaseTool.prototype = {
 		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
 
 		App.addContentOverlay();
-		$('body').addClass('unselectable');
 	},
 
 	deactivate: function () {
@@ -35,7 +34,6 @@ BaseTool.prototype = {
 		this._mouseIconObject.remove();
 		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
 		App.removeContentOverlay();
-		$('body').removeClass('unselectable');
 	},
 
 	getToolbarIcon: function () {

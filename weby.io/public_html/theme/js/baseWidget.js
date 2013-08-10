@@ -156,12 +156,12 @@ BaseWidget.prototype = {
 		_widget.find('.widget-body').append(this._html);
 		_widget.attr('style', 'top: ' + this._top + 'px; left: ' + this._left + 'px; z-index: ' + this._zindex);
 		this._html = _widget;
-		this._html.find('.control').hide();
+		this._html.find('.control').css("visibility", "hidden");
 		return this._html;
 	},
 
 	checkUrl: function (url, callback) {
-		$.get(this._urlChecker+'/?url=' + url, function(data){
+		$.get(this._urlChecker + '/?url=' + url, function (data) {
 			callback(data);
 		});
 	},
@@ -238,12 +238,12 @@ BaseWidget.prototype = {
 
 	showResizeHandle: function () {
 		if (this._isResizable && this._isEditable) {
-			this._html.find('.resize-handle').show();
+			this._html.find('.resize-handle').css("visibility", "visible");
 		}
 	},
 
 	hideResizeHandle: function () {
-		this._html.find('.resize-handle').hide();
+		this._html.find('.resize-handle').css("visibility", "hidden");
 	},
 
 	lockWidget: function () {
@@ -287,13 +287,13 @@ BaseWidget.prototype = {
 	activate: function (e) {
 		if (this._isActive) {
 			// Don't remove input focus if input element was clicked
-			if(e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea'){
+			if (e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea') {
 				this._html.find(':focus').blur();
 			}
 			return;
 		}
 		this._isActive = true;
-		this._html.find('.control').show();
+		this._html.find('.control').css("visibility", "visible");
 		if (!this._isContentLoaded) {
 			this.hideResizeHandle();
 		}
@@ -319,13 +319,18 @@ BaseWidget.prototype = {
 
 	deactivate: function () {
 		this._isActive = this._isEditable = false;
-		this._html.find('.control').hide();
+		this._html.find('.control').css("visibility", "hidden");
 		this._html.removeClass('active');
 		this._html.removeClass('editable');
 		if (this._html.find('.widget-disabled-overlay').length === 0) {
 			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to edit</span></div>');
 			this.resize();
 		}
+	},
+
+	getLoadingHtml: function () {
+		return $('<div style="width: ' + this._html.width() + "px" + '; height: ' + this._html.height() + '"px" class="loading">Let\'s see what we have here...' +
+			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
 	},
 
 	resize: function () {

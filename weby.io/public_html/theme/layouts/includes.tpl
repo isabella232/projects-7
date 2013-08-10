@@ -25,6 +25,7 @@
     mouseEvent.js,
     jQueryFix.js,
     sprintf.min.js,
+    webyDrag.js,
     app.js,
     appToolbar.js,
     baseTool.js,

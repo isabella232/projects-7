@@ -2,6 +2,7 @@ var AppClass = function () {
 	var _content = $('#content');
 	var _header = $('#header');
 	var _appToolbar;
+	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _widgets = {};
 	var _viewportHeight;
@@ -38,16 +39,32 @@ var AppClass = function () {
 		});
 
 		// Widget is clicked
-		$('#content').on('click', '.widget', function (e) {
+		_content.on('click', '.widget', function (e) {
 			App.fireEvent("widget.click", e);
-			8
+		});
+
+		_content.on('mousedown', '.widget', function (e) {
+			App.fireEvent("widget.mousedown", e);
+			e.stopPropagation();
 		});
 
 		// Widget is double clicked
-		$('#content').on('dblclick', '.widget', function (e) {
+		_content.on('dblclick', '.widget', function (e) {
 			App.fireEvent("widget.dblclick", e);
 		});
 
+		// These content events should be forwarded to drag object exclusively
+		_content.mousemove(function (e) {
+			_webyDrag.contentMouseMove(e);
+		}).mouseup(function (e) {
+				_webyDrag.contentMouseUp(e);
+			}).mousedown(function (e) {
+				_webyDrag.contentMouseDown(e);
+			}).mouseleave(function (e) {
+				//_webyDrag.stopDrag(e);
+			});
+
+		// Recalculate editor dimensions when window is resized
 		$(window).resize(function () {
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
@@ -56,12 +73,9 @@ var AppClass = function () {
 			_toolbarWrapper.height(_viewportHeight - _header.height() - _heightOffset);
 		}).resize();
 
-		_content.dragOn({
-			cursor: 'default'
-		});
-		// Make sure dragging is ON
-		App.getContent().trigger("DragOn.turnOn");
+		_webyDrag = new WebyDrag(_content);
 
+		$('body').addClass('unselectable');
 	}
 
 	this.getViewportHeight = function () {
@@ -200,14 +214,14 @@ var AppClass = function () {
 	 * @param number Number in bytes
 	 * @param format (Optional) Default: "%3.2f %s" (Ex: 9.60 KB)
 	 */
-	this.formatFileSize = function(number, format){
-		if(typeof format == "undefined"){
+	this.formatFileSize = function (number, format) {
+		if (typeof format == "undefined") {
 			format = "%3.2f %s";
 		}
 		function formatMemory(num) {
 			var size = ['bytes', 'KB', 'MB', 'GB'];
-			for(var i in size){
-				if(num < 1024.0){
+			for (var i in size) {
+				if (num < 1024.0) {
 					return sprintf(format, num, size[i]);
 				}
 				num /= 1024.0
@@ -219,27 +233,22 @@ var AppClass = function () {
 	// EVENTS //
 	this.widgetDragStart = function (data) {
 		this.addContentOverlay();
-		App.getContent().trigger("DragOn.turnOff");
 	}
 
 	this.widgetDragStop = function (data) {
-		App.getContent().trigger("DragOn.turnOn");
 		this.removeContentOverlay();
 	}
 
 	this.widgetRotateStart = function (data) {
 		this.addContentOverlay();
-		App.getContent().trigger("DragOn.turnOff");
 	}
 
 	this.widgetRotateStop = function (data) {
-		App.getContent().trigger("DragOn.turnOn");
 		this.removeContentOverlay();
 	}
 
 	this.widgetResizeStart = function () {
 		this.addContentOverlay();
-		App.getContent().trigger("DragOn.turnOff");
 	}
 
 	this.widgetResize = function (data) {
@@ -247,7 +256,6 @@ var AppClass = function () {
 	}
 
 	this.widgetResizeStop = function (data) {
-		App.getContent().trigger("DragOn.turnOn");
 		this.removeContentOverlay();
 	}
 

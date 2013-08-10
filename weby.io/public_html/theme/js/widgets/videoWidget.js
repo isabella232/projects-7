@@ -107,9 +107,9 @@ function VideoWidget() {
 	}
 
 	this.attachLoading = function () {
+		var loadingHtml = this.getLoadingHtml();
 		this._html.find('.widget-body *').hide();
-		this._html.find('.widget-body').prepend('<div class="loading">Let\'s see what we have here...' +
-			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
+		this._html.find('.widget-body').prepend(loadingHtml);
 	}
 
 	this.removeLoading = function () {
