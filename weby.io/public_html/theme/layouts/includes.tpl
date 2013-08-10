@@ -52,21 +52,7 @@
     widgets/skyDriveWidget.js,
     widgets/soundCloudWidget.js,
     widgets/twitterWidget.js,
-    widgets/linkedInWidget.js,
+    widgets/linkedinWidget.js,
     widgets/fileWidget.js,
     init.js
 {/minify}
-
-<!-- Outer JS -->
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-<script src="http://www.google.com/jsapi"></script>
-<script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs"
-        data-app-key="685m5csc17munwq"></script>
-<script src="{$viewObject.themeWebPath}js/kendo.web.min.js"></script>
-
-
-<!-- The standard Google Loader script. -->
-<script type="text/javascript">
-    // TODO: move this to a more convenient place
-    google.load('picker', '1');
-</script>
