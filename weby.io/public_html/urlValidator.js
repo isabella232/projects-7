@@ -1,4 +1,5 @@
 var listeningPort = 8080;
+var listeningHost = 'mrcina.ath.cx';
 
 var http = require("http");
 var url = require("url");
@@ -27,6 +28,8 @@ function getMethod(host){
  */
 function checkURL(targetUrl, response) {
 	var parts = url.parse(targetUrl);
+
+	console.log(targetUrl)
 
 	var options = {
 		method: getMethod(parts.host),
@@ -73,5 +76,5 @@ server.on("error", function (e) {
 	// Just catch it...
 });
 
-server.listen(listeningPort, 'mrcina.ath.cx');
+server.listen(listeningPort, listeningHost);
 console.log("Listening...")

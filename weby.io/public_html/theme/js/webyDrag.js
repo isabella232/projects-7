@@ -12,15 +12,21 @@ var WebyDrag = function (el) {
 	// Previous position
 	var prevX;
 	var prevY;
+	// If this is set to true - current animation in progress will be aborted
+	var stopRelease = false;
 
 	this.contentMouseDown = function (event) {
 		drag = true;
+		stopRelease = true;
+		setTimeout(function(){
+			stopRelease = false;
+		}, 15);
 		lastX = prevX = event.clientX;
 		lastY = prevY = event.clientY;
 	}
 
 	this.contentMouseMove = function (event) {
-		if (!drag) {
+		if (!drag || !event.which) {
 			return;
 		}
 		var deltaX = (event.clientX - lastX) * deltaFactor;
@@ -48,27 +54,22 @@ var WebyDrag = function (el) {
 	this.contentMouseUp = function (event) {
 		if (drag) {
 			this.stopDrag();
-			this.animate(event);
+			_animate();
 		}
 	}
 
-	this.animate = function (event) {
-
-		function _animate(velocity, elMethod) {
-			velocity *= velocityFactor;
-			if (Math.abs(velocity) > 1) {
-				var intY = setInterval(function () {
-					var move = el[elMethod]() + velocity;
-					velocity *= 0.96;
-					if (Math.abs(velocity) < 1) {
-						return clearInterval(intY);
-					}
-					el[elMethod](move);
-				}, 10);
+	var _release = function (velocity, elMethod) {
+		velocity *= velocityFactor;
+		var animateInterval = setInterval(function () {
+			if (Math.abs(velocity) < 1 || stopRelease) {
+				return clearInterval(animateInterval);
 			}
-		}
+			el[elMethod](el[elMethod]() + (velocity *= 0.96));
+		}, 10);
+	}
 
-		_animate(prevX - lastX, 'scrollLeft');
-		_animate(prevY - lastY, 'scrollTop');
+	var _animate = function () {
+		_release(prevX - lastX, 'scrollLeft');
+		_release(prevY - lastY, 'scrollTop');
 	}
 };

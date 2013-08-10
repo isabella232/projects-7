@@ -57,8 +57,10 @@ var AppClass = function () {
 		_content.mousemove(function (e) {
 			_webyDrag.contentMouseMove(e);
 		}).mouseup(function (e) {
+				$('body').removeClass('unselectable');
 				_webyDrag.contentMouseUp(e);
 			}).mousedown(function (e) {
+				$('body').addClass('unselectable');
 				_webyDrag.contentMouseDown(e);
 			}).mouseleave(function (e) {
 				//_webyDrag.stopDrag(e);
@@ -74,8 +76,6 @@ var AppClass = function () {
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
-
-		$('body').addClass('unselectable');
 	}
 
 	this.getViewportHeight = function () {

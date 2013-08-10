@@ -59,8 +59,8 @@ function VideoWidget() {
 		this.attachLoading();
 		this._html.resizable("option", "aspectRatio", 333 / 250);
 		this._previewUrl = 'http://img.youtube.com/vi/' + this._videoId + '/0.jpg';
-
-		$this.checkUrl(this._previewUrl, function (data) {
+		
+		this.checkUrl(this._previewUrl, function (data) {
 			if (data.urlExists) {
 				var img = $('<img id="video-preview-' + $this._id + '" src="' + $this._previewUrl + '">');
 				img.bind("load", function () {
