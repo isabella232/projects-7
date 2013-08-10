@@ -12,17 +12,11 @@ var WebyDrag = function (el) {
 	// Previous position
 	var prevX;
 	var prevY;
-	// Animation (drag release) interval
-	var animateInterval;
 
 	this.contentMouseDown = function (event) {
 		drag = true;
 		lastX = prevX = event.clientX;
 		lastY = prevY = event.clientY;
-		console.log(animateInterval)
-		if(animateInterval != undefined){
-			clearInterval(animateInterval);
-		}
 	}
 
 	this.contentMouseMove = function (event) {
@@ -59,14 +53,15 @@ var WebyDrag = function (el) {
 	}
 
 	this.animate = function (event) {
+
 		function _animate(velocity, elMethod) {
 			velocity *= velocityFactor;
 			if (Math.abs(velocity) > 1) {
-				animateInterval = setInterval(function () {
+				var intY = setInterval(function () {
 					var move = el[elMethod]() + velocity;
 					velocity *= 0.96;
 					if (Math.abs(velocity) < 1) {
-						return clearInterval(animateInterval);
+						return clearInterval(intY);
 					}
 					el[elMethod](move);
 				}, 10);
