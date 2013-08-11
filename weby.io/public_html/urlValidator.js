@@ -11,12 +11,17 @@ process.on('uncaughtException', function (err) {
 
 // Map host to HTTP method (some services can not handle HEAD request)
 var map = {
-	'prezi.com': 'GET'
+	'prezi.com': {
+		method: 'GET'
+	}
 }
 
 function getMethod(host){
 	if(host in map){
-		return map[host];
+		var rule = map[host];
+		if('method' in rule){
+			return rule.method;
+		}
 	}
 	return 'HEAD';
 }
@@ -29,7 +34,7 @@ function getMethod(host){
 function checkURL(targetUrl, response) {
 	var parts = url.parse(targetUrl);
 
-	console.log(targetUrl)
+	console.log(targetUrl);
 
 	var options = {
 		method: getMethod(parts.host),
@@ -39,10 +44,11 @@ function checkURL(targetUrl, response) {
 	};
 	var req = http.request(options,function (res) {
 		if (res.statusCode == 200) {
-			sendResponse({
+			var data = {
 				urlExists: true,
 				data: res.headers
-			}, response);
+			};
+			sendResponse(data, response);
 		} else {
 			sendResponse({urlExists: false}, response);
 		}

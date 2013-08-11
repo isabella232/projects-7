@@ -29,6 +29,7 @@
     appToolbar.js,
     baseTool.js,
     baseWidget.js,
+    baseParser.js,
     baseIframeWidget.js,
     tools/textTool.js,
     tools/mapTool.js,
@@ -52,7 +53,12 @@
     widgets/skyDriveWidget.js,
     widgets/soundCloudWidget.js,
     widgets/twitterWidget.js,
-    widgets/linkedinWidget.js,
+    widgets/linkedInWidget.js,
     widgets/fileWidget.js,
+    parsers/videoParser.js,
+    parsers/linkedInParser.js,
+    parsers/preziParser.js,
+    parsers/slideShareParser.js,
+    parsers/skyDriveParser.js,
     init.js
 {/minify}

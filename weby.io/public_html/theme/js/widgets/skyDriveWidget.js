@@ -6,6 +6,8 @@ function SkyDriveWidget() {
 	this._parseErrorMessage = 'We couldn\'t insert your file. Please try a different one.';
 	this._inputElement = 'textarea';
 	this._loadingMessage = 'Loading your SkyDrive file...';
+	this._skyDriveId = '';
+	this._checkUrl = false;
 
 	this.getHTML = function () {
 		this._html = '<textarea type="text" placeholder="Paste a SkyDrive embed code">' + test + '</textarea>' +
@@ -13,23 +15,20 @@ function SkyDriveWidget() {
 		return BaseIframeWidget.prototype.getHTML.call(this);
 	};
 
-	this.getIframe = function (input) {
-		return this.parseSkyDriveLink(input);
+	this.getIframe = function () {
+		var id = 'skydrive-iframe-' + this._id;
+		this._alsoResize = "#" + id;
+		return '<iframe id="' + id + '" src="' + this._embedUrl + '" width="402" height="346" frameborder="0" scrolling="no"></iframe>';
 	}
 
-	this.parseSkyDriveLink = function (link) {
-		var original = link;
-		var width = 429;
-		var height = 357;
-		if (link.indexOf('iframe') >= 0) {
-			link = original.match(/src=['|"](.*?)['|"]/) ? RegExp.$1 : false;
-		} else {
+	// This is called to construct an embed URL which will then be validated
+	this.getTargetUrl = function (inputValue) {
+		// Validate link
+		var parser = new SkyDriveParser();
+		if (!(this._skyDriveId = parser.parse(inputValue))) {
 			return false;
 		}
-
-		var id = 'skydrive-iframe-' + this._id;
-		this._html.resizable("option", "alsoResize", "#" + id);
-		return '<iframe id="' + id + '" src="' + link + '" width="' + width + '" height="' + height + '" frameborder="0"></iframe>';
+		return 'https://skydrive.live.com/embed?' + this._skyDriveId;
 	}
 
 	var test = '<iframe src="https://skydrive.live.com/embed?cid=4FB5FBB0AEF80FA0&resid=4FB5FBB0AEF80FA0%21110&authkey=AFIFN-bkDsCn_iY&em=2" width="402" height="346" frameborder="0" scrolling="no"></iframe>';

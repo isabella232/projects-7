@@ -21,18 +21,16 @@ function LinkedInWidget() {
 
 	// This is called to construct an embed URL which will then be validated
 	this.getTargetUrl = function (inputValue) {
-		this.parseLinkedInLink(inputValue);
+		var parser = new LinkedInParser();
+		this._name = parser.parse(inputValue);
+		if(!this._name){
+			this._name = inputValue;
+		}
 		return 'http://www.linkedin.com/in/' + this._name;
 	}
 
-	this.parseLinkedInLink = function (link) {
-		this._name = link.match(/(?:https?:\/\/)?www\.linkedin\.com\/in\/(\S+)/) ? RegExp.$1 : link;
-	}
-
 	this.onIframeLoaded = function (width, height) {
-		this._html.find('.loading').remove();
-		this._html.find('.message').remove();
-		this._html.find('input').remove();
+		this._html.find('.loading, .message, input').remove();
 		this.showResizeHandle();
 		$('#linkedin-iframe-' + this._id).attr("width", width).attr("height", height).attr("disabled", "disabled");
 		this._isContentLoaded = true;

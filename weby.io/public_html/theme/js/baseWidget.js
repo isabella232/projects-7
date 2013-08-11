@@ -1,22 +1,121 @@
 var BaseWidget = function () {
+	/**
+	 * URL of the Node.js service for content validation
+	 */
 	this._urlChecker = 'http://mrcina.ath.cx:8080';
+
+	/**
+	 * Some services do not allow requests to the embed URL-s so you can turn off validation by setting this to `false`
+	 */
+	this._checkUrl = true;
+
+	/**
+	 * Widget rendered HTML
+	 */
 	this._html;
+
+	/**
+	 * Widget ID
+	 */
 	this._id;
+
+	/**
+	 * Top (y) position
+	 */
 	this._top;
+
+	/**
+	 * Left (x) position
+	 */
 	this._left;
+
+	/**
+	 * Width of the widget
+	 */
 	this._width;
+
+	/**
+	 * Height of the widget
+	 */
 	this._height;
-	this._rotation;
-	this._widgetClass;
+
+	/**
+	 * Rotation degrees
+	 */
+	this._rotation = 0;
+
+	/**
+	 * Custom widget class added to the widget if specified
+	 */
+	this._widgetClass = '';
+
+	/**
+	 * Should widget be allowed to drag
+	 */
 	this._isDraggable = true;
+
+	/**
+	 * Should widget be allowed to resize
+	 */
 	this._isResizable = true;
+
+	/**
+	 * Should widget be allowed to rotate
+	 */
 	this._isRotatable = true;
+
+	/**
+	 * Is widget active (selected) ?
+	 */
 	this._isActive = false;
+
+	/**
+	 * Is widget currently in interaction mode?
+	 */
 	this._isEditable = false;
+
+	/**
+	 * Is widget currently locked?
+	 */
 	this._isLocked = false;
+
+	/**
+	 * Is widget content loaded?
+	 * If TRUE - means that the actual widget content was successfully loaded into the widget body (map, video, etc.)
+	 */
 	this._isContentLoaded = false;
+
+	/**
+	 * Input element of the widget
+	 * Base class binds events to this selector inside widget html
+	 */
+	this._inputElement = 'input';
+
+	/**
+	 * Z-index of the widget
+	 */
 	this._zindex = 1;
+
+	/**
+	 * If TRUE - means that it's not a click but a `mouse up` after drag
+	 */
 	this._mouseUpAfterDrag = false;
+
+	/**
+	 * Rotate factor is used to tweak rotation sensitivity
+	 */
+	this._rotateFactor = 0.3;
+
+	/**
+	 * NOTE!!!!
+	 * In UI components events are fired to enforce the use of App event manager and not direct object modification
+	 * Refer to _base options to see which events can be caught by implementing corresponding methods
+	 */
+
+	/**
+	 * Common draggable options
+	 * To catch events in your widget - implement "widgetDrag", "widgetDragStart" and "widgetDragStop" methods
+	 */
 	this._baseDraggableOptions = {
 		//handle: '.drag-handle'
 		cancel: '.resize-handle, .widget-body',
@@ -40,6 +139,11 @@ var BaseWidget = function () {
 			App.fireEvent("widget.drag", {element: $(this), event: event, ui: ui});
 		}
 	};
+
+	/**
+	 * Common rotatable options
+	 * To catch events in your widget - implement "widgetRotate", "widgetRotateStart" and "widgetRotateStop" methods
+	 */
 	this._baseRotatableOptions = {
 		handle: '.rotate-handle',
 		opacity: 0.01,
@@ -47,9 +151,9 @@ var BaseWidget = function () {
 		drag: function (event, ui) {
 			var $this = $(this).data('widget');
 			var position = $this._rotateStart;
-			var currRotate = $this.getRotationDegrees($(this));
+			var currRotate = $this._rotation;
 
-			var diff = Math.abs(event.pageX - position);
+			var diff = Math.abs(event.pageX - position) * $this._rotateFactor;
 
 			if (event.pageX > position) {
 				degree = currRotate - diff;
@@ -67,6 +171,7 @@ var BaseWidget = function () {
 				'transform': rotateCSS,
 				'-webkit-transform': rotateCSS
 			});
+			App.fireEvent("widget.rotate", {element: $(this), event: event, ui: ui});
 		},
 		start: function (event, ui) {
 			App.fireEvent("widget.rotate.start", {element: $(this), event: event, ui: ui});
@@ -80,6 +185,11 @@ var BaseWidget = function () {
 			}, 50);
 		}
 	};
+
+	/**
+	 * Common resizable options
+	 * To catch events in your widget - implement "widgetResize", "widgetResizeStart" and "widgetResizeStop" methods
+	 */
 	this._baseResizableOptions = {
 		handles: {
 			se: '.resize-handle'
@@ -96,34 +206,69 @@ var BaseWidget = function () {
 		}
 
 	};
+
+	/**
+	 * Widget draggable options that will be merged with _baseDraggableOptions and then passed to draggable object
+	 */
 	this._draggableOptions = {};
+
+	/**
+	 * Widget rotatable options that will be merged with _baseRotatableOptions and then passed to rotatable object
+	 */
 	this._rotatableOptions = {};
+
+	/**
+	 * Widget resizable options that will be merged with _baseResizableOptions and then passed to resizable object
+	 */
 	this._resizableOptions = {};
 }
 
 BaseWidget.prototype = {
 
+	/**
+	 * This method should be called at the end of your widget constructor
+	 * It will merge UI options for later attachment to the widget
+	 */
 	init: function () {
 		$.extend(this._baseDraggableOptions, this._draggableOptions);
 		$.extend(this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(this._baseResizableOptions, this._resizableOptions);
 	},
 
+	/**
+	 * Delete current widget
+	 */
 	delete: function () {
-		// Override if need to perform cleanup actions
+		// Remove widget HTML
 		this._html.remove();
+		// Remove widget from the App
 		App.removeWidget(this._id);
 	},
 
+	/**
+	 * Get widget id
+	 * @returns int Id
+	 */
 	getId: function () {
 		return this._id;
 	},
 
+	/**
+	 * Set widget id
+	 * @param id
+	 * @returns this
+	 */
 	setId: function (id) {
 		this._id = id;
 		return this;
 	},
 
+	/**
+	 * Set widget position
+	 * @param int x
+	 * @param int y
+	 * @returns this
+	 */
 	setPosition: function (x, y) {
 		this._left = x;
 		this._top = y;
@@ -133,6 +278,10 @@ BaseWidget.prototype = {
 		return this;
 	},
 
+	/**
+	 * Get widget HTML
+	 * @returns jQuery DOM object
+	 */
 	getHTML: function () {
 		var $this = this;
 		var _widget = $('<div data-id="' + this._id + '" class="widget"><div class="widget-body ' + this._widgetClass + '">' +
@@ -160,12 +309,28 @@ BaseWidget.prototype = {
 		return this._html;
 	},
 
+	/**
+	 * Check if given URL really exists and is accessible
+	 * @param url
+	 * @param callback Callback to execute after the check
+	 *
+	 * Data passed to callback: {urlExists: true/false, data: {// headerData}}
+	 */
 	checkUrl: function (url, callback) {
-		$.get(this._urlChecker + '/?url=' + url, function (data) {
+		if (!this._checkUrl) {
+			var data = {urlExists: true};
 			callback(data);
-		});
+		} else {
+			$.get(this._urlChecker + '/?url=' + encodeURIComponent(url) + '&t=' + new Date().getTime(), function (data) {
+				callback(data);
+			});
+		}
 	},
 
+	/**
+	 * On widget inserted
+	 * Called after the widget was inserted into the DOM
+	 */
 	onWidgetInserted: function () {
 		var $this = this;
 		if (this._isDraggable) {
@@ -219,33 +384,155 @@ BaseWidget.prototype = {
 
 	},
 
-	getRotationDegrees: function (obj) {
-		var matrix = obj.css("-webkit-transform") ||
-			obj.css("-moz-transform") ||
-			obj.css("-ms-transform") ||
-			obj.css("-o-transform") ||
-			obj.css("transform");
-		if (matrix !== 'none') {
-			var values = matrix.split('(')[1].split(')')[0].split(',');
-			var a = values[0];
-			var b = values[1];
-			var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-		} else {
-			var angle = 0;
-		}
-		return angle;
-	},
-
+	/**
+	 * Show resize handle if this widget is resizable
+	 */
 	showResizeHandle: function () {
-		if (this._isResizable && this._isEditable) {
+		if (this._isResizable) {
 			this._html.find('.resize-handle').css("visibility", "visible");
 		}
 	},
 
+	/**
+	 * Hide resize handle
+	 */
 	hideResizeHandle: function () {
 		this._html.find('.resize-handle').css("visibility", "hidden");
 	},
 
+	/**
+	 * Get next usable z-index
+	 * @returns {number}
+	 */
+	getNextZIndex: function () {
+		var maxZ = 0;
+		$('.widget').each(function () {
+			var z = parseInt($(this).css('z-index'), 10);
+			if (maxZ < z) {
+				maxZ = z;
+			}
+		});
+		return ++maxZ;
+	},
+
+	/**
+	 * Activate widget
+	 * Show widget handles and interaction layer
+	 * @param e Mouse event
+	 */
+	activate: function (e) {
+		if (this._isActive) {
+			// Don't remove input focus if input element was clicked
+			if (e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea') {
+				this._html.find(':focus').blur();
+			}
+			return;
+		}
+		this._isActive = true;
+		this._html.draggable("enable");
+		this._html.find('.control').css("visibility", "visible");
+		if (!this._isContentLoaded) {
+			this.hideResizeHandle();
+		}
+		this._html.addClass('active');
+		if (!this._isContentLoaded) {
+			this.makeEditable();
+		}
+
+		if ('onActivate' in this) {
+			this.onActivate();
+		}
+	},
+
+	/**
+	 * Make widget editable (calls widget `onMakeEditable` method if implemented)
+	 * This is triggered on widget doubleclick
+	 * Widget handles are hidden and you can interact with widget content
+	 */
+	makeEditable: function () {
+		this._isEditable = true;
+		this._html.find('.widget-disabled-overlay').remove();
+		this._html.addClass('editable');
+		if (this._isContentLoaded) {
+			this._html.find('.control').css("visibility", "hidden");
+		}
+
+		if ('onMakeEditable' in this) {
+			this.onMakeEditable();
+		}
+	},
+
+	/**
+	 * Deactivate widget
+	 * Hide all handles, restore interaction layer, disable dragging
+	 */
+	deactivate: function () {
+		this._isActive = this._isEditable = false;
+		this._html.find('.control').css("visibility", "hidden");
+		this._html.removeClass('active');
+		this._html.removeClass('editable');
+		this._html.draggable("disable");
+		if (this._html.find('.widget-disabled-overlay').length === 0) {
+			// Append interaction layer and set it's line-height to height of the widget
+			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to interact</span></div>');
+			this._resize();
+		}
+	},
+
+	/**
+	 * Get HTML that represents LOADING screen
+	 * @returns {*|jQuery|HTMLElement}
+	 */
+	getLoadingHtml: function () {
+		return $('<div style="width: ' + this._html.width() + "px" + '; height: ' + this._html.height() + '"px" class="loading">Let\'s see what we have here...' +
+			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
+	},
+
+	/**
+	 * Set data and try loading
+	 * @param data
+	 */
+	setData: function (data) {
+		this._html.find(this._inputElement).val(data).blur();
+	},
+
+	// EVENTS
+
+	/**
+	 * Event: widget.resize.stop
+	 * @param data
+	 */
+	widgetResizeStop: function (data) {
+		this._width = data.element.width();
+		this._height = data.element.height();
+	},
+
+	widgetResize: function (data) {
+		this._resize();
+	},
+
+	/**
+	 * Event: widget.drag.stop
+	 * @param data
+	 */
+	widgetDragStop: function (data) {
+		this._top = data.element.css('top').replace('px', '');
+		this._left = data.element.css('left').replace('px', '');
+	},
+
+	/**
+	 * (PRIVATE)
+	 *
+	 * Resize whatever you need inside the widget
+	 * (Currently we only resize the interaction layer)
+	 */
+	_resize: function () {
+		this._html.find('span.text').css('line-height', this._html.outerHeight() + 'px');
+	},
+
+	/**
+	 * NOT USED FOR NOW!!!!!!!!!!!!!!!!!!!!!
+	 */
 	lockWidget: function () {
 		this._html.find('.control').not('.lock-handle').hide();
 		this._locked = true;
@@ -271,80 +558,5 @@ BaseWidget.prototype = {
 		if (this._zindex > 1) {
 			this.setZIndex(this._zindex - 1);
 		}
-	},
-
-	getNextZIndex: function () {
-		var maxZ = 0;
-		$('.widget').each(function () {
-			var z = parseInt($(this).css('z-index'), 10);
-			if (maxZ < z) {
-				maxZ = z;
-			}
-		});
-		return ++maxZ;
-	},
-
-	activate: function (e) {
-		if (this._isActive) {
-			// Don't remove input focus if input element was clicked
-			if (e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea') {
-				this._html.find(':focus').blur();
-			}
-			return;
-		}
-		this._isActive = true;
-		this._html.find('.control').css("visibility", "visible");
-		if (!this._isContentLoaded) {
-			this.hideResizeHandle();
-		}
-		this._html.addClass('active');
-		if (!this._isContentLoaded) {
-			this.makeEditable();
-		}
-
-		if ('onActivate' in this) {
-			this.onActivate();
-		}
-	},
-
-	makeEditable: function () {
-		this._isEditable = true;
-		this._html.find('.widget-disabled-overlay').remove();
-		this._html.addClass('editable');
-
-		if ('onMakeEditable' in this) {
-			this.onMakeEditable();
-		}
-	},
-
-	deactivate: function () {
-		this._isActive = this._isEditable = false;
-		this._html.find('.control').css("visibility", "hidden");
-		this._html.removeClass('active');
-		this._html.removeClass('editable');
-		if (this._html.find('.widget-disabled-overlay').length === 0) {
-			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to edit</span></div>');
-			this.resize();
-		}
-	},
-
-	getLoadingHtml: function () {
-		return $('<div style="width: ' + this._html.width() + "px" + '; height: ' + this._html.height() + '"px" class="loading">Let\'s see what we have here...' +
-			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
-	},
-
-	resize: function () {
-		this._html.find('span.text').css('line-height', this._html.outerHeight() + 'px');
-	},
-
-	widgetResizeStop: function (data) {
-		this._width = data.element.width();
-		this._height = data.element.height();
-	},
-
-	widgetDragStop: function (data) {
-		this._top = data.element.css('top').replace('px', '');
-		this._left = data.element.css('left').replace('px', '');
 	}
-}
-;
+};

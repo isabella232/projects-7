@@ -14,6 +14,17 @@ var AppClass = function () {
 	var _widthOffset = 7;
 
 	shortcut.add('Ctrl+V', function (e) {
+		if($('body :focus').length > 0){
+			return;
+		}
+		var bucket = $('<textarea id="clipboard" style="position:absolute; top:-999999px; left: -999999px"></textarea>');
+		$('body').append(bucket);
+		bucket.focus();
+		setTimeout(function(){
+			var data = bucket.val();
+			bucket.remove();
+			App.contentPasted(data);
+		}, 100);
 
 	}, {propagate: true});
 
@@ -30,6 +41,15 @@ var AppClass = function () {
 		_appToolbar.init();
 
 		// Bind events
+		$(document).keydown(function(e) {
+			var element = e.target.nodeName.toLowerCase();
+			if (element != 'input' && element != 'textarea') {
+				if (e.keyCode === 8) {
+					return false;
+				}
+			}
+		});
+
 		$('body').mousemove(function (e) {
 			App.fireEvent("document.mouse.move", e);
 		});
@@ -252,7 +272,7 @@ var AppClass = function () {
 	}
 
 	this.widgetResize = function (data) {
-		_activeWidget.resize();
+		// Nothing
 	}
 
 	this.widgetResizeStop = function (data) {
@@ -289,5 +309,29 @@ var AppClass = function () {
 		if (_activeWidget != null) {
 			_activeWidget.makeEditable();
 		}
+	}
+
+	this.contentPasted = function(data){
+		var tools = _appToolbar.getAllTools();
+		for(var i in tools){
+			var tool = tools[i];
+			// Text and file tools are processed in the end
+			if(tool.getTag() == 'text' || tool.getTag() == 'file'){
+				continue;
+			}
+			if(tool.canHandle(data)){
+				tool.createWidgetFromParser();
+				return;
+			}
+		}
+
+		//Check file
+		if(tools['file'].canHandle(data)){
+			tools['file'].createWidgetFromParser();
+		}
+
+		// Insert plain text
+		var textWidget = tools['text'].createWidgetAt(100, 100);
+		textWidget.setData(data);
 	}
 }

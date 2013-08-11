@@ -1,15 +1,10 @@
 var SoundCloudTool = function (parent) {
 	this._toolTag = 'soundcloud';
 	this._mouseIcon = 'images/soundcloud.png';
-	this._mouseText = 'Click to insert a SoundCloud file';
+	this._mouseText = '{action} to insert a SoundCloud file';
 	this._tooltipText = 'SoundCloud';
 	this._parent = parent;
-
-	this.contentClick = function (e) {
-		BaseTool.prototype.contentClick.call(this, e);
-		var widget = new SoundCloudWidget();
-		this.insertWidgetAt(widget, e.offsetX, e.offsetY);
-	}
+	this._widgetClass = 'SoundCloudWidget';
 }
 
 SoundCloudTool.prototype = new BaseTool();

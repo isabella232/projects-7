@@ -14,7 +14,7 @@ function PreziWidget() {
 		return BaseIframeWidget.prototype.getHTML.call(this);
 	};
 
-	this.getIframe = function (targetUrl) {
+	this.getIframe = function () {
 		var id = 'prezi-iframe-' + this._id;
 		this._alsoResize = "#" + id;
 		return '<iframe id="' + id + '" src="' + WEB + 'embed/prezi/?preziId=' + this._preziId + '" width="550" height="400" frameBorder="0"></iframe>';
@@ -22,23 +22,12 @@ function PreziWidget() {
 
 	// This is called to construct an embed URL which will then be validated
 	this.getTargetUrl = function (inputValue) {
-		this.parsePreziLink(inputValue);
-		if (this._preziId) {
+		var parser = new PreziParser();
+		if ((this._preziId = parser.parse(inputValue))) {
 			return 'http://prezi.com/embed/' + this._preziId + '/';
 		}
 		return false;
 
-	}
-
-	this.parsePreziLink = function (link) {
-		var original = link;
-		if (link.indexOf('iframe') >= 0) {
-			var regex = /src="(.*?)"/;
-			link = original.match(regex) ? RegExp.$1 : false;
-		}
-		// Validate link
-		var regex = /https?:\/\/(?:www\.)?prezi.com\/embed\/(.*?)\//;
-		this._preziId = link.match(regex) ? RegExp.$1 : false;
 	}
 
 	BaseIframeWidget.prototype.init.call(this);

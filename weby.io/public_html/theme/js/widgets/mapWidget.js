@@ -51,7 +51,11 @@ var MapWidget = function () {
 		App.deactivateTool();
 		this._html.find('input').focus();
 		this.hideResizeHandle();
-		this._html.find('input').blur(function () {
+		this._html.find(this._inputElement).bind("blur keydown", function (e) {
+			// If key was pressed and it is not ENTER
+			if(e.type == "keydown" && e.keyCode != 13){
+				return;
+			}
 			if ($(this).val() != '') {
 				_initializeMap();
 				_codeAddress($(this).val());
@@ -144,7 +148,6 @@ var MapWidget = function () {
 					}
 				}
 				$this._html.find('.map').height(mapHeight - 28);
-				$this.resize();
 				_centerMarker();
 				$this._isContentLoaded = true;
 			} else {

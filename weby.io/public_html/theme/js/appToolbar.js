@@ -4,11 +4,11 @@ var AppToolbar = function () {
 	var _toolBar = $('<div id="toolbar"></div>')
 	var _tools = {};
 
-	this.init = function(){
+	this.init = function () {
 		_tools = {
 			text: new TextTool(self),
-            file: new FileTool(self),
-            map: new MapTool(self),
+			file: new FileTool(self),
+			map: new MapTool(self),
 			video: new VideoTool(self),
 			instagram: new InstagramTool(self),
 			prezi: new PreziTool(self),
@@ -26,6 +26,8 @@ var AppToolbar = function () {
 		});
 
 		$('#toolbar-wrapper').append(_toolBar);
+
+		_makeToolsDraggable();
 
 		_toolBar.find('a.tool-icon').click(function (e) {
 			App.fireEvent("tool.icon.clicked", e, true);
@@ -50,7 +52,7 @@ var AppToolbar = function () {
 		});
 	}
 
-	this.getElement = function(){
+	this.getElement = function () {
 		return _toolBar;
 	}
 
@@ -61,28 +63,65 @@ var AppToolbar = function () {
 		return _tools[_activeTool];
 	}
 
-	this.getAllTools = function(){
+	this.getAllTools = function () {
 		return _tools;
 	}
 
-	var _activateTool = function (tool) {
+	var _activateTool = function (tool, action) {
 		if (_activeTool != null) {
 			_deactivateTool();
 		}
 		_activeTool = tool;
-		App.getContent().trigger('DragOn.toggle');
-		self.getActiveTool().activate();
+		self.getActiveTool().activate(action);
 	}
 
 	var _deactivateTool = function () {
-		if(_activeTool == null){
+		if (_activeTool == null) {
 			return;
 		}
 		self.getActiveTool().deactivate();
-		App.getContent().trigger('DragOn.toggle');
 		_activeTool = null;
 	}
 
 	this.deactivateTool = _deactivateTool;
+
+	var _makeToolsDraggable = function(){
+		// Draggable tools
+		var drag = _toolBar.find('a.tool-icon').draggable({
+			helper: false,
+			containment: [117, 72],
+			scroll: true,
+			scrollSensitivity: 100,
+			start: function(event, ui){
+				var tool = $(this).attr('data-tool');
+				$(this).data('tool', tool);
+				drag.draggable('option', 'revert', false);
+				_activateTool(tool, 'drag');
+			},
+			stop: function (event, ui) {
+				var tool = $(this).data('tool');
+				_deactivateTool(tool);
+				if(drag.draggable('option', 'revert')){
+					return;
+				}
+				var activeTool = _tools[tool];
+
+				// Make sure the drop was made inside the workspace
+				if((event.clientX - _toolBar.outerWidth()) < 1 || event.clientY - $('#header').outerHeight() < 1){
+					return;
+				}
+
+				var x = event.clientX - _toolBar.outerWidth() + App.getContent()[0].scrollLeft;
+				var y = event.clientY - $('#header').outerHeight() + App.getContent()[0].scrollTop;
+				activeTool.createWidgetAt(x, y);
+			}
+		});
+
+		$(document).keydown(function (e) {
+			if (e.keyCode == 27) {
+				drag.draggable('option', 'revert', true).trigger('mouseup');
+			}
+		});
+	}
 }
 
