@@ -53,7 +53,7 @@ var BaseIframeWidget = function () {
 		}
 	};
 
-	this.init = function(){
+	this.init = function () {
 		BaseWidget.prototype.init.call(this);
 	}
 
@@ -78,37 +78,36 @@ var BaseIframeWidget = function () {
 
 		this._html.find(this._inputElement).bind("blur keydown", function (e) {
 			// If key was pressed and it is not ENTER
-			if(e.type == "keydown" && e.keyCode != 13){
+			if (e.type == "keydown" && e.keyCode != 13) {
 				return;
 			}
 			var input = $(this);
 			if (input.val() != '') {
 				var targetUrl = $this.getTargetUrl(input.val());
 				// If no targetUrl was returned - show parse error message
-				if(!targetUrl){
+				if (!targetUrl) {
 					$this._html.find('.message').html($this._parseErrorMessage);
 					input.val('');
-					if($this._isActive){
+					if ($this._isActive) {
 						input.focus();
 					}
 					return;
 				}
 				// If targetUrl was received - check if it really exists
-				var loadingHtml = $this.getLoadingHtml();
-				$this._html.find('.widget-body *').hide();
-				$this._html.find('.widget-body').prepend(loadingHtml);
+				$this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
+				$this._html.find('.widget-body > *:not(".loading")').hide();
 
 				$this.checkUrl(targetUrl, function (data) {
-					$this._html.find('.loading').remove();
 					if (data.urlExists) {
 						$this._embedUrl = targetUrl;
 						var iframe = $this.getIframe();
 						$this._insertIframe(input, iframe);
 					} else {
+						$this.hideLoading();
 						$this._html.find('.widget-body *').show();
 						$this._html.find('.message').html($this._parseErrorMessage);
 						input.val('');
-						if($this._isActive){
+						if ($this._isActive) {
 							input.focus();
 						}
 						return;
@@ -138,13 +137,10 @@ var BaseIframeWidget = function () {
 		iframe.setAttribute("width", 0);
 		iframe.setAttribute("height", 0);
 
-		input.hide();
 		$(iframe).insertBefore(input);
 
 		// Append LOADING screen (move to BaseWidget)
-		$this._html.find('.widget-body').prepend('<div class="loading">' + $this._loadingMessage +
-			'<br /><span>This may take a few moments, please be patient.</span></div>');
-
+		$this.showLoading();
 		var jIframe = $('#' + $(iframe).attr('id'));
 
 		// Bind `load` if no custom handler is specified
@@ -152,18 +148,18 @@ var BaseIframeWidget = function () {
 			jIframe.bind('load', function () {
 				jIframe.attr("width", iframeWidth).attr("height", iframeHeight);
 				input.remove();
-				$this._html.find('.loading').remove();
+				$this.hideLoading();
 				$this.showResizeHandle();
 				$this._html.find('.message').remove();
 				$this._isContentLoaded = true;
-                if('onContentLoaded' in $this){
-                    $this.onContentLoaded();
-                }
+				if ('onContentLoaded' in $this) {
+					$this.onContentLoaded();
+				}
 			});
 		}
 
 		// If custom iframe load handler is specified - call it and pass it a jQuery iframe object
-		if(typeof $this._customOnLoadHandler == 'string'){
+		if (typeof $this._customOnLoadHandler == 'string') {
 			$this[$this._customOnLoadHandler](jIframe);
 		}
 

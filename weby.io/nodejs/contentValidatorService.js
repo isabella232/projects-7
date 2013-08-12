@@ -26,7 +26,7 @@ var listeners = [];
 
 var spawn = require('child_process').spawn;
 for (var i = 0; i < numberOfListeners; i++) {
-	listeners[i] = spawn("node", ['./urlValidator.js', hostIp + ':' + (hostPort + (i + 1))]);
+	listeners[i] = spawn("node", ['./contentValidator.js', hostIp + ':' + (hostPort + (i + 1))]);
 	addresses.push({
 		host: hostIp,
 		port: hostPort + (i + 1)

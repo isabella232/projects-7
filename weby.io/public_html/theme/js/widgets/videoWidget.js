@@ -15,7 +15,8 @@ function VideoWidget() {
 	};
 
 	this.getHTML = function () {
-		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="http://www.youtube.com/watch?v=FNQowwwwYa0"/>' +
+		/*this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="http://www.youtube.com/watch?v=FNQowwwwYa0"/>' +*/
+		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="https://vimeo.com/69722654"/>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
@@ -61,13 +62,15 @@ function VideoWidget() {
 
 	this.createYoutubePreview = function () {
 		var $this = this;
+		var width = 560;
+		var height = 315;
 		this.attachLoading();
-		this._html.resizable("option", "aspectRatio", 333 / 250);
-		this._previewUrl = 'http://img.youtube.com/vi/' + this._videoId + '/0.jpg';
+		this._html.resizable("option", "aspectRatio", width / height);
+		this._previewUrl = 'https://i1.ytimg.com/vi/' + this._videoId + '/0.jpg';
 
 		this.checkUrl(this._previewUrl, function (data) {
 			if (data.urlExists) {
-				var img = $('<img id="video-preview-' + $this._id + '" src="' + $this._previewUrl + '">');
+				var img = $('<img style="width:' + width + 'px; height:' + height + 'px" id="video-preview-' + $this._id + '" src="' + $this._previewUrl + '">');
 				img.bind("load", function () {
 					$this.removeLoading();
 					$this.createPlayOverlay();
@@ -114,9 +117,8 @@ function VideoWidget() {
 	}
 
 	this.attachLoading = function () {
-		var loadingHtml = this.getLoadingHtml();
-		this._html.find('.widget-body *').hide();
-		this._html.find('.widget-body').prepend(loadingHtml);
+		this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
+		this._html.find('.widget-body > *:not(".loading")').hide();
 	}
 
 	this.removeLoading = function () {
@@ -131,6 +133,7 @@ function VideoWidget() {
 		var playOverlay = $('<div class="play-overlay"></div>');
 		playOverlay.height(height).width(width);
 		playOverlay.click(function () {
+			$this._html.find('.play-overlay').remove();
 			$this._insertIframe($this.getIframe());
 		});
 		this._html.find('.widget-body').prepend(playOverlay);
@@ -139,14 +142,16 @@ function VideoWidget() {
 	}
 
 	this.getIframe = function () {
+		var width = this._html.width();
+		var height = this._html.height();
 		var id = 'video-iframe-' + this._id;
 		this._alsoResize = '#' + id;
 		if (this._videoType == 'youtube') {
 			this._embedUrl = 'http://www.youtube.com/embed/' + this._videoId + '?wmode=transparent&autoplay=1';
-			return $('<iframe id="' + id + '" src="' + this._embedUrl + '" width="560" height="315" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
+			return $('<iframe id="' + id + '" src="' + this._embedUrl + '" width="'+width+'" height="'+height+'" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
 		}
 		this._embedUrl = 'http://player.vimeo.com/video/' + this._videoId + '?wmode=transparent&autoplay=1';
-		return $('<iframe id="' + id + '" src="' + this._embedUrl + '" frameborder="0" wmode="Opaque" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
+		return $('<iframe id="' + id + '" src="' + this._embedUrl + '" width="'+width+'" height="'+height+'" frameborder="0" wmode="Opaque" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
 
 	}
 
@@ -163,25 +168,22 @@ function VideoWidget() {
 		$this._html.find('.widget-body').append(iframe);
 
 		// Append LOADING screen (move to BaseWidget)
-		$this._html.find('.widget-body').prepend('<div class="loading" style="width: '+$this._html.width()+'px; height: '+$this._html.height()+'px">' + $this._loadingMessage +
-			'<br /><span>This may take a few moments, please be patient.</span></div>');
-		$('#video-preview-' + $this._id+', .play-overlay').remove();
+		$('#video-preview-' + $this._id + ', .play-overlay').remove();
 
 		var jIframe = $('#' + $(iframe).attr('id'));
 
 		jIframe.bind('load', function () {
-			jIframe[0].setAttribute("width", iframeWidth);
-			jIframe[0].setAttribute("height", iframeHeight);
-			$this._html.find('.loading, .play-overlay').remove();
-			$this.showResizeHandle();
-			$this._isContentLoaded = true;
+			//$this._html.find('.loading').remove();
+			jIframe.attr("height", iframeHeight);
+			jIframe.attr("width", iframeWidth);
+			$this._html.resizable("option", "aspectRatio", iframeWidth / iframeHeight);
 		});
+
+		$this.showResizeHandle();
+		$this._isContentLoaded = true;
 
 		if ($this._alsoResize) {
 			$this._html.resizable("option", "alsoResize", $this._alsoResize);
-		}
-		if ($this._aspectRatio) {
-			$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
 		}
 		App.fireEvent("widget.resize.stop", {element: $this._html});
 	}

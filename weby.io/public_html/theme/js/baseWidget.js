@@ -2,7 +2,7 @@ var BaseWidget = function () {
 	/**
 	 * URL of the Node.js service for content validation
 	 */
-	this._urlChecker = 'http://192.168.1.24:5000';
+	this._urlChecker = 'http://mrcina.ath.cx:8080';
 
 	/**
 	 * Some services do not allow requests to the embed URL-s so you can turn off validation by setting this to `false`
@@ -119,7 +119,7 @@ var BaseWidget = function () {
 	this._baseDraggableOptions = {
 		//handle: '.drag-handle'
 		cancel: '.resize-handle, .widget-body',
-		containment: [117, 72],
+		containment: [120, 72],
 		scroll: true,
 		scrollSensitivity: 100,
 		start: function (event, ui) {
@@ -480,21 +480,52 @@ BaseWidget.prototype = {
 	},
 
 	/**
-	 * Get HTML that represents LOADING screen
-	 * @returns {*|jQuery|HTMLElement}
-	 */
-	getLoadingHtml: function () {
-		return $('<div style="width: ' + this._html.width() + "px" + '; height: ' + this._html.height() + '"px" class="loading">Let\'s see what we have here...' +
-			'<br /><span>Validating your URLs may take a few moments, please be patient.</span></div>');
-	},
-
-	/**
 	 * Set data and try loading
 	 * @param data
 	 */
 	setData: function (data) {
 		this._html.find(this._inputElement).val(data).blur();
 	},
+
+	/**
+	 * Show loading in the widget
+	 * @param mainText
+	 * @param secondaryText
+	 */
+	showLoading: function (mainText, secondaryText) {
+		if (typeof mainText == "undefined" || mainText == '') {
+			mainText = this._loadingMessage;
+		}
+
+		if (typeof secondaryText == "undefined" || secondaryText == '') {
+			secondaryText = 'This may take a few moments, please be patient.';
+		}
+
+		var widgetHeight = this._html.find('.widget-body').height();
+		var widgetWidth = this._html.find('.widget-body').width();
+
+		var style = {
+			width: widgetWidth + 'px',
+			height: widgetHeight - (widgetHeight / 2) - 4 + 'px',
+			'padding-top': (widgetHeight / 2) - 20 + 'px'
+		};
+
+		var loading = $('<div class="loading"><div class="loading-message">' + mainText + '<br /><span>' + secondaryText + '</span></div></div>').css(style);
+		if (this._html.find('.loading').length > 0) {
+			this._html.find('.loading').replaceWith(loading);
+		} else {
+			this._html.find('.widget-body').prepend(loading);
+		}
+	},
+
+	hideLoading: function () {
+		this._html.find('.widget-body .loading').remove();
+	},
+
+	setContainment: function(containment){
+		this._html.draggable("option", "containment", containment);
+	},
+
 
 	// EVENTS
 

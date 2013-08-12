@@ -13,14 +13,17 @@ var AppClass = function () {
 	// Manual width offset for tweaking purposes
 	var _widthOffset = 7;
 
+	/**
+	 * Catch Ctrl+V key press
+	 */
 	shortcut.add('Ctrl+V', function (e) {
-		if($('body :focus').length > 0){
+		if ($('body :focus').length > 0) {
 			return;
 		}
 		var bucket = $('<textarea id="clipboard" style="position:absolute; top:-999999px; left: -999999px"></textarea>');
 		$('body').append(bucket);
 		bucket.focus();
-		setTimeout(function(){
+		setTimeout(function () {
 			var data = bucket.val();
 			bucket.remove();
 			App.contentPasted(data);
@@ -28,6 +31,9 @@ var AppClass = function () {
 
 	}, {propagate: true});
 
+	/**
+	 * Catch delete key press
+	 */
 	$(window).keydown(function (e) {
 		if (e.keyCode == 46) {
 			if (_activeWidget != null && _activeWidget._html.find(':focus').length === 0) {
@@ -36,13 +42,15 @@ var AppClass = function () {
 		}
 	});
 
-
+	/**
+	 * Application bootstrap
+	 */
 	this.init = function () {
 		_appToolbar = new AppToolbar();
 		_appToolbar.init();
 
 		// Bind events
-		$(document).keydown(function(e) {
+		$(document).keydown(function (e) {
 			var element = e.target.nodeName.toLowerCase();
 			if (element != 'input' && element != 'textarea') {
 				if (e.keyCode === 8) {
@@ -93,32 +101,47 @@ var AppClass = function () {
 			_viewportHeight = $(window).height();
 			_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
 			_content.height(_viewportHeight - _header.height() - _heightOffset);
-			_toolbarWrapper.height(_viewportHeight - _header.height() - _heightOffset);
+			_toolbarWrapper.height(_viewportHeight - _header.height());
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
 	}
 
+	/**
+	 * Returns current viewport height
+	 */
 	this.getViewportHeight = function () {
 		return _viewportHeight;
 	}
 
+	/**
+	 * Returns current viewport width
+	 */
 	this.getViewportWidth = function () {
 		return _viewportWidth;
 	}
 
+	/**
+	 * Get jQuery content element
+	 */
 	this.getContent = function () {
 		return _content;
 	}
 
-	this.fireEvent = function (event, data, all) {
+	/**
+	 * Main APP event manager
+	 * All events related to widgets, toolbars, clicks, moves, etc. must be routed through here!!
+	 * @param event Event name in form "widget.drag.start"
+	 * @param data Relevant event data (array, object, mouse event, whatever...)
+	 * @param all Should this event be passed to all tools
+	 */
+	this.fireEvent = function (event, data) {
 		// Make sure mouse event has 'offsetX' and 'offsetY' set (for Firefox)
 		if ('offsetX' in data) { // This is to verify it's a mouse event
 			data = MouseEvent.normalize(data);
 		}
-		//tool = typeof tool == "undefined" ? null : tool;
-		all = typeof all == "undefined" ? false : true;
 
+		// Construct event method name
 		var parts = event.split('.');
 		$.each(parts, function (i, part) {
 			if (i == 0) {
@@ -128,29 +151,26 @@ var AppClass = function () {
 			}
 		});
 
+		// Propagate event to App class
 		if (event in this) {
 			this[event](data);
 		}
 
+		// Propagate event to active widget
 		if (_activeWidget != null && event in _activeWidget) {
 			_activeWidget[event](data);
 		}
 
-		if (all) {
-			var tools = _appToolbar.getAllTools()
-			$.each(tools, function (i, tool) {
-				if (event in tool) {
-					tool[event](data);
-				}
-			});
-		} else {
-			var activeTool = _appToolbar.getActiveTool();
-			if (activeTool != null && event in activeTool) {
-				_appToolbar.getActiveTool()[event](data);
-			}
+		// Propagate event to active tool
+		var activeTool = _appToolbar.getActiveTool();
+		if (activeTool != null && event in activeTool) {
+			_appToolbar.getActiveTool()[event](data);
 		}
 	}
 
+	/**
+	 * Get all App widgets
+	 */
 	this.getWidgets = function () {
 		return _widgets;
 	}
@@ -196,7 +216,7 @@ var AppClass = function () {
 		$('#content-overlay').remove();
 	}
 
-	this.getMaxDistance = function () {
+	/*this.getMaxDistance = function () {
 		if (Object.keys(_widgets).length == 0) {
 			return {top: 0, left: 0}
 		}
@@ -228,7 +248,7 @@ var AppClass = function () {
 		}
 
 		return {top: farBottom(), left: farRight()};
-	}
+	}*/
 
 	/**
 	 * Format file size
@@ -312,27 +332,34 @@ var AppClass = function () {
 		}
 	}
 
-	this.contentPasted = function(data){
+	this.contentPasted = function (data) {
 		var tools = _appToolbar.getAllTools();
-		for(var i in tools){
+		for (var i in tools) {
 			var tool = tools[i];
 			// Text and file tools are processed in the end
-			if(tool.getTag() == 'text' || tool.getTag() == 'file'){
+			if (tool.getTag() == 'text' || tool.getTag() == 'file') {
 				continue;
 			}
-			if(tool.canHandle(data)){
+			if (tool.canHandle(data)) {
 				tool.createWidgetFromParser();
 				return;
 			}
 		}
 
 		//Check file
-		if(tools['file'].canHandle(data)){
+		if (tools['file'].canHandle(data)) {
 			tools['file'].createWidgetFromParser();
 		}
 
 		// Insert plain text
 		var textWidget = tools['text'].createWidgetAt(100, 100);
 		textWidget.setData(data);
+	}
+
+	this.toolbarMaximized = this.toolbarMinimized = function (toolbarWrapper) {
+		var widgets = this.getWidgets();
+		for (var i in widgets) {
+			widgets[i].setContainment([toolbarWrapper.outerWidth(), _header.outerHeight()]);
+		}
 	}
 }

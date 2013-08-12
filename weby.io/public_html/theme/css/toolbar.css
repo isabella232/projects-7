@@ -9,10 +9,14 @@
 	float: left;
 	box-shadow: 1px 0 0 rgba(255, 255, 255, 0.4);
 }
-#toolbar-wrapper.collapsed {width: 30px;}
+
+#toolbar-wrapper.collapsed {
+	width: 30px;
+}
 
 #toolbar {
 	padding-top: 7px;
+	margin-top: 28px;
 }
 
 #toolbar .tool-icon {
@@ -32,7 +36,11 @@
 	font-weight: bold;
 	text-shadow: 0 1px 0 #fff;
 }
-#toolbar .tool-icon:hover {background-position: 0 100%;}
+
+#toolbar .tool-icon:hover {
+	background-position: 0 100%;
+}
+
 #toolbar .tool-icon:before {
 	display: block;
 	content: " ";
@@ -43,19 +51,58 @@
 	left: 4px;
 	background: url(../images/toolbar-icons.png) 0 0 no-repeat;
 }
-#toolbar .tool-icon.link:before {background-position: 0 -16px;}
-#toolbar .tool-icon.map:before {background-position: 0 -32px;}
-#toolbar .tool-icon.video:before {background-position: 0 -48px;}
-#toolbar .tool-icon.prezi:before {background-position: 0 -64px;}
-#toolbar .tool-icon.slideshare:before {background-position: 0 -80px;}
-#toolbar .tool-icon.googledrive:before {background-position: 0 -96px;}
-#toolbar .tool-icon.skydrive:before {background-position: 0 -112px;}
-#toolbar .tool-icon.soundcloud:before {background-position: 0 -128px;}
-#toolbar .tool-icon.linkedin:before {background-position: 0 -144px;}
-#toolbar .tool-icon.twitter:before {background-position: 0 -160px;}
-#toolbar .tool-icon.instagram:before {background-position: 0 -176px;}
-#toolbar .tool-icon.pinterest:before {background-position: 0 -192px;}
-#toolbar .tool-icon.facebook:before {background-position: 0 -208px;}
+
+#toolbar .tool-icon.link:before {
+	background-position: 0 -16px;
+}
+
+#toolbar .tool-icon.map:before {
+	background-position: 0 -32px;
+}
+
+#toolbar .tool-icon.video:before {
+	background-position: 0 -48px;
+}
+
+#toolbar .tool-icon.prezi:before {
+	background-position: 0 -64px;
+}
+
+#toolbar .tool-icon.slideshare:before {
+	background-position: 0 -80px;
+}
+
+#toolbar .tool-icon.googledrive:before {
+	background-position: 0 -96px;
+}
+
+#toolbar .tool-icon.skydrive:before {
+	background-position: 0 -112px;
+}
+
+#toolbar .tool-icon.soundcloud:before {
+	background-position: 0 -128px;
+}
+
+#toolbar .tool-icon.linkedin:before {
+	background-position: 0 -144px;
+}
+
+#toolbar .tool-icon.twitter:before {
+	background-position: 0 -160px;
+}
+
+#toolbar .tool-icon.instagram:before {
+	background-position: 0 -176px;
+}
+
+#toolbar .tool-icon.pinterest:before {
+	background-position: 0 -192px;
+}
+
+#toolbar .tool-icon.facebook:before {
+	background-position: 0 -208px;
+}
 
 .collapsed #toolbar .tool-icon {
 	width: 24px;
@@ -70,8 +117,9 @@
 	text-decoration: none;
 	margin: 10px 0 5px 0;
 	padding: 0 0 0 20px;
-	position: relative;
+	position: absolute;
 }
+
 #toolbar-wrapper .collapse:before {
 	display: block;
 	content: " ";
@@ -82,12 +130,15 @@
 	left: 4px;
 	background: url(../images/icons.png) 0 0 no-repeat;
 }
-#toolbar-wrapper.collapsed .collapse {text-indent: -9999px;}
+
+#toolbar-wrapper.collapsed .collapse {
+	text-indent: -9999px;
+}
+
 #toolbar-wrapper.collapsed .collapse:before {
 	background-position: -11px 0;
 	left: 8px;
 }
-
 
 /*#toolbar .tool-icon {
 	background: no-repeat 0 0px;

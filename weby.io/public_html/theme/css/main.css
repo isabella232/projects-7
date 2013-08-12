@@ -20,8 +20,10 @@ html, body {
 }
 
 body {
-	background-image: url(../images/ticks.png);
-	background-image: url(../images/purty_wood.png);
+	background-image: url(../images/patterns/ticks.png);
+	background-image: url(../images/patterns/bo_play_pattern.png);
+	background-image: url(../images/patterns/dark_wood.png);
+	background-image: url(../images/patterns/purty_wood.png);
 	position: relative;
 	overflow: hidden;
 	font: 12px "SourceSansPro", "Calibri", "Arial", sans-serif;
@@ -77,7 +79,7 @@ body.unselectable * {
 	position: absolute;
 	overflow: scroll;
 	top: 60px;
-	left: 116px;
+	left: 120px;
 	z-index: 0;
 }
 
@@ -107,7 +109,7 @@ body.unselectable * {
 	float:left;
 	clear:left;
 	margin: 0 auto 4px auto;
-	padding:20px;
+	padding:20px 0;
 }
 
 .loading span {

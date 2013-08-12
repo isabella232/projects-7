@@ -5,9 +5,10 @@ function SlideShareWidget() {
 	this._resizableOptions['minHeight'] = 200;
 	this._parseErrorMessage = 'We couldn\'t insert your slideshow. Please try a different one.';
 	this._loadingMessage = 'Loading your slideshow...';
+	this._inputElement = 'textarea';
 
 	this.getHTML = function () {
-		this._html = '<input type="text" placeholder="Paste a Slideshare ID, embed URL or an iframe code" value="' + test + '"/>' +
+		this._html = '<textarea placeholder="Paste a Slideshare ID, embed URL or an iframe code">' + test + '</textarea>' +
 			'<span class="message"></span>';
 		return BaseIframeWidget.prototype.getHTML.call(this);
 	};

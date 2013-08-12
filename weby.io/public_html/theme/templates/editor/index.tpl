@@ -24,7 +24,7 @@
 {/block}
 {block name="content"}
     <div id="toolbar-wrapper">
-        <a class="collapse" href="#">Click to collapse</a>
+        <a class="collapse" href="javascript:void(0);">Click to collapse</a>
     </div>
     <div id="content"></div>
     <div class="clearfix"></div>
