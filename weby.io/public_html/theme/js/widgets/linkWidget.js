@@ -1,4 +1,4 @@
-function FileWidget() {
+function LinkWidget() {
 
     this._widgetClass = 'file-widget';
 
@@ -75,10 +75,10 @@ function FileWidget() {
                     success: function (r) {
                         if (r.urlExists) {
                             // Okay, we got HEAD information, no let's see if it is an allowed filetype
-                            if (typeof FileTool.ALLOWED_TYPES[r.data['content-type']] != 'undefined') {
+                            if (typeof LinkTool.ALLOWED_TYPES[r.data['content-type']] != 'undefined') {
 
                                 // If requested file is a html page
-                                if(FileTool.ALLOWED_TYPES[r.data['content-type']] == 'text/html') {
+                                if(LinkTool.ALLOWED_TYPES[r.data['content-type']] == 'text/html') {
                                     $.ajax({
                                         type: "GET",
                                         url: 'weby.loc',
@@ -98,7 +98,7 @@ function FileWidget() {
                                 // Firstly, remove link field - we won't be needing this when showing our weby
                                 linkField.remove();
                                 // Method name is being built by template name
-                                var content = currentWidget['generate' + FileTool.ALLOWED_TYPES[r.data['content-type']]['tpl']]();
+                                var content = currentWidget['generate' + LinkTool.ALLOWED_TYPES[r.data['content-type']]['tpl']]();
                                 // Append content
                                 body.html(content);
                             } else {
@@ -176,15 +176,15 @@ function FileWidget() {
     };
 
     // Methods for generating content for various link types (eg. jpg, gif, ppt, xls ...)
-    // For every filetype, you can specify it's template (in FileTool.ALLOWED_TYPES object)
+    // For every filetype, you can specify it's template (in LinkTool.ALLOWED_TYPES object)
 
     // Renders standard file information box
     this.generateFileInfo = function () {
         var tpl = $('script#file-widget-file-tpl').html();
         tpl = tpl.replace('{url}', this._url);
-        tpl = tpl.replace('{extension}', FileTool.ALLOWED_TYPES[this._contentType]['extension']);
+        tpl = tpl.replace('{extension}', LinkTool.ALLOWED_TYPES[this._contentType]['extension']);
         tpl = tpl.replace('{baseName}', this._fileName);
-        tpl = tpl.replace('{type}', FileTool.ALLOWED_TYPES[this._contentType]['fileType']);
+        tpl = tpl.replace('{type}', LinkTool.ALLOWED_TYPES[this._contentType]['fileType']);
         tpl = tpl.replace('{size}', this.bytesToSize(this._contentSize, 2));
         tpl = tpl.replace('{host}', this._host);
         return tpl;
@@ -226,5 +226,5 @@ function FileWidget() {
     BaseWidget.prototype.init.call(this);
 }
 
-FileWidget.prototype = new BaseWidget();
-FileWidget.prototype.constructor = FileWidget;
+LinkWidget.prototype = new BaseWidget();
+LinkWidget.prototype.constructor = LinkWidget;

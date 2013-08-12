@@ -14,7 +14,7 @@
     widgets/mapWidget.css,
     widgets/twitterWidget.css,
     widgets/videoWidget.css,
-    widgets/fileWidget.css
+    widgets/linkWidget.css
 {/minify}
 
 {minify type="js"}
@@ -43,7 +43,7 @@
     tools/soundCloudTool.js,
     tools/twitterTool.js,
     tools/linkedInTool.js,
-    tools/fileTool.js,
+    tools/linkTool.js,
     widgets/textWidget.js,
     widgets/mapWidget.js,
     widgets/facebookWidget.js,
@@ -56,7 +56,7 @@
     widgets/soundCloudWidget.js,
     widgets/twitterWidget.js,
     widgets/linkedInWidget.js,
-    widgets/fileWidget.js,
+    widgets/linkWidget.js,
     parsers/videoParser.js,
     parsers/linkedInParser.js,
     parsers/preziParser.js,

@@ -1,24 +1,14 @@
-var FileTool = function (parent) {
-    this._toolTag = 'file';
+var LinkTool = function (parent) {
+    this._toolTag = 'link';
     this._mouseIcon = 'images/file.png';
     this._mouseText = 'Click to put link';
     this._tooltipText = 'Link';
     this._parent = parent;
-    this._widgetClass = 'FileWidget';
-
-    this.contentClick = function (e) {
-        BaseTool.prototype.contentClick.call(this, e);
-        var widget = new FileWidget();
-        this.insertWidgetAt(widget, e.offsetX, e.offsetY);
-    }
-
-    this.init = function () {
-        BaseTool.prototype.init.call(this);
-    }
+    this._widgetClass = 'LinkWidget';
 
 }
 // Define allowed file types that users can link
-FileTool.ALLOWED_TYPES = {
+LinkTool.ALLOWED_TYPES = {
 
     // Textual
     'text/css': {'extension': 'css', 'fileType': 'Cascading Style Sheet', 'tpl': 'FileInfo'},
@@ -65,5 +55,5 @@ FileTool.ALLOWED_TYPES = {
 
 };
 
-FileTool.prototype = new BaseTool();
-FileTool.prototype.constructor = TextTool;
+LinkTool.prototype = new BaseTool();
+LinkTool.prototype.constructor = TextTool;

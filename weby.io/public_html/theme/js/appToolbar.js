@@ -7,7 +7,7 @@ var AppToolbar = function () {
 	this.init = function () {
 		_tools = {
 			text: new TextTool(self),
-			file: new FileTool(self),
+			link: new LinkTool(self),
 			map: new MapTool(self),
 			video: new VideoTool(self),
 			instagram: new InstagramTool(self),
