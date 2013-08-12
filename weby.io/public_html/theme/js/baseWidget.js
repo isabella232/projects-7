@@ -2,7 +2,7 @@ var BaseWidget = function () {
 	/**
 	 * URL of the Node.js service for content validation
 	 */
-	this._urlChecker = 'http://192.168.249.128:5000';
+	this._urlChecker = 'http://192.168.1.24:5000';
 
 	/**
 	 * Some services do not allow requests to the embed URL-s so you can turn off validation by setting this to `false`

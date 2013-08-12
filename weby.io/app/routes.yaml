@@ -4,6 +4,5 @@ routes:
     - ['editor', \App\Handlers\EditorHandler, index]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
     - ['embed/prezi', \App\Handlers\EmbedHandler, prezi]
-    - [files/upload, \App\Handlers\FilesHandler, upload]
-    - ['files/get', \App\Handlers\FilesHandler, getFileInfo]
+    - ['links/get', \App\Handlers\LinksHandler, getLink]
     - [database, \App\Handlers\TestHandler, index]

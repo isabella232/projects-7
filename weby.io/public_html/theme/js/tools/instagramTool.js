@@ -5,6 +5,7 @@ var InstagramTool = function (parent) {
 	this._tooltipText = 'Instagram';
 	this._parent = parent;
 	this._widgetClass = 'InstagramWidget';
+	this._parserClass = 'InstagramParser';
 }
 
 InstagramTool.prototype = new BaseTool();

@@ -1,5 +1,5 @@
 var listeningPort = 5000;
-var listeningHost = '192.168.249.128';
+var listeningHost = '192.168.1.24';
 
 var http = require('follow-redirects').http;
 var url = require('url');
@@ -44,6 +44,9 @@ function checkURL(targetUrl, response) {
 	};
 	var req = http.request(options,function (res) {
 		if (res.statusCode == 200) {
+            res.headers['host'] = parts.host;
+            console.log(parts)
+            res.headers['file-name'] = parts.pathname.match(/.*\/(.*)/) ? RegExp.$1 : 'N/A';
 			var data = {
 				urlExists: true,
 				data: res.headers

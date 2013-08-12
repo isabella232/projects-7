@@ -9,7 +9,6 @@
             data-app-key="685m5csc17munwq"></script>
     <script src="{$viewObject.themeWebPath}js/kendo.web.min.js"></script>
 
-
     <!-- The standard Google Loader script. -->
     <script type="text/javascript">
         // TODO: move this to a more convenient place

@@ -36,6 +36,7 @@ var AppClass = function () {
 		}
 	});
 
+
 	this.init = function () {
 		_appToolbar = new AppToolbar();
 		_appToolbar.init();
