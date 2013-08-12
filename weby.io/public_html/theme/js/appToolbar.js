@@ -88,11 +88,10 @@ var AppToolbar = function () {
 	var _makeToolsDraggable = function(){
 		// Draggable tools
 		var drag = _toolBar.find('a.tool-icon').draggable({
-			helper: false,
+			helper: "clone",
 			containment: [117, 72],
-			scroll: true,
-			scrollSensitivity: 100,
 			start: function(event, ui){
+				ui.helper.hide();
 				var tool = $(this).attr('data-tool');
 				$(this).data('tool', tool);
 				drag.draggable('option', 'revert', false);

@@ -113,9 +113,7 @@ BaseTool.prototype = {
 	 * @returns {*|jQuery|HTMLElement}
 	 */
 	getToolbarIcon: function () {
-		var _icon = $('<a data-tool="' + this._toolTag + '" class="tool-icon" title="' + this._tooltipText + '">' + this._tooltipText + '</a>');
-		_icon.css('background-image', 'url(' + THEME + this._mouseIcon + ')');
-		return _icon;
+		return $('<a data-tool="' + this._toolTag + '" class="tool-icon ' + this._toolTag + '" title="' + this._tooltipText + '">' + this._tooltipText + '</a>');
 	},
 
 	/**
@@ -125,11 +123,12 @@ BaseTool.prototype = {
 	 */
 	createMouseIcon: function (action) {
 		var text = this._mouseText.replace('{action}', action == "click" ? "Click" : "Drop");
-		this._mouseIconObject = $('<a class="mouse-icon" ><img src="' + THEME + this._mouseIcon + '">' +
+		this._mouseIconObject = $('<a style="visibility:hidden" class="mouse-icon '+this._toolTag+'">' +
 			'<span class="action">' + text + '</span><span class="cancel">(Press ESC to cancel)</span>' +
 			'</a>');
 
-		this._mouseIconObject.css('position', 'absolute').css('visibility', 'hidden');
+		this._mouseIconObject.css('position', 'absolute');
+
 		$('body').append(this._mouseIconObject);
 	},
 
@@ -174,7 +173,7 @@ BaseTool.prototype = {
 	 * @param e Mouse event
 	 */
 	documentMouseMove: function (e) {
-		this._mouseIconObject.offset({ top: e.pageY, left: e.pageX + 18}).css('visibility', 'visible');
+		this._mouseIconObject.offset({ top: e.pageY, left: e.pageX + 35}).css('visibility', 'visible');
 	},
 
 	/**

@@ -53,6 +53,10 @@ var BaseIframeWidget = function () {
 		}
 	};
 
+	this.init = function(){
+		BaseWidget.prototype.init.call(this);
+	}
+
 	/**
 	 * When widget is activated...
 	 */
@@ -146,7 +150,7 @@ var BaseIframeWidget = function () {
 		// Bind `load` if no custom handler is specified
 		if (!$this._customOnLoadHandler) {
 			jIframe.bind('load', function () {
-				$(iframe).attr("width", iframeWidth).attr("height", iframeHeight);
+				jIframe.attr("width", iframeWidth).attr("height", iframeHeight);
 				input.remove();
 				$this._html.find('.loading').remove();
 				$this.showResizeHandle();
@@ -168,8 +172,6 @@ var BaseIframeWidget = function () {
 		}
 		App.fireEvent("widget.resize.stop", {element: $this._html});
 	}
-
-	BaseWidget.prototype.init.call(this);
 }
 
 BaseIframeWidget.prototype = new BaseWidget();

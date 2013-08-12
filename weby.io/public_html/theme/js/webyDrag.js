@@ -1,5 +1,5 @@
 var WebyDrag = function (el) {
-
+	var FF = !(window.mozInnerScreenX == null);
 	// Used to fine tune dragging speed
 	var deltaFactor = 1.2;
 	// Used to fine tune release distance
@@ -54,7 +54,7 @@ var WebyDrag = function (el) {
 	this.contentMouseUp = function (event) {
 		if (drag) {
 			this.stopDrag();
-			_animate();
+			_animate(event);
 		}
 	}
 
@@ -68,8 +68,11 @@ var WebyDrag = function (el) {
 		}, 10);
 	}
 
-	var _animate = function () {
-		_release(prevX - lastX, 'scrollLeft');
-		_release(prevY - lastY, 'scrollTop');
+	var _animate = function (event) {
+		var velocityX = FF ? prevX - lastX : lastX - event.clientX;
+		var velocityY = FF ? prevY - lastY : lastY - event.clientY;
+
+		_release(velocityX, 'scrollLeft');
+		_release(velocityY, 'scrollTop');
 	}
 };

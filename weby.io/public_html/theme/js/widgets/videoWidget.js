@@ -6,6 +6,7 @@ function VideoWidget() {
 	this._widgetClass = 'video-widget';
 	this._resizableOptions['minHeight'] = 250;
 	this._resizableOptions['minWidth'] = 333;
+	this._loadingMessage = 'Loading your video...';
 	this._parseErrorMessage = "Looks like this video doesn't exist! Try a different URL.";
 	this._vimeoApiUrl = 'http://vimeo.com/api/v2/video/';
 
@@ -42,7 +43,7 @@ function VideoWidget() {
 				$this._parserObject = new VideoParser();
 				if (($this._videoId = $this._parserObject.parse(link))) {
 					$this._videoType = $this._parserObject.getVideoType();
-					if($this._videoType == 'youtube'){
+					if ($this._videoType == 'youtube') {
 						$this.createYoutubePreview();
 					} else {
 						$this.createVimeoPreview();
@@ -72,6 +73,7 @@ function VideoWidget() {
 					$this.createPlayOverlay();
 				});
 				$this._html.find('input').replaceWith(img);
+				$this._html.find('.message').remove();
 			} else {
 				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
 				$this._html.find('input').val('').focus();
@@ -99,6 +101,7 @@ function VideoWidget() {
 							$this.createPlayOverlay();
 						});
 						$this._html.find('input').replaceWith(img);
+						$this._html.find('.message').remove();
 						$this._html.resizable("option", "aspectRatio", data.width / data.height);
 					}
 				});
@@ -125,30 +128,64 @@ function VideoWidget() {
 		var $this = this;
 		var height = this._html.height();
 		var width = this._html.width();
-		var playOverlay = $('<div id="video-preview-overlay-' + this._id + '" class="play-overlay"></div>');
+		var playOverlay = $('<div class="play-overlay"></div>');
 		playOverlay.height(height).width(width);
 		playOverlay.click(function () {
-			var iframe = $this.getIframe();
-			iframe.attr("width", $this._html.width()).attr("height", $this._html.height());
-			$this._html.find('.widget-body img').remove();
-			$(this).replaceWith(iframe);
-			$this._html.resizable("option", "alsoResize", '#' + iframe.attr("id"));
+			$this._insertIframe($this.getIframe());
 		});
 		this._html.find('.widget-body').prepend(playOverlay);
-		this._html.resizable("option", "alsoResize", '#video-preview-' + this._id + ', #video-preview-overlay-' + this._id);
+		this._html.resizable("option", "alsoResize", '#video-preview-' + this._id + ', .play-overlay');
 		this._isContentLoaded = true;
 	}
 
 	this.getIframe = function () {
 		var id = 'video-iframe-' + this._id;
+		this._alsoResize = '#' + id;
 		if (this._videoType == 'youtube') {
 			this._embedUrl = 'http://www.youtube.com/embed/' + this._videoId + '?wmode=transparent&autoplay=1';
-			return $('<iframe id="' + id + '" src="' + this._embedUrl + '" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
+			return $('<iframe id="' + id + '" src="' + this._embedUrl + '" width="560" height="315" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
 		}
 		this._embedUrl = 'http://player.vimeo.com/video/' + this._videoId + '?wmode=transparent&autoplay=1';
 		return $('<iframe id="' + id + '" src="' + this._embedUrl + '" frameborder="0" wmode="Opaque" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
 
 	}
+
+	this._insertIframe = function (iframe) {
+		var $this = this;
+
+		var iframeWidth = $(iframe).attr("width");
+		var iframeHeight = $(iframe).attr("height");
+
+		iframe = $(iframe)[0];
+		iframe.setAttribute("width", 0);
+		iframe.setAttribute("height", 0);
+
+		$this._html.find('.widget-body').append(iframe);
+
+		// Append LOADING screen (move to BaseWidget)
+		$this._html.find('.widget-body').prepend('<div class="loading" style="width: '+$this._html.width()+'px; height: '+$this._html.height()+'px">' + $this._loadingMessage +
+			'<br /><span>This may take a few moments, please be patient.</span></div>');
+		$('#video-preview-' + $this._id+', .play-overlay').remove();
+
+		var jIframe = $('#' + $(iframe).attr('id'));
+
+		jIframe.bind('load', function () {
+			jIframe[0].setAttribute("width", iframeWidth);
+			jIframe[0].setAttribute("height", iframeHeight);
+			$this._html.find('.loading, .play-overlay').remove();
+			$this.showResizeHandle();
+			$this._isContentLoaded = true;
+		});
+
+		if ($this._alsoResize) {
+			$this._html.resizable("option", "alsoResize", $this._alsoResize);
+		}
+		if ($this._aspectRatio) {
+			$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
+		}
+		App.fireEvent("widget.resize.stop", {element: $this._html});
+	}
+
 	BaseWidget.prototype.init.call(this);
 }
 

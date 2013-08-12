@@ -8,6 +8,31 @@
 	cursor: default;
 }
 
+.mouse-icon:before {
+	display: block;
+	content: " ";
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	top: 0;
+	left: -20px;
+	background: url(../images/toolbar-icons.png) 0 0 no-repeat;
+}
+
+.mouse-icon.link:before {background-position: 0 -16px;}
+.mouse-icon.map:before {background-position: 0 -32px;}
+.mouse-icon.video:before {background-position: 0 -48px;}
+.mouse-icon.prezi:before {background-position: 0 -64px;}
+.mouse-icon.slideshare:before {background-position: 0 -80px;}
+.mouse-icon.googledrive:before {background-position: 0 -96px;}
+.mouse-icon.skydrive:before {background-position: 0 -112px;}
+.mouse-icon.soundcloud:before {background-position: 0 -128px;}
+.mouse-icon.linkedin:before {background-position: 0 -144px;}
+.mouse-icon.twitter:before {background-position: 0 -160px;}
+.mouse-icon.instagram:before {background-position: 0 -176px;}
+.mouse-icon.pinterest:before {background-position: 0 -192px;}
+.mouse-icon.facebook:before {background-position: 0 -208px;}
+
 .mouse-icon img {
 	display: block;
 	float: left;
@@ -18,14 +43,14 @@
 	display: block;
 	float: left;
 	color: #000;
-	text-shadow: 1px 1px #C0C0C0;
+	text-shadow: 0 1px #fff;
 }
 
 .mouse-icon span.cancel {
 	clear: left;
 	float: left;
 	font-size: 10px;
-	margin-left: 16px;
+	/*margin-left: 16px;*/
 }
 
 .inactive-widget {
@@ -70,6 +95,7 @@
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	z-index: 11000;
+	font-size: 16px;
 }
 
 .widget .control i {
