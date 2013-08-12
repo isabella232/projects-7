@@ -1,5 +1,10 @@
-var listeningPort = 5000;
-var listeningHost = '192.168.1.24';
+var arguments = process.argv.splice(2);
+
+// Get hostIp and hostPort
+var temp = arguments[0].split(':');
+var listeningHost = temp[0];
+var listeningPort = parseInt(temp[1]);
+var processLabel = listeningHost + ':' + listeningPort;
 
 var http = require('follow-redirects').http;
 var url = require('url');
@@ -16,10 +21,10 @@ var map = {
 	}
 }
 
-function getMethod(host){
-	if(host in map){
+function getMethod(host) {
+	if (host in map) {
 		var rule = map[host];
-		if('method' in rule){
+		if ('method' in rule) {
 			return rule.method;
 		}
 	}
@@ -34,7 +39,7 @@ function getMethod(host){
 function checkURL(targetUrl, response) {
 	var parts = url.parse(targetUrl);
 
-	console.log(targetUrl);
+	process.stdout.write('[INFO][' + processLabel + ']: Checking ' + targetUrl);
 
 	var options = {
 		method: getMethod(parts.host),
@@ -44,9 +49,8 @@ function checkURL(targetUrl, response) {
 	};
 	var req = http.request(options,function (res) {
 		if (res.statusCode == 200) {
-            res.headers['host'] = parts.host;
-            console.log(parts)
-            res.headers['file-name'] = parts.pathname.match(/.*\/(.*)/) ? RegExp.$1 : 'N/A';
+			res.headers['host'] = parts.host;
+			res.headers['file-name'] = parts.pathname.match(/.*\/(.*)/) ? RegExp.$1 : 'N/A';
 			var data = {
 				urlExists: true,
 				data: res.headers
@@ -86,4 +90,4 @@ server.on("error", function (e) {
 });
 
 server.listen(listeningPort, listeningHost);
-console.log("Listening...")
+process.stdout.write('[INFO][' + processLabel + ']: Listening...')
