@@ -26,9 +26,9 @@ class Minify
     private $headerType = 'text/html'; // default header encoding
 
     public $_config;
-    public $caching = false; // cache the output
-    public $compress = false; // compress (gzip) the output
-    public $minify = false; // minify the output
+    public $caching = TRUE; // cache the output
+    public $compress = TRUE; // compress (gzip) the output
+    public $minify = TRUE; // minify the output
     public $debug = false; // for debugging
     public $jsFolder = '';
     public $cssFolder = '';

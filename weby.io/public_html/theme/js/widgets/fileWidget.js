@@ -3,9 +3,10 @@ function FileWidget() {
     this._widgetClass = 'file-widget';
 
     this._url;
+    this._fileName;
     this._contentType;
     this._contentSize;
-
+    this._host;
     this._resizableOptions = {
         minHeight: 100,
         minWidth: 200,
@@ -56,6 +57,7 @@ function FileWidget() {
 
     };
 
+
     // This binds (URL based) data retrival to default input field of file widget
     this._inputFieldBind = function (currentWidget, body) {
 
@@ -63,20 +65,40 @@ function FileWidget() {
         body.on('blur', 'input[type="text"]', function () {
             var linkField = $(this);
             if (linkField.val() != '') {
+
                 $.ajax({
                     type: "GET",
-                    url: WEB + 'files/get?url=' + $(this).val(),
+                    url: currentWidget._urlChecker + '/?url=' + linkField.val(),
                     beforeSend: function () {
                         body.html('Loading....');
                     },
                     success: function (r) {
-                        if (!r.error) {
+                        if (r.urlExists) {
                             // Okay, we got HEAD information, no let's see if it is an allowed filetype
-                            if (typeof FileTool.ALLOWED_TYPES[r.data['contentType']] != 'undefined') {
+                            if (typeof FileTool.ALLOWED_TYPES[r.data['content-type']] != 'undefined') {
+
+                                // If requested file is a html page
+                                if(FileTool.ALLOWED_TYPES[r.data['content-type']] == 'text/html') {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: 'weby.loc',
+                                        beforeSend: function () {
+                                        },
+                                        success: function (r) {
+                                        }
+                                    });
+                                }
+                                // Save data in properties of widget
+                                currentWidget._url = linkField.val();
+                                currentWidget._host = r.data['host'];
+                                currentWidget._fileName = r.data['file-name'];
+                                currentWidget._contentType = r.data['content-type'];
+                                currentWidget._contentSize = r.data['content-length'];
+
                                 // Firstly, remove link field - we won't be needing this when showing our weby
                                 linkField.remove();
                                 // Method name is being built by template name
-                                var content = currentWidget['generate' + FileTool.ALLOWED_TYPES[r.data['contentType']]['tpl']](r.data);
+                                var content = currentWidget['generate' + FileTool.ALLOWED_TYPES[r.data['content-type']]['tpl']]();
                                 // Append content
                                 body.html(content);
                             } else {
@@ -86,13 +108,14 @@ function FileWidget() {
                             }
                         } else {
                             // If there was an error in requesting information about the link (server side), then return an error msg
-                            var content = currentWidget.generateErrorInfo(r.msg);
+                            var content = currentWidget.generateErrorInfo('We could not get your URL, please check!');
                             body.html(content);
                             body.prepend(currentWidget.generateInputField(linkField.val()));
                         }
                     }
                 });
             }
+
         });
     };
 
@@ -105,19 +128,20 @@ function FileWidget() {
                     if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
                         var doc = data[google.picker.Response.DOCUMENTS][0];
                         // Prepare data for template
-                        var data = {
-                            url: doc.url,
-                            contentType: 'gdrive',
-                            baseName: doc.name,
-                            contentSize: 'N/A',
-                            host: 'drive.google.com'
-                        };
-                        var content = currentWidget.generateFileInfo(data);
+                        currentWidget._url = doc.url;
+                        currentWidget._host = 'drive.google.com';
+                        currentWidget._fileName = doc.name;
+                        currentWidget._contentType = 'gdrive';
+                        currentWidget._contentSize =  'N/A';
+
+                        var content = currentWidget.generateFileInfo();
                         body.html(content);
                     }
                 }
             ).build();
             picker.setVisible(true);
+            $('.picker.modal-dialog-bg').css('z-index', 1000001);
+            $('.picker.modal-dialog.picker-dialog').css('z-index', 1000001);
         });
     };
 
@@ -127,14 +151,13 @@ function FileWidget() {
             Dropbox.choose({
                 success: function (files) {
                     // Prepare data for template
-                    var data = {
-                        url: files[0].link,
-                        contentType: 'dropbox',
-                        baseName: files[0].name,
-                        contentSize: currentWidget.bytesToSize(files[0].bytes, 2),
-                        host: 'dropbox.com'
-                    };
-                    var content = currentWidget.generateFileInfo(data);
+                    currentWidget._url = files[0].link;
+                    currentWidget._host = 'dropbox.com';
+                    currentWidget._fileName = files[0].name;
+                    currentWidget._contentType = 'dropbox';
+                    currentWidget._contentSize =  currentWidget.bytesToSize(files[0].bytes, 2);
+
+                    var content = currentWidget.generateFileInfo();
                     body.html(content);
                 },
                 // Gives us direct links to uploaded files
@@ -156,21 +179,27 @@ function FileWidget() {
     // For every filetype, you can specify it's template (in FileTool.ALLOWED_TYPES object)
 
     // Renders standard file information box
-    this.generateFileInfo = function (data) {
+    this.generateFileInfo = function () {
         var tpl = $('script#file-widget-file-tpl').html();
-        tpl = tpl.replace('{url}', data.url);
-        tpl = tpl.replace('{extension}', FileTool.ALLOWED_TYPES[data['contentType']]['extension']);
-        tpl = tpl.replace('{baseName}', data.baseName);
-        tpl = tpl.replace('{type}', FileTool.ALLOWED_TYPES[data['contentType']]['fileType']);
-        tpl = tpl.replace('{size}', this.bytesToSize(data.contentSize, 2));
-        tpl = tpl.replace('{host}', data.host);
+        tpl = tpl.replace('{url}', this._url);
+        tpl = tpl.replace('{extension}', FileTool.ALLOWED_TYPES[this._contentType]['extension']);
+        tpl = tpl.replace('{baseName}', this._fileName);
+        tpl = tpl.replace('{type}', FileTool.ALLOWED_TYPES[this._contentType]['fileType']);
+        tpl = tpl.replace('{size}', this.bytesToSize(this._contentSize, 2));
+        tpl = tpl.replace('{host}', this._host);
+        return tpl;
+    };
+
+    // This will render web link template
+    this.generateLinkEmbed = function () {
+        var tpl = $('script#file-widget-file-tpl').html();
         return tpl;
     };
 
     // Renders image
-    this.generateImage = function (data) {
+    this.generateImage = function () {
         var tpl = $('script#file-widget-image-tpl').html();
-        return tpl.replace('{url}', data.url);
+        return tpl.replace('{url}', this._url);
     };
 
     // Renders error info
@@ -181,6 +210,7 @@ function FileWidget() {
 
     // Transforms given bytes into a more readable format (KB, MB, GB...)
     this.bytesToSize = function (bytes, precision) {
+        console.log(bytes)
         var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         var posttxt = 0;
         if (bytes == 0) return 'n/a';
@@ -188,8 +218,10 @@ function FileWidget() {
             posttxt++;
             bytes = bytes / 1024;
         }
+        
         return parseInt(bytes).toFixed(precision) + " " + sizes[posttxt];
     }
+
 
     BaseWidget.prototype.init.call(this);
 }

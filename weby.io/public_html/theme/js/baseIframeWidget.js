@@ -156,6 +156,9 @@ var BaseIframeWidget = function () {
 				$this.showResizeHandle();
 				$this._html.find('.message').remove();
 				$this._isContentLoaded = true;
+                if('onContentLoaded' in $this){
+                    $this.onContentLoaded();
+                }
 			});
 		}
 

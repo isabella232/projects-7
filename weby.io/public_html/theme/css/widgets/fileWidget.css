@@ -105,3 +105,27 @@
 .file-widget-type-icon.type-zip {
     background-position: -184px -1px;
 }
+
+.file-widget-type-icon.type-mov {
+    background-position: 0px -353px;
+}
+
+.file-widget-type-icon.type-mpeg {
+    background-position: -90px -353px;
+}
+
+.file-widget-type-icon.type-mp4 {
+    background-position: -360px -353px;
+}
+
+.file-widget-type-icon.type-avi {
+    background-position: -540px -353px;
+}
+
+.file-widget-type-icon.type-mp3 {
+    background-position: -630px -353px;
+}
+
+.file-widget-type-icon.type-wav {
+    background-position: -720px -353px;
+}

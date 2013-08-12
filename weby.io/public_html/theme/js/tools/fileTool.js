@@ -1,9 +1,10 @@
 var FileTool = function (parent) {
     this._toolTag = 'file';
     this._mouseIcon = 'images/file.png';
-    this._mouseText = 'Click to put file';
-    this._tooltipText = 'File';
+    this._mouseText = 'Click to put link';
+    this._tooltipText = 'Link';
     this._parent = parent;
+    this._widgetClass = 'FileWidget';
 
     this.contentClick = function (e) {
         BaseTool.prototype.contentClick.call(this, e);
@@ -22,7 +23,7 @@ FileTool.ALLOWED_TYPES = {
     // Textual
     'text/css': {'extension': 'css', 'fileType': 'Cascading Style Sheet', 'tpl': 'FileInfo'},
     'text/plain': {'extension': 'txt', 'fileType': 'Text File', 'tpl': 'FileInfo'},
-    'text/html': {'extension': 'html', 'fileType': 'HTML File', 'tpl': 'FileInfo'},
+    'text/html': {'extension': 'html', 'fileType': 'HTML File', 'tpl': 'LinkEmbed'},
 
     // Documents
     'application/pdf': {'extension': 'pdf', 'fileType': 'Portable Document Format', 'tpl': 'FileInfo'},
@@ -49,9 +50,18 @@ FileTool.ALLOWED_TYPES = {
 
     // Service based file-types
     'dropbox': {'extension': 'dbx', 'fileType': 'Dropbox File', 'tpl': 'FileInfo'},
-    'gdrive': {'extension': 'gdrv', 'fileType': 'Google Drive File', 'tpl': 'FileInfo'}
+    'gdrive': {'extension': 'gdrv', 'fileType': 'Google Drive File', 'tpl': 'FileInfo'},
 
     // Video
+    'video/quicktime': {'extension': 'mov', 'fileType': 'Apple QuickTime Movie', 'tpl': 'FileInfo'},
+    'video/mpeg': {'extension': 'mpeg', 'fileType': 'MPEG Video File', 'tpl': 'FileInfo'},
+    'video/x-flv': {'extension': 'flv', 'fileType': 'FLV Video File', 'tpl': 'FileInfo'},
+    'video/x-msvideo': {'extension': 'avi', 'fileType': 'AVI Video File', 'tpl': 'FileInfo'},
+    'video/mp4': {'extension': 'mp4', 'fileType': 'MP4 Video File', 'tpl': 'FileInfo'},
+
+    // Audio
+    'audio/mpeg': {'extension': 'mp3', 'fileType': 'MP3 Audio File', 'tpl': 'FileInfo'},
+    'audio/x-wav': {'extension': 'wav', 'fileType': 'Waveform Audio File', 'tpl': 'FileInfo'}
 
 };
 

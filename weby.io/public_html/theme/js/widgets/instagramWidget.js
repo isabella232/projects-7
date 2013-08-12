@@ -1,42 +1,34 @@
 function InstagramWidget() {
 
+    this._instagramId = false;
     this._widgetClass = 'instagram-widget';
-    this._resizableOptions['minWidth'] = 300;
-    this._resizableOptions['minHeight'] = 300;
+    this._resizableOptions['maxWidth'] = 612;
+    this._resizableOptions['minWidth'] = 572;
     this._parseErrorMessage = 'We couldn\'t insert your image. Please try a different one.';
     this._inputElement = 'textarea';
     this._loadingMessage = 'Loading your Instagram image...';
 
     this.getHTML = function () {
-        this._html = '<textarea type="text" placeholder="Paste a Instagram embed code"></textarea>' +
+        this._html = '<textarea type="text" placeholder="Paste an Instagram embed code"></textarea>' +
             '<span class="message"></span>';
         return BaseIframeWidget.prototype.getHTML.call(this);
     };
 
-    this.getIframe = function (input) {
-        return this.parseInstagramLink(input);
+    this.getIframe = function () {
+        var id = 'instagram-iframe-' + this._id;
+        this._alsoResize = "#" + id;
+        this._aspectRatio = 612 / 710;
+        return '<iframe id="' + id + '" src="'+this._embedUrl+'" width="612" height="710" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
+
     }
 
-    this.parseInstagramLink = function (link) {
-        var original = link;
-        var width = 402;
-        var height = 327;
-        if (link.indexOf('iframe') >= 0) {
-            // Iframe embed
-
-            var regex = /src=['|"]\/\/instagram.com\/p\/(.*?)\/embed\/['|"]/;
-            var linkId = original.match(regex) ? RegExp.$1 : false;
-            var width = original.match(/width="?(\d+)"?/) ? RegExp.$1 : width;
-            var height = original.match(/height="?(\d+)"?/) ? RegExp.$1 : height;
-
-        } else {
-            // Document link
-            link = link.replace('/pub', '/embed');
+    // This is called to construct an embed URL which will then be validated
+    this.getTargetUrl = function (inputValue) {
+        var parser = new InstagramParser();
+        if((this._instagramId = parser.parse(inputValue))){
+            return 'http://instagram.com/p/' + this._instagramId + '/embed/';
         }
-
-        var id = 'instagram-iframe-' + this._id;
-        this._html.resizable("option", "alsoResize", "#" + id);
-        return '<iframe id="' + id + '" src="//instagram.com/p/' + linkId + '/embed/" width="' + width + '" height="' + height + '" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
+        return false;
     }
 
     BaseIframeWidget.prototype.init.call(this);

@@ -8,6 +8,7 @@ app:
     storage_web_path: http://weby.loc/storage/
     default_class: '\App\Handlers\PagesHandler'
     default_method: page404
+    mode: development
 
 database:
     name: postgres
