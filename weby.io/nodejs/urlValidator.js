@@ -1,8 +1,8 @@
-var listeningPort = 8080;
-var listeningHost = 'mrcina.ath.cx';
+var listeningPort = 5000;
+var listeningHost = '192.168.249.128';
 
-var http = require("http");
-var url = require("url");
+var http = require('follow-redirects').http;
+var url = require('url');
 
 // Prevent script from crashing on uncaughtExceptions
 process.on('uncaughtException', function (err) {
