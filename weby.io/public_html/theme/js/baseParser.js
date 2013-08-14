@@ -1,4 +1,6 @@
-var BaseParser = function (){};
+var BaseParser = function (){
+	this._data;
+};
 
 BaseParser.prototype = {
 
@@ -9,7 +11,11 @@ BaseParser.prototype = {
 	 */
 	parse: function (data) {
 		this._data = data;
-		// Override and implement
+		var result = this._parse(data);
+		if(!result){
+			App.getWeby().logInvalidUrl(data);
+		}
+		return result;
 	},
 
 	/**

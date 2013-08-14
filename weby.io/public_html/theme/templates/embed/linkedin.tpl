@@ -24,6 +24,7 @@
                                 $('#process').remove();
                                 return;
                             }
+                            counter--;
                             // Height is set with CSS so we need to wait till the end of content loading
                             // (binding to "load" is not good enough because it fires too early)
                             if (liIframe.css("height") == "1px") {

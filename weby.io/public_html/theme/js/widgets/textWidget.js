@@ -2,6 +2,7 @@ function TextWidget() {
 
 	this._widgetClass = 'text-widget';
 	this._isContentLoaded = true;
+	this._inputElement = '.text-editable';
 
 	this._resizableOptions = {
 		minHeight: 63,
@@ -13,17 +14,22 @@ function TextWidget() {
 	};
 
 	this.getHTML = function () {
-		this._html = '<div class="text-editable"></div>';
+		this._html = '<div id="text-editable-' + this._id + '" class="text-editable"></div>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
-	this.onMakeEditable = function(){
-		this._html.find(".text-editable").click();
+	this.onMakeEditable = function () {
+		this._html.find(".text-editable").focus();
+	}
+
+	this.widgetResize = function (data) {
+		this._html.find('.text-editable').width(this._html.width() - 2).height(this._html.height() - 2);
 	}
 
 	this.onWidgetInserted = function () {
 		var $this = this;
-		this._html.find(".text-editable").kendoEditor({
+		var element = this._html.find('.text-editable');
+		element.kendoEditor({
 			tools: [
 				"bold",
 				"italic",
@@ -41,30 +47,32 @@ function TextWidget() {
 				"insertImage",
 			],
 			paste: function (e) {
+
+				$this._html.css("width", $this._html.width() + 'px');
+				$this._html.css("height", $this._html.height() + 'px');
+
 				setTimeout(function () {
 					// Restrict to viewport size
-					if ($this._html.width() + $this._x + 100 > App.getViewportWidth()) {
+					if ($this._html.width() + $this._x + 500 > App.getViewportWidth()) {
 						$this._html.width(App.getViewportWidth() - 300);
 					}
 
 					if ($this._html.height() + $this._y > App.getViewportHeight()) {
 						$this._html.height(App.getViewportHeight() - 300);
 					}
-
-					$this.setPosition(150, 150);
 				}, 50);
 			},
 			select: function (e) {
 
 			},
-			change: function(e){
+			change: function (e) {
 				console.log(e)
 			}
 		});
 
 		BaseWidget.prototype.onWidgetInserted.call(this);
 
-		this._html.find(".text-editable").click(function () {
+		element.click(function () {
 			if ($this._mouseUpAfterDrag) {
 				return $this._mouseUpAfterDrag = false;
 			}
@@ -76,14 +84,21 @@ function TextWidget() {
 			$(this).attr('contenteditable', true).css('z-index', '999998').focus();
 		});
 
-		this._html.find('.text-editable').blur(function () {
+		element.blur(function () {
 			$this._html.draggable('option', 'disabled', false);
 			$(this).attr('contenteditable', 'false').css('z-index', '1000');
 		});
 
+		//this._html.resizable("option", "alsoResize", '#text-editable-' + this._id);
+
 		App.deactivateTool();
 		this._html.find(".text-editable").click();
 
+	}
+
+	this.setData = function (data) {
+		console.log(data)
+		this.input().css("width", "600px").html(data);
 	}
 
 	BaseWidget.prototype.init.call(this);

@@ -104,6 +104,10 @@
 	background-position: 0 -208px;
 }
 
+#toolbar .tool-icon.vine:before {
+	background-position: 0 -224px;
+}
+
 .collapsed #toolbar .tool-icon {
 	width: 24px;
 	background-image: url(../images/buttons-mini.png);

@@ -1,1 +1,1 @@
-{include file="templates/editor/includes/fileWidgetTemplates.tpl"}
+{include file="templates/editor/includes/linkWidgetTemplates.tpl"}

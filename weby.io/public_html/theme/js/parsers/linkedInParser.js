@@ -1,8 +1,10 @@
 var LinkedInParser = function () {
 
-	this.parse = function (data) {
-		BaseParser.prototype.parse.call(this, data);
-		var regex = /(?:https?:\/\/)?www\.linkedin\.com\/in\/(\S+)/;
+	this._parse = function (data) {
+		if(data.match(/^[a-z0-9-]*$/)){
+			return data;
+		}
+		var regex = /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/(\S+)/;
 		return data.match(regex) ? RegExp.$1 : false;
 	}
 }

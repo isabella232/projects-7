@@ -1,10 +1,5 @@
 var BaseWidget = function () {
 	/**
-	 * URL of the Node.js service for content validation
-	 */
-	this._urlChecker = 'http://mrcina.ath.cx:8080';
-
-	/**
 	 * Some services do not allow requests to the embed URL-s so you can turn off validation by setting this to `false`
 	 */
 	this._checkUrl = true;
@@ -119,7 +114,6 @@ var BaseWidget = function () {
 	this._baseDraggableOptions = {
 		//handle: '.drag-handle'
 		cancel: '.resize-handle, .widget-body',
-		containment: [120, 72],
 		scroll: true,
 		scrollSensitivity: 100,
 		start: function (event, ui) {
@@ -230,6 +224,7 @@ BaseWidget.prototype = {
 	 * It will merge UI options for later attachment to the widget
 	 */
 	init: function () {
+		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
 		$.extend(this._baseDraggableOptions, this._draggableOptions);
 		$.extend(this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(this._baseResizableOptions, this._resizableOptions);
@@ -270,6 +265,16 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	setPosition: function (x, y) {
+
+		if (this._html != undefined) {
+			if (x < 0) {
+				x = 0;
+			}
+			if (y < 0) {
+				y = 0;
+			}
+		}
+
 		this._left = x;
 		this._top = y;
 		if (typeof this._html != "undefined") {
@@ -321,7 +326,7 @@ BaseWidget.prototype = {
 			var data = {urlExists: true};
 			callback(data);
 		} else {
-			$.get(this._urlChecker + '/?url=' + encodeURIComponent(url) + '&t=' + new Date().getTime(), function (data) {
+			$.get(BaseWidget.CONTENT_VALIDATOR + '/?url=' + encodeURIComponent($.trim(url)) + '&t=' + new Date().getTime(), function (data) {
 				callback(data);
 			});
 		}
@@ -352,6 +357,7 @@ BaseWidget.prototype = {
 						$this._html.data('widget', $this).draggable($this._baseDraggableOptions);
 					}, 50);
 				}).dblclick(function () {
+					$this._rotation = 0;
 					$this._html.css('-webkit-transform', 'none').css('transform', 'none');
 					;
 				});
@@ -388,7 +394,7 @@ BaseWidget.prototype = {
 	 * Show resize handle if this widget is resizable
 	 */
 	showResizeHandle: function () {
-		if (this._isResizable) {
+		if (this._isResizable && this._isContentLoaded && this._isActive) {
 			this._html.find('.resize-handle').css("visibility", "visible");
 		}
 	},
@@ -422,8 +428,12 @@ BaseWidget.prototype = {
 	 */
 	activate: function (e) {
 		if (this._isActive) {
+			var textEditable = false;
+			if ($(e.target).hasClass('text-editable') || $(e.target).closest('.text-editable').length !== 0) {
+				textEditable = true;
+			}
 			// Don't remove input focus if input element was clicked
-			if (e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea') {
+			if (e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea' && !textEditable) {
 				this._html.find(':focus').blur();
 			}
 			return;
@@ -437,6 +447,10 @@ BaseWidget.prototype = {
 		this._html.addClass('active');
 		if (!this._isContentLoaded) {
 			this.makeEditable();
+		}
+
+		if (!this._isContentLoaded) {
+			this.input().focus();
 		}
 
 		if ('onActivate' in this) {
@@ -476,6 +490,10 @@ BaseWidget.prototype = {
 			// Append interaction layer and set it's line-height to height of the widget
 			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to interact</span></div>');
 			this._resize();
+		}
+
+		if('onDeactivate' in this){
+			this.onDeactivate();
 		}
 	},
 
@@ -522,10 +540,44 @@ BaseWidget.prototype = {
 		this._html.find('.widget-body .loading').remove();
 	},
 
-	setContainment: function(containment){
+	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
 	},
 
+	body: function () {
+		return this._html.find('.widget-body');
+	},
+
+	input: function () {
+		return this._html.find(this._inputElement);
+	},
+
+	message: function () {
+		return this._html.find('.message');
+	},
+
+	truncate: function (text, length, end) {
+		if (text.length > length) {
+			return $.trim(text).substring(0, length).split(" ").slice(0, -1).join(" ") + end;
+		}
+		return text;
+	},
+
+	moveUp: function (distance) {
+		this.setPosition(this._left, parseInt(this._top) - parseInt(distance));
+	},
+
+	moveRight: function (distance) {
+		this.setPosition(parseInt(this._left) + parseInt(distance), this._top);
+	},
+
+	moveLeft: function (distance) {
+		this.setPosition(parseInt(this._left) - parseInt(distance), this._top);
+	},
+
+	moveDown: function (distance) {
+		this.setPosition(this._left, parseInt(this._top) + parseInt(distance));
+	},
 
 	// EVENTS
 
@@ -591,3 +643,8 @@ BaseWidget.prototype = {
 		}
 	}
 };
+
+/**
+ * URL of the Node.js service for content validation
+ */
+BaseWidget.CONTENT_VALIDATOR = '';

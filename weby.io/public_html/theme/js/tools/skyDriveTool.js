@@ -1,6 +1,5 @@
 var SkyDriveTool = function (parent) {
 	this._toolTag = 'skydrive';
-	this._mouseIcon = 'images/skydrive.png';
 	this._mouseText = '{action} to insert a SkyDrive file';
 	this._tooltipText = 'SkyDrive';
 	this._parent = parent;

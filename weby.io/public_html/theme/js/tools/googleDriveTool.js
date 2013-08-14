@@ -5,6 +5,7 @@ var GoogleDriveTool = function (parent) {
 	this._tooltipText = 'GoogleDrive';
 	this._parent = parent;
 	this._widgetClass = 'GoogleDriveWidget';
+	this._parserClass = 'GoogleDriveParser';
 }
 
 GoogleDriveTool.prototype = new BaseTool();

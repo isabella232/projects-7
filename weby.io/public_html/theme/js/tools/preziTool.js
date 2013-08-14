@@ -1,6 +1,5 @@
 var PreziTool = function (parent) {
 	this._toolTag = 'prezi';
-	this._mouseIcon = 'images/prezi.png';
 	this._mouseText = '{action} to insert a Prezi presentation';
 	this._tooltipText = 'Prezi';
 	this._parent = parent;

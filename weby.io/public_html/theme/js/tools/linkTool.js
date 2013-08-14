@@ -1,10 +1,10 @@
 var LinkTool = function (parent) {
     this._toolTag = 'link';
-    this._mouseIcon = 'images/file.png';
-    this._mouseText = 'Click to put link';
+    this._mouseText = '{action} to insert a link';
     this._tooltipText = 'Link';
     this._parent = parent;
     this._widgetClass = 'LinkWidget';
+    this._parserClass = 'LinkParser';
 
 }
 // Define allowed file types that users can link

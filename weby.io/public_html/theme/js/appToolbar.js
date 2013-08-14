@@ -9,9 +9,10 @@ var AppToolbar = function () {
 		_tools = {
 			text: new TextTool(self),
 			link: new LinkTool(self),
-			map: new MapTool(self),
 			video: new VideoTool(self),
+			map: new MapTool(self),
 			instagram: new InstagramTool(self),
+			pinterest: new PinterestTool(self),
 			facebook: new FacebookTool(self),
 			prezi: new PreziTool(self),
 			slideshare: new SlideShareTool(self),
@@ -19,7 +20,8 @@ var AppToolbar = function () {
 			skydrive: new SkyDriveTool(self),
 			soundcloud: new SoundCloudTool(self),
 			linkedin: new LinkedInTool(self),
-			twitter: new TwitterTool(self)
+			twitter: new TwitterTool(self),
+			vine: new VineTool(self)
 		};
 
 		/**
@@ -85,15 +87,6 @@ var AppToolbar = function () {
 						.css('width', App.getContent().width() - widthDiff+'px');
 					App.fireEvent("toolbar.minimized", _toolbarWrapper);
 				});
-			}
-		});
-
-		/**
-		 * ESC key pressed
-		 */
-		shortcut.add('Esc', function () {
-			if (_activeTool != null) {
-				_deactivateTool();
 			}
 		});
 	}
@@ -191,6 +184,10 @@ var AppToolbar = function () {
 		$(document).keydown(function (e) {
 			if (e.keyCode == 27) {
 				drag.draggable('option', 'revert', true).trigger('mouseup');
+
+				if (_activeTool != null) {
+					_deactivateTool();
+				}
 			}
 		});
 	}

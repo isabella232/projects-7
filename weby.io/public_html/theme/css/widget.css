@@ -32,6 +32,7 @@
 .mouse-icon.instagram:before {background-position: 0 -176px;}
 .mouse-icon.pinterest:before {background-position: 0 -192px;}
 .mouse-icon.facebook:before {background-position: 0 -208px;}
+.mouse-icon.vine:before {background-position: 0 -224px;}
 
 .mouse-icon img {
 	display: block;

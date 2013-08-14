@@ -3,8 +3,7 @@ var VideoParser = function () {
 	this._id;
 	this._type;
 
-	this.parse = function (data) {
-		BaseParser.prototype.parse.call(this, data);
+	this._parse = function (data) {
 		if (this._parseYoutubeLink(data)) {
 			this._type = 'youtube';
 			return this._id;
@@ -19,7 +18,7 @@ var VideoParser = function () {
 	 * Get video type of the parsed resource
 	 * @returns {string}
 	 */
-	this.getVideoType = function(){
+	this.getVideoType = function () {
 		return this._type;
 	}
 

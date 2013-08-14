@@ -58,66 +58,65 @@ var BaseIframeWidget = function () {
 	}
 
 	/**
-	 * When widget is activated...
-	 */
-	this.onActivate = function () {
-		if (!this._isContentLoaded) {
-			this._html.find(this._inputElement).focus();
-		}
-	}
-
-	/**
 	 * When widget is inserted...
 	 */
 	this.onWidgetInserted = function () {
 		var $this = this;
-
 		BaseWidget.prototype.onWidgetInserted.call(this);
-
 		this.hideResizeHandle();
+		this._html.find(this._inputElement).bind("blur keydown", function(e){
+			$this._inputReceived($this, e);
+		});
+		App.deactivateTool();
+		this._html.find(this._inputElement).focus();
+	}
 
-		this._html.find(this._inputElement).bind("blur keydown", function (e) {
-			// If key was pressed and it is not ENTER
-			if (e.type == "keydown" && e.keyCode != 13) {
+	this._inputReceived = function ($this, e) {
+		// If key was pressed
+		if (e.type == "keydown" && e.keyCode != 13) {
+			return;
+		}
+
+		$this.input().unbind('blur keydown');
+
+		if ($.trim($this.input().val()) != '') {
+			var targetUrl = $this.getTargetUrl($this.input().val());
+			// If no targetUrl was returned - show parse error message
+			if (!targetUrl) {
+				$this.message().html($this._parseErrorMessage);
+				$this.input().val('');
+				$this.input().bind('blur keydown', function(e){
+					$this._inputReceived($this, e);
+				});
+				if ($this._isActive) {
+					$this.input().focus();
+				}
 				return;
 			}
-			var input = $(this);
-			if (input.val() != '') {
-				var targetUrl = $this.getTargetUrl(input.val());
-				// If no targetUrl was returned - show parse error message
-				if (!targetUrl) {
-					$this._html.find('.message').html($this._parseErrorMessage);
-					input.val('');
+			// If targetUrl was received - check if it really exists
+			$this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
+			$this._html.find('.widget-body > *:not(".loading")').hide();
+
+			$this.checkUrl(targetUrl, function (data) {
+				if (data.urlExists) {
+					$this._embedUrl = targetUrl;
+					var iframe = $this.getIframe();
+					$this._insertIframe($this.input(), iframe);
+				} else {
+					$this.hideLoading();
+					$this._html.find('.widget-body *').show();
+					$this.message().html($this._parseErrorMessage);
+					$this.input().val('');
+					$this.input().bind('blur keydown', function(e){
+						$this._inputReceived($this, e);
+					});
 					if ($this._isActive) {
-						input.focus();
+						$this.input().focus();
 					}
 					return;
 				}
-				// If targetUrl was received - check if it really exists
-				$this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
-				$this._html.find('.widget-body > *:not(".loading")').hide();
-
-				$this.checkUrl(targetUrl, function (data) {
-					if (data.urlExists) {
-						$this._embedUrl = targetUrl;
-						var iframe = $this.getIframe();
-						$this._insertIframe(input, iframe);
-					} else {
-						$this.hideLoading();
-						$this._html.find('.widget-body *').show();
-						$this._html.find('.message').html($this._parseErrorMessage);
-						input.val('');
-						if ($this._isActive) {
-							input.focus();
-						}
-						return;
-					}
-				});
-			}
-		});
-
-		App.deactivateTool();
-		this._html.find($this._inputElement).focus();
+			});
+		}
 	}
 
 	/**
@@ -137,7 +136,11 @@ var BaseIframeWidget = function () {
 		iframe.setAttribute("width", 0);
 		iframe.setAttribute("height", 0);
 
-		$(iframe).insertBefore(input);
+
+		input.replaceWith(iframe);
+		if ('onIframeInserted' in $this) {
+			$this.onIframeInserted();
+		}
 
 		// Append LOADING screen (move to BaseWidget)
 		$this.showLoading();
@@ -147,14 +150,14 @@ var BaseIframeWidget = function () {
 		if (!$this._customOnLoadHandler) {
 			jIframe.bind('load', function () {
 				jIframe.attr("width", iframeWidth).attr("height", iframeHeight);
-				input.remove();
 				$this.hideLoading();
-				$this.showResizeHandle();
-				$this._html.find('.message').remove();
+				$this.message().remove();
 				$this._isContentLoaded = true;
+				$this.showResizeHandle();
 				if ('onContentLoaded' in $this) {
 					$this.onContentLoaded();
 				}
+				$(this).unbind("load");
 			});
 		}
 
@@ -163,10 +166,10 @@ var BaseIframeWidget = function () {
 			$this[$this._customOnLoadHandler](jIframe);
 		}
 
-		if ($this._alsoResize) {
+		if ($this._alsoResize && $this._isResizable) {
 			$this._html.resizable("option", "alsoResize", $this._alsoResize);
 		}
-		if ($this._aspectRatio) {
+		if ($this._aspectRatio && $this._isResizable) {
 			$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
 		}
 		App.fireEvent("widget.resize.stop", {element: $this._html});

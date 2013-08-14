@@ -20,8 +20,11 @@ var MapWidget = function () {
 	this.widgetResize = function(data){
 		// data contains: element, event, ui
 		var _widget = this._html;
-		_widget.find('.address').width(_widget.width() - 12);
-		_widget.find('.map').width(_widget.width()).height(_widget.height() - 28);
+		var input = _widget.find('input');
+		if(input){
+			input.width(_widget.width() - 12);
+		}
+		_widget.find('.map').width(_widget.width()).height(_widget.height()); // -28 input height
 		google.maps.event.trigger(this._map, "resize");
 	}
 
@@ -29,14 +32,18 @@ var MapWidget = function () {
 		_centerMarker();
 	}
 
-	this.onActivate = function(){
-		if(!this._isContentLoaded){
-			this._html.find('input').focus();
-		}
-	}
-
 	this.onMakeEditable = function(){
 		this._html.find('input').focus();
+	}
+
+	this.onDeactivate = function(){
+		if(this._isContentLoaded){
+			var map = this._html.find('.map');
+			map.width(this.body().outerWidth())
+			map.height(this.body().outerHeight())
+			this.input().remove();
+			_centerMarker();
+		}
 	}
 
 	this.getHTML = function () {
@@ -150,6 +157,9 @@ var MapWidget = function () {
 				$this._html.find('.map').height(mapHeight - 28);
 				_centerMarker();
 				$this._isContentLoaded = true;
+				if(!$this._isActive){
+					$this.onDeactivate();
+				}
 			} else {
 				$this._html.find('.message').html("We couldn't locate your address! Please try a different one!").show();
 				delete $this._map;

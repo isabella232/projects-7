@@ -2,6 +2,7 @@
 	min-height: 50px;
 	min-width: 400px;
 	height:100%;
+	overflow: hidden;
 }
 
 .text-editable {

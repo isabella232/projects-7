@@ -69,13 +69,13 @@ BaseTool.prototype = {
 	 * Can this tool handle the given data?
 	 * @param data String to parse
 	 */
-	canHandle: function(data){
-		if(this._parserClass == ''){
+	canHandle: function (data) {
+		if (this._parserClass == '') {
 			return false;
 		}
-		
+
 		this._parserObject = new window[this._parserClass]();
-		if(this._parserObject.parse(data)){
+		if (this._parserObject.parse(data)) {
 			return true;
 		}
 		return false;
@@ -88,7 +88,7 @@ BaseTool.prototype = {
 	 */
 	activate: function (action) {
 		// Called each time a tool is activated in the toolbar
-		if(typeof action == "undefined"){
+		if (typeof action == "undefined") {
 			action = "click";
 		}
 		this.createMouseIcon(action);
@@ -123,7 +123,7 @@ BaseTool.prototype = {
 	 */
 	createMouseIcon: function (action) {
 		var text = this._mouseText.replace('{action}', action == "click" ? "Click" : "Drop");
-		this._mouseIconObject = $('<a style="visibility:hidden" class="mouse-icon '+this._toolTag+'">' +
+		this._mouseIconObject = $('<a style="visibility:hidden" class="mouse-icon ' + this._toolTag + '">' +
 			'<span class="action">' + text + '</span><span class="cancel">(Press ESC to cancel)</span>' +
 			'</a>');
 
@@ -145,8 +145,8 @@ BaseTool.prototype = {
 	/**
 	 * Create widget from parsed data (this._parserObject)
 	 */
-	createWidgetFromParser: function(){
-		var widget = this.createWidgetAt(100, 100);
+	createWidgetFromParser: function () {
+		var widget = this.createWidgetAt(100 + App.getContent()[0].scrollLeft, 100 + App.getContent()[0].scrollTop);
 		widget.setData(this._parserObject.getData());
 	},
 

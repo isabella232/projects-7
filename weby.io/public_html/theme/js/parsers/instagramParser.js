@@ -1,5 +1,7 @@
 var InstagramParser = function () {
 
+	this._instagramId;
+
 	this.parse = function (data) {
 		BaseParser.prototype.parse.call(this, data);
 
@@ -10,7 +12,7 @@ var InstagramParser = function () {
 
 		// Validate data
         var regex = /instagram.com\/p\/(.*?)\//;
-		return data.match(regex) ? RegExp.$1 : false;
+		return this._instagramId = data.match(regex) ? RegExp.$1 : false;
 	}
 }
 

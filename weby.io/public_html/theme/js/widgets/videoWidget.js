@@ -9,6 +9,7 @@ function VideoWidget() {
 	this._loadingMessage = 'Loading your video...';
 	this._parseErrorMessage = "Looks like this video doesn't exist! Try a different URL.";
 	this._vimeoApiUrl = 'http://vimeo.com/api/v2/video/';
+	this._inputElement = 'textarea';
 
 	this.init = function () {
 		BaseWidget.prototype.init.call(this);
@@ -16,21 +17,21 @@ function VideoWidget() {
 
 	this.getHTML = function () {
 		/*this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="http://www.youtube.com/watch?v=FNQowwwwYa0"/>' +*/
-		this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="https://vimeo.com/69722654"/>' +
+		this._html = '<textarea placeholder="Paste a Youtube or Vimeo link here">https://vimeo.com/69722654</textarea>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
 	this.onActivate = function () {
 		if (!this._isContentLoaded) {
-			this._html.find('input').focus();
+			this._html.find(this._inputElement).focus();
 		}
 	}
 
 	this.onWidgetInserted = function () {
 		var $this = this;
 		BaseWidget.prototype.onWidgetInserted.call(this);
-		this._html.find(this._inputElement).bind("blur keydown",function (e) {
+		$this.input().bind("blur keydown", function (e) {
 				// If key was pressed and it is not ENTER
 				if (e.type == "keydown" && e.keyCode != 13) {
 					return;
@@ -39,7 +40,7 @@ function VideoWidget() {
 				if (link == '') {
 					return;
 				}
-				$this._html.find('.widget-body span.message').html('');
+				$this.message().html('');
 
 				$this._parserObject = new VideoParser();
 				if (($this._videoId = $this._parserObject.parse(link))) {
@@ -51,7 +52,7 @@ function VideoWidget() {
 					}
 				} else {
 					// Invalid input
-					$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
+					$this.message().html($this._parseErrorMessage).show();
 					$(this).val('').focus();
 				}
 			}
@@ -75,11 +76,11 @@ function VideoWidget() {
 					$this.removeLoading();
 					$this.createPlayOverlay();
 				});
-				$this._html.find('input').replaceWith(img);
+				$this._html.find($this._inputElement).replaceWith(img);
 				$this._html.find('.message').remove();
 			} else {
 				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
-				$this._html.find('input').val('').focus();
+				$this._html.find($this._inputElement).val('').focus();
 				$this.removeLoading();
 			}
 		});
@@ -103,21 +104,21 @@ function VideoWidget() {
 							$this.removeLoading();
 							$this.createPlayOverlay();
 						});
-						$this._html.find('input').replaceWith(img);
+						$this._html.find($this._inputElement).replaceWith(img);
 						$this._html.find('.message').remove();
 						$this._html.resizable("option", "aspectRatio", data.width / data.height);
 					}
 				});
 			} else {
 				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
-				$this._html.find('input').val('').focus();
+				$this._html.find($this._inputElement).val('').focus();
 				$this.removeLoading();
 			}
 		});
 	}
 
 	this.attachLoading = function () {
-		this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
+		this.showLoading('Let\'s see what we have here...', 'Validating your URL may take a few moments, please be patient.');
 		this._html.find('.widget-body > *:not(".loading")').hide();
 	}
 
@@ -168,12 +169,13 @@ function VideoWidget() {
 		$this._html.find('.widget-body').append(iframe);
 
 		// Append LOADING screen (move to BaseWidget)
+		this.showLoading(this._loadingMessage);
 		$('#video-preview-' + $this._id + ', .play-overlay').remove();
 
 		var jIframe = $('#' + $(iframe).attr('id'));
 
 		jIframe.bind('load', function () {
-			//$this._html.find('.loading').remove();
+			$this.hideLoading();
 			jIframe.attr("height", iframeHeight);
 			jIframe.attr("width", iframeWidth);
 			$this._html.resizable("option", "aspectRatio", iframeWidth / iframeHeight);

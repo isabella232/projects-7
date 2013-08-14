@@ -2,6 +2,7 @@ var AppClass = function () {
 	var _content = $('#content');
 	var _header = $('#header');
 	var _appToolbar;
+	var _weby = new Weby();
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _widgets = {};
@@ -16,7 +17,7 @@ var AppClass = function () {
 	/**
 	 * Catch Ctrl+V key press
 	 */
-	shortcut.add('Ctrl+V', function (e) {
+	$(document).bind("paste", function (e) {
 		if ($('body :focus').length > 0) {
 			return;
 		}
@@ -25,16 +26,50 @@ var AppClass = function () {
 		bucket.focus();
 		setTimeout(function () {
 			var data = bucket.val();
+			console.log(data)
 			bucket.remove();
 			App.contentPasted(data);
 		}, 100);
+	});
 
-	}, {propagate: true});
+	/**
+	 * Catch arrow keys
+	 */
+	$(document).keydown(function (e) {
+		if (_activeWidget == null || $(':focus').length !== 0) {
+			return;
+		}
+
+		var distance = 1;
+		if (e.shiftKey) {
+			distance = 10;
+		}
+
+		switch (e.keyCode) {
+			case 37:
+				_activeWidget.moveLeft(distance);
+				break;
+			case 38:
+				_activeWidget.moveUp(distance);
+				break;
+			case 39:
+				_activeWidget.moveRight(distance);
+				break;
+			case 40:
+				_activeWidget.moveDown(distance);
+				break;
+		}
+
+		if ($.inArray(e.keyCode, [37, 38, 39, 40])) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
+	});
 
 	/**
 	 * Catch delete key press
 	 */
-	$(window).keydown(function (e) {
+	$(document).keydown(function (e) {
 		if (e.keyCode == 46) {
 			if (_activeWidget != null && _activeWidget._html.find(':focus').length === 0) {
 				_activeWidget.delete();
@@ -69,17 +104,27 @@ var AppClass = function () {
 
 		// Widget is clicked
 		_content.on('click', '.widget', function (e) {
+			// If mouse was really moved (mousemove event is fired even on 'click' so it's not a reliable metric) don't click the widget
+			if(App.mouseStart != e.clientX+':'+ e.clientY){
+				return;
+			}
 			App.fireEvent("widget.click", e);
 		});
 
 		_content.on('mousedown', '.widget', function (e) {
+			// Need to store some representation of current mouse position for later comparison
+			App.mouseStart = e.clientX+':'+ e.clientY;
 			App.fireEvent("widget.mousedown", e);
-			e.stopPropagation();
+			if(_activeWidget != null){
+				e.stopPropagation();
+			}
 		});
 
 		// Widget is double clicked
 		_content.on('dblclick', '.widget', function (e) {
-			App.fireEvent("widget.dblclick", e);
+			if (!$(e.target).hasClass('control')) {
+				App.fireEvent("widget.dblclick", e);
+			}
 		});
 
 		// These content events should be forwarded to drag object exclusively
@@ -105,7 +150,15 @@ var AppClass = function () {
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
-	}
+	},
+
+	/**
+	 * Get current Weby
+	 * @returns Weby
+	 */
+	this.getWeby = function(){
+		return _weby;
+	},
 
 	/**
 	 * Returns current viewport height
@@ -217,38 +270,38 @@ var AppClass = function () {
 	}
 
 	/*this.getMaxDistance = function () {
-		if (Object.keys(_widgets).length == 0) {
-			return {top: 0, left: 0}
-		}
+	 if (Object.keys(_widgets).length == 0) {
+	 return {top: 0, left: 0}
+	 }
 
-		var farRight = function () {
-			var element;
-			var max = 0;
-			$('.widget').each(function () {
-				var z = parseInt($(this).css('left').replace('px', ''), 10);
-				if (max < z) {
-					element = $(this);
-					max = z;
-				}
-			});
-			return max + element.width();
-		}
+	 var farRight = function () {
+	 var element;
+	 var max = 0;
+	 $('.widget').each(function () {
+	 var z = parseInt($(this).css('left').replace('px', ''), 10);
+	 if (max < z) {
+	 element = $(this);
+	 max = z;
+	 }
+	 });
+	 return max + element.width();
+	 }
 
-		var farBottom = function () {
-			var element;
-			var max = 0;
-			$('.widget').each(function () {
-				var z = parseInt($(this).css('top').replace('px', ''), 10);
-				if (max < z) {
-					element = $(this);
-					max = z;
-				}
-			});
-			return max + element.height();
-		}
+	 var farBottom = function () {
+	 var element;
+	 var max = 0;
+	 $('.widget').each(function () {
+	 var z = parseInt($(this).css('top').replace('px', ''), 10);
+	 if (max < z) {
+	 element = $(this);
+	 max = z;
+	 }
+	 });
+	 return max + element.height();
+	 }
 
-		return {top: farBottom(), left: farRight()};
-	}*/
+	 return {top: farBottom(), left: farRight()};
+	 }*/
 
 	/**
 	 * Format file size
@@ -256,10 +309,16 @@ var AppClass = function () {
 	 * @param format (Optional) Default: "%3.2f %s" (Ex: 9.60 KB)
 	 */
 	this.formatFileSize = function (number, format) {
+		if (!number || typeof number == "undefined" || number == 0) {
+			return 'N/A';
+		}
 		if (typeof format == "undefined") {
 			format = "%3.2f %s";
 		}
-		function formatMemory(num) {
+
+		number = parseInt(number)
+
+		function formatNumber(num) {
 			var size = ['bytes', 'KB', 'MB', 'GB'];
 			for (var i in size) {
 				if (num < 1024.0) {
@@ -269,6 +328,8 @@ var AppClass = function () {
 			}
 			return sprintf(format, num, 'TB');
 		}
+
+		return formatNumber(number);
 	}
 
 	// EVENTS //
@@ -337,7 +398,7 @@ var AppClass = function () {
 		for (var i in tools) {
 			var tool = tools[i];
 			// Text and file tools are processed in the end
-			if (tool.getTag() == 'text' || tool.getTag() == 'file') {
+			if (tool.getTag() == 'text' || tool.getTag() == 'link') {
 				continue;
 			}
 			if (tool.canHandle(data)) {
@@ -347,8 +408,8 @@ var AppClass = function () {
 		}
 
 		//Check file
-		if (tools['file'].canHandle(data)) {
-			tools['file'].createWidgetFromParser();
+		if (tools['link'].canHandle(data)) {
+			return tools['link'].createWidgetFromParser();
 		}
 
 		// Insert plain text

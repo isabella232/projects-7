@@ -1,5 +1,7 @@
 function SoundCloudWidget() {
 
+	this._trackId;
+	this._color;
 	this._widgetClass = 'soundcloud-widget';
 	this._parseErrorMessage = 'We couldn\'t insert the given URL. Please try a different one.';
 	this._inputElement = 'textarea';
@@ -12,29 +14,24 @@ function SoundCloudWidget() {
 	}
 
 	this.getHTML = function () {
-		this._html = '<textarea type="text" placeholder="Paste a SoundCloud embed code">'+test+'</textarea>' +
+		this._html = '<textarea type="text" placeholder="Paste a SoundCloud embed code">' + test + '</textarea>' +
 			'<span class="message"></span>';
 		return BaseIframeWidget.prototype.getHTML.call(this);
 	};
 
-	this.getIframe = function(input){
-		var embedLink = this.parseSoundCloudLink(input)
-		var iframe = false;
-		var id = 'soundcloud-iframe-'+ this._id;
-		this._alsoResize = '#'+id;
-		if(embedLink){
-			iframe = '<iframe id="' + id + '" src="' + embedLink + '" width="300" height="166" scrolling="no" frameborder="0"></iframe>';
-		}
-		return iframe;
+	this.getIframe = function () {
+		var id = 'soundcloud-iframe-' + this._id;
+		this._alsoResize = "#" + id;
+		return '<iframe id="' + id + '" width="300" height="166" scrolling="no" frameborder="no" src="' + this._embedUrl + '"></iframe>';
+
 	}
 
-	this.parseSoundCloudLink = function (link) {
-		var original = link;
-		if (link.indexOf('iframe') >= 0) {
-			var regex = /src=['|"](.*?)['|"]/;
-			link = original.match(regex) ? RegExp.$1 : false;
-			return link.replace('auto_play=true', 'auto_play=false')
-
+	// This is called to construct an embed URL which will then be validated
+	this.getTargetUrl = function (inputValue) {
+		var parser = new SoundCloudParser();
+		if ((this._trackId = parser.parse(inputValue))) {
+			this._color = parser.getColor();
+			return 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F' + this._trackId + '&amp;color=' + this._color + '&amp;auto_play=false';
 		}
 		return false;
 	}

@@ -9,7 +9,7 @@ function InstagramWidget() {
     this._loadingMessage = 'Loading your Instagram image...';
 
     this.getHTML = function () {
-        this._html = '<textarea type="text" placeholder="Paste an Instagram embed code"></textarea>' +
+        this._html = '<textarea type="text" placeholder="Paste an Instagram embed code or image URL">http://instagram.com/p/ZJnuEfAUeY/</textarea>' +
             '<span class="message"></span>';
         return BaseIframeWidget.prototype.getHTML.call(this);
     };

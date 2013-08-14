@@ -7,12 +7,18 @@
     <script src="http://www.google.com/jsapi"></script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs"
             data-app-key="685m5csc17munwq"></script>
-    <script src="{$viewObject.themeWebPath}js/kendo.web.min.js"></script>
+    <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>
+    <script async src="https://platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
 
     <!-- The standard Google Loader script. -->
     <script type="text/javascript">
         // TODO: move this to a more convenient place
         google.load('picker', '1');
+    </script>
+
+    <script type="text/javascript" id="contentValidator">
+        BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
+        $('#contentValidator').remove();
     </script>
 
     <script type="text/javascript">
