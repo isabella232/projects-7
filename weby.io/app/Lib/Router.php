@@ -51,7 +51,7 @@ class Router
 		} else {
 			$handler = new $handlerClass;
 			if($this->isInstanceOf($handler, '\App\Lib\AbstractHandler')) {
-				$handler->{$this->_handlerMethod}($this->_requestParams);
+				call_user_func_array([$handler, $this->_handlerMethod], $this->_requestParams);
 
 				return $handler->output();
 			}
@@ -74,7 +74,9 @@ class Router
 	 * });
 	 */
 	private function _registerRoutes() {
-		// Register routes
+		$this->_addRoute('/editor/(\d+)$/', function($matches){
+
+		});
 	}
 
 	private function _parseRequest() {
@@ -91,9 +93,9 @@ class Router
 			} else {
 
 				$fChar = clone $regex;
-				$fChar->subString(0, 1);
+				$fChar = $fChar->subString(0, 1)->val();
 
-				if(($fChar == '|' || $fChar == '/') && ($regex->subStringCount('|') >= 2 || $regex->subStringCount('/') >= 2)
+				if(($fChar == '|' || $fChar== '/') && ($regex->subStringCount('|') >= 2 || $regex->subStringCount('/') >= 2)
 				) {
 					// preg_match request
 					preg_match($regex->val(), $request, $match);
@@ -109,7 +111,6 @@ class Router
 				$this->_requestParams = $match;
 				$this->_handlerClass = $route['class'];
 				$this->_handlerMethod = $route['method'];
-
 				return;
 			}
 		}

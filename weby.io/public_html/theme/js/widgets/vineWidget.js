@@ -44,7 +44,7 @@ function VineWidget() {
 				if (counter == 0) {
 					clearInterval(interval);
 					$this.hideLoading();
-					$this._isContentLoaded = true;
+					$this.contentLoaded();
 					return;
 				}
 				counter--;
@@ -54,7 +54,7 @@ function VineWidget() {
 					jFrame.attr("width", childIframe.attr("width"));
 					jFrame.attr("height", childIframe.attr("height"));
 					$this.hideLoading();
-					$this._isContentLoaded = true;
+					$this.contentLoaded();
 					$this.body().css("margin-bottom", "-14px");
 				}
 			}, 50);

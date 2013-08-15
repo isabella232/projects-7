@@ -1,10 +1,11 @@
 function TwitterWidget() {
 	this._tweetId;
-	this._tweetUrl;
+	this._tweetUser;
 	this._isResizable = false;
 	this._widgetClass = 'twitter-widget';
 	this._inputElement = 'textarea';
 	this._parseErrorMessage = "Looks like this Tweet doesn't exist! Try a different one.";
+	this._loadingMessage = "Loading your Tweet...";
 	this._parser = null;
 
 	this.getHTML = function () {
@@ -19,7 +20,7 @@ function TwitterWidget() {
 		$this.hideResizeHandle();
 		BaseWidget.prototype.onWidgetInserted.call($this);
 		App.deactivateTool();
-		this.input().bind("blur keydown", function(e){
+		this.input().bind("blur keydown",function (e) {
 			$this._inputReceived($this, e);
 		}).focus();
 	}
@@ -29,7 +30,7 @@ function TwitterWidget() {
 		$this.hideLoading();
 		$this.message().html(this._parseErrorMessage);
 		$this.input().val('').show();
-		$this.input().bind('blur keydown', function(e){
+		$this.input().bind('blur keydown', function (e) {
 			$this._inputReceived($this, e);
 		});
 		if (this._isActive) {
@@ -57,24 +58,61 @@ function TwitterWidget() {
 		}
 
 		// Regex check
-		if (!($this._tweetUrl = $this._parser.parse($this.input().val()))) {
+		if (!($this._tweetId = $this._parser.parse($this.input().val()))) {
 			return $this.showError();
 		}
+		$this._tweetUser = $this._parser.getTweetUser();
 
 		// Validate content
 		$this.showLoading('Let\'s see what we have here...', 'Validating your URL may take a few moments, please be patient.');
 		$this.input().hide();
-		$this.checkUrl($this._tweetUrl, function (data) {
+		var tweetUrl = 'https://twitter.com/' + $this._tweetUser + '/statuses/' + $this._tweetId;
+		$this.checkUrl(tweetUrl, function (data) {
 			if (data.urlExists) {
-				$this._tweetId = $this._parser.getTweetId();
-				$this._tweetHtml = $this._parser.getTweetHtml();
 				// Build embed code
-				var tweetEmbed = '<blockquote class="twitter-tweet">' + $this._parser.getTweetHtml() + '</blockquote>' +
+				var tweetEmbed = '<blockquote class="twitter-tweet"><a href="' + tweetUrl + '"></a></blockquote>' +
 					'<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
 
+				$this.showLoading();
 				$this.input().replaceWith(tweetEmbed);
-				$this.hideLoading();
-				$this._isContentLoaded = true;
+				$this.contentLoaded();
+				$this.message().remove();
+
+				/**
+				 * From here on goes fine tuning of the appearance - it can work without this just fine
+				 */
+				var counter = 100;
+				// Wait for iFrame to appear
+				var interval = setInterval(function () {
+					// Fail safe switch to stop interval if it does more than 200 checks
+					if (counter == 0) {
+						clearInterval(interval);
+						$this.hideLoading();
+						$this.contentLoaded();
+						return;
+					}
+					counter--;
+
+					if ((jFrame = $this.body().find('iframe')).length !== 0) {
+						clearInterval(interval);
+
+						counter = 500;
+						var widthInterval = setInterval(function () {
+							// Fail safe switch to stop interval if something goes wrong with Tweet load
+							if (counter == 0) {
+								clearInterval(interval);
+								$this.hideLoading();
+								$this.contentLoaded();
+								return;
+							}
+							counter--;
+							if(typeof jFrame.attr("width") != "undefined"){
+								clearInterval(widthInterval);
+								$this.hideLoading();
+							}
+						}, 10);
+					}
+				}, 50);
 			} else {
 				// Show error
 				$this.showError();

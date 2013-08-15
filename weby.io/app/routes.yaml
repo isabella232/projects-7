@@ -1,6 +1,8 @@
 routes:
     - ['', \App\Handlers\PagesHandler, index]
     - ['editor/templates', \App\Handlers\EditorHandler, templates]
+    - ['editor/save', \App\Handlers\EditorHandler, save]
+    - ['|editor\/(\d+)|', \App\Handlers\EditorHandler, index]
     - ['editor', \App\Handlers\EditorHandler, index]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]

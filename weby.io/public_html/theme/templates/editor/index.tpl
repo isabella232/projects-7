@@ -9,18 +9,21 @@
             data-app-key="685m5csc17munwq"></script>
     <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>
     <script async src="https://platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
-
     <!-- The standard Google Loader script. -->
     <script type="text/javascript">
         // TODO: move this to a more convenient place
         google.load('picker', '1');
     </script>
-
     <script type="text/javascript" id="contentValidator">
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         $('#contentValidator').remove();
     </script>
-
+    {if isset($widgets)}
+        <script type="text/javascript" id="widgetsLoad">
+            var webyWidgets = {$widgets};
+            $('#widgetsLoad').remove();
+        </script>
+    {/if}
     <script type="text/javascript">
         $(function () {
             App = new AppClass();

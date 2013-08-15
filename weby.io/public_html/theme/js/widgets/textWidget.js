@@ -97,8 +97,7 @@ function TextWidget() {
 	}
 
 	this.setData = function (data) {
-		console.log(data)
-		this.input().css("width", "600px").html(data);
+		this.input().css("width", "400px").html(data);
 	}
 
 	BaseWidget.prototype.init.call(this);

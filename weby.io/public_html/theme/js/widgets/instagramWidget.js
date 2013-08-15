@@ -1,6 +1,6 @@
 function InstagramWidget() {
 
-    this._instagramId = false;
+    this._instagramId = '';
     this._widgetClass = 'instagram-widget';
     this._resizableOptions['maxWidth'] = 612;
     this._resizableOptions['minWidth'] = 572;
@@ -30,6 +30,20 @@ function InstagramWidget() {
         }
         return false;
     }
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			instagramId: this._instagramId
+		}
+	}
+
+	this.getEditHTML = function () {
+		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		return BaseWidget.prototype.getHTML.call(this);
+	};
 
     BaseIframeWidget.prototype.init.call(this);
 }

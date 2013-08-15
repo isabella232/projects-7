@@ -33,8 +33,23 @@ function LinkedInWidget() {
 		this._html.find('.loading, .message, input').remove();
 		this.showResizeHandle();
 		$('#linkedin-iframe-' + this._id).attr("width", width).attr("height", height).attr("disabled", "disabled");
-		this._isContentLoaded = true;
+		this.contentLoaded();
 	}
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			name: this._name
+		}
+	}
+
+	this.getEditHTML = function () {
+		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		this._html = this._html.attr("src", this._html.attr("src").replace(/&id=\d+$/, ''));
+		return BaseWidget.prototype.getHTML.call(this);
+	};
 
 	BaseIframeWidget.prototype.init.call(this);
 }

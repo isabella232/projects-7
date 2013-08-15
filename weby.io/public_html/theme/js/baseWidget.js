@@ -17,27 +17,44 @@ var BaseWidget = function () {
 	/**
 	 * Top (y) position
 	 */
-	this._top;
+	this._top = 0;
 
 	/**
 	 * Left (x) position
 	 */
-	this._left;
+	this._left = 0;
 
 	/**
 	 * Width of the widget
 	 */
-	this._width;
+	this._width = 0;
 
 	/**
 	 * Height of the widget
 	 */
-	this._height;
+	this._height = 0;
 
 	/**
 	 * Rotation degrees
 	 */
 	this._rotation = 0;
+
+	/**
+	 * Embed URL is the full url of the resource
+	 * Ex: http://www.youtube.com/embed/FNQowwwwYa0?wmode=transparent&autoplay=1
+	 */
+	this._embedUrl = '';
+
+	/**
+	 * This selector is also resized when widget is being resized
+	 * Ex: '#video-iframe-1' will make this iframe autamatically resized with widget
+	 */
+	this._alsoResize = false;
+
+	/**
+	 * Aspect ratio of widget if necessary
+	 */
+	this._aspectRatio = 1;
 
 	/**
 	 * Custom widget class added to the widget if specified
@@ -308,7 +325,29 @@ BaseWidget.prototype = {
 		}
 
 		_widget.find('.widget-body').append(this._html);
-		_widget.attr('style', 'top: ' + this._top + 'px; left: ' + this._left + 'px; z-index: ' + this._zindex);
+
+
+		_widget.css({
+			top: this._top + 'px',
+			left: this._left + 'px',
+			'z-index': this._zindex
+		});
+
+		if (this._width > 0 && this._height > 0) {
+			_widget.css({
+				width: this._width + 'px',
+				height: this._height + 'px'
+			})
+		}
+		if(this._rotation != 0){
+			var rotateCSS = 'rotate(' + this._rotation + 'deg)';
+
+			_widget.css({
+				'transform': rotateCSS,
+				'-webkit-transform': rotateCSS
+			});
+		}
+
 		this._html = _widget;
 		this._html.find('.control').css("visibility", "hidden");
 		return this._html;
@@ -337,58 +376,26 @@ BaseWidget.prototype = {
 	 * Called after the widget was inserted into the DOM
 	 */
 	onWidgetInserted: function () {
-		var $this = this;
-		if (this._isDraggable) {
-			this._html.data('widget', this).draggable(this._baseDraggableOptions);
-		}
-		if (this._isResizable) {
-			this._html.data('widget', this).resizable(this._baseResizableOptions);
-		}
-
-		if (this._isRotatable) {
-			var $this = this;
-			this._html.find('.rotate-handle').mousedown(function (e) {
-				$this._rotateStart = e.pageX;
-				$this._html.draggable("destroy");
-				$this._html.data('widget', $this).draggable($this._baseRotatableOptions);
-			}).mouseup(function () {
-					setTimeout(function () {
-						$this._html.draggable("destroy");
-						$this._html.data('widget', $this).draggable($this._baseDraggableOptions);
-					}, 50);
-				}).dblclick(function () {
-					$this._rotation = 0;
-					$this._html.css('-webkit-transform', 'none').css('transform', 'none');
-					;
-				});
-		}
-
-		this.setZIndex(this.getNextZIndex());
-
-		App.setActiveWidget(this);
-		this.activate();
-
-		/*
-
-		 MOVE TO WIDGET TOOLBAR
-
-		 this._html.find('.index-handle.up').click(function(){
-		 $this.increaseZIndex();
-		 });
-
-		 this._html.find('.index-handle.down').click(function(){
-		 $this.decreaseZIndex();
-		 });
-
-		 this._html.find('.lock-handle').click(function(){
-		 if($this._locked){
-		 $this.unlockWidget();
-		 } else {
-		 $this.lockWidget();
-		 }
-		 });*/
-
+		this._bindControls();
 	},
+	/*
+	 MOVE TO WIDGET TOOLBAR
+
+	 this._html.find('.index-handle.up').click(function(){
+	 $this.increaseZIndex();
+	 });
+
+	 this._html.find('.index-handle.down').click(function(){
+	 $this.decreaseZIndex();
+	 });
+
+	 this._html.find('.lock-handle').click(function(){
+	 if($this._locked){
+	 $this.unlockWidget();
+	 } else {
+	 $this.lockWidget();
+	 }
+	 });*/
 
 	/**
 	 * Show resize handle if this widget is resizable
@@ -487,13 +494,23 @@ BaseWidget.prototype = {
 		this._html.removeClass('editable');
 		if (this._html.find('.widget-disabled-overlay').length === 0) {
 			// Append interaction layer and set it's line-height to height of the widget
-			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to interact</span></div>');
+			this._addInteractionOverlay();
 			this._resize();
 		}
 
-		if('onDeactivate' in this){
+		if ('onDeactivate' in this) {
 			this.onDeactivate();
 		}
+	},
+
+	contentLoaded: function () {
+		this._width = this._html.width();
+		this._height = this._html.height();
+		this._isContentLoaded = true;
+	},
+
+	isContentLoaded: function () {
+		return this._isContentLoaded;
 	},
 
 	/**
@@ -502,6 +519,54 @@ BaseWidget.prototype = {
 	 */
 	setData: function (data) {
 		this._html.find(this._inputElement).val(data).blur();
+	},
+
+	save: function () {
+		var type = this.constructor.name.replace('Widget', '').toLowerCase();
+		var commonData = {
+			class: this.constructor.name,
+			type: type,
+			top: this._top,
+			left: this._left,
+			width: this._width,
+			height: this._height,
+			zindex: this._zindex,
+			rotation: this._rotation,
+			aspectRatio: this._isResizable ? this._html.resizable("option", "aspectRatio") : false,
+			isLocked: this._isLocked,
+			embedUrl: this._embedUrl
+		};
+		var widgetData = this.getSaveData();
+
+		return {
+			common: commonData,
+			specific: widgetData
+		}
+	},
+
+	createFromData: function (data) {
+		this._populate(data.common);
+		this._populate(data.specific);
+
+		// Normalize some values
+		this._rotation = parseInt(this._rotation);
+		App.getContent().append(this.getEditHTML());
+		this._addInteractionOverlay();
+		this._resize();
+		this._isContentLoaded = true;
+		this._bindControls();
+		if ('onEditWidgetInserted' in this) {
+			this.onEditWidgetInserted();
+		}
+	},
+
+	_populate: function (data) {
+		// Populate widget specific data
+		for (var i in data) {
+			if ('_' + i in this) {
+				this['_' + i] = data[i];
+			}
+		}
 	},
 
 	/**
@@ -610,6 +675,49 @@ BaseWidget.prototype = {
 	 */
 	_resize: function () {
 		this._html.find('span.text').css('line-height', this._html.outerHeight() + 'px');
+	},
+
+	/**
+	 * Bind draggable, rotatable and resizable
+	 * @private
+	 */
+	_bindControls: function () {
+		var $this = this;
+		if (this._isDraggable) {
+			this._html.data('widget', this).draggable(this._baseDraggableOptions);
+		}
+		if (this._isResizable) {
+			this._html.data('widget', this).resizable(this._baseResizableOptions);
+			if (this._alsoResize) {
+				this._html.resizable("option", "alsoResize", this._alsoResize);
+			}
+
+			if (this._aspectRatio) {
+				this._html.resizable("option", "aspectRatio", this._aspectRatio);
+			}
+		}
+
+		if (this._isRotatable) {
+			var $this = this;
+			this._html.find('.rotate-handle').mousedown(function (e) {
+				$this._rotateStart = e.pageX;
+				$this._html.draggable("destroy");
+				$this._html.data('widget', $this).draggable($this._baseRotatableOptions);
+			}).mouseup(function () {
+					setTimeout(function () {
+						$this._html.draggable("destroy");
+						$this._html.data('widget', $this).draggable($this._baseDraggableOptions);
+					}, 50);
+				}).dblclick(function () {
+					$this._rotation = 0;
+					$this._html.css('-webkit-transform', 'none').css('transform', 'none');
+					;
+				});
+		}
+	},
+
+	_addInteractionOverlay: function () {
+		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to interact</span></div>');
 	},
 
 	/**

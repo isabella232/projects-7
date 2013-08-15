@@ -48,7 +48,7 @@ function parseHttpHeaders(data) {
 	var res = {};
 	res.httpVersion = str.match(/(http\/\S+)/i) ? RegExp.$1 : false;
 	res.statusCode = str.match(/http\/\S+\s(\d+)/i) ? RegExp.$1 : false;
-	res.contentType = str.match(/content-type:\s?([a-zA-Z\/_-]*)/i) ? RegExp.$1 : false;
+	res.contentType = str.match(/content-type:\s?([a-zA-Z\/_\.-]*)/i) ? RegExp.$1 : false;
 	res.contentLength = str.match(/content-length:\s?(\d+)/i) ? RegExp.$1 : false;
 	return res;
 }

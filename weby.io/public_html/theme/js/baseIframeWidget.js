@@ -1,25 +1,9 @@
 var BaseIframeWidget = function () {
-	/**
-	 * Embed URL is the full url of the resource
-	 * Ex: http://www.youtube.com/embed/FNQowwwwYa0?wmode=transparent&autoplay=1
-	 */
-	this._embedUrl = '';
 
 	/**
 	 * Error message to show when an invalid resource is given
 	 */
 	this._parseErrorMessage = '';
-
-	/**
-	 * This selector is also resized when widget is being resized
-	 * Ex: '#video-iframe-1' will make this iframe autamatically resized with widget
-	 */
-	this._alsoResize = false;
-
-	/**
-	 * Aspect ratio of widget if necessary
-	 */
-	this._aspectRatio = false;
 
 	/**
 	 * If this is set to `true` or a method name, iframe "load" event will not be bound
@@ -28,11 +12,6 @@ var BaseIframeWidget = function () {
 	 * NOTE: you will have to manually set this._isContentLoaded
 	 */
 	this._customOnLoadHandler = false;
-
-	/**
-	 * Tells if widget content is successfully loaded
-	 */
-	this._isContentLoaded = false;
 
 	/**
 	 * Resizable options that will be merged with _baseResizableOptions
@@ -151,7 +130,7 @@ var BaseIframeWidget = function () {
 				jIframe.attr("width", iframeWidth).attr("height", iframeHeight);
 				$this.hideLoading();
 				$this.message().remove();
-				$this._isContentLoaded = true;
+				$this.contentLoaded();
 				$this.showResizeHandle();
 				if ('onContentLoaded' in $this) {
 					$this.onContentLoaded();

@@ -1,4 +1,4 @@
-var MapWidget = function () {
+function MapWidget() {
 
 	this._widgetClass = 'map-widget';
 	this._map = null;
@@ -70,6 +70,31 @@ var MapWidget = function () {
 		});
 	}
 
+	/**
+	 * EDIT methods
+	 */
+
+	this.getSaveData = function(){
+		return {
+			gmapLat: this._gmapLat,
+			gmapLng: this._gmapLng,
+			gmapZoom: this._gmapZoom,
+			mapView: this._mapView,
+			panoramaPov: this._panoramaPov
+		}
+	}
+
+	this.getEditHTML = function () {
+		this._html = '<div class="map" style="width:100%;"></div>';
+		return BaseWidget.prototype.getHTML.call(this);
+	};
+
+	this.onEditWidgetInserted = function(){
+		_initializeMap();
+		this.body().find('.map').height(this._height).width(this._width);
+		_centerMarker();
+	}
+
 	BaseWidget.prototype.init.call(this);
 
 	var $this = this;
@@ -119,6 +144,10 @@ var MapWidget = function () {
 			};
 		});
 
+		google.maps.event.addListener($this._map, 'zoom_changed', function() {
+			$this._gmapZoom = $this._map.getZoom();
+		});
+
 		google.maps.event.addListener($this._marker, 'dragend', function (evt) {
 			$this._geocoder.geocode({
 				latLng: $this._marker.getPosition()
@@ -156,7 +185,7 @@ var MapWidget = function () {
 				}
 				$this._html.find('.map').height(mapHeight - 28);
 				_centerMarker();
-				$this._isContentLoaded = true;
+				$this.contentLoaded();
 				if(!$this._isActive){
 					$this.onDeactivate();
 				}
@@ -172,10 +201,9 @@ var MapWidget = function () {
 		var latlng = new google.maps.LatLng($this._gmapLat, $this._gmapLng);
 		var latlngbounds = new google.maps.LatLngBounds();
 		latlngbounds.extend(latlng);
-		$this._map.setCenter(latlngbounds.getCenter());
-		$this._map.fitBounds(latlngbounds);
 		$this._map.setZoom(parseInt($this._gmapZoom));
-		$this._html.find('.map').attr('lat', $this._gmapLat).attr('lng', $this._gmapLng);
+		$this._map.setCenter(latlngbounds.getCenter());
+		//$this._map.fitBounds(latlngbounds);
 	}
 }
 

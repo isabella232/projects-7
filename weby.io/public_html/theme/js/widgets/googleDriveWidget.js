@@ -1,7 +1,7 @@
 function GoogleDriveWidget() {
 
-	this._documentId;
-	this._documentType;
+	this._documentId = '';
+	this._documentType = '';
 	this._widgetClass = 'googledrive-widget';
 	this._resizableOptions['minWidth'] = 300;
 	this._resizableOptions['minHeight'] = 300;
@@ -43,6 +43,21 @@ function GoogleDriveWidget() {
 	this.onContentLoaded = function () {
 		this._html.find('iframe').show();
 	}
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			documentId: this._documentId,
+			documentType: this._documentType
+		}
+	}
+
+	this.getEditHTML = function () {
+		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		return BaseWidget.prototype.getHTML.call(this);
+	};
 
 	BaseIframeWidget.prototype.init.call(this);
 }

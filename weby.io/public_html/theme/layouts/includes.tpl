@@ -22,7 +22,6 @@
     jquery-ui-1.9.2.custom.js,
     mouseEvent.js,
     jQueryFix.js,
-    sprintf.min.js,
     webyDrag.js,
     weby.js,
     app.js,

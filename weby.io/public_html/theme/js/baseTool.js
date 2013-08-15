@@ -163,6 +163,9 @@ BaseTool.prototype = {
 		App.getContent().append(html);
 		App.getWeby().addWidget(widget);
 		widget.onWidgetInserted();
+		widget.setZIndex(widget.getNextZIndex());
+		App.setActiveWidget(widget);
+		widget.activate();
 		return widget;
 	},
 

@@ -33,6 +33,20 @@ function SlideShareWidget() {
 		return 'http://www.slideshare.net/slideshow/embed_code/' + this._slideShareId;
 	}
 
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			slideShareId: this._slideShareId
+		}
+	}
+
+	this.getEditHTML = function () {
+		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		return BaseWidget.prototype.getHTML.call(this);
+	};
+
 	var test = '24621277';
 	BaseIframeWidget.prototype.init.call(this);
 }

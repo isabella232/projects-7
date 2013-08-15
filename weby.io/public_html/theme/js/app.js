@@ -2,7 +2,7 @@ var AppClass = function () {
 	var _content = $('#content');
 	var _header = $('#header');
 	var _appToolbar;
-	var _weby = new Weby();
+	var _weby;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _viewportHeight;
@@ -108,7 +108,7 @@ var AppClass = function () {
 		// Widget is clicked
 		_content.on('click', '.widget', function (e) {
 			// If mouse was really moved (mousemove event is fired even on 'click' so it's not a reliable metric) don't click the widget
-			if(App.mouseStart != e.clientX+':'+ e.clientY){
+			if (App.mouseStart != e.clientX + ':' + e.clientY) {
 				return;
 			}
 			App.fireEvent("widget.click", e);
@@ -116,9 +116,9 @@ var AppClass = function () {
 
 		_content.on('mousedown', '.widget', function (e) {
 			// Need to store some representation of current mouse position for later comparison
-			App.mouseStart = e.clientX+':'+ e.clientY;
+			App.mouseStart = e.clientX + ':' + e.clientY;
 			App.fireEvent("widget.mousedown", e);
-			if(_activeWidget != null){
+			if (_activeWidget != null) {
 				e.stopPropagation();
 			}
 		});
@@ -153,15 +153,24 @@ var AppClass = function () {
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
-	},
+
+		_weby = new Weby();
+	}
 
 	/**
 	 * Get current Weby
 	 * @returns Weby
 	 */
-	this.getWeby = function(){
+	this.getWeby = function () {
 		return _weby;
-	},
+	}
+
+	/**
+	 * Unset current active widget
+	 */
+	this.unsetActiveWidget = function(){
+		_activeWidget = null;
+	}
 
 	/**
 	 * Returns current viewport height
@@ -187,14 +196,14 @@ var AppClass = function () {
 	/**
 	 * Get header jQuery object
 	 */
-	this.getHeader = function(){
+	this.getHeader = function () {
 		return _header;
 	}
 
 	/**
 	 * Get toolbar wrapper jQuery object
 	 */
-	this.getToolbarWrapper = function(){
+	this.getToolbarWrapper = function () {
 		return _toolbarWrapper;
 	}
 
@@ -269,27 +278,22 @@ var AppClass = function () {
 	/**
 	 * Format file size
 	 * @param number Number in bytes
-	 * @param format (Optional) Default: "%3.2f %s" (Ex: 9.60 KB)
 	 */
-	this.formatFileSize = function (number, format) {
+	this.formatFileSize = function (number) {
 		if (!number || typeof number == "undefined" || number == 0) {
 			return 'N/A';
 		}
-		if (typeof format == "undefined") {
-			format = "%3.2f %s";
-		}
-
 		number = parseInt(number)
 
 		function formatNumber(num) {
 			var size = ['bytes', 'KB', 'MB', 'GB'];
 			for (var i in size) {
 				if (num < 1024.0) {
-					return sprintf(format, num, size[i]);
+					return parseFloat(Math.round(num * 100) / 100).toFixed(2) + ' ' + size[i];
 				}
 				num /= 1024.0
 			}
-			return sprintf(format, num, 'TB');
+			return parseFloat(Math.round(num * 100) / 100).toFixed(2) + ' TB';
 		}
 
 		return formatNumber(number);
@@ -325,6 +329,9 @@ var AppClass = function () {
 	}
 
 	this.contentClick = function (data) {
+		if(data.target && $(data.target).closest('.widget').length !== 0){
+			return;
+		}
 		$(':focus').blur();
 		// In case iframe was focused - return focus to main window
 		window.focus();

@@ -1,35 +1,25 @@
 var TwitterParser = function () {
 
-	this._tweetId;
-	this._tweetHtml;
-	this._tweetUrl;
+	this._tweetId = false;
+	this._tweetUser = false;
 
 	this._parse = function (data) {
 
-		// First get the complete blockquote content
-        var regex = /<blockquote class="twitter-tweet">(.*?)<\/blockquote>/;
-		this._tweetHtml = data.match(regex) ? RegExp.$1 : false;
+		var regex = /https:\/\/twitter\.com\/(\S+)\/statuses\/(\d+)/;
+		if(data.match(regex)){
+			this._tweetId = RegExp.$2;
+			this._tweetUser = RegExp.$1;
+		}
 
-
-		regex = /twitter\.com\/\S+\/statuses\/(\d+)/;
-		this._tweetId = data.match(regex) ? RegExp.$1 : false;
-
-		regex = /(https:\/\/twitter\.com\/\S+\/statuses\/\d+)/;
-		this._tweetUrl = data.match(regex) ? RegExp.$1 : false;
-
-		return this._tweetUrl;
+		return this._tweetId;
 	}
 
 	this.getTweetId = function(){
 		return this._tweetId;
 	}
 
-	this.getTweetHtml = function(){
-		return this._tweetHtml;
-	}
-
-	this.getTweetUrl = function(){
-		return this._tweetUrl;
+	this.getTweetUser = function(){
+		return this._tweetUser;
 	}
 }
 

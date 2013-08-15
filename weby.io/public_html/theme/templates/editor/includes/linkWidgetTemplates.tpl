@@ -52,7 +52,7 @@
 
     <!-- Image template - used for displaying images, this template doesn't include any file data -->
     <script type="weby/linkWidgetTemplate" id="link-widget-image-tpl">
-        <img class="link-widget-image" src="{url}"></img>
+        <img id="{image_id}" class="link-widget-image" src="{url}"></img>
     </script>
 
     <!-- Dropbox template - used for displaying files from dropbox service -->

@@ -150,7 +150,7 @@ function VideoWidget() {
 		});
 		this._html.find('.widget-body').prepend(playOverlay);
 		this._html.resizable("option", "alsoResize", '#video-preview-' + this._id + ', .play-overlay');
-		this._isContentLoaded = true;
+		this.contentLoaded();
 	}
 
 	this.getIframe = function () {
@@ -193,7 +193,7 @@ function VideoWidget() {
 		});
 
 		$this.showResizeHandle();
-		$this._isContentLoaded = true;
+		$this.contentLoaded();
 
 		if ($this._alsoResize) {
 			$this._html.resizable("option", "alsoResize", $this._alsoResize);

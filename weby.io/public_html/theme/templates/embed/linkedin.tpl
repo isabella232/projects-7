@@ -33,9 +33,12 @@
                             // When iframe height is != 1px we finally have the "style" property set on the linked in iframe
                             clearInterval(interval);
                             // Call my custom event handler and give it the new size
-                            var widget = window.top['App'].getWeby().getWidget({$id});
-                            if (widget) {
-                                widget.onIframeLoaded(liIframe.css("width"), liIframe.css("height"));
+                            var parentId = '{$id}';
+                            if (parseInt(parentId) > 0) {
+                                var widget = window.top['App'].getWeby().getWidget(parentId);
+                                if (widget) {
+                                    widget.onIframeLoaded(liIframe.css("width"), liIframe.css("height"));
+                                }
                             }
                         }, 50);
                     });
