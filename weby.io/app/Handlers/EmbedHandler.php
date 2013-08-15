@@ -14,10 +14,6 @@ class EmbedHandler extends AbstractHandler
 		$this->name = $this->request()->query('name');
 	}
 
-	public function prezi(){
-		$this->preziId = $this->request()->query('preziId');
-	}
-
 	public function vine(){
 		$this->vineId = $this->request()->query('vineId');
 	}

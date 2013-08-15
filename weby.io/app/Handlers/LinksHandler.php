@@ -22,50 +22,48 @@ class LinksHandler extends AbstractHandler
 		$imageUrl = $this->parseImages($this->readImages($url, $doc));
 
 		$data = [
-			'title' => is_string($title) ? $title : $url,
+			'title'       => is_string($title) ? $title : $url,
 			'description' => $description,
-			'imageUrl' => $imageUrl
+			'imageUrl'    => $imageUrl
 		];
 
 		$this->ajaxResponse(false, '', $data);
 	}
 
-	private function file_get_contents_utf8($fn)
-	{
+	private function file_get_contents_utf8($fn) {
 		$string = file_get_contents($fn);
+
 		return mb_convert_encoding($string, 'HTML-ENTITIES', "UTF-8");
 	}
 
-	private function loadHtml($doc, $html)
-	{
+	private function loadHtml($doc, $html) {
 		libxml_use_internal_errors(true);
 		$doc->loadHTML($html);
 		libxml_use_internal_errors(false);
 	}
 
-	private function readTitle($doc)
-	{
+	private function readTitle($doc) {
 		$nodes = $doc->getElementsByTagName('title');
-		if($nodes && $nodes->item(0)){
+		if($nodes && $nodes->item(0)) {
 			return $nodes->item(0)->nodeValue;
 		}
+
 		return false;
 	}
 
-	private function readDescription($doc)
-	{
+	private function readDescription($doc) {
 		$metas = $doc->getElementsByTagName('meta');
 		for ($i = 0; $i < $metas->length; $i++) {
 			$meta = $metas->item($i);
-			if (strtolower($meta->getAttribute('name')) == 'description') {
+			if(strtolower($meta->getAttribute('name')) == 'description') {
 				return $meta->getAttribute('content');
 			}
 		}
+
 		return '';
 	}
 
-	private function readImages($url, $doc)
-	{
+	private function readImages($url, $doc) {
 		$images = $doc->getElementsByTagName('img');
 
 		$imageUrls = [];
@@ -79,24 +77,23 @@ class LinksHandler extends AbstractHandler
 		return $imageUrls;
 	}
 
-	private function getRealPath($url)
-	{
+	private function getRealPath($url) {
 		$regex = "#^(http|https)://#";
 
 		preg_match($regex, $url, $match);
 
-		if (!empty($match)) {
+		if(!empty($match)) {
 			return $url;
 		} else {
 			$newUrlHttp = 'http://' . $url;
 			$newUrlHttps = 'http://' . $url;
 
 			$handleHttp = @fopen($newUrlHttp, 'r');
-			if ($handleHttp != false) {
+			if($handleHttp != false) {
 				return 'http://' . $url;
 			}
 			$handleHttps = @fopen($newUrlHttps, 'r');
-			if ($handleHttps != false) {
+			if($handleHttps != false) {
 				return 'https://' . $url;
 			}
 		}
@@ -106,24 +103,25 @@ class LinksHandler extends AbstractHandler
 
 	/**
 	 * Make absolute url
+	 *
 	 * @param $url
 	 * @param $base
+	 *
 	 * @return string
 	 */
-	private function makeAbsolute($url, $base)
-	{
+	private function makeAbsolute($url, $base) {
 		// Return base if no url
-		if (!$url) {
+		if(!$url) {
 			return $base;
 		}
 
 		// Return if already absolute URL
-		if (parse_url($url, PHP_URL_SCHEME) != '') {
+		if(parse_url($url, PHP_URL_SCHEME) != '') {
 			return $url;
 		}
 
 		// Urls only containing query or anchor
-		if ($url[0] == '#' || $url[0] == '?') {
+		if($url[0] == '#' || $url[0] == '?') {
 			return $base . $url;
 		}
 
@@ -131,7 +129,7 @@ class LinksHandler extends AbstractHandler
 		extract(parse_url($base));
 
 		// If no path, use /
-		if (!isset($path)) {
+		if(!isset($path)) {
 			$path = '/';
 		}
 
@@ -139,7 +137,7 @@ class LinksHandler extends AbstractHandler
 		$path = preg_replace('#/[^/]*$#', '', $path);
 
 		// Destroy path if relative url points to root
-		if ($url[0] == '/') {
+		if($url[0] == '/') {
 			$path = '';
 		}
 
@@ -158,20 +156,24 @@ class LinksHandler extends AbstractHandler
 		return $scheme . '://' . $abs;
 	}
 
-	private function parseImages($images)
-	{
-		foreach($images as $image){
+	private function parseImages($images) {
+		$cerl = error_reporting();
+		error_reporting(0);
+
+		foreach ($images as $image) {
 			try {
 				$imageSize = getimagesize($image);
 			} catch (\Exception $e) {
 				continue;
 			}
-			if (isset($imageSize)) {
-				if ($imageSize[0] >= 60 && $imageSize[1] >= 60) {
+			if(isset($imageSize)) {
+				if($imageSize[0] >= 60 && $imageSize[1] >= 60) {
 					return $image;
 				}
 			}
 		}
+		error_reporting($cerl);
+
 		return false;
 	}
 }

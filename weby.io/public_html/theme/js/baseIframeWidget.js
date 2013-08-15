@@ -77,9 +77,8 @@ var BaseIframeWidget = function () {
 			return;
 		}
 
-		$this.input().unbind('blur keydown');
-
 		if ($.trim($this.input().val()) != '') {
+			$this.input().unbind('blur keydown');
 			var targetUrl = $this.getTargetUrl($this.input().val());
 			// If no targetUrl was returned - show parse error message
 			if (!targetUrl) {

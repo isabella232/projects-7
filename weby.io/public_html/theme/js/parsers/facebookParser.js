@@ -1,8 +1,6 @@
 var FacebookParser = function () {
 
-    this.parse = function (data) {
-        BaseParser.prototype.parse.call(this, data);
-
+    this._parse = function (data) {
         // Firstly, check if user typed an adress that had a query (facebook.com/Webiny?ref=br_tf)
         var regex = /facebook.com\/(.*?)\?.*$/;
         var fbUrl = data.match(regex) ? RegExp.$1 : false;

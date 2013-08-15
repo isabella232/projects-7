@@ -237,7 +237,7 @@ BaseWidget.prototype = {
 		// Remove widget HTML
 		this._html.remove();
 		// Remove widget from the App
-		App.removeWidget(this._id);
+		App.getWeby().removeWidget(this._id);
 	},
 
 	/**
@@ -485,7 +485,6 @@ BaseWidget.prototype = {
 		this._html.find('.control').css("visibility", "hidden");
 		this._html.removeClass('active');
 		this._html.removeClass('editable');
-		this._html.draggable("disable");
 		if (this._html.find('.widget-disabled-overlay').length === 0) {
 			// Append interaction layer and set it's line-height to height of the widget
 			this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to interact</span></div>');

@@ -3,7 +3,6 @@ routes:
     - ['editor/templates', \App\Handlers\EditorHandler, templates]
     - ['editor', \App\Handlers\EditorHandler, index]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
-    - ['embed/prezi', \App\Handlers\EmbedHandler, prezi]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]
     - ['link/parse', \App\Handlers\LinksHandler, parse]

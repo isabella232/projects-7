@@ -32,6 +32,10 @@ function LinkWidget() {
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
+	this.onActivate = function () {
+
+	}
+
 	this.onWidgetInserted = function () {
 
 		BaseWidget.prototype.onWidgetInserted.call(this);
@@ -65,7 +69,7 @@ function LinkWidget() {
 			// If key was pressed
 			if (e.type == "keydown" && e.keyCode == 13) {
 				return this.blur();
-			} else if(e.type == "keydown"){
+			} else if (e.type == "keydown") {
 				return;
 			}
 
@@ -95,8 +99,8 @@ function LinkWidget() {
 				// If requested file is a html page
 				if ($this._contentType == 'text/html') {
 					$this.showLoading();
-					$.get(WEB+'link/parse/?url='+encodeURIComponent(url), function(data){
-						if(!data.error){
+					$.get(WEB + 'link/parse/?url=' + encodeURIComponent(url), function (data) {
+						if (!data.error) {
 							$this._title = data.data.title;
 							$this._description = data.data.description;
 							$this._imageUrl = data.data.imageUrl;
@@ -201,12 +205,13 @@ function LinkWidget() {
 
 // This will render web link template
 	this.generateLinkEmbed = function () {
+		this._verifyUrl();
 		var tpl = $('script#link-widget-link-tpl').html();
 		tpl = tpl.replace(/{url}/g, this._url);
 		tpl = tpl.replace('{title}', this.truncate(this._title, 35, '...'));
 		tpl = tpl.replace('{description}', this.truncate(this._description, 140, '...'));
 		tpl = $(tpl.replace('{imageUrl}', this._imageUrl));
-		if(!this._imageUrl){
+		if (!this._imageUrl) {
 			tpl.find('img').remove();
 		}
 		return tpl;
@@ -216,6 +221,17 @@ function LinkWidget() {
 	this.generateImage = function () {
 		var tpl = $('script#link-widget-image-tpl').html();
 		return tpl.replace('{url}', this._url);
+	};
+
+	this._verifyUrl = function () {
+		var check = ['http://', 'https://', 'ftp://']
+
+		for (var i in check) {
+			if (this._url.indexOf(check[i]) == 0) {
+				return;
+			}
+		}
+		this._url = 'http://' + this._url;
 	};
 
 	BaseWidget.prototype.init.call(this);

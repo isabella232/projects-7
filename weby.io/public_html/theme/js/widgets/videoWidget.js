@@ -11,12 +11,7 @@ function VideoWidget() {
 	this._vimeoApiUrl = 'http://vimeo.com/api/v2/video/';
 	this._inputElement = 'textarea';
 
-	this.init = function () {
-		BaseWidget.prototype.init.call(this);
-	};
-
 	this.getHTML = function () {
-		/*this._html = '<input type="text" placeholder="Paste a Youtube or Vimeo link here" value="http://www.youtube.com/watch?v=FNQowwwwYa0"/>' +*/
 		this._html = '<textarea placeholder="Paste a Youtube or Vimeo link here">https://vimeo.com/69722654</textarea>' +
 			'<span class="message"></span>';
 		return BaseWidget.prototype.getHTML.call(this);
@@ -31,34 +26,42 @@ function VideoWidget() {
 	this.onWidgetInserted = function () {
 		var $this = this;
 		BaseWidget.prototype.onWidgetInserted.call(this);
-		$this.input().bind("blur keydown", function (e) {
-				// If key was pressed and it is not ENTER
-				if (e.type == "keydown" && e.keyCode != 13) {
-					return;
-				}
-				var link = $.trim($(this).val());
-				if (link == '') {
-					return;
-				}
-				$this.message().html('');
-
-				$this._parserObject = new VideoParser();
-				if (($this._videoId = $this._parserObject.parse(link))) {
-					$this._videoType = $this._parserObject.getVideoType();
-					if ($this._videoType == 'youtube') {
-						$this.createYoutubePreview();
-					} else {
-						$this.createVimeoPreview();
-					}
-				} else {
-					// Invalid input
-					$this.message().html($this._parseErrorMessage).show();
-					$(this).val('').focus();
-				}
-			}
-		).focus();
+		$this.input().bind("blur keydown", function(e){
+			$this._inputReceived($this, e);
+		}).focus();
 		App.deactivateTool();
 
+	}
+
+	this._inputReceived = function ($this, e) {
+		// If key was pressed and it is not ENTER
+		if (e.type == "keydown" && e.keyCode != 13) {
+			return;
+		}
+		var link = $.trim($this.input().val());
+		if (link == '') {
+			return;
+		}
+
+		$this.input().unbind("blur keydown");
+		$this.message().html('');
+
+		$this._parserObject = new VideoParser();
+		if (($this._videoId = $this._parserObject.parse(link))) {
+			$this._videoType = $this._parserObject.getVideoType();
+			if ($this._videoType == 'youtube') {
+				$this.createYoutubePreview();
+			} else {
+				$this.createVimeoPreview();
+			}
+		} else {
+			// Invalid input
+			$this.input().bind('blur keydown', function(e){
+				$this._inputReceived($this, e);
+			});
+			$this.message().html($this._parseErrorMessage).show();
+			$(this).val('').focus();
+		}
 	}
 
 	this.createYoutubePreview = function () {
@@ -79,6 +82,10 @@ function VideoWidget() {
 				$this._html.find($this._inputElement).replaceWith(img);
 				$this._html.find('.message').remove();
 			} else {
+				// Invalid input
+				$this.input().bind('blur keydown', function(e){
+					$this._inputReceived($this, e);
+				});
 				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
 				$this._html.find($this._inputElement).val('').focus();
 				$this.removeLoading();
@@ -110,6 +117,10 @@ function VideoWidget() {
 					}
 				});
 			} else {
+				// Invalid input
+				$this.input().bind('blur keydown', function(e){
+					$this._inputReceived($this, e);
+				});
 				$this._html.find('.widget-body span.message').html($this._parseErrorMessage).show();
 				$this._html.find($this._inputElement).val('').focus();
 				$this.removeLoading();

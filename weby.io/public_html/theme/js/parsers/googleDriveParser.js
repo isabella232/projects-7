@@ -3,8 +3,7 @@ var GoogleDriveParser = function () {
 	this._documentType;
 	this._documentId;
 
-	this.parse = function (data) {
-		BaseParser.prototype.parse.call(this, data);
+	this._parse = function (data) {
 		if (data.indexOf('iframe') >= 0) {
 			var regex = /src=['|"](.*?)['|"]/;
 			data = data.match(regex) ? RegExp.$1 : false;

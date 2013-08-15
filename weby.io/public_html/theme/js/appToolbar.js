@@ -1,4 +1,5 @@
 var AppToolbar = function () {
+	var _FF = !(window.mozInnerScreenX == null);
 	var self = this;
 	var _activeTool = null;
 	var _toolBar = $('<div id="toolbar"></div>')
@@ -23,6 +24,10 @@ var AppToolbar = function () {
 			twitter: new TwitterTool(self),
 			vine: new VineTool(self)
 		};
+
+		if(_FF){
+			delete _tools.prezi;
+		}
 
 		/**
 		 * Build toolbar

@@ -2,8 +2,7 @@ var InstagramParser = function () {
 
 	this._instagramId;
 
-	this.parse = function (data) {
-		BaseParser.prototype.parse.call(this, data);
+	this._parse = function (data) {
 
 		if (data.indexOf('iframe') >= 0) {
 			var regex = /src="(.*?)"/;

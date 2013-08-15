@@ -161,7 +161,7 @@ BaseTool.prototype = {
 	_insertWidgetAt: function (widget, x, y) {
 		var html = widget.setId(++BaseTool.WIDGET_COUNT).setPosition(x, y).getHTML();
 		App.getContent().append(html);
-		App.addWidget(widget);
+		App.getWeby().addWidget(widget);
 		widget.onWidgetInserted();
 		return widget;
 	},

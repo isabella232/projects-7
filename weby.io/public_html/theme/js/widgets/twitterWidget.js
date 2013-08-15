@@ -19,57 +19,67 @@ function TwitterWidget() {
 		$this.hideResizeHandle();
 		BaseWidget.prototype.onWidgetInserted.call($this);
 		App.deactivateTool();
-		this.input().bind("blur keydown",function (e) {
-			// If key was pressed and it is not ENTER
-			if (e.type == "keydown" && e.keyCode != 13) {
-				return;
-			}
-
-			if ($.trim($this.input().val()) == '') {
-				return;
-			}
-
-			if ($this._parser == null) {
-				$this._parser = new TwitterParser();
-			}
-
-			$this.message().html('');
-
-			// Regex check
-			if (!($this._tweetUrl = $this._parser.parse($this.input().val()))) {
-				return $this.showError();
-			}
-
-			// Validate content
-			$this.showLoading('Let\'s see what we have here...', 'Validating your URL may take a few moments, please be patient.');
-			$this.input().hide();
-			$this.checkUrl($this._tweetUrl, function (data) {
-				if (data.urlExists) {
-					$this._tweetId = $this._parser.getTweetId();
-					$this._tweetHtml = $this._parser.getTweetHtml();
-					// Build embed code
-					var tweetEmbed = '<blockquote class="twitter-tweet">' + $this._parser.getTweetHtml() + '</blockquote>' +
-						'<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
-
-					$this.input().replaceWith(tweetEmbed);
-					$this.hideLoading();
-					$this._isContentLoaded = true;
-				} else {
-					// Show error
-					$this.showError();
-				}
-			});
+		this.input().bind("blur keydown", function(e){
+			$this._inputReceived($this, e);
 		}).focus();
 	}
 
 	this.showError = function () {
-		this.hideLoading();
-		this.message().html(this._parseErrorMessage);
-		this.input().val('').show();
+		var $this = this;
+		$this.hideLoading();
+		$this.message().html(this._parseErrorMessage);
+		$this.input().val('').show();
+		$this.input().bind('blur keydown', function(e){
+			$this._inputReceived($this, e);
+		});
 		if (this._isActive) {
 			this.input().focus();
 		}
 		return;
+	}
+
+	this._inputReceived = function ($this, e) {
+		// If key was pressed and it is not ENTER
+		if (e.type == "keydown" && e.keyCode != 13) {
+			return;
+		}
+
+		var link = $.trim($this.input().val());
+		if (link == '') {
+			return;
+		}
+
+		$this.input().unbind("blur keydown");
+		$this.message().html('');
+
+		if ($this._parser == null) {
+			$this._parser = new TwitterParser();
+		}
+
+		// Regex check
+		if (!($this._tweetUrl = $this._parser.parse($this.input().val()))) {
+			return $this.showError();
+		}
+
+		// Validate content
+		$this.showLoading('Let\'s see what we have here...', 'Validating your URL may take a few moments, please be patient.');
+		$this.input().hide();
+		$this.checkUrl($this._tweetUrl, function (data) {
+			if (data.urlExists) {
+				$this._tweetId = $this._parser.getTweetId();
+				$this._tweetHtml = $this._parser.getTweetHtml();
+				// Build embed code
+				var tweetEmbed = '<blockquote class="twitter-tweet">' + $this._parser.getTweetHtml() + '</blockquote>' +
+					'<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
+
+				$this.input().replaceWith(tweetEmbed);
+				$this.hideLoading();
+				$this._isContentLoaded = true;
+			} else {
+				// Show error
+				$this.showError();
+			}
+		});
 	}
 
 	BaseWidget.prototype.init.call(this);

@@ -20,7 +20,6 @@
 {minify type="js"}
     jquery-1.8.3.js,
     jquery-ui-1.9.2.custom.js,
-    shortcut.js,
     mouseEvent.js,
     jQueryFix.js,
     sprintf.min.js,

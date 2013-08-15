@@ -5,7 +5,6 @@ var AppClass = function () {
 	var _weby = new Weby();
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
-	var _widgets = {};
 	var _viewportHeight;
 	var _viewportWidth;
 	var _activeWidget = null
@@ -17,7 +16,12 @@ var AppClass = function () {
 	/**
 	 * Catch Ctrl+V key press
 	 */
-	$(document).bind("paste", function (e) {
+	$(document).keydown(function (e) {
+
+		if (!(e.ctrlKey && e.keyCode == 86)) {
+			return;
+		}
+
 		if ($('body :focus').length > 0) {
 			return;
 		}
@@ -26,7 +30,6 @@ var AppClass = function () {
 		bucket.focus();
 		setTimeout(function () {
 			var data = bucket.val();
-			console.log(data)
 			bucket.remove();
 			App.contentPasted(data);
 		}, 100);
@@ -182,6 +185,20 @@ var AppClass = function () {
 	}
 
 	/**
+	 * Get header jQuery object
+	 */
+	this.getHeader = function(){
+		return _header;
+	}
+
+	/**
+	 * Get toolbar wrapper jQuery object
+	 */
+	this.getToolbarWrapper = function(){
+		return _toolbarWrapper;
+	}
+
+	/**
 	 * Main APP event manager
 	 * All events related to widgets, toolbars, clicks, moves, etc. must be routed through here!!
 	 * @param event Event name in form "widget.drag.start"
@@ -209,6 +226,11 @@ var AppClass = function () {
 			this[event](data);
 		}
 
+		// Propagate event to Weby
+		if (event in _weby) {
+			_weby[event](data);
+		}
+
 		// Propagate event to active widget
 		if (_activeWidget != null && event in _activeWidget) {
 			_activeWidget[event](data);
@@ -219,31 +241,6 @@ var AppClass = function () {
 		if (activeTool != null && event in activeTool) {
 			_appToolbar.getActiveTool()[event](data);
 		}
-	}
-
-	/**
-	 * Get all App widgets
-	 */
-	this.getWidgets = function () {
-		return _widgets;
-	}
-
-	this.getWidget = function (id) {
-		if (id in _widgets) {
-			return _widgets[id];
-		}
-		return false;
-	}
-
-	this.addWidget = function (widget) {
-		_widgets[widget.getId()] = widget;
-		return this;
-	}
-
-	this.removeWidget = function (id) {
-		_activeWidget = null;
-		delete _widgets[id];
-
 	}
 
 	this.deactivateTool = function () {
@@ -268,40 +265,6 @@ var AppClass = function () {
 	this.removeContentOverlay = function () {
 		$('#content-overlay').remove();
 	}
-
-	/*this.getMaxDistance = function () {
-	 if (Object.keys(_widgets).length == 0) {
-	 return {top: 0, left: 0}
-	 }
-
-	 var farRight = function () {
-	 var element;
-	 var max = 0;
-	 $('.widget').each(function () {
-	 var z = parseInt($(this).css('left').replace('px', ''), 10);
-	 if (max < z) {
-	 element = $(this);
-	 max = z;
-	 }
-	 });
-	 return max + element.width();
-	 }
-
-	 var farBottom = function () {
-	 var element;
-	 var max = 0;
-	 $('.widget').each(function () {
-	 var z = parseInt($(this).css('top').replace('px', ''), 10);
-	 if (max < z) {
-	 element = $(this);
-	 max = z;
-	 }
-	 });
-	 return max + element.height();
-	 }
-
-	 return {top: farBottom(), left: farRight()};
-	 }*/
 
 	/**
 	 * Format file size
@@ -382,7 +345,7 @@ var AppClass = function () {
 			$(':focus').blur();
 			_activeWidget.deactivate();
 		}
-		_activeWidget = _widgets[id];
+		_activeWidget = _weby.getWidgets()[id];
 		_activeWidget.activate(e);
 	}
 
@@ -415,12 +378,5 @@ var AppClass = function () {
 		// Insert plain text
 		var textWidget = tools['text'].createWidgetAt(100, 100);
 		textWidget.setData(data);
-	}
-
-	this.toolbarMaximized = this.toolbarMinimized = function (toolbarWrapper) {
-		var widgets = this.getWidgets();
-		for (var i in widgets) {
-			widgets[i].setContainment([toolbarWrapper.outerWidth(), _header.outerHeight()]);
-		}
 	}
 }
