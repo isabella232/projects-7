@@ -1,7 +1,7 @@
 {extends file="layouts/empty.tpl"}
 {block name="content"}
     {* For Pinterest - we must explicitly specify dimensions of the content *}
-    <div style="{if $pinType == 'pin'}width:237px;height:313;{else}width:582px; height:261px{/if}">
+    <div style="{if $pinType == 'pin'}width:237px;height:313px;{else}width:582px; height:261px{/if}">
     {if $pinType == 'pin'}
         <a data-pin-do="embedPin" href="{$pinUrl}"></a>
     {elseif $pinType == 'board'}

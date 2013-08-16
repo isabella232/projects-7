@@ -8,7 +8,6 @@
     <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs"
             data-app-key="685m5csc17munwq"></script>
     <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>
-    <script async src="https://platform.vine.co/static/scripts/embed.js" charset="utf-8"></script>
     <!-- The standard Google Loader script. -->
     <script type="text/javascript">
         // TODO: move this to a more convenient place
@@ -24,7 +23,7 @@
             $('#widgetsLoad').remove();
         </script>
     {/if}
-    <script type="text/javascript">
+    <script type="text/javascript" charset="utf-8">
         $(function () {
             App = new AppClass();
             App.init();

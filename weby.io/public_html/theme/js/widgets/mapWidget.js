@@ -8,7 +8,7 @@ function MapWidget() {
 	this._gmapLng = '';
 	this._gmapZoom = 16;
 	this._mapView = 'map';
-	this._panoramaPov; // heading, pitch, zoom
+	this._panoramaPov = {}; // heading, pitch, zoom
 	this._firstLoad = true;
 
 	// Only set options we need (handle methods using callbacks - see below)
@@ -54,18 +54,19 @@ function MapWidget() {
 	};
 
 	this.onWidgetInserted = function () {
+		var $this = this;
 		BaseWidget.prototype.onWidgetInserted.call(this);
 		App.deactivateTool();
-		this._html.find('input').focus();
+		this.input().focus();
 		this.hideResizeHandle();
-		this._html.find(this._inputElement).bind("blur keydown", function (e) {
+		this.input().bind("blur keydown", function (e) {
 			// If key was pressed and it is not ENTER
 			if(e.type == "keydown" && e.keyCode != 13){
 				return;
 			}
-			if ($(this).val() != '') {
+			if ($.trim($this.input().val()) != ''){
 				_initializeMap();
-				_codeAddress($(this).val());
+				_codeAddress($.trim($this.input().val()));
 			}
 		});
 	}
@@ -104,6 +105,7 @@ function MapWidget() {
 			return;
 		}
 
+		google.maps.visualRefresh = true;
 		$this._geocoder = new google.maps.Geocoder();
 		var latlng = new google.maps.LatLng($this._gmapLat, $this._gmapLng);
 		var mapOptions = {
@@ -118,8 +120,24 @@ function MapWidget() {
 			position: latlng
 		});
 
-
 		var panorama = $this._map.getStreetView();
+
+		if($this._mapView == 'streetView'){
+			var panoramaOptions = {
+				position: latlng,
+				pov: {
+					heading: parseFloat($this._panoramaPov.heading),
+					pitch: parseFloat($this._panoramaPov.pitch),
+					zoom: parseFloat($this._panoramaPov.zoom)
+				}
+			};
+
+			panorama.setOptions(panoramaOptions);
+			$this._map.getStreetView().setVisible(true)
+		}
+
+		// EVENTS
+
 		google.maps.event.addListener(panorama, 'visible_changed', function () {
 			if (panorama.getVisible()) {
 				$this._mapView = 'streetView';

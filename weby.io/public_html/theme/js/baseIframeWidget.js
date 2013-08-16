@@ -50,6 +50,11 @@ var BaseIframeWidget = function () {
 		this._html.find(this._inputElement).focus();
 	}
 
+	this.getEditHTML = function () {
+		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		return BaseWidget.prototype.getHTML.call(this);
+	};
+
 	this._inputReceived = function ($this, e) {
 		// If key was pressed
 		if (e.type == "keydown" && e.keyCode != 13) {

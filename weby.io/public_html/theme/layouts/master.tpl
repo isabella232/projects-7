@@ -10,6 +10,7 @@
 <head>
     <title>{block name="title"}{/block} | Weby.io</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="utf-8">
     {include file="layouts/includes.tpl"}
     {block name="head"}{/block}
 </head>

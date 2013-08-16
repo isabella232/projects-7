@@ -1,7 +1,7 @@
 function PinterestWidget() {
 
-	this._pinType;
-	this._pinUrl;
+	this._pinType = '';
+	this._pinUrl = '';
 	this._pinSize = {
 		pin: {
 			width:237,
@@ -32,7 +32,7 @@ function PinterestWidget() {
 		var id = 'pinterest-iframe-' + this._id;
 		this._embedUrl = WEB + 'embed/pinterest/?pinUrl=' + encodeURIComponent(this._pinUrl) + '&pinType=' + this._pinType;
 		return '<iframe id="' + id + '" src="' + this._embedUrl + '" height="'+this._pinSize[this._pinType].height+'" width="'+this._pinSize[this._pinType].width+'" frameborder="0"></iframe>';
-	}
+	};
 
 	// This is called to construct an embed URL which will then be validated
 	this.getTargetUrl = function (inputValue) {
@@ -42,7 +42,27 @@ function PinterestWidget() {
 			return this._pinUrl;
 		}
 		return false;
-	}
+	};
+
+	this.onContentLoaded = function(){
+		if(this._pinType == 'pin'){
+			var jFrame = this.body().find('iframe');
+			var height = jFrame.contents().find('div *').height();
+			jFrame.contents().find('div').height(height);
+			jFrame.attr("height", height);
+		}
+	};
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			pinType: this._pinType,
+			pinUrl: this._pinUrl
+		}
+	};
+
 	BaseIframeWidget.prototype.init.call(this);
 }
 

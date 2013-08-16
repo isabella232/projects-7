@@ -17,7 +17,7 @@ function SlideShareWidget() {
 		var id = 'slideshare-iframe-' + this._id;
 		this._alsoResize = "#" + id;
 		return '<iframe id="' + id + '" src="' + this._embedUrl + '" width="429" height="357" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>';
-	}
+	};
 
 	// This is called to construct an embed URL which will then be validated
 	this.getTargetUrl = function (inputValue) {
@@ -31,7 +31,7 @@ function SlideShareWidget() {
 			}
 		}
 		return 'http://www.slideshare.net/slideshow/embed_code/' + this._slideShareId;
-	}
+	};
 
 	/**
 	 * EDIT methods
@@ -40,11 +40,6 @@ function SlideShareWidget() {
 		return {
 			slideShareId: this._slideShareId
 		}
-	}
-
-	this.getEditHTML = function () {
-		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
-		return BaseWidget.prototype.getHTML.call(this);
 	};
 
 	var test = '24621277';

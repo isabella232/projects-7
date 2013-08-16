@@ -84,7 +84,7 @@ function LinkWidget() {
 
 		$this.checkUrl(url, function (r) {
 			if (!r.urlExists) {
-				$this.showError();
+				return $this.showError();
 			}
 
 			// Save data in properties of widget

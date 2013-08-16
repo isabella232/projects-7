@@ -1,7 +1,7 @@
 function SoundCloudWidget() {
 
-	this._trackId;
-	this._color;
+	this._trackId = '';
+	this._color = '';
 	this._widgetClass = 'soundcloud-widget';
 	this._parseErrorMessage = 'We couldn\'t insert the given URL. Please try a different one.';
 	this._inputElement = 'textarea';
@@ -35,6 +35,16 @@ function SoundCloudWidget() {
 		}
 		return false;
 	}
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			trackId: this._trackId,
+			color: this._color
+		}
+	};
 
 	BaseIframeWidget.prototype.init.call(this);
 

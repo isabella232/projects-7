@@ -1,6 +1,6 @@
 function VineWidget() {
 
-    this._vineId = false;
+    this._vineId = '';
     this._widgetClass = 'vine-widget';
 	this._isResizable = false;
     this._parseErrorMessage = 'We couldn\'t insert your postcard. Please try a different one.';
@@ -60,6 +60,15 @@ function VineWidget() {
 			}, 50);
 		});
 	}
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function(){
+		return {
+			vineId: this._vineId
+		}
+	};
 
     BaseIframeWidget.prototype.init.call(this);
 }

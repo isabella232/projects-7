@@ -54,11 +54,6 @@ function GoogleDriveWidget() {
 		}
 	}
 
-	this.getEditHTML = function () {
-		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
-		return BaseWidget.prototype.getHTML.call(this);
-	};
-
 	BaseIframeWidget.prototype.init.call(this);
 }
 

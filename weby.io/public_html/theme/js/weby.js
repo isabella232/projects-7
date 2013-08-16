@@ -66,6 +66,10 @@ var Weby = function (widgets) {
 			widget.setId(++BaseTool.WIDGET_COUNT).createFromData(widgetData);
 			_widgets[widget.getId()] = widget;
 		}
+
+		$(window).load(function() {
+			App.hideLoading();
+		});
 	}
 
 	// EVENTS
@@ -80,6 +84,7 @@ var Weby = function (widgets) {
 	}
 
 	if(typeof webyWidgets != "undefined"){
+		App.showLoading();
 		// Load widgets and skip prezi widgets if FF
 		_load(webyWidgets);
 		/*webyWidgets = undefined;

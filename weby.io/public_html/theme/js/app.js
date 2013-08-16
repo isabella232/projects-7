@@ -2,7 +2,7 @@ var AppClass = function () {
 	var _content = $('#content');
 	var _header = $('#header');
 	var _appToolbar;
-	var _weby;
+	var _weby = false;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _viewportHeight;
@@ -39,7 +39,7 @@ var AppClass = function () {
 	 * Catch arrow keys
 	 */
 	$(document).keydown(function (e) {
-		if (_activeWidget == null || $(':focus').length !== 0) {
+		if (_activeWidget == null || App.isInputFocused(e)) {
 			return;
 		}
 
@@ -74,11 +74,24 @@ var AppClass = function () {
 	 */
 	$(document).keydown(function (e) {
 		if (e.keyCode == 46) {
-			if (_activeWidget != null && _activeWidget._html.find(':focus').length === 0) {
+			if (_activeWidget != null && !App.isInputFocused(e)) {
 				_activeWidget.delete();
 			}
 		}
 	});
+
+	this.isInputFocused = function(e){
+		var textEditable = false;
+		if ($(e.target).hasClass('text-editable') || $(e.target).closest('.text-editable').length !== 0) {
+			textEditable = true;
+		}
+
+		var element = e.target.nodeName.toLowerCase();
+		if(element != 'input' && element != 'textarea' && !textEditable){
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Application bootstrap
@@ -89,8 +102,7 @@ var AppClass = function () {
 
 		// Bind events
 		$(document).keydown(function (e) {
-			var element = e.target.nodeName.toLowerCase();
-			if (element != 'input' && element != 'textarea') {
+			if (!App.isInputFocused(e)) {
 				if (e.keyCode === 8) {
 					return false;
 				}
@@ -156,6 +168,18 @@ var AppClass = function () {
 
 		_weby = new Weby();
 	}
+
+	this.showLoading = function(){
+		var margin = $(window).height() / 2 - 50;
+		$('body').append('<div id="app-loading"><span style="top: '+margin+'px">Loading your Weby...</span></div>');
+	}
+
+	this.hideLoading = function(){
+		$('#app-loading').fadeOut('slow', function(){
+			$(this).remove();
+		});
+	}
+
 
 	/**
 	 * Get current Weby
@@ -236,7 +260,7 @@ var AppClass = function () {
 		}
 
 		// Propagate event to Weby
-		if (event in _weby) {
+		if (_weby && event in _weby) {
 			_weby[event](data);
 		}
 

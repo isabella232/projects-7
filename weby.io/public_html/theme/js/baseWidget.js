@@ -54,7 +54,7 @@ var BaseWidget = function () {
 	/**
 	 * Aspect ratio of widget if necessary
 	 */
-	this._aspectRatio = 1;
+	this._aspectRatio = false;
 
 	/**
 	 * Custom widget class added to the widget if specified
@@ -528,8 +528,8 @@ BaseWidget.prototype = {
 			type: type,
 			top: this._top,
 			left: this._left,
-			width: this._width,
-			height: this._height,
+			width: this._html.width(),
+			height: this._html.height(),
 			zindex: this._zindex,
 			rotation: this._rotation,
 			aspectRatio: this._isResizable ? this._html.resizable("option", "aspectRatio") : false,
@@ -550,6 +550,11 @@ BaseWidget.prototype = {
 
 		// Normalize some values
 		this._rotation = parseInt(this._rotation);
+		this._width = parseInt(this._width);
+		this._height = parseInt(this._height);
+		this._top = parseInt(this._top);
+		this._left = parseInt(this._left);
+
 		App.getContent().append(this.getEditHTML());
 		this._addInteractionOverlay();
 		this._resize();
@@ -682,7 +687,6 @@ BaseWidget.prototype = {
 	 * @private
 	 */
 	_bindControls: function () {
-		var $this = this;
 		if (this._isDraggable) {
 			this._html.data('widget', this).draggable(this._baseDraggableOptions);
 		}

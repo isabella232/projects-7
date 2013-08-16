@@ -3,7 +3,8 @@ function InstagramWidget() {
     this._instagramId = '';
     this._widgetClass = 'instagram-widget';
     this._resizableOptions['maxWidth'] = 612;
-    this._resizableOptions['minWidth'] = 572;
+    this._resizableOptions['minWidth'] = 710;
+	this._isResizable = false;
     this._parseErrorMessage = 'We couldn\'t insert your image. Please try a different one.';
     this._inputElement = 'textarea';
     this._loadingMessage = 'Loading your Instagram image...';
@@ -16,7 +17,6 @@ function InstagramWidget() {
 
     this.getIframe = function () {
         var id = 'instagram-iframe-' + this._id;
-        this._alsoResize = "#" + id;
         this._aspectRatio = 612 / 710;
         return '<iframe id="' + id + '" src="'+this._embedUrl+'" width="612" height="710" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
 
@@ -39,11 +39,6 @@ function InstagramWidget() {
 			instagramId: this._instagramId
 		}
 	}
-
-	this.getEditHTML = function () {
-		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
-		return BaseWidget.prototype.getHTML.call(this);
-	};
 
     BaseIframeWidget.prototype.init.call(this);
 }

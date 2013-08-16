@@ -146,7 +146,13 @@ BaseTool.prototype = {
 	 * Create widget from parsed data (this._parserObject)
 	 */
 	createWidgetFromParser: function () {
-		var widget = this.createWidgetAt(100 + App.getContent()[0].scrollLeft, 100 + App.getContent()[0].scrollTop);
+		function randomBetween(from, to) {
+			return Math.floor(Math.random() * (to - from + 1) + from);
+		}
+
+		var x = randomBetween(100, 700);
+		var y = randomBetween(100, 300);
+		var widget = this.createWidgetAt(x + App.getContent()[0].scrollLeft, y + App.getContent()[0].scrollTop);
 		widget.setData(this._parserObject.getData());
 	},
 

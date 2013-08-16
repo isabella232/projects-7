@@ -1,5 +1,6 @@
 function TextWidget() {
 
+	this._content = '';
 	this._widgetClass = 'text-widget';
 	this._isContentLoaded = true;
 	this._inputElement = '.text-editable';
@@ -19,7 +20,7 @@ function TextWidget() {
 	};
 
 	this.onMakeEditable = function () {
-		this._html.find(".text-editable").focus();
+		this._html.find(".text-editable").click().focus();
 	}
 
 	this.widgetResize = function (data) {
@@ -27,26 +28,36 @@ function TextWidget() {
 	}
 
 	this.onWidgetInserted = function () {
+		this._createEditor();
+		BaseWidget.prototype.onWidgetInserted.call(this);
+		App.deactivateTool();
+		this._html.find(".text-editable").click();
+
+	}
+
+	this.setData = function (data) {
+		this.input().css("width", "400px").html(data);
+	}
+
+	this._createEditor = function(){
 		var $this = this;
-		var element = this._html.find('.text-editable');
+		this._html.resizable("option", "alsoResize", '#text-editable-' + this._id);
+		this._html.resizable("option", "aspectRatio", false);
+		var element = this.input();
 		element.kendoEditor({
 			tools: [
 				"bold",
 				"italic",
-				"underline",
 				"justifyLeft",
 				"justifyCenter",
 				"justifyRight",
 				"justifyFull",
 				"insertUnorderedList",
 				"insertOrderedList",
-				"indent",
-				"outdent",
 				"createLink",
 				"unlink",
-				"insertImage",
 			],
-			paste: function (e) {
+			paste: function () {
 
 				$this._html.css("width", $this._html.width() + 'px');
 				$this._html.css("height", $this._html.height() + 'px');
@@ -61,16 +72,8 @@ function TextWidget() {
 						$this._html.height(App.getViewportHeight() - 300);
 					}
 				}, 50);
-			},
-			select: function (e) {
-
-			},
-			change: function (e) {
-				console.log(e)
 			}
 		});
-
-		BaseWidget.prototype.onWidgetInserted.call(this);
 
 		element.click(function () {
 			if ($this._mouseUpAfterDrag) {
@@ -88,16 +91,24 @@ function TextWidget() {
 			$this._html.draggable('option', 'disabled', false);
 			$(this).attr('contenteditable', 'false').css('z-index', '1000');
 		});
-
-		//this._html.resizable("option", "alsoResize", '#text-editable-' + this._id);
-
-		App.deactivateTool();
-		this._html.find(".text-editable").click();
-
 	}
 
-	this.setData = function (data) {
-		this.input().css("width", "400px").html(data);
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function () {
+		return {
+			content: this.body().find('.text-editable').html()
+		}
+	};
+
+	this.getEditHTML = function () {
+		this._html = '<div style="width:'+(this._width-2)+'px; height:'+(this._height-2)+'px" id="text-editable-' + this._id + '" class="text-editable">'+this._content+'</div>';
+		return BaseWidget.prototype.getHTML.call(this);
+	};
+
+	this.onEditWidgetInserted = function(){
+		this._createEditor();
 	}
 
 	BaseWidget.prototype.init.call(this);

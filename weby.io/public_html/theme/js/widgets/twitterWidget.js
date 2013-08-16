@@ -1,6 +1,6 @@
 function TwitterWidget() {
-	this._tweetId;
-	this._tweetUser;
+	this._tweetId = '';
+	this._tweetUser = '';
 	this._isResizable = false;
 	this._widgetClass = 'twitter-widget';
 	this._inputElement = 'textarea';
@@ -70,8 +70,7 @@ function TwitterWidget() {
 		$this.checkUrl(tweetUrl, function (data) {
 			if (data.urlExists) {
 				// Build embed code
-				var tweetEmbed = '<blockquote class="twitter-tweet"><a href="' + tweetUrl + '"></a></blockquote>' +
-					'<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>';
+				var tweetEmbed = $this._getEmbedCode();
 
 				$this.showLoading();
 				$this.input().replaceWith(tweetEmbed);
@@ -82,6 +81,7 @@ function TwitterWidget() {
 				 * From here on goes fine tuning of the appearance - it can work without this just fine
 				 */
 				var counter = 100;
+				var jFrame = false;
 				// Wait for iFrame to appear
 				var interval = setInterval(function () {
 					// Fail safe switch to stop interval if it does more than 200 checks
@@ -106,7 +106,7 @@ function TwitterWidget() {
 								return;
 							}
 							counter--;
-							if(typeof jFrame.attr("width") != "undefined"){
+							if (typeof jFrame.attr("width") != "undefined") {
 								clearInterval(widthInterval);
 								$this.hideLoading();
 							}
@@ -118,6 +118,58 @@ function TwitterWidget() {
 				$this.showError();
 			}
 		});
+	}
+
+	this._getEmbedCode = function () {
+		return $('<blockquote class="twitter-tweet"><a href="https://twitter.com/' + this._tweetUser + '/statuses/' + this._tweetId+'"></a></blockquote>' +
+			'<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>');
+	};
+
+	/**
+	 * EDIT methods
+	 */
+	this.getSaveData = function () {
+		return {
+			tweetId: this._tweetId,
+			tweetUser: this._tweetUser
+		}
+	};
+
+	this.getEditHTML = function () {
+		this._html = this._getEmbedCode().width(this._width).height(this._height);
+		return BaseWidget.prototype.getHTML.call(this);
+	};
+
+	this.onEditWidgetInserted = function(){
+		var $this = this;
+		var counter = 100;
+		var jFrame = false;
+		// Wait for iFrame to appear
+		var interval = setInterval(function () {
+			// Fail safe switch to stop interval if it does more than 200 checks
+			if (counter == 0) {
+				clearInterval(interval);
+				return;
+			}
+			counter--;
+
+			if ((jFrame = $this.body().find('iframe')).length !== 0) {
+				clearInterval(interval);
+				counter = 500;
+				var widthInterval = setInterval(function () {
+					// Fail safe switch to stop interval if something goes wrong with Tweet load
+					if (counter == 0) {
+						clearInterval(interval);
+						return;
+					}
+					counter--;
+					if (typeof jFrame.attr("width") != "undefined") {
+						clearInterval(widthInterval);
+						jFrame.attr("width", $this._width);
+					}
+				}, 10);
+			}
+		}, 50);
 	}
 
 	BaseWidget.prototype.init.call(this);
