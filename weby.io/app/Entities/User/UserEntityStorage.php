@@ -56,7 +56,7 @@ abstract class UserEntityStorage extends EntityAbstract
     }
 
     /**
-     * Queries the database for user based on his service type (fb, g+ etc.) and service profile ID
+     * Queries the database for user based on his service type (fb, g+ etc.) and service registered email
      * @return \ArrayObject|bool
      */
     protected function _sqlGetByService() {

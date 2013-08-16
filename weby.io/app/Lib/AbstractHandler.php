@@ -3,6 +3,8 @@
 namespace App\Lib;
 
 use App\AppTrait;
+use App\Entities\User\ServiceType;
+use App\Entities\User\UserEntity;
 use App\Lib\View;
 use Webiny\Component\EventManager\EventManagerTrait;
 use Webiny\Component\Http\HttpTrait;
@@ -18,14 +20,13 @@ abstract class AbstractHandler
     private $_dataContainer = array();
     private $_template = '';
     private $_templatePath = '';
+    private $_loggedUser = null;
 
     public function __construct()
     {
         $this->_template = Router::getInstance()->getMethod();
         $handlerTemplate = Router::getInstance()->getHandler()->explode('\\')->last()->replace('Handler', '')->caseLower();
         $this->_templatePath = 'templates/' . $handlerTemplate;
-
-        //die(print_r($this->request()->session()->get('oauth2_user')));
     }
 
     public function output()
@@ -94,6 +95,48 @@ abstract class AbstractHandler
 
         header('Content-type: application/json; charset=utf-8;');
         die(json_encode($response));
+    }
+
+    /**
+     * Returns true user from Weby's users database
+     * @return UserEntity|null
+     */
+    public function getLoggedUser()
+    {
+        if (is_null($this->_loggedUser)) {
+            $this->_loggedUser = new UserEntity();
+
+            // We pickup data from session which is assigned on sign in
+            $userData = $this->request()->session('oauth_user')->get('oauth2_user');
+
+            // Then load the user by service type and his email that was registered there
+            // TODO: getServiceFromLink() parses a link to get service type, maybe it could be done smarter
+            // TODO: is email unique identifier? We also have a profile ID, but Google's ID is to big for bigint (char?)
+            $this->_loggedUser->loadByService($this->getServiceFromLink($userData->profileUrl), $userData->email);
+        }
+        return $this->_loggedUser;
+    }
+
+    /**
+     * Returns service name based on given URL
+     * @param \StringObject $serviceUrl      URL to check
+     * @return String                       Name of service
+     */
+    protected function getServiceFromLink($serviceUrl)
+    {
+        if (!$serviceUrl instanceof StringObject) {
+            $serviceUrl = $this->str($serviceUrl);
+        }
+
+        if ($serviceUrl->contains('facebook')) {
+            return ServiceType::FACEBOOK;
+        }
+        if ($serviceUrl->contains('google')) {
+            return ServiceType::GOOGLE;
+        }
+        if ($serviceUrl->contains('linkedin')) {
+            return ServiceType::LINKEDIN;
+        }
     }
 }
 

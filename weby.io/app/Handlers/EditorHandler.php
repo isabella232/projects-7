@@ -14,6 +14,7 @@ class EditorHandler extends AbstractHandler
 	use AppTrait, DatabaseTrait, HttpTrait, ServiceManagerTrait;
 
 	public function index($id = false) {
+
 		if($id){
 			$storage = $this->service('storage.local');
 			$file = new LocalFile('weby.json', $storage);

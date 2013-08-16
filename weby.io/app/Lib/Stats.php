@@ -10,12 +10,15 @@ class Stats
 {
     use DatabaseTrait, SingletonTrait;
 
+    /**
+     * All periods (day, week, month, year)
+     */
     const DAY = 'd';
     const WEEK = 'w';
     const MONTH = 'm';
     const YEAR = 'y';
 
-    private $_periodIds;
+    private $_periodIds = [];
 
     private $_currentYear;
     private $_currentMonth;
@@ -25,6 +28,9 @@ class Stats
     private $_currentDayOfMonth;
     private $_currentMonthDaysNumber;
 
+    /**
+     * Initalizes current date values
+     */
     public function init()
     {
         $this->_currentYear = date('Y');
@@ -41,8 +47,16 @@ class Stats
      *  - total count of Webies created
      *  - separate total counts for each widget
      */
-    public function updateWebyStats(WebyEntity $weby)
+    public function updateWebiesStats(WebyEntity $weby)
     {
+        $allWidgets = $weby->getWidgets();
+        foreach ($allWidgets as $widget) {
+            /**@var $widget \App\Entities\Widget\WidgetEntity */
+            $widgetEvent = 'W_' . strtoupper($widget->getType()) . '_ADDED';
+            $this->_updateStats(StatsEvents::$$widgetEvent);
+        }
+
+        $this->_updateWebiesCount();
     }
 
     /**
@@ -50,19 +64,33 @@ class Stats
      */
     public function updateRegisteredUsers()
     {
-        $this->updateStats(StatsEvents::USER_REGISTERED);
+        $this->_updateStats(StatsEvents::USER_REGISTERED);
     }
 
-    private function updateStats($event, $incrementAmount = 1)
+    /**
+     * Upgrades statistics for total count of created Webies
+     */
+    private function _updateWebiesCount()
     {
-        $this->_sqlGetPeriodIds($event);
+        $this->_updateStats(StatsEvents::WEBY_CREATED);
+    }
 
-        $query = "UPDATE {$this->db()->w_stat} SET value=value+? WHERE period=? AND event=?";
+    /**
+     * Updates stats for given event for increment amount
+     * @param $event                    Numeric representation of event (use StatEvent constants)
+     * @param int $incrementAmount      Default is 1, but any value can be specified
+     */
+    private function _updateStats($event, $incrementAmount = 1)
+    {
+        $this->_sqlGetPeriodIds();
+
+        // uses stored function to emulate ON DUPLICATE KEY UPDATE
+        $query = "SELECT UPDATE_STATS(?,?,?)";
         foreach ($this->_periodIds as $id) {
             $bind = array(
-                $incrementAmount,
                 $id,
-                $event
+                $event,
+                $incrementAmount
             );
             $this->db()->execute($query, $bind);
         }
@@ -70,18 +98,22 @@ class Stats
 
     /**
      * Searches for periods, if they don't exists, then it creates them
-     * @param $event        Used for creating zero valued statistics
+     * @internal param \App\Lib\Used $event for creating zero valued statistics
+     * @return bool
      */
-    private function _sqlGetPeriodIds($event)
+    private function _sqlGetPeriodIds()
     {
+        if (!empty($this->_periodIds)) {
+            return;
+        }
         $periodIds = [];
 
-        $bindValues = array(
+        $bindValues = [
             self::DAY => $this->_currentDay,
             self::WEEK => $this->_currentWeek,
             self::MONTH => $this->_currentMonth,
             self::YEAR => $this->_currentYear,
-        );
+        ];
 
         $periodsQuery = "SELECT id FROM {$this->db()->w_stat_period} WHERE year=? AND type=? AND value=?";
 
@@ -95,10 +127,6 @@ class Stats
                 $query = "INSERT INTO {$this->db()->w_stat_period} (year, type, value) VALUES (?,?,?)";
                 $this->db()->execute($query, [$this->_currentYear, $period, $current]);
                 $id = $this->db()->lastInsertedId($this->db()->w_stat_period);
-
-                // Insert zero values into statistics table for newly created periods
-                $query = "INSERT INTO {$this->db()->w_stat} (period, event) VALUES (?,?)";
-                $this->db()->execute($query, [$id, $event]);
             }
             $periodIds[$period] = $id;
         }

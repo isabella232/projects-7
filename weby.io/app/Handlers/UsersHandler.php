@@ -38,26 +38,4 @@ class UsersHandler extends AbstractHandler
         // Redirect to editor
         $this->request()->redirect($this->app()->getConfig()->app->web_path . 'my/');
     }
-
-    /**
-     * Returns service name based on given URL
-     * @param StringObject $serviceUrl      URL to check
-     * @return String                       Name of service
-     */
-    private function getServiceFromLink($serviceUrl)
-    {
-        if (!$serviceUrl instanceof StringObject) {
-            $serviceUrl = $this->str($serviceUrl);
-        }
-
-        if ($serviceUrl->contains('facebook')) {
-            return ServiceType::FACEBOOK;
-        }
-        if ($serviceUrl->contains('google')) {
-            return ServiceType::GOOGLE;
-        }
-        if ($serviceUrl->contains('linkedin')) {
-            return ServiceType::LINKEDIN;
-        }
-    }
 }

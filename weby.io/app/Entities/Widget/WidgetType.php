@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Entities\Widget;
 class WidgetType {
 
     const TEXT = 'text';

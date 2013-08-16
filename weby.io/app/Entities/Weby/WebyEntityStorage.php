@@ -7,26 +7,15 @@ use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class WebyEntityStorage extends EntityAbstract
 {
-    private $_id;
-
+    protected $_id = 0;
+    protected $_content = '';
+    protected $_widgets = array();
     /**
      * Saves weby into the database with it's service type
      * @return \App\Lib\DatabaseResult|bool
      */
     protected function _sqlSave()
     {
-
-        // Must complete
-        if ($this->_id == 0) {
-            $query = "INSERT INTO {$this->_getDb()->w_weby} (service, email, first_name, last_name)
-                        VALUES (?, ?, ?, ?)";
-            $bind = [$this->_id, $this->_service, $this->_email, $this->_firstName, $this->_lastName];
-            return $this->_getDb()->execute($query, $bind);
-        }
-
-        $query = "UPDATE {$this->_getDb()->w_weby} SET email=?, first_name=?, last_name=? WHERE id=?";
-        $bind = [$this->_email, $this->_firstName, $this->_lastName, $this->_id];
-        return $this->_getDb()->execute($query, $bind);
     }
 
     /**
