@@ -52,7 +52,7 @@ class DatabaseResult
      *
      * @param String $resultType
      * @internal param String $query
-     * @return StdClass|Boolean|Array
+     * @return \StdClass|Boolean|Array
      */
     public function fetchAll($resultType = Database::RT_ARRAY)
     {
@@ -64,7 +64,6 @@ class DatabaseResult
                 $r = (array)$r;
                 $return->append($this->arr($r));
             }
-
             return $return;
         }
     }
@@ -75,7 +74,7 @@ class DatabaseResult
      */
     function fetchValue()
     {
-        $row = $this->fetch();
+        $row = $this->_fetch();
 
         if ($row != false) {
             $values = array_values((array)$row);

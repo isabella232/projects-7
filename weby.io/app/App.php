@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use App\Lib\DatabaseTrait;
 use App\Lib\Router;
 use App\Lib\Database;
 use Webiny\Component\Config\ConfigObject;
@@ -10,13 +11,14 @@ use Webiny\WebinyTrait;
 
 class App
 {
-    use SingletonTrait, ConfigTrait;
+    use SingletonTrait, ConfigTrait, DatabaseTrait;
 
     /** @var  $_router Router */
     private $_config;
 
     public function init()
     {
+
 		$this->_config = $this->config()->yaml(realpath(__DIR__) . '/config.yaml');
         $this->_config->mergeWith($this->config()->yaml(realpath(__DIR__) . '/routes.yaml'));
 		
@@ -32,5 +34,9 @@ class App
     public function getConfig()
     {
         return $this->_config;
+    }
+
+    public function getDb() {
+        return $this->db();
     }
 }

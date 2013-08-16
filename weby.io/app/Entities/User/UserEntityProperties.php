@@ -5,16 +5,17 @@ namespace App\Entities\User;
 
 abstract class UserEntityProperties extends UserEntityStorage
 {
+
     /**
      * @return mixed
      */
     public function getCreatedOn()
     {
-        return $this->datetime($this->_createdOn);
+        return $this->_createdOn;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -22,12 +23,35 @@ abstract class UserEntityProperties extends UserEntityStorage
     }
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->_firstName;
+    }
+
+    /**
+     * @return int
      */
     public function getId()
     {
         return $this->_id;
     }
 
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->_lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getService()
+    {
+        return $this->_service;
+    }
 
 }

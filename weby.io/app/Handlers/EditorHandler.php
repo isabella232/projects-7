@@ -3,8 +3,8 @@
 namespace App\Handlers;
 
 use App\AppTrait;
-use App\Lib\DatabaseTrait;
 use App\Lib\AbstractHandler;
+use App\Lib\DatabaseTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\ServiceManager\ServiceManagerTrait;
 use Webiny\Component\Storage\File\LocalFile;

@@ -56,7 +56,7 @@
     widgets/skyDriveWidget.js,
     widgets/soundCloudWidget.js,
     widgets/twitterWidget.js,
-    widgets/linkedInWidget.js,
+    widgets/linkedinWidget.js,
     widgets/linkWidget.js,
     widgets/vineWidget.js,
     widgets/pinterestWidget.js,
