@@ -1,5 +1,13 @@
 var BaseWidget = function () {
 	/**
+<<<<<<< Updated upstream
+=======
+	 * URL of the Node.js service for content validation
+	 */
+	this._urlChecker = 'lokalno';
+
+	/**
+>>>>>>> Stashed changes
 	 * Some services do not allow requests to the embed URL-s so you can turn off validation by setting this to `false`
 	 */
 	this._checkUrl = true;

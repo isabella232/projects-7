@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\App;
+use App\Lib\DatabaseTrait;
 use Webiny\StdLib\StdLibTrait;
 
 abstract class EntityAbstract
@@ -50,6 +51,7 @@ abstract class EntityAbstract
             $this->$property = $value;
         }
         $this->_onAfterPopulate($data);
+        return $this;
     }
 
     protected function _populateFromDb($data)

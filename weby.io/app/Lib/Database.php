@@ -16,17 +16,17 @@ class Database
 	use AppTrait, StdLibTrait, SingletonTrait;
 
 	/**
-	 * @var PDO
+	 * @var \PDO
 	 */
 	private static $_connection;
 
 	/**
-	 * @var PDOStatement
+	 * @var \PDOStatement
 	 */
 	private $_stm;
 
 	/**
-	 * @var PDO
+	 * @var \PDO
 	 */
 	private $_result;
 
@@ -47,19 +47,24 @@ class Database
 	/** Number of rows returned by SELECT query     */
 	public $num_rows;
 
-	/** ID of the last inserted row */
-	public $last_inserted_id;
-
 	protected $tables = array(
-		'user',
-		'page'
+		'w_user',
+		'w_weby',
+        'w_stat',
+        'w_stat_period'
 	);
 
 	/** Users table */
-	public $user;
+	public $w_user;
 
-	/** Pages table */
-	public $page;
+	/** Webies table */
+	public $w_weby;
+
+    /** Stats table */
+    public $w_stat;
+
+    /** Stats periods table */
+    public $w_stat_period;
 
 	// ** Result Set types - used by fetchAll method **//
 	const RT_ARRAY = 'array';
@@ -80,7 +85,7 @@ class Database
 	 * @param Array   $bind  Array of values to bind
 	 * @param Boolean $stmt  Use previously prepared statement or not
 	 *
-	 * @return DatabaseResult
+	 * @return \App\Lib\Database
 	 */
 	public function execute($query, $bind = null, $stmt = false) {
 		$this->_query = $query instanceof StringObject ? $query : $this->str($query);
@@ -108,12 +113,9 @@ class Database
 		if($this->_query->contains('SELECT')) {
 			$this->_result = $this->_stm->fetchAll(\PDO::FETCH_OBJ);
 			$this->num_rows = count($this->_result);
-
 			return new DatabaseResult($this->_result);
 		} else {
 			$this->affected_rows = $this->_stm->rowCount();
-			$this->last_inserted_id = $this->_getConnection()->lastInsertId();
-
 			return $this;
 		}
 	}
@@ -126,7 +128,7 @@ class Database
 	 *
 	 * @return DatabaseResult
 	 */
-	function query($query, $timer = false) {
+	public function query($query, $timer = false) {
 		$con = $this->_getConnection();
 		$this->_flush();
 
@@ -211,6 +213,16 @@ class Database
 		return implode(',', $binds);
 	}
 
+    /**
+     * Returns last inserted sequence number for selected table
+     * @param $tableName        Table for which we need a sequence number
+     * @param string $column    Sequence column name
+     * @return Int¸¸            Sequence
+     */
+    public function lastInsertedId($tableName, $column = 'id') {
+        $sequence = $tableName . '_' . $column . '_seq';
+        return $this->_getConnection()->lastInsertId($sequence);
+    }
 	/**
 	 * Constructor
 	 */
@@ -246,7 +258,7 @@ class Database
 	 */
 	private function _tableInit() {
 		foreach ($this->tables as $table) {
-			$this->{$table} = '`' . $table . '`';
+			$this->{$table} = '' . $table . '';
 		}
 
 		return;
@@ -256,7 +268,7 @@ class Database
 	 * Checks if the connection to MySQL server is established.
 	 * If not, a new connection is made.
 	 *
-	 * @return PDO
+	 * @return \PDO
 	 */
 	private function _getConnection() {
 		if(!is_object(self::$_connection) || !self::$_connection instanceof \PDO) {

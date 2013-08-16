@@ -9,6 +9,8 @@ class AppEvents
 	use SingletonTrait, EventManagerTrait;
 
 	public function subscribe(){
-		//$this->eventManager()->listen("wf.storage.file_saved")->handler("")->method("fileSaved");
+		$this->eventManager()->listen("wf.security.login_valid")->handler(function() {
+            die('yes');
+        });
 	}
 }
