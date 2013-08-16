@@ -133,7 +133,7 @@ function LinkWidget() {
 					img.bind("load", function () {
 						$this.hideLoading();
 						// Get image dimensions to set proper aspect ratio
-						$this._aspectRatio = parseInt($(this).width()) / parseInt($(this).height());
+						//$this._aspectRatio = parseInt($(this).width()) / parseInt($(this).height());
 						$this._html.resizable("option", "alsoResize", '#' + $(this).attr("id"));
 						$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
 						$this.contentLoaded();

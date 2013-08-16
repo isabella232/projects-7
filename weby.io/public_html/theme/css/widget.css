@@ -76,6 +76,11 @@
 	border-radius: 4px;
 }
 
+.widget.no-frame{
+	background: none;
+	box-shadow: none;
+}
+
 .widget .widget-body {
 	height: 100%;
 	margin-bottom: -4px;
