@@ -38,8 +38,6 @@ function PreziWidget() {
 		}
 	};
 
-	BaseIframeWidget.prototype.init.call(this);
-
 	var test = 'http://prezi.com/embed/f2eb2757342dc679050f1d1d6b098920375ffd86/';
 }
 

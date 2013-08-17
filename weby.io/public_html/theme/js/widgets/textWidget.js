@@ -10,10 +10,6 @@ function TextWidget() {
 		minWidth: 412
 	};
 
-	this.init = function () {
-		BaseWidget.prototype.init.call(this);
-	};
-
 	this.getHTML = function () {
 		this._html = '<div id="text-editable-' + this._id + '" class="text-editable"></div>';
 		return BaseWidget.prototype.getHTML.call(this);
@@ -28,8 +24,8 @@ function TextWidget() {
 	}
 
 	this.onWidgetInserted = function () {
-		this._createEditor();
 		BaseWidget.prototype.onWidgetInserted.call(this);
+		this._createEditor();
 		App.deactivateTool();
 		this._html.find(".text-editable").click();
 
@@ -110,9 +106,6 @@ function TextWidget() {
 	this.onEditWidgetInserted = function(){
 		this._createEditor();
 	}
-
-	BaseWidget.prototype.init.call(this);
-
 }
 
 

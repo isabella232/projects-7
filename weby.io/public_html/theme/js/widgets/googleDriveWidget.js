@@ -53,8 +53,6 @@ function GoogleDriveWidget() {
 			documentType: this._documentType
 		}
 	}
-
-	BaseIframeWidget.prototype.init.call(this);
 }
 
 GoogleDriveWidget.prototype = new BaseIframeWidget();

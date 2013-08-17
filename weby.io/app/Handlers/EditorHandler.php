@@ -16,7 +16,7 @@ class EditorHandler extends AbstractHandler
 	public function index($id = false) {
 		if($id){
 			$storage = $this->service('storage.local');
-			$file = new LocalFile('weby.json', $storage);
+			$file = new LocalFile('weby'.$id.'.json', $storage);
 			$this->widgets = $file->getContents();
 		}
 		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);

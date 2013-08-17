@@ -10,120 +10,112 @@ use Webiny\StdLib\StdLibTrait;
 
 class Router
 {
-    use SingletonTrait, AppTrait, StdLibTrait, HttpTrait;
+	use SingletonTrait, AppTrait, StdLibTrait, HttpTrait;
 
-    private $_routes = array();
-    private $_requestParams;
-    private $_handlerClass;
-    private $_handlerMethod;
+	private $_routes = array();
+	private $_requestParams;
+	private $_handlerClass;
+	private $_handlerMethod;
 
-    public function init()
-    {
-        foreach ($this->app()->getConfig()->routes as $route) {
-            $this->_addRoute($route->get(0, ''), $route->get(1, ''), $route->get(2, ''));
-        }
-        $this->_registerRoutes();
-    }
+	public function init() {
+		foreach ($this->app()->getConfig()->routes as $route) {
+			$this->_addRoute($route->get(0, ''), $route->get(1, ''), $route->get(2, ''));
+		}
+		$this->_registerRoutes();
+	}
 
-    public function route()
-    {
-        $this->_parseRequest();
-        $this->_run();
-    }
+	public function route() {
+		$this->_parseRequest();
+		$this->_run();
+	}
 
-    public function getMethod()
-    {
-        return $this->str($this->_handlerMethod);
-    }
+	public function getMethod() {
+		return $this->str($this->_handlerMethod);
+	}
 
-    public function getHandler()
-    {
-        return $this->str($this->_handlerClass);
-    }
+	public function getHandler() {
+		return $this->str($this->_handlerClass);
+	}
 
-    private function _addRoute($urlRequest, $class, $method = null)
-    {
-        $this->_routes[$urlRequest] = array(
-            'class' => $class,
-            'method' => $method
-        );
-    }
+	private function _addRoute($urlRequest, $class, $method = null) {
+		$this->_routes[$urlRequest] = array(
+			'class'  => $class,
+			'method' => $method
+		);
+	}
 
-    private function _run()
-    {
-        $handlerClass = $this->_handlerClass;
-        if (is_callable($handlerClass)) {
-            return $handlerClass();
-        } else {
-            $handler = new $handlerClass;
-            if ($this->isInstanceOf($handler, '\App\Lib\AbstractHandler')) {
-                $handler->{$this->_handlerMethod}($this->_requestParams);
+	private function _run() {
+		$handlerClass = $this->_handlerClass;
+		if(is_callable($handlerClass)) {
+			return $handlerClass();
+		} else {
+			$handler = new $handlerClass;
+			if($this->isInstanceOf($handler, '\App\Lib\AbstractHandler')) {
+				call_user_func_array([$handler, $this->_handlerMethod], $this->_requestParams);
 
-                return $handler->output();
-            }
-            throw new \Exception('Handler class must implement `AbstractHandler`');
-        }
-    }
+				return $handler->output();
+			}
+			throw new \Exception('Handler class must implement `AbstractHandler`');
+		}
+	}
 
 
-    /**
-     * Register PHP routes
-     *
-     *
-     * All routes are defined in YAML file.
-     * Define new routes here here if specific PHP functionality is needed.
-     *
-     * Example with callable:
-     *
-     * $this->_addRoute('test/route', function(){
-     *        // Do something
-     * });
-     */
-    private function _registerRoutes()
-    {
-        // Register routes
-    }
+	/**
+	 * Register PHP routes
+	 *
+	 *
+	 * All routes are defined in YAML file.
+	 * Define new routes here here if specific PHP functionality is needed.
+	 *
+	 * Example with callable:
+	 *
+	 * $this->_addRoute('test/route', function(){
+	 *        // Do something
+	 * });
+	 */
+	private function _registerRoutes() {
+		$this->_addRoute('/editor/(\d+)$/', function($matches){
 
-    private function _parseRequest()
-    {
-        // Get URL
-        $request = $this->str($this->request()->query('r', ''))->trimRight('/')->val();
-        // Check routes
-        foreach ($this->_routes as $regex => $route) {
-            $match = false;
-            $regex = $this->str($regex);
+		});
+	}
 
-            if ($regex->equals('') && $request == '') // match empty request
-            {
-                $match = [true];
-            } else {
+	private function _parseRequest() {
+		// Get URL
+		$request = $this->str($this->request()->query('r', ''))->trimRight('/')->val();
+		// Check routes
+		foreach ($this->_routes as $regex => $route) {
+			$match = false;
+			$regex = $this->str($regex);
 
-                if ($regex->length() > 0) {
-                    $fChar = clone $regex;
-                    $fChar->subString(0, 1);
-                    if (($fChar == '|' || $fChar == '/') && ($regex->subStringCount('|') >= 2 || $regex->subStringCount('/') >= 2)
-                    ) {
-                        // preg_match request
-                        preg_match($regex->val(), $request, $match);
-                    } else {
-                        if ($regex == $request) { // string match request
-                            $match = [true];
-                        }
-                    }
-                }
-            }
+			if($regex->equals('') && $request == '') // match empty request
+			{
+				$match = [true];
+			} else {
 
-            if (is_array($match) && count($match) > 0) {
-                array_shift($match);
-                $this->_requestParams = $match;
-                $this->_handlerClass = $route['class'];
-                $this->_handlerMethod = $route['method'];
+				$fChar = clone $regex;
+				$fChar = $fChar->subString(0, 1)->val();
 
-                return;
-            }
-        }
-        $this->_handlerClass = $this->app()->getConfig()->app->default_class;
-        $this->_handlerMethod = $this->app()->getConfig()->app->default_method;
-    }
+				if(($fChar == '|' || $fChar== '/') && ($regex->subStringCount('|') >= 2 || $regex->subStringCount('/') >= 2)
+				) {
+					// preg_match request
+					preg_match($regex->val(), $request, $match);
+				} else {
+					if($regex == $request) { // string match request
+						$match = [true];
+					}
+				}
+			}
+
+			if(is_array($match) && count($match) > 0) {
+				array_shift($match);
+				$this->_requestParams = $match;
+				$this->_handlerClass = $route['class'];
+				$this->_handlerMethod = $route['method'];
+				return;
+			}
+		}
+		$this->_handlerClass = $this->app()->getConfig()->app->default_class;
+		$this->_handlerMethod = $this->app()->getConfig()->app->default_method;
+	}
 }
 

@@ -78,7 +78,7 @@ body.unselectable * {
 #content {
 	position: absolute;
 	overflow: scroll;
-	top: 60px;
+	top: 94px;
 	left: 120px;
 	z-index: 0;
 }

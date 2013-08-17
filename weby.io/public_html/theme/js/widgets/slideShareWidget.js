@@ -43,7 +43,6 @@ function SlideShareWidget() {
 	};
 
 	var test = '24621277';
-	BaseIframeWidget.prototype.init.call(this);
 }
 
 SlideShareWidget.prototype = new BaseIframeWidget();

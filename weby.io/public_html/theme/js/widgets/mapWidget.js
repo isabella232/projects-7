@@ -12,10 +12,8 @@ function MapWidget() {
 	this._firstLoad = true;
 
 	// Only set options we need (handle methods using callbacks - see below)
-	this._resizableOptions = {
-		minHeight: 150,
-		minWidth: 300
-	};
+	this._resizableOptions['minHeight'] = 150;
+	this._resizableOptions['minWidth'] = 300;
 
 	this.widgetResize = function(data){
 		// data contains: element, event, ui
@@ -95,8 +93,6 @@ function MapWidget() {
 		this.body().find('.map').height(this._height).width(this._width);
 		_centerMarker();
 	}
-
-	BaseWidget.prototype.init.call(this);
 
 	var $this = this;
 

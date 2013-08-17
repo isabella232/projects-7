@@ -46,10 +46,11 @@ function PinterestWidget() {
 
 	this.onContentLoaded = function(){
 		if(this._pinType == 'pin'){
-			var jFrame = this.body().find('iframe');
+			var jFrame = this.body('iframe');
 			var height = jFrame.contents().find('div *').height();
 			jFrame.contents().find('div').height(height);
 			jFrame.attr("height", height);
+			this.contentLoaded();
 		}
 	};
 
@@ -62,8 +63,6 @@ function PinterestWidget() {
 			pinUrl: this._pinUrl
 		}
 	};
-
-	BaseIframeWidget.prototype.init.call(this);
 }
 
 PinterestWidget.prototype = new BaseIframeWidget();

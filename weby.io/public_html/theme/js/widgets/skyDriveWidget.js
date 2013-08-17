@@ -41,7 +41,6 @@ function SkyDriveWidget() {
 	};
 
 	var test = '<iframe src="https://skydrive.live.com/embed?cid=4FB5FBB0AEF80FA0&resid=4FB5FBB0AEF80FA0%21110&authkey=AFIFN-bkDsCn_iY&em=2" width="402" height="346" frameborder="0" scrolling="no"></iframe>';
-	BaseIframeWidget.prototype.init.call(this);
 }
 
 SkyDriveWidget.prototype = new BaseIframeWidget();

@@ -6,7 +6,7 @@
 
 .widget-body.video-widget .play-overlay {
 	display: block;
-	background: url('../../images/play.png') no-repeat center 45%;
+	background: url('../../images/play.png') no-repeat center 50%;
 }
 
 .widget-body.video-widget .play-overlay:hover{

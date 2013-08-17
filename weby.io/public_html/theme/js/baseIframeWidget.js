@@ -18,23 +18,22 @@ var BaseIframeWidget = function () {
 	 */
 	this._resizableOptions = {
 		start: function (event, ui) {
-			$(this).find('.widget-body').prepend('<div class="overlay"></div>');
+			var $this = $(this).data('widget');
+			$this.body().prepend('<div class="overlay"></div>');
 			App.fireEvent("widget.resize.start", {element: $(this), event: event, ui: ui});
 		},
 		stop: function (event, ui) {
+			var $this = $(this).data('widget');
 			App.fireEvent("widget.resize.stop", {element: $(this), event: event, ui: ui});
-			$(this).find('.overlay').remove();
-			$(this).css('height', 'auto');
+			$this.body('.overlay').remove();
+			$this.html().css('height', 'auto');
 		},
 		resize: function (event, ui) {
-			$(this).find('.overlay').css('height', $(this).height()).css('width', $(this).width());
+			var $this = $(this).data('widget');
+			$this.body('.overlay').css({height: $(this).height()+'px', width: $(this).width()+'px'});
 			App.fireEvent("widget.resize", {element: $(this), event: event, ui: ui});
 		}
 	};
-
-	this.init = function () {
-		BaseWidget.prototype.init.call(this);
-	}
 
 	/**
 	 * When widget is inserted...
@@ -43,15 +42,15 @@ var BaseIframeWidget = function () {
 		var $this = this;
 		BaseWidget.prototype.onWidgetInserted.call(this);
 		this.hideResizeHandle();
-		this._html.find(this._inputElement).bind("blur keydown", function(e){
+		App.deactivateTool();
+		this.input().focus().bind("blur keydown", function (e) {
 			$this._inputReceived($this, e);
 		});
-		App.deactivateTool();
-		this._html.find(this._inputElement).focus();
 	}
 
 	this.getEditHTML = function () {
-		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		var iframe = this.getIframe();
+		this._html = $(iframe).attr({width: this._width, height: this._height});
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
@@ -67,8 +66,7 @@ var BaseIframeWidget = function () {
 			// If no targetUrl was returned - show parse error message
 			if (!targetUrl) {
 				$this.message().html($this._parseErrorMessage);
-				$this.input().val('');
-				$this.input().bind('blur keydown', function(e){
+				$this.input().val('').bind('blur keydown', function (e) {
 					$this._inputReceived($this, e);
 				});
 				if ($this._isActive) {
@@ -78,19 +76,18 @@ var BaseIframeWidget = function () {
 			}
 			// If targetUrl was received - check if it really exists
 			$this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
-			$this._html.find('.widget-body > *:not(".loading")').hide();
+			$this.body().children(':not(".loading")').hide();
 
 			$this.checkUrl(targetUrl, function (data) {
 				if (data.urlExists) {
 					$this._embedUrl = targetUrl;
 					var iframe = $this.getIframe();
-					$this._insertIframe($this.input(), iframe);
+					$this._insertIframe(iframe);
 				} else {
 					$this.hideLoading();
-					$this._html.find('.widget-body *').show();
+					$this.body().children().show();
 					$this.message().html($this._parseErrorMessage);
-					$this.input().val('');
-					$this.input().bind('blur keydown', function(e){
+					$this.input().val('').bind('blur keydown', function (e) {
 						$this._inputReceived($this, e);
 					});
 					if ($this._isActive) {
@@ -109,34 +106,31 @@ var BaseIframeWidget = function () {
 	 * @param input jQuery input element
 	 * @param iframe Html
 	 */
-	this._insertIframe = function (input, iframe) {
+	this._insertIframe = function (iframe) {
 		var $this = this;
 
-		var iframeWidth = $(iframe).attr("width");
-		var iframeHeight = $(iframe).attr("height");
+		iframe = $(iframe);
 
-		iframe = $(iframe)[0];
-		iframe.setAttribute("width", 0);
-		iframe.setAttribute("height", 0);
+		var iframeWidth = iframe.attr("width");
+		var iframeHeight = iframe.attr("height");
+
+		iframe.prop({width: 0, height: 0});
 
 
-		input.replaceWith(iframe);
+		$this.input().replaceWith(iframe);
 		if ('onIframeInserted' in $this) {
 			$this.onIframeInserted();
 		}
 
 		// Append LOADING screen (move to BaseWidget)
 		$this.showLoading();
-		var jIframe = $('#' + $(iframe).attr('id'));
+		var jIframe = $('#' + iframe.attr("id"));
 
 		// Bind `load` if no custom handler is specified
 		if (!$this._customOnLoadHandler) {
 			jIframe.bind('load', function () {
-				jIframe.attr("width", iframeWidth).attr("height", iframeHeight);
-				$this.hideLoading();
-				$this.message().remove();
-				$this.contentLoaded();
-				$this.showResizeHandle();
+				jIframe.attr({width: iframeWidth, height: iframeHeight});
+				$this.hideLoading().contentLoaded().showResizeHandle().message().remove();
 				if ('onContentLoaded' in $this) {
 					$this.onContentLoaded();
 				}
@@ -150,12 +144,12 @@ var BaseIframeWidget = function () {
 		}
 
 		if ($this._alsoResize && $this._isResizable) {
-			$this._html.resizable("option", "alsoResize", $this._alsoResize);
+			$this.html().resizable("option", "alsoResize", $this._alsoResize);
 		}
 		if ($this._aspectRatio && $this._isResizable) {
-			$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
+			$this.html().resizable("option", "aspectRatio", $this._aspectRatio);
 		}
-		App.fireEvent("widget.resize.stop", {element: $this._html});
+		App.fireEvent("widget.resize.stop", {element: $this.html()});
 	}
 }
 

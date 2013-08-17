@@ -1,13 +1,5 @@
 var BaseWidget = function () {
 	/**
-<<<<<<< Updated upstream
-=======
-	 * URL of the Node.js service for content validation
-	 */
-	this._urlChecker = 'lokalno';
-
-	/**
->>>>>>> Stashed changes
 	 * Some services do not allow requests to the embed URL-s so you can turn off validation by setting this to `false`
 	 */
 	this._checkUrl = true;
@@ -90,6 +82,16 @@ var BaseWidget = function () {
 	this._isActive = false;
 
 	/**
+	 * Can widget content be interacted with? This will affect the interaction overlay
+	 */
+	this._isInteractive = true;
+
+	/**
+	 * Does widget has a frame around it
+	 */
+	this._hasFrame = true;
+
+	/**
 	 * Is widget currently in interaction mode?
 	 */
 	this._isEditable = false;
@@ -125,6 +127,15 @@ var BaseWidget = function () {
 	 * Rotate factor is used to tweak rotation sensitivity
 	 */
 	this._rotateFactor = 0.3;
+
+	/**
+	 * These are cached widget elements that are being accessed often, so we cache them to avoid executing a selector over and over again
+	 */
+	this._jWidgetInput = false;
+
+	this._jWidgetBody = false;
+
+	this._jWidgetControls = false;
 
 	/**
 	 * NOTE!!!!
@@ -245,17 +256,6 @@ var BaseWidget = function () {
 BaseWidget.prototype = {
 
 	/**
-	 * This method should be called at the end of your widget constructor
-	 * It will merge UI options for later attachment to the widget
-	 */
-	init: function () {
-		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
-		$.extend(this._baseDraggableOptions, this._draggableOptions);
-		$.extend(this._baseRotatableOptions, this._rotatableOptions);
-		$.extend(this._baseResizableOptions, this._resizableOptions);
-	},
-
-	/**
 	 * Delete current widget
 	 */
 	delete: function () {
@@ -263,6 +263,7 @@ BaseWidget.prototype = {
 		this._html.remove();
 		// Remove widget from the App
 		App.getWeby().removeWidget(this._id);
+		App.fireEvent("widget.deactivated");
 	},
 
 	/**
@@ -303,7 +304,7 @@ BaseWidget.prototype = {
 		this._left = x;
 		this._top = y;
 		if (typeof this._html != "undefined") {
-			this._html.css('top', this._top + 'px').css('left', this._left + 'px');
+			this._html.css({top: this._top + 'px', left: this._left + 'px'});
 		}
 		return this;
 	},
@@ -317,19 +318,19 @@ BaseWidget.prototype = {
 		var _widget = $('<div data-id="' + this._id + '" class="widget"><div class="widget-body ' + this._widgetClass + '">' +
 			'</div></div>');
 
-		_widget.append('<div class="control remove-handle"><i class="icon-remove"></i></div>');
+		_widget.append('<span class="control remove-handle"><i class="icon-remove"></i></span>');
 		_widget.find('.remove-handle').click(function () {
 			$this.delete();
 		});
 
 		if (this._isDraggable) {
-			_widget.append('<div class="control drag-handle"><i class="icon-move"></i></div>');
+			_widget.append('<span class="control drag-handle"><i class="icon-move"></i></span>');
 		}
 		if (this._isResizable) {
-			_widget.append('<div class="control resize-handle ui-resizable-handle"><i class="icon-crop"></i></div>');
+			_widget.append('<span class="control resize-handle ui-resizable-handle"><i class="icon-crop"></i></span>');
 		}
 		if (this._isRotatable) {
-			_widget.append('<div class="control rotate-handle"><i class="icon-undo"></i></div>');
+			_widget.append('<span class="control rotate-handle"><i class="icon-undo"></i></span>');
 		}
 
 		_widget.find('.widget-body').append(this._html);
@@ -347,7 +348,7 @@ BaseWidget.prototype = {
 				height: this._height + 'px'
 			})
 		}
-		if(this._rotation != 0){
+		if (this._rotation != 0) {
 			var rotateCSS = 'rotate(' + this._rotation + 'deg)';
 
 			_widget.css({
@@ -357,7 +358,7 @@ BaseWidget.prototype = {
 		}
 
 		this._html = _widget;
-		this._html.find('.control').css("visibility", "hidden");
+		this.controls().css("visibility", "hidden");
 		return this._html;
 	},
 
@@ -407,39 +408,61 @@ BaseWidget.prototype = {
 
 	/**
 	 * Show resize handle if this widget is resizable
+	 * @returns this
 	 */
 	showResizeHandle: function () {
 		if (this._isResizable && this._isContentLoaded && this._isActive) {
-			this._html.find('.resize-handle').css("visibility", "visible");
+			this.html('span.resize-handle').css("visibility", "visible");
 		}
+		return this;
 	},
 
 	/**
 	 * Hide resize handle
 	 */
 	hideResizeHandle: function () {
-		this._html.find('.resize-handle').css("visibility", "hidden");
+		this.html('span.resize-handle').css("visibility", "hidden");
 	},
 
 	/**
-	 * Get next usable z-index
+	 * Get next highest z-index
 	 * @returns {number}
 	 */
-	getNextZIndex: function () {
-		var maxZ = 0;
-		$('.widget').each(function () {
-			var z = parseInt($(this).css('z-index'), 10);
+	getMaxZIndex: function () {
+		var maxZ = 10000;
+		var widgets = document.getElementsByClassName('widget');
+		for (var i = 0; i < widgets.length; i++) {
+			var widget = widgets[i];
+			var z = parseInt($(widget).css('z-index'), 10);
 			if (maxZ < z) {
 				maxZ = z;
 			}
-		});
+		}
 		return ++maxZ;
+	},
+
+	/**
+	 * Get next lowest z-index
+	 * @returns {number}
+	 */
+	getMinZIndex: function () {
+		var minZ = 1000000;
+		var widgets = document.getElementsByClassName('widget');
+		for (var i = 0; i < widgets.length; i++) {
+			var widget = widgets[i];
+			var z = parseInt($(widget).css('z-index'), 10);
+			if (minZ > z) {
+				minZ = z;
+			}
+		}
+		return --minZ;
 	},
 
 	/**
 	 * Activate widget
 	 * Show widget handles and interaction layer
 	 * @param e Mouse event
+	 * @returns this
 	 */
 	activate: function (e) {
 		if (this._isActive) {
@@ -449,17 +472,17 @@ BaseWidget.prototype = {
 			}
 			// Don't remove input focus if input element was clicked
 			if (e && e.target.nodeName.toLowerCase() != 'input' && e.target.nodeName.toLowerCase() != 'textarea' && !textEditable) {
-				this._html.find(':focus').blur();
+				this.html(':focus').blur();
 			}
 			return;
 		}
 		this._isActive = true;
-		this._html.draggable("enable");
-		this._html.find('.control').css("visibility", "visible");
+		this.html().draggable("enable");
+		this.controls().css("visibility", "visible");
 		if (!this._isContentLoaded) {
 			this.hideResizeHandle();
 		}
-		this._html.addClass('active');
+		this.html().addClass('active');
 		if (!this._isContentLoaded) {
 			this.makeEditable();
 		}
@@ -468,53 +491,70 @@ BaseWidget.prototype = {
 			this.input().focus();
 		}
 
+		App.fireEvent("widget.activated", this);
+
 		if ('onActivate' in this) {
 			this.onActivate();
 		}
+
+		return this;
 	},
 
 	/**
 	 * Make widget editable (calls widget `onMakeEditable` method if implemented)
 	 * This is triggered on widget doubleclick
 	 * Widget handles are hidden and you can interact with widget content
+	 * @returns this
 	 */
 	makeEditable: function () {
+		if (!this._isInteractive) {
+			return this;
+		}
 		this._isEditable = true;
-		this._html.find('.widget-disabled-overlay').remove();
-		this._html.addClass('editable');
+		this.html('.widget-disabled-overlay').remove();
+		this.html().addClass('editable');
 		if (this._isContentLoaded) {
-			this._html.find('.control').css("visibility", "hidden");
+			this.controls().css("visibility", "hidden");
 		}
 
 		if ('onMakeEditable' in this) {
 			this.onMakeEditable();
 		}
+		return this;
 	},
 
 	/**
 	 * Deactivate widget
 	 * Hide all handles, restore interaction layer, disable dragging
+	 * @returns this
 	 */
 	deactivate: function () {
 		this._isActive = this._isEditable = false;
-		this._html.find('.control').css("visibility", "hidden");
-		this._html.removeClass('active');
-		this._html.removeClass('editable');
-		if (this._html.find('.widget-disabled-overlay').length === 0) {
+		this.controls().css("visibility", "hidden");
+		this.html().removeClass('active editable');
+		if (this.html('.widget-disabled-overlay').length === 0) {
 			// Append interaction layer and set it's line-height to height of the widget
 			this._addInteractionOverlay();
-			this._resize();
 		}
+
+		App.fireEvent("widget.deactivated");
 
 		if ('onDeactivate' in this) {
 			this.onDeactivate();
 		}
+		return this;
 	},
 
+	/**
+	 * Mark content as loaded
+	 * @returns this
+	 */
 	contentLoaded: function () {
-		this._width = this._html.width();
-		this._height = this._html.height();
+		this._width = this.html().width();
+		this._height = this.html().height();
 		this._isContentLoaded = true;
+		this._resize();
+		return this;
 	},
 
 	isContentLoaded: function () {
@@ -524,9 +564,11 @@ BaseWidget.prototype = {
 	/**
 	 * Set data and try loading
 	 * @param data
+	 * @returns this
 	 */
 	setData: function (data) {
-		this._html.find(this._inputElement).val(data).blur();
+		this.input().val(data).blur();
+		return this;
 	},
 
 	save: function () {
@@ -540,6 +582,8 @@ BaseWidget.prototype = {
 			height: this._html.height(),
 			zindex: this._zindex,
 			rotation: this._rotation,
+			hasFrame: !!this._hasFrame,
+			isInteractive: !!this._isInteractive,
 			aspectRatio: this._isResizable ? this._html.resizable("option", "aspectRatio") : false,
 			isLocked: this._isLocked,
 			embedUrl: this._embedUrl
@@ -564,6 +608,9 @@ BaseWidget.prototype = {
 		this._left = parseInt(this._left);
 
 		App.getContent().append(this.getEditHTML());
+		if(!this._hasFrame || this._hasFrame == 'false'){
+			this.html().addClass('no-frame');
+		}
 		this._addInteractionOverlay();
 		this._resize();
 		this._isContentLoaded = true;
@@ -586,6 +633,7 @@ BaseWidget.prototype = {
 	 * Show loading in the widget
 	 * @param mainText
 	 * @param secondaryText
+	 * @returns this
 	 */
 	showLoading: function (mainText, secondaryText) {
 		if (typeof mainText == "undefined" || mainText == '') {
@@ -596,8 +644,8 @@ BaseWidget.prototype = {
 			secondaryText = 'This may take a few moments, please be patient.';
 		}
 
-		var widgetHeight = this._html.find('.widget-body').height();
-		var widgetWidth = this._html.find('.widget-body').width();
+		var widgetHeight = this.body().height();
+		var widgetWidth = this.body().width();
 
 		var style = {
 			width: widgetWidth + 'px',
@@ -606,32 +654,83 @@ BaseWidget.prototype = {
 		};
 
 		var loading = $('<div class="loading"><div class="loading-message">' + mainText + '<br /><span>' + secondaryText + '</span></div></div>').css(style);
-		if (this._html.find('.loading').length > 0) {
-			this._html.find('.loading').replaceWith(loading);
+		if (this.body('.loading').length > 0) {
+			this.body('.loading').replaceWith(loading);
 		} else {
-			this._html.find('.widget-body').prepend(loading);
+			this.body().prepend(loading);
 		}
+		return this;
 	},
 
+	/**
+	 * Hide loading
+	 * @returns this
+	 */
 	hideLoading: function () {
-		this._html.find('.widget-body .loading').remove();
+		this.body('.loading').remove();
+		return this;
 	},
 
+	/**
+	 * Set draggable containment
+	 * @param containment
+	 * @returns this
+	 */
 	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
+		return this;
 	},
 
-	body: function () {
-		return this._html.find('.widget-body');
+	toggleFrame: function () {
+		this._hasFrame = !this._hasFrame;
+		this.html().toggleClass('no-frame');
+		return this._hasFrame;
+	},
+
+	/**
+	 * SELECTOR methods
+	 */
+
+	html: function (selector) {
+		if (typeof selector == "undefined") {
+			return this._html;
+		}
+		return this._html.find(selector);
+	},
+
+	body: function (selector) {
+		if (!this._jWidgetBody) {
+			this._jWidgetBody = this._html.find('.widget-body');
+		}
+
+		if (typeof selector != "undefined") {
+			return this._jWidgetBody.find(selector);
+		}
+		return this._jWidgetBody;
 	},
 
 	input: function () {
-		return this._html.find(this._inputElement);
+		if (!this._jWidgetInput) {
+			this._jWidgetInput = this._html.find(this._inputElement);
+		}
+		return this._jWidgetInput;
 	},
 
 	message: function () {
-		return this._html.find('.message');
+		return this._html.find('span.message');
 	},
+
+	controls: function () {
+		if (!this._jWidgetControls) {
+			this._jWidgetControls = this._html.find('span.control');
+		}
+		return this._jWidgetControls;
+	},
+
+
+	/**
+	 * UTILITY methods
+	 */
 
 	truncate: function (text, length, end) {
 		if (text.length > length) {
@@ -656,7 +755,10 @@ BaseWidget.prototype = {
 		this.setPosition(this._left, parseInt(this._top) + parseInt(distance));
 	},
 
-	// EVENTS
+	/**
+	 * EVENT METHODS
+	 */
+
 
 	/**
 	 * Event: widget.resize.stop
@@ -687,7 +789,7 @@ BaseWidget.prototype = {
 	 * (Currently we only resize the interaction layer)
 	 */
 	_resize: function () {
-		this._html.find('span.text').css('line-height', this._html.outerHeight() + 'px');
+		this.html('span.text').css('line-height', this._html.outerHeight() + 'px');
 	},
 
 	/**
@@ -695,41 +797,54 @@ BaseWidget.prototype = {
 	 * @private
 	 */
 	_bindControls: function () {
+		var draggableOptions = {};
+		var rotatableOptions = {};
+		var resizableOptions = {};
+		this._draggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
+		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
+		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);
+
 		if (this._isDraggable) {
-			this._html.data('widget', this).draggable(this._baseDraggableOptions);
+			this._html.data('widget', this).draggable(draggableOptions);
 		}
 		if (this._isResizable) {
-			this._html.data('widget', this).resizable(this._baseResizableOptions);
-			if (this._alsoResize) {
+			this._html.data('widget', this).resizable(resizableOptions);
+			if (this._alsoResize !== false && this._alsoResize != "false") {
 				this._html.resizable("option", "alsoResize", this._alsoResize);
 			}
 
-			if (this._aspectRatio) {
+			if (this._aspectRatio !== false && this._aspectRatio != "false") {
 				this._html.resizable("option", "aspectRatio", this._aspectRatio);
 			}
 		}
 
 		if (this._isRotatable) {
 			var $this = this;
-			this._html.find('.rotate-handle').mousedown(function (e) {
-				$this._rotateStart = e.pageX;
-				$this._html.draggable("destroy");
-				$this._html.data('widget', $this).draggable($this._baseRotatableOptions);
-			}).mouseup(function () {
+			this.html().find('span.rotate-handle').bind({
+				mousedown: function (e) {
+					$this._rotateStart = e.pageX;
+					$this._html.draggable("destroy");
+					$this._html.data('widget', $this).draggable(rotatableOptions);
+				},
+				mouseup: function () {
 					setTimeout(function () {
 						$this._html.draggable("destroy");
-						$this._html.data('widget', $this).draggable($this._baseDraggableOptions);
+						$this._html.data('widget', $this).draggable(rotatableOptions);
 					}, 50);
-				}).dblclick(function () {
+				},
+				dblclick: function () {
 					$this._rotation = 0;
 					$this._html.css('-webkit-transform', 'none').css('transform', 'none');
-					;
-				});
+				}
+			});
 		}
 	},
 
 	_addInteractionOverlay: function () {
-		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">Doubleclick to interact</span></div>');
+		var text = this._isInteractive ? 'Doubleclick to interact' : '';
+		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">' + text + '</span></div>');
+		this._resize();
 	},
 
 	/**
@@ -750,16 +865,29 @@ BaseWidget.prototype = {
 	setZIndex: function (index) {
 		this._zindex = index;
 		this._html.css('z-index', index);
+		return this;
 	},
 
-	increaseZIndex: function () {
+	sendToBack: function () {
+		this.setZIndex(this.getMinZIndex());
+		return this;
+	},
+
+	bringToFront: function () {
+		this.setZIndex(this.getMaxZIndex());
+		return this;
+	},
+
+	bringForward: function () {
 		this.setZIndex(this._zindex + 1);
+		return this;
 	},
 
-	decreaseZIndex: function () {
-		if (this._zindex > 1) {
+	sendBackward: function () {
+		if (this._zindex > 1000) {
 			this.setZIndex(this._zindex - 1);
 		}
+		return this;
 	}
 };
 

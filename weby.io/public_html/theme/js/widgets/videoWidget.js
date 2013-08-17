@@ -221,8 +221,6 @@ function VideoWidget() {
 	this.onEditWidgetInserted = function () {
 		this.createPlayOverlay();
 	}
-
-	BaseWidget.prototype.init.call(this);
 }
 
 

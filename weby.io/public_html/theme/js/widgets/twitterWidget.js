@@ -172,7 +172,6 @@ function TwitterWidget() {
 		}, 50);
 	}
 
-	BaseWidget.prototype.init.call(this);
 }
 
 // oembed: https://api.twitter.com/1/statuses/oembed.json?id=367360709379624961&align=center

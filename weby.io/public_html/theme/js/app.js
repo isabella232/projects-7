@@ -3,6 +3,7 @@ var AppClass = function () {
 	var _header = $('#header');
 	var _appToolbar;
 	var _weby = false;
+	var _webyToolbar = false;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _viewportHeight;
@@ -113,8 +114,29 @@ var AppClass = function () {
 			App.fireEvent("document.mouse.move", e);
 		});
 
-		_content.click(function (e) {
-			App.fireEvent("content.click", e);
+		_content.bind({
+			click: function (e) {
+				App.fireEvent("content.click", e);
+			},
+			mousemove:function (e) {
+				_webyDrag.contentMouseMove(e);
+			},
+			mouseup: function (e) {
+				$('body').removeClass('unselectable');
+				_webyDrag.contentMouseUp(e);
+			},
+			mousedown: function (e) {
+				$('body').addClass('unselectable');
+				_webyDrag.contentMouseDown(e);
+			},
+			// Webkit mousewheel
+			mousewheel: function(e){
+				_webyDrag.contentMouseWheel(e);
+			},
+			// Firefox mousewheel
+			DOMMouseScroll: function(e){
+				_webyDrag.contentMouseWheel(e);
+			}
 		});
 
 		// Widget is clicked
@@ -142,31 +164,19 @@ var AppClass = function () {
 			}
 		});
 
-		// These content events should be forwarded to drag object exclusively
-		_content.mousemove(function (e) {
-			_webyDrag.contentMouseMove(e);
-		}).mouseup(function (e) {
-				$('body').removeClass('unselectable');
-				_webyDrag.contentMouseUp(e);
-			}).mousedown(function (e) {
-				$('body').addClass('unselectable');
-				_webyDrag.contentMouseDown(e);
-			}).mouseleave(function (e) {
-				//_webyDrag.stopDrag(e);
-			});
-
 		// Recalculate editor dimensions when window is resized
 		$(window).resize(function () {
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
 			_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-			_content.height(_viewportHeight - _header.height() - _heightOffset);
+			_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
 			_toolbarWrapper.height(_viewportHeight - _header.height());
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
 
 		_weby = new Weby();
+		_webyToolbar = new WebyToolbar();
 	}
 
 	this.showLoading = function(){
@@ -240,19 +250,20 @@ var AppClass = function () {
 	 */
 	this.fireEvent = function (event, data) {
 		// Make sure mouse event has 'offsetX' and 'offsetY' set (for Firefox)
-		if ('offsetX' in data) { // This is to verify it's a mouse event
+		if(data && 'offsetX' in data) { // This is to verify it's a mouse event
 			data = MouseEvent.normalize(data);
 		}
 
 		// Construct event method name
 		var parts = event.split('.');
-		$.each(parts, function (i, part) {
+		for(var i in parts){
+			var part = parts[i];
 			if (i == 0) {
 				event = part;
 			} else {
 				event += part.charAt(0).toUpperCase() + part.slice(1);
 			}
-		});
+		}
 
 		// Propagate event to App class
 		if (event in this) {
@@ -262,6 +273,11 @@ var AppClass = function () {
 		// Propagate event to Weby
 		if (_weby && event in _weby) {
 			_weby[event](data);
+		}
+
+		// Propagate event to WebyToolbar
+		if (_webyToolbar && event in _webyToolbar) {
+			_webyToolbar[event](data);
 		}
 
 		// Propagate event to active widget

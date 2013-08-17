@@ -66,7 +66,7 @@ function LinkWidget() {
 	this._inputReceived = function ($this, e) {
 		// If key was pressed
 		if (e.type == "keydown" && e.keyCode == 13) {
-			return this.blur();
+			return $this.input().blur();
 		} else if (e.type == "keydown") {
 			return;
 		}
@@ -135,7 +135,6 @@ function LinkWidget() {
 						// Get image dimensions to set proper aspect ratio
 						//$this._aspectRatio = parseInt($(this).width()) / parseInt($(this).height());
 						$this._html.resizable("option", "alsoResize", '#' + $(this).attr("id"));
-						$this._html.resizable("option", "aspectRatio", $this._aspectRatio);
 						$this.contentLoaded();
 						$this.showResizeHandle();
 					});
@@ -149,7 +148,7 @@ function LinkWidget() {
 		var $this = this;
 		$this.hideLoading();
 		$this.message().html(this._parseErrorMessage);
-		$this._html.find('.link-input').show();
+		$this.html('.link-input').show();
 		$this.input().val('');
 		$this.input().bind('blur keydown', function (e) {
 			$this._inputReceived($this, e);
@@ -248,6 +247,7 @@ function LinkWidget() {
 
 // Renders image
 	this.generateImage = function () {
+		this._isInteractive = false;
 		var tpl = $('script#link-widget-image-tpl').html();
 		tpl = tpl.replace('{image_id}', 'image-link-' + this._id);
 		tpl = tpl.replace('{url}', this._linkUrl);
@@ -295,8 +295,6 @@ function LinkWidget() {
 		}
 		return BaseWidget.prototype.getHTML.call(this);
 	};
-
-	BaseWidget.prototype.init.call(this);
 }
 
 LinkWidget.prototype = new BaseWidget();

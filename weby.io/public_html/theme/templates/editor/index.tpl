@@ -34,6 +34,13 @@
     <div id="toolbar-wrapper">
         <a class="collapse" href="javascript:void(0);">Click to collapse</a>
     </div>
+    <div id="weby-toolbar-wrapper">
+        <a hre="javascript:void(0)" class="disabled tool-icon bring-to-front">To Front</a>
+        <a hre="javascript:void(0)" class="disabled tool-icon bring-forward">Forward</a>
+        <a hre="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
+        <a hre="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
+        <a hre="javascript:void(0)" class="disabled tool-icon toggle-frame">Toggle frame</a>
+    </div>
     <div id="content"></div>
     <div class="clearfix"></div>
     {include file="templates/editor/includes/templates.tpl"}

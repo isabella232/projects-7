@@ -30,10 +30,8 @@ function LinkedInWidget() {
 	}
 
 	this.onIframeLoaded = function (width, height) {
-		this._html.find('.loading, .message, input').remove();
-		this.showResizeHandle();
-		$('#linkedin-iframe-' + this._id).attr("width", width).attr("height", height).attr("disabled", "disabled");
-		this.contentLoaded();
+		$('#linkedin-iframe-' + this._id).attr({width: width, height: height});
+		this.showResizeHandle().contentLoaded().body('.loading, .message, input').remove()
 	}
 
 	/**
@@ -46,12 +44,10 @@ function LinkedInWidget() {
 	}
 
 	this.getEditHTML = function () {
-		this._html = $(this.getIframe()).attr("width", this._width).attr("height", this._height);
+		this._html = $(this.getIframe()).attr({width: this._width, height: this._height});
 		this._html = this._html.attr("src", this._html.attr("src").replace(/&id=\d+$/, ''));
 		return BaseWidget.prototype.getHTML.call(this);
 	};
-
-	BaseIframeWidget.prototype.init.call(this);
 }
 
 

@@ -17,7 +17,6 @@ function InstagramWidget() {
 
     this.getIframe = function () {
         var id = 'instagram-iframe-' + this._id;
-        this._aspectRatio = 612 / 710;
         return '<iframe id="' + id + '" src="'+this._embedUrl+'" width="612" height="710" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
 
     }
@@ -39,8 +38,6 @@ function InstagramWidget() {
 			instagramId: this._instagramId
 		}
 	}
-
-    BaseIframeWidget.prototype.init.call(this);
 }
 
 InstagramWidget.prototype = new BaseIframeWidget();

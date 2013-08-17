@@ -8,6 +8,10 @@
 	padding-left: 5px;
 	float: left;
 	box-shadow: 1px 0 0 rgba(255, 255, 255, 0.4);
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 #toolbar-wrapper.collapsed {
@@ -15,7 +19,7 @@
 }
 
 #toolbar {
-	padding-top: 7px;
+	padding-top: 12px;
 	margin-top: 28px;
 }
 

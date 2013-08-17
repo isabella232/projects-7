@@ -58,6 +58,13 @@ var WebyDrag = function (el) {
 		}
 	}
 
+	this.contentMouseWheel = function(event){
+		stopRelease = true;
+		setTimeout(function(){
+			stopRelease = false;
+		}, 15);
+	}
+
 	var _release = function (velocity, elMethod) {
 		velocity *= velocityFactor;
 		var animateInterval = setInterval(function () {

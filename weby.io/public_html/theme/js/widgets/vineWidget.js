@@ -16,7 +16,6 @@ function VineWidget() {
 
     this.getIframe = function () {
         var id = 'vine-iframe-' + this._id;
-        this._aspectRatio = 1;
 		this._embedUrl = WEB+'embed/vine/?vineId='+this._vineId;
         return '<iframe id="'+id+'" class="vine-embed" src="'+this._embedUrl+'" width="320" height="420" frameborder="0"></iframe>';
     }
@@ -69,8 +68,6 @@ function VineWidget() {
 			vineId: this._vineId
 		}
 	};
-
-    BaseIframeWidget.prototype.init.call(this);
 }
 
 VineWidget.prototype = new BaseIframeWidget();

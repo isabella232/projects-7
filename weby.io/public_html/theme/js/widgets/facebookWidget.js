@@ -35,6 +35,7 @@ function FacebookWidget() {
 
     this.onContentLoaded = function() {
         this._html.find('iframe').show();
+		this.contentLoaded();
     }
 
 	this.getSaveData = function(){
@@ -47,8 +48,6 @@ function FacebookWidget() {
 		this._html = $(this.getIframe()).show();
 		return BaseWidget.prototype.getHTML.call(this);
 	};
-
-    BaseIframeWidget.prototype.init.call(this);
 }
 
 FacebookWidget.prototype = new BaseIframeWidget();
