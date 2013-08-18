@@ -40,6 +40,7 @@
         <a hre="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
         <a hre="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
         <a hre="javascript:void(0)" class="disabled tool-icon toggle-frame">Toggle frame</a>
+        <span id="mouse-pos"></span>
     </div>
     <div id="content"></div>
     <div class="clearfix"></div>

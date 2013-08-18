@@ -21,6 +21,7 @@
 {minify type="js"}
     jquery-1.8.3.js,
     jquery-ui-1.9.2.custom.js,
+    jquery.overlaps.js,
     mouseEvent.js,
     jQueryFix.js,
     webyDrag.js,
@@ -75,5 +76,8 @@
     parsers/vineParser.js,
     parsers/linkParser.js,
     parsers/pinterestParser.js,
+    overlap/rectangle.js,
+    overlap/vector.js,
+    overlap/widgetOverlapping.js,
     init.js
 {/minify}

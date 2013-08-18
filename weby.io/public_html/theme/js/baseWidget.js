@@ -442,6 +442,14 @@ BaseWidget.prototype = {
 	},
 
 	/**
+	 * Get widget z-index
+	 * @returns {number}
+	 */
+	getZIndex: function () {
+		return this._zindex;
+	},
+
+	/**
 	 * Get next lowest z-index
 	 * @returns {number}
 	 */
@@ -608,7 +616,7 @@ BaseWidget.prototype = {
 		this._left = parseInt(this._left);
 
 		App.getContent().append(this.getEditHTML());
-		if(!this._hasFrame || this._hasFrame == 'false'){
+		if (!this._hasFrame || this._hasFrame == 'false') {
 			this.html().addClass('no-frame');
 		}
 		this._addInteractionOverlay();
@@ -841,10 +849,50 @@ BaseWidget.prototype = {
 		}
 	},
 
+	/**
+	 * Add interaction overlay
+	 * @private
+	 */
 	_addInteractionOverlay: function () {
 		var text = this._isInteractive ? 'Doubleclick to interact' : '';
 		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">' + text + '</span></div>');
 		this._resize();
+	},
+
+	/**
+	 * Get array of widgets overlapping current widget
+	 * @returns {Array}
+	 * @private
+	 */
+	_getOverlappingWidgets: function () {
+		var overlapDetector = new WidgetOverlapping(this);
+		var widgets = document.getElementsByClassName('widget');
+		var overlaps = [];
+		for (var i = 0; i < widgets.length; i++) {
+			var targetWidget = widgets[i];
+			var widgetId = targetWidget.getAttribute("data-id");
+			if(widgetId == this._id){
+				continue;
+			}
+			targetWidget = App.getWeby().getWidget(widgetId);
+
+			if (overlapDetector.isOverlapping(targetWidget)) {
+				overlaps.push(targetWidget);
+			}
+		}
+		delete overlapDetector;
+		console.log(overlaps)
+		return overlaps;
+	},
+
+	_getElementBoundingBox: function(widget){
+		var offset = widget.html().offset();
+		return {
+			top: offset.top,
+			left: offset.left,
+			right: offset.left + widget.html().outerWidth(),
+			bottom: offset.top + widget.html().outerHeight()
+		}
 	},
 
 	/**
@@ -879,14 +927,50 @@ BaseWidget.prototype = {
 	},
 
 	bringForward: function () {
-		this.setZIndex(this._zindex + 1);
+		var overlaps = this._getOverlappingWidgets();
+		var indexes = [];
+		for (var i in overlaps) {
+			var ow = overlaps[i];
+			if (ow.getZIndex() > this.getZIndex()) {
+				indexes.push(ow.getZIndex());
+			}
+		}
+
+		if (indexes.length == 0) {
+			return;
+		}
+
+		var newIndex = Math.min.apply(Math, indexes) + 1;
+
+		if(newIndex > 900000){
+			return;
+		}
+
+		this.setZIndex(newIndex);
 		return this;
 	},
 
 	sendBackward: function () {
-		if (this._zindex > 1000) {
-			this.setZIndex(this._zindex - 1);
+		var overlaps = this._getOverlappingWidgets();
+		var indexes = [];
+		for (var i in overlaps) {
+			var ow = overlaps[i];
+			if (ow.getZIndex() < this.getZIndex()) {
+				indexes.push(ow.getZIndex());
+			}
 		}
+
+		if (indexes.length == 0) {
+			return;
+		}
+
+		var newIndex = Math.max.apply(Math, indexes) - 1;
+
+		/*if(newIndex < 10000){
+			return;
+		}*/
+
+		this.setZIndex(newIndex);
 		return this;
 	}
 };

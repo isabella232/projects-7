@@ -81,14 +81,14 @@ var AppClass = function () {
 		}
 	});
 
-	this.isInputFocused = function(e){
+	this.isInputFocused = function (e) {
 		var textEditable = false;
 		if ($(e.target).hasClass('text-editable') || $(e.target).closest('.text-editable').length !== 0) {
 			textEditable = true;
 		}
 
 		var element = e.target.nodeName.toLowerCase();
-		if(element != 'input' && element != 'textarea' && !textEditable){
+		if (element != 'input' && element != 'textarea' && !textEditable) {
 			return false;
 		}
 		return true;
@@ -118,7 +118,9 @@ var AppClass = function () {
 			click: function (e) {
 				App.fireEvent("content.click", e);
 			},
-			mousemove:function (e) {
+			mousemove: function (e) {
+				/*var te = MouseEvent.normalize(e);
+				$('#mouse-pos').html(te.offsetX+':'+te.offsetY);*/
 				_webyDrag.contentMouseMove(e);
 			},
 			mouseup: function (e) {
@@ -130,14 +132,27 @@ var AppClass = function () {
 				_webyDrag.contentMouseDown(e);
 			},
 			// Webkit mousewheel
-			mousewheel: function(e){
+			mousewheel: function (e) {
 				_webyDrag.contentMouseWheel(e);
 			},
 			// Firefox mousewheel
-			DOMMouseScroll: function(e){
+			DOMMouseScroll: function (e) {
 				_webyDrag.contentMouseWheel(e);
+			},
+			// TOUCH events
+			touchstart: function (e) {
+				$('body').addClass('unselectable');
+				_webyDrag.contentMouseDown(e);
+			},
+			touchmove: function (e) {
+				_webyDrag.contentMouseMove(e);
+			},
+			touchend: function (e) {
+				$('body').removeClass('unselectable');
+				_webyDrag.contentMouseUp(e);
 			}
 		});
+
 
 		// Widget is clicked
 		_content.on('click', '.widget', function (e) {
@@ -179,13 +194,13 @@ var AppClass = function () {
 		_webyToolbar = new WebyToolbar();
 	}
 
-	this.showLoading = function(){
+	this.showLoading = function () {
 		var margin = $(window).height() / 2 - 50;
-		$('body').append('<div id="app-loading"><span style="top: '+margin+'px">Loading your Weby...</span></div>');
+		$('body').append('<div id="app-loading"><span style="top: ' + margin + 'px">Loading your Weby...</span></div>');
 	}
 
-	this.hideLoading = function(){
-		$('#app-loading').fadeOut('slow', function(){
+	this.hideLoading = function () {
+		$('#app-loading').fadeOut('slow', function () {
 			$(this).remove();
 		});
 	}
@@ -202,7 +217,7 @@ var AppClass = function () {
 	/**
 	 * Unset current active widget
 	 */
-	this.unsetActiveWidget = function(){
+	this.unsetActiveWidget = function () {
 		_activeWidget = null;
 	}
 
@@ -250,13 +265,13 @@ var AppClass = function () {
 	 */
 	this.fireEvent = function (event, data) {
 		// Make sure mouse event has 'offsetX' and 'offsetY' set (for Firefox)
-		if(data && 'offsetX' in data) { // This is to verify it's a mouse event
+		if (data && 'offsetX' in data) { // This is to verify it's a mouse event
 			data = MouseEvent.normalize(data);
 		}
 
 		// Construct event method name
 		var parts = event.split('.');
-		for(var i in parts){
+		for (var i in parts) {
 			var part = parts[i];
 			if (i == 0) {
 				event = part;
@@ -369,7 +384,7 @@ var AppClass = function () {
 	}
 
 	this.contentClick = function (data) {
-		if(data.target && $(data.target).closest('.widget').length !== 0){
+		if (data.target && $(data.target).closest('.widget').length !== 0) {
 			return;
 		}
 		$(':focus').blur();
