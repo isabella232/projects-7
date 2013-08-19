@@ -137,6 +137,12 @@ var BaseWidget = function () {
 
 	this._jWidgetControls = false;
 
+	this._jControls = false;
+
+	this._mergedDraggableOptions = {};
+	this._mergedRotatableOptions = {};
+	this._mergedResizableOptions = {};
+
 	/**
 	 * NOTE!!!!
 	 * In UI components events are fired to enforce the use of App event manager and not direct object modification
@@ -148,7 +154,6 @@ var BaseWidget = function () {
 	 * To catch events in your widget - implement "widgetDrag", "widgetDragStart" and "widgetDragStop" methods
 	 */
 	this._baseDraggableOptions = {
-		//handle: '.drag-handle'
 		cancel: '.resize-handle, .widget-body',
 		scroll: true,
 		scrollSensitivity: 100,
@@ -486,6 +491,7 @@ BaseWidget.prototype = {
 		}
 		this._isActive = true;
 		this.html().draggable("enable");
+		this.html().append(this._jControls);
 		this.controls().css("visibility", "visible");
 		if (!this._isContentLoaded) {
 			this.hideResizeHandle();
@@ -539,7 +545,9 @@ BaseWidget.prototype = {
 	deactivate: function () {
 		this._isActive = this._isEditable = false;
 		this.controls().css("visibility", "hidden");
+		this._jControls = this.controls().detach();
 		this.html().removeClass('active editable');
+		this.html().draggable("disable");
 		if (this.html('.widget-disabled-overlay').length === 0) {
 			// Append interaction layer and set it's line-height to height of the widget
 			this._addInteractionOverlay();
@@ -560,6 +568,10 @@ BaseWidget.prototype = {
 	contentLoaded: function () {
 		this._width = this.html().width();
 		this._height = this.html().height();
+		this.html().css({
+			width: this._width+'px',
+			height: this._height+'px'
+		})
 		this._isContentLoaded = true;
 		this._resize();
 		return this;
@@ -623,9 +635,12 @@ BaseWidget.prototype = {
 		this._resize();
 		this._isContentLoaded = true;
 		this._bindControls();
+		this.html().draggable("disable");
+		this._jControls = this.controls().detach();
 		if ('onEditWidgetInserted' in this) {
 			this.onEditWidgetInserted();
 		}
+
 	},
 
 	_populate: function (data) {
@@ -808,7 +823,7 @@ BaseWidget.prototype = {
 		var draggableOptions = {};
 		var rotatableOptions = {};
 		var resizableOptions = {};
-		this._draggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
 		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
 		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);
@@ -865,34 +880,25 @@ BaseWidget.prototype = {
 	 * @private
 	 */
 	_getOverlappingWidgets: function () {
-		var overlapDetector = new WidgetOverlapping(this);
 		var widgets = document.getElementsByClassName('widget');
 		var overlaps = [];
+		var rect1 = this.html()[0].getBoundingClientRect();
 		for (var i = 0; i < widgets.length; i++) {
-			var targetWidget = widgets[i];
-			var widgetId = targetWidget.getAttribute("data-id");
-			if(widgetId == this._id){
+			var relativeWidget = widgets[i];
+			var widgetId = relativeWidget.getAttribute("data-id");
+			if (widgetId == this.getId()) {
 				continue;
 			}
-			targetWidget = App.getWeby().getWidget(widgetId);
-
-			if (overlapDetector.isOverlapping(targetWidget)) {
-				overlaps.push(targetWidget);
+			var rect2 = relativeWidget.getBoundingClientRect();
+			var overlap = !(rect1.right < rect2.left ||
+				rect1.left > rect2.right ||
+				rect1.bottom < rect2.top ||
+				rect1.top > rect2.bottom);
+			if (overlap) {
+				overlaps.push(App.getWeby().getWidget(widgetId));
 			}
 		}
-		delete overlapDetector;
-		console.log(overlaps)
 		return overlaps;
-	},
-
-	_getElementBoundingBox: function(widget){
-		var offset = widget.html().offset();
-		return {
-			top: offset.top,
-			left: offset.left,
-			right: offset.left + widget.html().outerWidth(),
-			bottom: offset.top + widget.html().outerHeight()
-		}
 	},
 
 	/**

@@ -76,8 +76,5 @@
     parsers/vineParser.js,
     parsers/linkParser.js,
     parsers/pinterestParser.js,
-    overlap/rectangle.js,
-    overlap/vector.js,
-    overlap/widgetOverlapping.js,
     init.js
 {/minify}

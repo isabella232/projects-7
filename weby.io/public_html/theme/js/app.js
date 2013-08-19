@@ -118,9 +118,10 @@ var AppClass = function () {
 			click: function (e) {
 				App.fireEvent("content.click", e);
 			},
+			mouseleave: function () {
+				_webyDrag.stopDrag();
+			},
 			mousemove: function (e) {
-				/*var te = MouseEvent.normalize(e);
-				$('#mouse-pos').html(te.offsetX+':'+te.offsetY);*/
 				_webyDrag.contentMouseMove(e);
 			},
 			mouseup: function (e) {

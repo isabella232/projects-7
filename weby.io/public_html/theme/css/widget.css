@@ -78,7 +78,7 @@
 
 .widget.no-frame{
 	background: none;
-	box-shadow: none;
+	box-shadow: none !important;
 }
 
 .widget .widget-body {

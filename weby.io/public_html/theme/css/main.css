@@ -20,9 +20,10 @@ html, body {
 }
 
 body {
-	background-image: url(../images/patterns/ticks.png);
+	/*background-image: url(../images/patterns/ticks.png);
 	background-image: url(../images/patterns/bo_play_pattern.png);
 	background-image: url(../images/patterns/dark_wood.png);
+	background-image: url(../images/patterns/purty_wood.png);*/
 	background-image: url(../images/patterns/purty_wood.png);
 	position: relative;
 	overflow: hidden;
@@ -81,6 +82,17 @@ body.unselectable * {
 	top: 94px;
 	left: 120px;
 	z-index: 0;
+	background-image: url(../images/patterns/purty_wood.png);
+	background-attachment: local;
+}
+
+#content.hide-content .widget-body{
+	box-shadow: none;
+	display: none;
+}
+
+#content.hide-content .widget{
+	box-shadow:none;
 }
 
 ::-webkit-scrollbar {
