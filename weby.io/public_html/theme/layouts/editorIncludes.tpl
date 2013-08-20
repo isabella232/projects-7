@@ -21,7 +21,6 @@
 {minify type="js"}
     jquery-1.8.3.js,
     jquery-ui-1.9.2.custom.js,
-    jquery.tubular.1.0.js,
     mouseEvent.js,
     jQueryFix.js,
     webyDrag.js,
