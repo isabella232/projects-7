@@ -2,7 +2,9 @@
 
 {block name="title"}Weby editor{/block}
 {block name="head"}
+
     <!-- Outer JS -->
+    <script src="http://www.youtube.com/iframe_api"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script src="http://www.google.com/jsapi"></script>
     <script type="text/javascript" src="https://www.dropbox.com/static/api/1/dropins.js" id="dropboxjs"
@@ -40,8 +42,10 @@
         <a hre="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
         <a hre="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
         <a hre="javascript:void(0)" class="disabled tool-icon toggle-frame">Toggle frame</a>
+        <a hre="javascript:void(0)" class="tool-icon background">Background</a>
         <span id="mouse-pos"></span>
     </div>
+    <div id="content-background"><div id="player"></div></div>
     <div id="content"></div>
     <div class="clearfix"></div>
     {include file="templates/editor/includes/templates.tpl"}

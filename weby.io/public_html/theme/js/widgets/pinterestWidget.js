@@ -50,8 +50,8 @@ function PinterestWidget() {
 			var height = jFrame.contents().find('div *').height();
 			jFrame.contents().find('div').height(height);
 			jFrame.attr("height", height);
-			this.contentLoaded();
 		}
+		this.contentLoaded();
 	};
 
 	/**

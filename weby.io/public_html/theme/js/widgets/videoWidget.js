@@ -190,11 +190,10 @@ function VideoWidget() {
 			jIframe.attr("height", iframeHeight);
 			jIframe.attr("width", iframeWidth);
 			$this._html.resizable("option", "aspectRatio", iframeWidth / iframeHeight);
+			$this.contentLoaded();
 		});
 
 		$this.showResizeHandle();
-		$this.contentLoaded();
-
 		if ($this._alsoResize) {
 			$this._html.resizable("option", "alsoResize", $this._alsoResize);
 		}

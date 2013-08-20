@@ -43,7 +43,6 @@ function VineWidget() {
 				if (counter == 0) {
 					clearInterval(interval);
 					$this.hideLoading();
-					$this.contentLoaded();
 					return;
 				}
 				counter--;

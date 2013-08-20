@@ -137,12 +137,6 @@ var BaseWidget = function () {
 
 	this._jWidgetControls = false;
 
-	this._jControls = false;
-
-	this._mergedDraggableOptions = {};
-	this._mergedRotatableOptions = {};
-	this._mergedResizableOptions = {};
-
 	/**
 	 * NOTE!!!!
 	 * In UI components events are fired to enforce the use of App event manager and not direct object modification
@@ -269,6 +263,7 @@ BaseWidget.prototype = {
 		// Remove widget from the App
 		App.getWeby().removeWidget(this._id);
 		App.fireEvent("widget.deactivated");
+		App.fireEvent("widget.deleted", this);
 	},
 
 	/**
@@ -390,6 +385,7 @@ BaseWidget.prototype = {
 	 * Called after the widget was inserted into the DOM
 	 */
 	onWidgetInserted: function () {
+		App.fireEvent("widget.created", this);
 		this._bindControls();
 	},
 	/*
@@ -491,7 +487,6 @@ BaseWidget.prototype = {
 		}
 		this._isActive = true;
 		this.html().draggable("enable");
-		this.html().append(this._jControls);
 		this.controls().css("visibility", "visible");
 		if (!this._isContentLoaded) {
 			this.hideResizeHandle();
@@ -545,12 +540,11 @@ BaseWidget.prototype = {
 	deactivate: function () {
 		this._isActive = this._isEditable = false;
 		this.controls().css("visibility", "hidden");
-		this._jControls = this.controls().detach();
 		this.html().removeClass('active editable');
 		this.html().draggable("disable");
 		if (this.html('.widget-disabled-overlay').length === 0) {
 			// Append interaction layer and set it's line-height to height of the widget
-			this._addInteractionOverlay();
+			this.addInteractionOverlay();
 		}
 
 		App.fireEvent("widget.deactivated");
@@ -569,10 +563,16 @@ BaseWidget.prototype = {
 		this._width = this.html().width();
 		this._height = this.html().height();
 		this.html().css({
-			width: this._width+'px',
-			height: this._height+'px'
-		})
+			width: this._width + 'px',
+			height: this._height + 'px'
+		});
+
 		this._isContentLoaded = true;
+
+		if(this._isContentLoaded && this._isActive){
+			this.addInteractionOverlay();
+		}
+
 		this._resize();
 		return this;
 	},
@@ -631,16 +631,15 @@ BaseWidget.prototype = {
 		if (!this._hasFrame || this._hasFrame == 'false') {
 			this.html().addClass('no-frame');
 		}
-		this._addInteractionOverlay();
+		this.addInteractionOverlay();
 		this._resize();
 		this._isContentLoaded = true;
 		this._bindControls();
 		this.html().draggable("disable");
-		this._jControls = this.controls().detach();
 		if ('onEditWidgetInserted' in this) {
 			this.onEditWidgetInserted();
 		}
-
+		return this;
 	},
 
 	_populate: function (data) {
@@ -823,7 +822,7 @@ BaseWidget.prototype = {
 		var draggableOptions = {};
 		var rotatableOptions = {};
 		var resizableOptions = {};
-		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")) + 18, parseInt(App.getContent().css("top")) + 18];
 		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
 		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);
@@ -868,7 +867,7 @@ BaseWidget.prototype = {
 	 * Add interaction overlay
 	 * @private
 	 */
-	_addInteractionOverlay: function () {
+	addInteractionOverlay: function () {
 		var text = this._isInteractive ? 'Doubleclick to interact' : '';
 		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">' + text + '</span></div>');
 		this._resize();
@@ -948,7 +947,7 @@ BaseWidget.prototype = {
 
 		var newIndex = Math.min.apply(Math, indexes) + 1;
 
-		if(newIndex > 900000){
+		if (newIndex > 900000) {
 			return;
 		}
 
@@ -973,8 +972,8 @@ BaseWidget.prototype = {
 		var newIndex = Math.max.apply(Math, indexes) - 1;
 
 		/*if(newIndex < 10000){
-			return;
-		}*/
+		 return;
+		 }*/
 
 		this.setZIndex(newIndex);
 		return this;

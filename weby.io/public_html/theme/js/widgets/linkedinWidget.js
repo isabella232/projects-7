@@ -31,7 +31,12 @@ function LinkedInWidget() {
 
 	this.onIframeLoaded = function (width, height) {
 		$('#linkedin-iframe-' + this._id).attr({width: width, height: height});
-		this.showResizeHandle().contentLoaded().body('.loading, .message, input').remove()
+		this.showResizeHandle().body('.loading, .message, input').remove();
+		this.html().css({
+			width: width+'px',
+			height: height+'px'
+		});
+		this.contentLoaded();
 	}
 
 	/**

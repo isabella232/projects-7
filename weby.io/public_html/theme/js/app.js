@@ -1,5 +1,6 @@
 var AppClass = function () {
 	var _content = $('#content');
+	var _contentBackground = $('#content-background');
 	var _header = $('#header');
 	var _appToolbar;
 	var _weby = false;
@@ -103,10 +104,18 @@ var AppClass = function () {
 
 		// Bind events
 		$(document).keydown(function (e) {
+			// Backspace
 			if (!App.isInputFocused(e)) {
 				if (e.keyCode === 8) {
 					return false;
 				}
+			}
+
+			// Duplicate - Ctrl+D
+			if (e.keyCode == 68 && e.ctrlKey && _activeWidget && _activeWidget.isContentLoaded()) {
+				e.stopPropagation();
+				e.preventDefault();
+				App.getWeby().duplicateWidget(_activeWidget);
 			}
 		});
 
@@ -130,6 +139,7 @@ var AppClass = function () {
 			},
 			mousedown: function (e) {
 				$('body').addClass('unselectable');
+				e.originalEvent.preventDefault();
 				_webyDrag.contentMouseDown(e);
 			},
 			// Webkit mousewheel
@@ -186,7 +196,10 @@ var AppClass = function () {
 			_viewportHeight = $(window).height();
 			_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
 			_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
+			_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+			_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
 			_toolbarWrapper.height(_viewportHeight - _header.height());
+			App.fireEvent("viewport.resize");
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
@@ -241,6 +254,13 @@ var AppClass = function () {
 	 */
 	this.getContent = function () {
 		return _content;
+	}
+
+	/**
+	 * Get jQuery content background element
+	 */
+	this.getContentBackground = function(){
+		return _contentBackground;
 	}
 
 	/**
@@ -357,10 +377,12 @@ var AppClass = function () {
 
 	// EVENTS //
 	this.widgetDragStart = function (data) {
+		this.getContent().addClass('grabbing');
 		this.addContentOverlay();
 	}
 
 	this.widgetDragStop = function (data) {
+		this.getContent().removeClass('grabbing');
 		this.removeContentOverlay();
 	}
 
@@ -441,5 +463,12 @@ var AppClass = function () {
 		// Insert plain text
 		var textWidget = tools['text'].createWidgetAt(100, 100);
 		textWidget.setData(data);
+	}
+
+	this.toolbarMinimized = this.toolbarMaximized = function(toolbarWrapper){
+		App.getContentBackground().css({
+			width: App.getContent().width(),
+			left: App.getContent().css('left')
+		});
 	}
 }

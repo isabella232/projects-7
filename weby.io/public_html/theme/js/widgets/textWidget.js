@@ -2,7 +2,6 @@ function TextWidget() {
 
 	this._content = '';
 	this._widgetClass = 'text-widget';
-	this._isContentLoaded = true;
 	this._inputElement = '.text-editable';
 
 	this._resizableOptions = {
@@ -21,13 +20,15 @@ function TextWidget() {
 
 	this.widgetResize = function (data) {
 		this._html.find('.text-editable').width(this._html.width() - 2).height(this._html.height() - 2);
+		this._resize();
 	}
 
 	this.onWidgetInserted = function () {
 		BaseWidget.prototype.onWidgetInserted.call(this);
 		this._createEditor();
 		App.deactivateTool();
-		this._html.find(".text-editable").click();
+		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2).click();
+		this.contentLoaded();
 
 	}
 

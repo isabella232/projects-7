@@ -130,9 +130,11 @@ var BaseIframeWidget = function () {
 		if (!$this._customOnLoadHandler) {
 			jIframe.bind('load', function () {
 				jIframe.attr({width: iframeWidth, height: iframeHeight});
-				$this.hideLoading().contentLoaded().showResizeHandle().message().remove();
+				$this.hideLoading().showResizeHandle().message().remove();
 				if ('onContentLoaded' in $this) {
 					$this.onContentLoaded();
+				} else {
+					$this.contentLoaded();
 				}
 				$(this).unbind("load");
 			});

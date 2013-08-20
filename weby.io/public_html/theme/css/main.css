@@ -20,21 +20,16 @@ html, body {
 }
 
 body {
-	/*background-image: url(../images/patterns/ticks.png);
-	background-image: url(../images/patterns/bo_play_pattern.png);
-	background-image: url(../images/patterns/dark_wood.png);
-	background-image: url(../images/patterns/purty_wood.png);*/
-	background-image: url(../images/patterns/purty_wood.png);
 	position: relative;
 	overflow: hidden;
 	font: 12px "SourceSansPro", "Calibri", "Arial", sans-serif;
 }
 
 body.unselectable * {
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
+	-moz-user-select: -moz-none !important;
+	-khtml-user-select: none !important;
+	-webkit-user-select: none !important;
+	-ms-user-select: none !important;
 }
 
 #header {
@@ -56,7 +51,7 @@ body.unselectable * {
 
 #header-content h2 {
 	color: #808184;
-	margin: 5px 30px 5px 10px;
+	margin: -4px 30px 5px 10px;
 	font-size: 27px;
 	font-weight: normal;
 	width: 114px;
@@ -70,10 +65,12 @@ body.unselectable * {
 }
 
 #header h4 {
-	margin: 0 0 0 10px;
+	margin: -6px 0 0 10px;
 	color: #808184;
 	font-size: 12px;
 	font-weight: normal;
+	float: left;
+	clear: left;
 }
 
 #content {
@@ -82,8 +79,33 @@ body.unselectable * {
 	top: 94px;
 	left: 120px;
 	z-index: 0;
-	background-image: url(../images/patterns/purty_wood.png);
 	background-attachment: local;
+	cursor:hand;
+	cursor:grab;
+	cursor:-moz-grab;
+	cursor:-webkit-grab;
+}
+
+#content-background {
+	position: absolute;
+	overflow: hidden;
+	top: 94px;
+	left: 120px;
+	z-index: -1;
+}
+
+#content.grabbing, #content.grabbing .widget{
+	cursor: grabbing;
+	cursor: -moz-grabbing;
+	cursor: -webkit-grabbing;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+#content.hide-content{
+	cursor: hand;
 }
 
 #content.hide-content .widget-body{
@@ -108,10 +130,11 @@ body.unselectable * {
 }
 
 #content-overlay {
+	cursor:default !important;
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	z-index: 999998;
+	z-index: 1000000;
 }
 
 .loading {
@@ -122,6 +145,10 @@ body.unselectable * {
 	clear: left;
 	margin: 0 auto 4px auto;
 	padding: 20px 0;
+	-moz-user-select: -moz-none !important;
+	-khtml-user-select: none !important;
+	-webkit-user-select: none !important;
+	-ms-user-select: none !important;
 }
 
 .loading span {

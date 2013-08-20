@@ -34,7 +34,8 @@ function FacebookWidget() {
     }
 
     this.onContentLoaded = function() {
-        this._html.find('iframe').show();
+		var iframe = this.body('iframe');
+        iframe.show();
 		this.contentLoaded();
     }
 

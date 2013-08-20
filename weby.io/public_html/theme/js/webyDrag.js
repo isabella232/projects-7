@@ -13,12 +13,13 @@ var WebyDrag = function (el) {
 	var prevX;
 	var prevY;
 	// If this is set to true - current animation in progress will be aborted
-	var stopRelease = false;
+
+	var onSelectStart = false;
 
 	this.contentMouseDown = function (event) {
 		drag = true;
 		stopRelease = true;
-		setTimeout(function(){
+		setTimeout(function () {
 			stopRelease = false;
 		}, 15);
 		lastX = prevX = event.clientX;
@@ -30,7 +31,7 @@ var WebyDrag = function (el) {
 			return;
 		}
 
-		$('#content').addClass('hide-content');
+		App.getContent().addClass('hide-content grabbing');
 
 		var deltaX = (event.clientX - lastX) * deltaFactor;
 		var deltaY = (event.clientY - lastY) * deltaFactor;
@@ -52,7 +53,7 @@ var WebyDrag = function (el) {
 
 	this.stopDrag = function () {
 		drag = false;
-		$('#content').removeClass('hide-content');
+		App.getContent().removeClass('hide-content grabbing');
 	}
 
 	this.contentMouseUp = function (event) {
@@ -62,9 +63,9 @@ var WebyDrag = function (el) {
 		}
 	}
 
-	this.contentMouseWheel = function(event){
+	this.contentMouseWheel = function (event) {
 		stopRelease = true;
-		setTimeout(function(){
+		setTimeout(function () {
 			stopRelease = false;
 		}, 15);
 	}

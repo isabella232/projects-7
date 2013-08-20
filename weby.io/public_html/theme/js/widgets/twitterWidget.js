@@ -74,7 +74,6 @@ function TwitterWidget() {
 
 				$this.showLoading();
 				$this.input().replaceWith(tweetEmbed);
-				$this.contentLoaded();
 				$this.message().remove();
 
 				/**
@@ -88,7 +87,6 @@ function TwitterWidget() {
 					if (counter == 0) {
 						clearInterval(interval);
 						$this.hideLoading();
-						$this.contentLoaded();
 						return;
 					}
 					counter--;
@@ -102,13 +100,17 @@ function TwitterWidget() {
 							if (counter == 0) {
 								clearInterval(interval);
 								$this.hideLoading();
-								$this.contentLoaded();
 								return;
 							}
 							counter--;
-							if (typeof jFrame.attr("width") != "undefined") {
+							if (jFrame.attr("width") > 0 && jFrame.attr("height") > 0) {
 								clearInterval(widthInterval);
 								$this.hideLoading();
+								$this.html().css({
+									width: jFrame.attr("width")+'px',
+									height: jFrame.attr("height")+'px'
+								});
+								$this.contentLoaded();
 							}
 						}, 10);
 					}
