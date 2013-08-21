@@ -3,6 +3,8 @@
 {block name="title"}Weby editor{/block}
 {block name="head"}
 
+    {include file="templates/editor/includes/editorIncludes.tpl"}
+
     <!-- Outer JS -->
     <script src="http://www.youtube.com/iframe_api"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
@@ -49,4 +51,11 @@
     <div id="content"></div>
     <div class="clearfix"></div>
     {include file="templates/editor/includes/templates.tpl"}
+{/block}
+
+{block name="headerRightTools"}
+    {if $viewObject.user}
+        {include file="templates/pages/includes/socialShare.tpl"}
+        {include file="templates/pages/includes/userOptions.tpl"}
+    {/if}
 {/block}

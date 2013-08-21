@@ -43,9 +43,9 @@ class Stats
     }
 
     /**
-     * Updates general Webies statistics which includes global:
-     *  - total count of Webies created
-     *  - separate total counts for each widget
+     * Updates general Webies statistics which includes
+     *  total count of Webies created and
+     *  separate counts for each widget usage
      */
     public function updateWebiesStats(WebyEntity $weby)
     {

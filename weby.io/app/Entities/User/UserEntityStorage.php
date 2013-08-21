@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entities\User;
 
 use App\Entities\EntityAbstract;
@@ -8,12 +7,12 @@ use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 abstract class UserEntityStorage extends EntityAbstract
 {
     protected $_id = 0;
-    protected $_service = '';
+    protected $_serviceName = '';
     protected $_email = '';
     protected $_firstName = '';
     protected $_lastName = '';
-
-    protected $_createdOn;
+    protected $_createdOn = '';
+    protected $_avatarUrl = '';
 
     /**
      * Saves user into the database with it's service type
@@ -22,14 +21,16 @@ abstract class UserEntityStorage extends EntityAbstract
     protected function _sqlSave()
     {
         if ($this->_id == 0) {
-            $query = "INSERT INTO {$this->_getDb()->w_user} (service, email, first_name, last_name)
-                        VALUES (?, ?, ?, ?)";
-            $bind = [$this->_id, $this->_service, $this->_email, $this->_firstName, $this->_lastName];
-            return $this->_getDb()->execute($query, $bind);
+            $query = "INSERT INTO {$this->_getDb()->w_user} (service_name, email, first_name, last_name, avatar_url, created_on)
+                        VALUES (?, ?, ?, ?, ?, NOW()) RETURNING id";
+            $bind = [$this->_serviceName, $this->_email, $this->_firstName, $this->_lastName, $this->_avatarUrl];
+            $this->_id = $this->_getDb()->execute($query, $bind)->fetchValue();
+            return true;
         }
 
-        $query = "UPDATE {$this->_getDb()->w_user} SET email=?, first_name=?, last_name=? WHERE id=?";
-        $bind = [$this->_email, $this->_firstName, $this->_lastName, $this->_id];
+        $query = "UPDATE {$this->_getDb()->w_user} SET service_name=?, first_name=?, last_name=?, avatar_url=? WHERE id=?";
+
+        $bind = [$this->_serviceName, $this->_firstName, $this->_lastName, $this->_avatarUrl, $this->_id];
         return $this->_getDb()->execute($query, $bind);
     }
 
@@ -59,9 +60,9 @@ abstract class UserEntityStorage extends EntityAbstract
      * Queries the database for user based on his service type (fb, g+ etc.) and service registered email
      * @return \ArrayObject|bool
      */
-    protected function _sqlGetByService() {
-        $query = "SELECT * FROM {$this->_getDb()->w_user} WHERE service=? AND email=? LIMIT 1";
-        $bind = array($this->_service, $this->_email);
+    protected function _sqlLoadByEmail() {
+        $query = "SELECT * FROM {$this->_getDb()->w_user} WHERE email=? LIMIT 1";
+        $bind = array($this->_email);
         return $this->_getDb()->execute($query, $bind)->fetchArray();
     }
 

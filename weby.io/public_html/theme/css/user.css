@@ -1,0 +1,47 @@
+/* --------------- BEGIN social sharing buttons and user options --------------- */
+#header-content .content-right {
+    float: right;
+    padding-top: 3px;
+
+}
+
+.social-icons-wrapper {
+    display: inline-block;
+    width: 150px;
+}
+
+.user-options-wrapper {
+    display: inline-block;
+    width: 100px;
+}
+
+#header-content .content-right .user-options-wrapper img#user-avatar {
+    width: 32px;
+    height: 32px;
+    border: 1px solid white;
+    margin-right: 4px;
+    -moz-box-shadow: 0 0 1px 1px lightgray;
+    -webkit-box-shadow: 0 0 1px 1px lightgray;
+    box-shadow: 0 0 1px 1px lightgray;
+}
+/* ---------------  END of social sharing buttons and user options --------------- */
+
+/* ------------------ Social sharing icons ------------------ */
+
+.share-icon {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+}
+
+.share-icon.social-facebook {
+    background-image: url(../images/social/facebook.png);
+}
+
+.share-icon.social-twitter {
+    background-image: url(../images/social/twitter.png);
+}
+
+.share-icon.social-google {
+    background-image: url(../images/social/google-plus.png);
+}

@@ -2,112 +2,66 @@
 
 namespace App\Handlers;
 
+use App\AppTrait;
+use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
-use App\Lib\Stats;
+use App\Lib\UserTrait;
+use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Security\Authentication\Providers\Http\Http;
 use Webiny\Component\Security\SecurityTrait;
 
 class PagesHandler extends AbstractHandler
 {
-    use SecurityTrait;
+    use SecurityTrait, HttpTrait, AppTrait, UserTrait;
 
+    /**
+     * Used to show homepage (login options)
+     */
     public function index()
     {
-        $data['id'] = 1;
-        $data['content'] = '[
-	{
-		"common": {
-			"class": "LinkWidget",
-			"type": "link",
-			"top": "117",
-			"left": "161",
-			"width": "398",
-			"height": "79",
-			"zindex": "2",
-			"rotation": "3",
-			"aspectRatio": "false",
-			"isLocked": "false",
-			"embedUrl": ""
-		},
-		"specific": {
-			"linkUrl": "http:\/\/index.hr",
-			"linkType": "web",
-			"fileName": "N\/A",
-			"contentType": "text\/html",
-			"contentSize": "false",
-			"fileHost": "",
-			"title": "\r\n\tIndex.hr\r\n",
-			"description": "Index.hr - Nezavisni hrvatski news i lifestyle portal - Pro\u010ditajte najnovije vijesti, sportske novosti, i vijesti iz svijeta zabave",
-			"imageUrl": "http:\/\/www.index.hr\/thumbnail.ashx?path=images2\/egipat-ubijeniprosvjedinic-getty625.jpg&width=325&height=197"
-		}
-	},
-	{
-		"common": {
-			"class": "TextWidget",
-			"type": "text",
-			"top": "25",
-			"left": "14",
-			"width": "400",
-			"height": "48",
-			"zindex": "24",
-			"rotation": "0",
-			"aspectRatio": "false",
-			"isLocked": "false",
-			"embedUrl": ""
-		},
-		"specific": {
-			"content": "<p>Neki tekst<strong>&nbsp;pa malo boldano,<\/strong>&nbsp;pa<a href=\"http:\/\/www.webiny.com\/\">&nbsp;malo link<\/a>&nbsp;pa&nbsp;<em>malo italic<\/em><\/p><p>Pa novi red, pa jos malo sranja i da vdiidimo na \u0161ta \u0107e t li\u010diti<\/p>"
-		}
-	},
-	{
-		"common": {
-			"class": "TextWidget",
-			"type": "text",
-			"top": "224",
-			"left": "61",
-			"width": "400",
-			"height": "48",
-			"zindex": "25",
-			"rotation": "0",
-			"aspectRatio": "false",
-			"isLocked": "false",
-			"embedUrl": ""
-		},
-		"specific": {
-			"content": "??"
-		}
-	},
-	{
-		"common": {
-			"class": "TwitterWidget",
-			"type": "twitter",
-			"top": "581",
-			"left": "369",
-			"width": "432",
-			"height": "258",
-			"zindex": "26",
-			"rotation": "0",
-			"aspectRatio": "false",
-			"isLocked": "false",
-			"embedUrl": ""
-		},
-		"specific": {
-			"tweetId": "367598733568901120",
-			"tweetUser": "Chande"
-		}
-	}
-]';
-
-        $weby = new \App\Entities\Weby\WebyEntity();
-        $weby->populate($data);
-        
-        $stats = \App\Lib\Stats::getInstance();
-        $stats->updateWebiesStats($weby);
+        if($this->security()->getUser()->isAuthenticated()) {
+            $this->request()->redirect('/editor/');
+        }
     }
 
-    public function page404()
-    {
-        header('HTTP/1.0 404 Not Found');
+    /**
+     * Used for viewing Weby pages (public area)
+     * @param $user
+     * @param $slug
+     * @param $id
+     */
+    public function viewWeby($user, $slug, $id) {
+        $weby = new WebyEntity();
+        $weby->load($id);
+
+        // Will check if requested Weby and URL params are valid
+        $this->_checkRequest($weby, $user, $slug, $id);
+
+        // Asign whole weby to $this, so we can pass it to view
+        $this->weby = $weby;
     }
 
+    public function page404() {}
+
+    /**
+     * Used for checking request, if user has edited an URL, we will automatically redirect them to correct one
+     * @param $weby WebyEntity
+     * @param $user String
+     * @param $slug String
+     * @param $id String
+     */
+    private function _checkRequest($weby, $user, $slug, $id) {
+        // We will need config for latter use of paths
+        $cfg = $this->app()->getConfig()->app;
+
+        // If Weby was created by a valid user, that means given Weby ID was okay, else redirect to 404 page
+        if(!$weby->getUser()->getEmail()) {
+            $this->request()->redirect($cfg->web_path . 'asdasd', 404);
+        }
+
+        // If user edited username or title, redirect him to proper URL via 301 header data
+        if($weby->getSlug() != $slug || $weby->getUser()->getUsernameFromEmail() != $user){
+            $this->request()->redirect($cfg->web_path . $weby->getUser()->getUsernameFromEmail() . '/' . $weby->getSlug() . '/' . $id, 301);
+        }
+    }
 }
-

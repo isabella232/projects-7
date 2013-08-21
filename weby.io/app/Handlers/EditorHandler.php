@@ -3,37 +3,42 @@
 namespace App\Handlers;
 
 use App\AppTrait;
+use App\Entities\Weby\WebyEntity;
 use App\Lib\DatabaseTrait;
 use App\Lib\AbstractHandler;
+use App\Lib\Stats;
+use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
-use Webiny\Component\ServiceManager\ServiceManagerTrait;
-use Webiny\Component\Storage\File\LocalFile;
+use Webiny\Component\Security\Authentication\Providers\Http\Http;
+use Webiny\Component\Security\SecurityTrait;
 
 class EditorHandler extends AbstractHandler
 {
-	use AppTrait, DatabaseTrait, HttpTrait, ServiceManagerTrait;
+    use AppTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait;
 
-	public function index($id = false) {
-		if($id){
-			$storage = $this->service('storage.local');
-			$file = new LocalFile('weby'.$id.'.json', $storage);
-			$this->widgets = $file->getContents();
-		}
-		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);
-		$vIndex = rand(0, $validators->count() - 1);
-		$this->contentValidator = $validators[$vIndex];
-	}
+    public function index()
+    {
 
-	public function save(){
-		$widgets = $this->request()->post('widgets');
-		$storage = $this->service('storage.local');
+    }
 
-		$file = new LocalFile('weby.json', $storage);
-		if($file->setContent(json_encode($widgets))){
-			$this->ajaxResponse(false, 'Weby saved succesfully!');
-		} else {
-			$this->ajaxResponse(true, 'Couldn\'t save your Weby to disk!');
-		}
-	}
+    public function save()
+    {
+        // Create new Weby entity, populate it and save into database
+        $weby = new WebyEntity();
+
+        // Get ID of existing Weby and load
+        $id = $this->request()->post('id');
+        if($id) {
+            $weby->load($id);
+        }
+
+        $weby->populate($this->request()->post())->save();
+
+        // Update Webies stats
+        $stats = Stats::getInstance();
+        $stats->updateWebiesStats($weby);
+
+        $this->request()->redirect($this->app()->getConfig()->app->editor_path);
+    }
 }
 

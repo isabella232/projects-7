@@ -1,5 +1,7 @@
 routes:
     - ['', \App\Handlers\PagesHandler, index]
+    - ['editor/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
+    - ['editor/stats', \App\Handlers\UsersHandler, stats]
     - ['editor/templates', \App\Handlers\EditorHandler, templates]
     - ['editor/save', \App\Handlers\EditorHandler, save]
     - ['|editor\/(\d+)|', \App\Handlers\EditorHandler, index]
@@ -9,3 +11,6 @@ routes:
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]
     - ['link/parse', \App\Handlers\LinksHandler, parse]
     - [database, \App\Handlers\TestHandler, index]
+
+    - ['/(.*)\/(.*)\/(.*)/', \App\Handlers\PagesHandler, viewWeby] #frontend route
+    - ['/(.*)\/(.*)/', \App\Handlers\EditorHandler, index] #backend route

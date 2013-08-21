@@ -2,20 +2,37 @@
 
 namespace App\Entities\Weby;
 
+
 use App\Entities\EntityAbstract;
 use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class WebyEntityStorage extends EntityAbstract
 {
-    protected $_id = 0;
+    protected $_id = '';
+    protected $_title='';
+    protected $_slug = 0;
     protected $_content = '';
-    protected $_widgets = array();
+    protected $_user = 0;
+    protected $_createdOn = '';
+    protected $_modifiedOn = '';
+
     /**
      * Saves weby into the database with it's service type
      * @return \App\Lib\DatabaseResult|bool
      */
     protected function _sqlSave()
     {
+        if ($this->_id == '') {
+            $this->_id = uniqid();
+            $query = 'INSERT INTO ' . $this->_getDb()->w_weby . ' (id, title, slug, content, "user", created_on)
+                        VALUES (?, ?, ?, ?, ?, NOW())';
+            $bind = [$this->_id, $this->_title, $this->_slug, $this->_content, $this->_user];
+            return $this->_getDb()->execute($query, $bind);
+        }
+
+        $query = "UPDATE {$this->_getDb()->w_weby} SET title=?, slug=?, content=?, modified_on=NOW() WHERE id=?";
+        $bind = [$this->_title, $this->_slug, $this->_content, $this->_id];
+        return $this->_getDb()->execute($query, $bind);
     }
 
     /**

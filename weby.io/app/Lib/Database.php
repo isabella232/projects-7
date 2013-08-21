@@ -85,7 +85,7 @@ class Database
 	 * @param Array   $bind  Array of values to bind
 	 * @param Boolean $stmt  Use previously prepared statement or not
 	 *
-	 * @return \App\Lib\Database
+	 * @return \App\Lib\DatabaseResult
 	 */
 	public function execute($query, $bind = null, $stmt = false) {
 		$this->_query = $query instanceof StringObject ? $query : $this->str($query);
@@ -110,7 +110,7 @@ class Database
 			die($e);
 		}
 
-		if($this->_query->contains('SELECT')) {
+		if($this->_query->contains('SELECT') || $this->_query->contains('RETURNING')) {
 			$this->_result = $this->_stm->fetchAll(\PDO::FETCH_OBJ);
 			$this->num_rows = count($this->_result);
 			return new DatabaseResult($this->_result);
@@ -135,7 +135,7 @@ class Database
 		$this->_query = $query instanceof StringObject ? $query : $this->str($query);
 
 		try {
-			if($this->_query->contains('SELECT')) {
+			if($this->_query->contains('SELECT') || $this->_query->contains('RETURNING')) {
 				foreach ($con->query($query)->fetchAll(\PDO::FETCH_OBJ) as $row) {
 					$this->_result[] = $row;
 				}

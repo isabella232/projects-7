@@ -4,35 +4,57 @@ namespace App\Lib;
 
 use App\AppTrait;
 use Webiny\Component\Config\ConfigObject;
+use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Http\Request;
+use Webiny\Component\Security\SecurityTrait;
 use Webiny\StdLib\SingletonTrait;
 
 class ViewContainer implements \ArrayAccess
 {
-	use SingletonTrait, AppTrait;
+    use SingletonTrait, AppTrait, HttpTrait, SecurityTrait, UserTrait;
 
     public $webPath;
     public $absPath;
+    public $editorPath;
     public $themeAbsPath;
     public $themeWebPath;
     public $storageAbsPath;
     public $storageWebPath;
 
+    // User's data
+    public $user;
+
     /**
      * Initializes view container object with needed data
      */
-    public function init() {
+    public function init()
+    {
 
         // Get path configurations from config object and assign them for further use in templates
         $appCfg = $this->app()->getConfig()->app;
-        
+
         // Get site's paths
         $this->webPath = $appCfg->web_path;
         $this->absPath = $appCfg->abs_path;
+        $this->editorPath = $appCfg->editor_path;
         $this->themeAbsPath = $appCfg->theme_abs_path;
         $this->themeWebPath = $appCfg->theme_web_path;
         $this->storageAbsPath = $appCfg->storage_abs_path;
         $this->storageWebPath = $appCfg->storage_web_path;
-	}
+
+        // Get current user
+        $this->_getUserData();
+    }
+
+    /**
+     * If user is logged, this will collect all important user data so we can use it in our templates
+     */
+    private function _getUserData()
+    {
+        if ($this->security()->getUser()->isAuthenticated()) {
+            $this->user = $this->user()->getUser();
+        }
+    }
 
     /**
      * (PHP 5 &gt;= 5.0.0)<br/>
@@ -95,7 +117,4 @@ class ViewContainer implements \ArrayAccess
     {
         unset($this->{$offset});
     }
-
-
 }
-

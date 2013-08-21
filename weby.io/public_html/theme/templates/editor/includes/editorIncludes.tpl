@@ -1,13 +1,8 @@
-<script type="text/javascript">
-    var THEME = '{$viewObject.themeWebPath}';
-    var WEB = '{$viewObject.webPath}';
-</script>
 
 {minify type="css"}
     kendo.common.min.css,
     kendo.default.min.css,
     font-awesome.min.css,
-    main.css,
     toolbar.css,
     webyToolbar.css,
     widget.css,
@@ -19,8 +14,6 @@
 {/minify}
 
 {minify type="js"}
-    jquery-1.8.3.js,
-    jquery-ui-1.9.2.custom.js,
     mouseEvent.js,
     jQueryFix.js,
     webyDrag.js,
