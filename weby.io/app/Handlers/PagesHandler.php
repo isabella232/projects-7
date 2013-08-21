@@ -20,7 +20,8 @@ class PagesHandler extends AbstractHandler
      */
     public function index()
     {
-        if($this->security()->getUser()->isAuthenticated()) {
+		$user = $this->security()->getUser();
+        if($user && $user->isAuthenticated()) {
             $this->request()->redirect(Editor::getInstance()->createEditorUrl());
         }
     }
