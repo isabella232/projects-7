@@ -5,8 +5,8 @@ namespace App\Lib;
 use App\AppTrait;
 use App\Lib\View;
 use Webiny\Component\Security\SecurityTrait;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use App\Entities\User\UserEntity;
 
 abstract class AbstractHandler

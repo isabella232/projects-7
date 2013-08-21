@@ -4,7 +4,7 @@ namespace App\Lib;
 
 use App\AppTrait;
 use App\Entities\Weby\WebyEntity;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 
 class Stats
 {

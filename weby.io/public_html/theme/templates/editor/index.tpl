@@ -18,6 +18,7 @@
         google.load('picker', '1');
     </script>
     <script type="text/javascript" id="contentValidator">
+        var showDashboard = {if isset($showDashboard)}true{else}false{/if};
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         $('#contentValidator').remove();
     </script>
@@ -51,6 +52,7 @@
     <div id="content"></div>
     <div class="clearfix"></div>
     {include file="templates/editor/includes/templates.tpl"}
+    {include file="templates/editor/includes/dashboard.tpl"}
 {/block}
 
 {block name="headerRightTools"}

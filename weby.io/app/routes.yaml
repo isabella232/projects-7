@@ -1,16 +1,11 @@
 routes:
     - ['', \App\Handlers\PagesHandler, index]
     - ['editor/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
-    - ['editor/stats', \App\Handlers\UsersHandler, stats]
-    - ['editor/templates', \App\Handlers\EditorHandler, templates]
     - ['editor/save', \App\Handlers\EditorHandler, save]
-    - ['|editor\/(\d+)|', \App\Handlers\EditorHandler, index]
-    - ['editor', \App\Handlers\EditorHandler, index]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]
     - ['link/parse', \App\Handlers\LinksHandler, parse]
-    - [database, \App\Handlers\TestHandler, index]
-
-    - ['/(.*)\/(.*)\/(.*)/', \App\Handlers\PagesHandler, viewWeby] #frontend route
-    - ['/(.*)\/(.*)/', \App\Handlers\EditorHandler, index] #backend route
+    - ['/^([a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby
+    - ['/^([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\EditorHandler, route] #backend editor router
+    - ['/^([a-z0-9_-]*)$/', \App\Handlers\EditorHandler, route] #backend editor router

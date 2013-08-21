@@ -5,6 +5,7 @@ namespace App\Handlers;
 use App\AppTrait;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
+use App\Lib\Editor;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
@@ -20,7 +21,7 @@ class PagesHandler extends AbstractHandler
     public function index()
     {
         if($this->security()->getUser()->isAuthenticated()) {
-            $this->request()->redirect('/editor/');
+            $this->request()->redirect(Editor::getInstance()->createEditorUrl());
         }
     }
 

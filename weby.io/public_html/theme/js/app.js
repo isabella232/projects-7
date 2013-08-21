@@ -206,6 +206,10 @@ var AppClass = function () {
 
 		_weby = new Weby();
 		_webyToolbar = new WebyToolbar();
+
+		if(showDashboard){
+			alert("Showing dashboard");
+		}
 	}
 
 	this.showLoading = function () {

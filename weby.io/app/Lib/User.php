@@ -3,7 +3,7 @@ namespace App\Lib;
 use App\Entities\User\UserEntity;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\SecurityTrait;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 
 /**
  * Used by User Trait which enables us to work with current logged in user anywhere we want

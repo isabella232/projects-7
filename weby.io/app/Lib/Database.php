@@ -3,9 +3,9 @@
 namespace App\Lib;
 
 use App\AppTrait;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
-use Webiny\StdLib\StdObject\StringObject\StringObject;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 /**
  * Database class

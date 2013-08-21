@@ -5,8 +5,8 @@ namespace App\Lib;
 use App\AppTrait;
 use App\Lib\Minify\Minify;
 use Webiny\Component\Http\HttpTrait;
-use Webiny\StdLib\SingletonTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 class View
 {

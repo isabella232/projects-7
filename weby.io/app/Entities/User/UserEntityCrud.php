@@ -11,7 +11,7 @@ abstract class UserEntityCrud extends UserEntityProperties
      */
     public function getByEmail($email)
     {
-        /* @var $data \Webiny\StdLib\StdObject\ArrayObject\ArrayObject */
+        /* @var $data \Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject */
         $this->_email = $email;
         $data = $this->_sqlLoadByEmail();
         $this->populate($data);

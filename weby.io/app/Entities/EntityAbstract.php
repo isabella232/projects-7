@@ -4,7 +4,7 @@ namespace App\Entities;
 
 use App\App;
 use App\Lib\DatabaseTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 abstract class EntityAbstract implements \ArrayAccess
 {
@@ -57,7 +57,7 @@ abstract class EntityAbstract implements \ArrayAccess
     protected function _populateFromDb($data)
     {
         if (empty($data)) {
-            $this->_id = 0;
+            $this->_id = false;
             return;
         }
         foreach ($data as $row) {

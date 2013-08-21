@@ -1,6 +1,8 @@
 <?php
 namespace App\Lib;
 
+use App\Entities\User\UserEntity;
+
 /**
  * Enables us to work with current logged user anywhere we want
  * Trait UserTrait
@@ -8,9 +10,9 @@ namespace App\Lib;
 trait UserTrait{
 
     /**
-     * @return User
+     * @return UserEntity
      */
     protected static function user(){
-        return User::getInstance();
+        return User::getInstance()->getUser();
     }
 }

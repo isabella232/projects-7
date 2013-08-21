@@ -2,7 +2,7 @@
 namespace App\Entities\User;
 
 use App\Entities\EntityAbstract;
-use Webiny\StdLib\StdObject\ArrayObject\ArrayObject;
+use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class UserEntityStorage extends EntityAbstract
 {

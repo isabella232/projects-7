@@ -2,7 +2,7 @@
 namespace App;
 
 use Webiny\Component\EventManager\EventManagerTrait;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 
 class AppEvents
 {

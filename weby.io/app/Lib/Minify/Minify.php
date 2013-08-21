@@ -13,7 +13,7 @@ namespace App\Lib\Minify;
 
 //this class is required for minifying javascript files
 use App\AppTrait;
-use Webiny\StdLib\StdLibTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 
 class Minify
 {

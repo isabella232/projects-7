@@ -6,7 +6,7 @@ use App\Lib\Router;
 use App\Lib\Database;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Config\ConfigTrait;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 use Webiny\WebinyTrait;
 
 class App

@@ -7,7 +7,7 @@ use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Http\Request;
 use Webiny\Component\Security\SecurityTrait;
-use Webiny\StdLib\SingletonTrait;
+use Webiny\Component\StdLib\SingletonTrait;
 
 class ViewContainer implements \ArrayAccess
 {
@@ -52,7 +52,7 @@ class ViewContainer implements \ArrayAccess
     private function _getUserData()
     {
         if ($this->security()->getUser()->isAuthenticated()) {
-            $this->user = $this->user()->getUser();
+            $this->user = $this->user();
         }
     }
 

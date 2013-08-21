@@ -81,4 +81,14 @@ abstract class WebyEntityProperties extends WebyEntityStorage
         return $this->_user;
     }
 
+	/**
+	 * @param \App\Entities\User\UserEntity $user
+	 * @return $this
+	 */
+	public function setUser(UserEntity $user)
+	{
+		$this->_user = $user;
+		return $this;
+	}
+
 }
