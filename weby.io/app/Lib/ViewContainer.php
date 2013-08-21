@@ -51,7 +51,7 @@ class ViewContainer implements \ArrayAccess
      */
     private function _getUserData()
     {
-        if ($this->security()->getUser()->isAuthenticated()) {
+        if ($this->security()->getUser() && $this->security()->getUser()->isAuthenticated()) {
             $this->user = $this->user();
         }
     }
