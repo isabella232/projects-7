@@ -56,12 +56,9 @@ abstract class UserEntityProperties extends UserEntityStorage
     /**
      * @return string
      */
-    public function getUsernameFromEmail()
+    public function getUsername()
     {
-        $username = '';
-        preg_match('/(.*)@/', $this->_email, $username);
-        return is_array($username) ? $username[1] : false;
+        return $this->_username;
     }
-
 
 }

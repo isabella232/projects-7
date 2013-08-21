@@ -44,7 +44,8 @@ class EditorHandler extends AbstractHandler
 
 	public function route($userName, $webyId = null){
 		// If username doesn't match - redirect to correct user area
-		if($userName != $this->user()->getUsernameFromEmail()){
+		if($userName != $this->user()->getUsername()){
+            $v = $this->user();
 			$this->request()->redirect(Editor::getInstance()->createEditorUrl());
 		}
 

@@ -1,5 +1,6 @@
 routes:
     - ['', \App\Handlers\PagesHandler, index]
+    - ['about', \App\Handlers\PagesHandler, about]
     - ['security/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
     - ['editor/save', \App\Handlers\EditorHandler, save]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
