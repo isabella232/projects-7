@@ -427,11 +427,11 @@ class Minify
 
         if ($processType == 'css') {
             //set web root
-            $str = str_replace('src="../', 'src="' . $this->themeWebPath . '/', $str);
-            $str = str_replace("src='../", "src='" . $this->themeWebPath . '/', $str);
-            $str = str_replace('url("../', 'url("' . $this->themeWebPath . '/', $str);
-            $str = str_replace("url('../", "url('" . $this->themeWebPath . '/', $str);
-            $str = str_replace("url(../", "url(" . $this->themeWebPath . '/', $str);
+            $str = str_replace('src="../', 'src="' . $this->themeWebPath, $str);
+            $str = str_replace("src='../", "src='" . $this->themeWebPath, $str);
+            $str = str_replace('url("../', 'url("' . $this->themeWebPath, $str);
+            $str = str_replace("url('../", "url('" . $this->themeWebPath, $str);
+            $str = str_replace("url(../", "url(" . $this->themeWebPath, $str);
 
             if ($this->minify) {
                 $str = self::_minCSSString($str);

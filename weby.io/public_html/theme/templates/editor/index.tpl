@@ -25,10 +25,9 @@
         {/if}
     </script>
     {if isset($widgets)}
-        <script type="text/javascript" id="widgetsLoad">
-            var webyWidgets = {$widgets};
-            var webyId = '{$weby.id}';
-            $('#widgetsLoad').remove();
+        <script type="text/javascript" id="webyLoad">
+            var weby = {$weby->toJson()};
+            /*$('#webyLoad').remove();*/
         </script>
     {/if}
     <script type="text/javascript" charset="utf-8">
@@ -61,6 +60,7 @@
 
 {block name="headerRightTools"}
     {if $viewObject.user}
+        <input type="text" placeholder="Weby Title" id="weby-title"/>
         {include file="templates/pages/includes/socialShare.tpl"}
         {include file="templates/pages/includes/userOptions.tpl"}
     {/if}

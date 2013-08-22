@@ -18,7 +18,10 @@ class EditorHandler extends AbstractHandler
 {
     use AppTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, ServiceManagerTrait;
 
-	private $_weby = null;
+    /**
+     * @var WebyEntity
+     */
+    private $_weby = null;
 
     public function save()
     {
@@ -29,15 +32,15 @@ class EditorHandler extends AbstractHandler
         $id = $this->request()->post('id');
         if($id) {
             $weby->load($id);
-			// TODO: check if weby belongs to this user
+            // TODO: check if weby belongs to this user
         }
 		
         $weby->populate($this->request()->post());
-		$weby->setUser($this->user())->save();
+        $weby->setUser($this->user())->save();
 
         // Update Webies stats
         $stats = Stats::getInstance();
-        $stats->updateWebiesStats($weby);
+        //$stats->updateWebiesStats($weby);
 
         $this->ajaxResponse(false, 'Weby saved!');
     }
@@ -78,6 +81,7 @@ class EditorHandler extends AbstractHandler
 		}
 
 		$this->weby = $this->_weby;
+        
 		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);
 		$vIndex = rand(0, $validators->count() - 1);
 		$this->contentValidator = $validators[$vIndex];

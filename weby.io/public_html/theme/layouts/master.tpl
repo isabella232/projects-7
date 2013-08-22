@@ -4,6 +4,7 @@
     - title
     - head
     - content
+    - headerRightTools
 *}
 <!DOCTYPE html>
 <html>
@@ -11,10 +12,8 @@
     <title>{block name="title"}{/block} | Weby.io</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
-    <meta property="og:title" content="TEST TITLE"/>
-    <meta property="og:image" content="http://weby.com/theme/images/webiny.png"/>
-    <meta property="og:description" content="SHARE WITH WEBY"/>
-    {minify type="css"}
+
+   {minify type="css"}
         main.css,
         user.css
     {/minify}
@@ -33,17 +32,17 @@
 
 </head>
 <body>
-<div id="header">
-    <div id="header-content">
-        <div class="content-left">
-            <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
-            <h4 style="width: 500px">Create and share your content instantly</h4>
-        </div>
-        <div class="content-right">
-            {block name="headerRightTools"}{/block}
+    <div id="header">
+        <div id="header-content">
+            <div class="content-left">
+                <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
+                <h4 style="width: 500px">Create and share your content instantly</h4>
+            </div>
+            <div class="content-right">
+                {block name="headerRightTools"}{/block}
+            </div>
         </div>
     </div>
-</div>
-{block name="content"}{/block}
+    {block name="content"}{/block}
 </body>
 </html>

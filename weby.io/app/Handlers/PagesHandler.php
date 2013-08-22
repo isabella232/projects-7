@@ -6,6 +6,7 @@ use App\AppTrait;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Editor;
+use App\Lib\Stats;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
@@ -24,10 +25,6 @@ class PagesHandler extends AbstractHandler
         if($user && $user->isAuthenticated()) {
             $this->request()->redirect(Editor::getInstance()->createEditorUrl());
         }
-    }
-
-    public function about() {
-        die('dela');
     }
 
     /**

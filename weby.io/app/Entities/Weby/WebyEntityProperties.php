@@ -7,6 +7,9 @@ use App\Entities\User\UserEntity;
 
 abstract class WebyEntityProperties extends WebyEntityStorage
 {
+    // Weby URL
+    protected $_url=false;
+
     /**
      * @return int
      */

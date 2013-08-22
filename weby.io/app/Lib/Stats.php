@@ -43,26 +43,22 @@ class Stats
     }
 
     /**
-     * Updates general Webies statistics which includes
-     *  total count of Webies created and
-     *  separate counts for each widget usage
+     * Updates general Weby widgets statistics
+     * @param $webyWidgetsCount
+     * @internal param Array $weby
      */
-    public function updateWebiesStats(WebyEntity $weby)
+    public function updateWidgetsCount($webyWidgetsCount)
     {
-        $allWidgets = $weby->getWidgets();
-        foreach ($allWidgets as $widget) {
-            /**@var $widget \App\Entities\Widget\WidgetEntity */
-            $widgetEvent = 'W_' . strtoupper($widget->getType()) . '_ADDED';
-            $this->_updateStats(StatsEvents::$$widgetEvent);
+        foreach($webyWidgetsCount as $widget => $count) {
+            $widgetAdded = 'W_' . strtoupper($widget) . '_ADDED';
+            $this->_updateStats(StatsEvents::$$widgetAdded, $count);
         }
-
-        $this->_updateWebiesCount();
     }
 
     /**
      * Upgrades statistics for total registered users
      */
-    public function updateRegisteredUsers()
+    public function updateRegisteredUsersCount()
     {
         $this->_updateStats(StatsEvents::USER_REGISTERED);
     }
@@ -70,11 +66,10 @@ class Stats
     /**
      * Upgrades statistics for total count of created Webies
      */
-    private function _updateWebiesCount()
+    public function updateWebiesCount()
     {
         $this->_updateStats(StatsEvents::WEBY_CREATED);
     }
-
     /**
      * Updates stats for given event for increment amount
      * @param $event                    Numeric representation of event (use StatEvent constants)

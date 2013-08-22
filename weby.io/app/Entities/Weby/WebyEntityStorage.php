@@ -11,7 +11,7 @@ abstract class WebyEntityStorage extends EntityAbstract
 	protected $_id = '';
 	protected $_title = '';
 	protected $_slug = 0;
-	protected $_content = '';
+	protected $_content = [];
 	protected $_user = 0;
 	protected $_createdOn = '';
 	protected $_modifiedOn = '';

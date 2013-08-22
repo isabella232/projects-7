@@ -4,7 +4,7 @@
     <!-- FACEBOOK SHARING -->
     <a href="#" onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('{$viewObject.webPath}{$weby.slug}/{$weby.id}/'),
+                          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('{$weby.url}'),
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -13,7 +13,7 @@
     <!-- TWITTER SHARING -->
 
     <a class="twitter"
-       href="http://twitter.com/intent/tweet?source=sharethiscom&text={$weby.title} {$viewObject.webPath}{$weby.slug}/{$weby.id}/ @WebyIO&url={$viewObject.webPath}">
+       href="http://twitter.com/intent/tweet?source=sharethiscom&text={$weby.title} {$weby.url} @WebyIO&url={$viewObject.webPath}">
         <span class="share-icon social-twitter"></span></a>
     </a>
     {literal}
@@ -29,8 +29,8 @@
     {/literal}
 
     <!-- GOOGLE+ SHARING -->
-    {literal}
-        <a href="https://plus.google.com/share?url=http;//weby.io/url-2-page" onclick="javascript:
+
+        <a href="https://plus.google.com/share?url={$weby.url}" {literal}onclick="javascript:
                 window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=600,width=600');
                 return false;">
             <span class="share-icon social-google"></span></a>

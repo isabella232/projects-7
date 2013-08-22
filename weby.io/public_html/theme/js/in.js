@@ -9,6 +9,7 @@ if (typeof window.console.warn !== "function") {
 	window.console.warn = function () {
 	}
 }
+
 (function () {
 	var R = {"bootstrapInit": +new Date()}, p = document, l = (/^https?:\/\/.*?linkedin.*?\/in\.js.*?$/), b = (/async=true/), D = (/^https:\/\//), J = (/\/\*((?:.|[\s])*?)\*\//m), F = (/\r/g), j = (/[\s]/g), g = (/^[\s]*(.*?)[\s]*:[\s]*(.*)[\s]*$/), x = (/_([a-z])/gi), A = (/^[\s]+|[\s]+$/g), u = (/^[a-z]{2}(_)[A-Z]{2}$/), C = (/suppress(Warnings|_warnings):true/gi), d = (/^api(Key|_key)$/gi), k = "\n", G = ",", n = "", I = "@", o = "extensions", Y = "on", w = "onDOMReady", ab = "onOnce", Z = "script", L = "https://www.linkedin.com/uas/js/userspace?v=0.0.2000-RC1.28802-1405", h = "https://platform.linkedin.com/js/secureAnonymousFramework?v=0.0.2000-RC1.28802-1405", H = "http://platform.linkedin.com/js/nonSecureAnonymousFramework?v=0.0.2000-RC1.28802-1405", B = p.getElementsByTagName("head")[0], t = p.getElementsByTagName(Z), W = [], a = [], O = ["lang"], Q = {}, c = false, ac, m, V, r, K, E, aa;
 	window.IN = window.IN || {};
