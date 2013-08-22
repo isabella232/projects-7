@@ -13,11 +13,10 @@ class Editor
     use SingletonTrait, UserTrait, AppTrait;
 
 	public function createEditorUrl(WebyEntity $weby = null) {
-		$editor = $this->app()->getConfig()->app->web_path . $this->user()->getUsernameFromEmail();
+		$editor = $this->app()->getConfig()->app->web_path . $this->user()->getUsername();
 		if($weby != null) {
 			$editor .= '/' . $weby->getId();
 		}
-
 		return $editor;
 	}
 }

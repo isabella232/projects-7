@@ -26,6 +26,10 @@ class PagesHandler extends AbstractHandler
         }
     }
 
+    public function about() {
+        die('dela');
+    }
+
     /**
      * Used for viewing Weby pages (public area)
      * @param $user
@@ -64,8 +68,8 @@ class PagesHandler extends AbstractHandler
         }
 
         // If user edited username or title, redirect him to proper URL via 301 header data
-        if($weby->getSlug() != $slug || $weby->getUser()->getUsernameFromEmail() != $user){
-            $this->request()->redirect($cfg->web_path . $weby->getUser()->getUsernameFromEmail() . '/' . $weby->getSlug() . '/' . $id, 301);
+        if($weby->getSlug() != $slug || $weby->getUser()->getUsername() != $user){
+            $this->request()->redirect($cfg->web_path . $weby->getUser()->getUsername() . '/' . $weby->getSlug() . '/' . $id, 301);
         }
     }
 }

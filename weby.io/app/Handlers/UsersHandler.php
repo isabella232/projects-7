@@ -23,16 +23,15 @@ class UsersHandler extends AbstractHandler
 		// Get data from OAuth service
 		$serviceData = $this->request()->session('oauth_user')->get('oauth2_user');
 
-		// Load user by service type and email
+		// Load user by email
 		$user = new UserEntity();
 		$user->getByEmail($serviceData->email);
 
-		// If user exists, then update it's data in Weby database,
-		// If not, create a new user, update registered users statistics, create new Weby and then redirect
-		$user->populate($serviceData);
+		if(!$user->getId()) {
+            // If user doesn't exist, create him, update registered users statistics, create new Weby and then redirect
 
-		if($user->getId() == 0) {
-			$user->save();
+            $serviceData->username = UserEntity::generateUsername($serviceData->email);
+            $user->populate($serviceData)->save();
 
 			$stats = Stats::getInstance();
 			$stats->updateRegisteredUsers();
@@ -49,8 +48,9 @@ class UsersHandler extends AbstractHandler
 			$this->request()->redirect(Editor::getInstance()->createEditorUrl($weby));
 
 		} else {
-			// Saving, so we can sync the data with our database data
-			$user->save();
+            // If user exists, then update it's data in Weby database,
+            // Saving, so we can sync the data with our database data
+            $user->populate($serviceData)->save();
 
 			// Redirect to editor
 			// @TODO: redirect to new weby or load last edited

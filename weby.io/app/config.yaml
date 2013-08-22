@@ -13,7 +13,7 @@ app:
         - http://mrcina.ath.cx:8080
 
 database:
-    name: postgres
-    user: root
-    password: 'paveL!'
+    name: weby.io
+    user: adrian
+    password: 4ndr055!
     host: localhost
