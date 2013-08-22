@@ -1,6 +1,11 @@
 function Weby(widgets) {
 
-    var _saveInterval = 5000;
+	// Prevent calling constructor twice!
+	if(_webyId){
+		return;
+	}
+
+    var _saveInterval = 15000;
     var _FF = !(window.mozInnerScreenX == null);
     var _widgets = {};
     var _invalidUrls = [];
@@ -11,6 +16,7 @@ function Weby(widgets) {
     var _settings = $('#background-settings');
     var _player = null;
     var _titleInput = $('#weby-title');
+	var _lastSavedLabel = $('#last-saved');
 
     /**
      * Applied background settings
@@ -28,30 +34,61 @@ function Weby(widgets) {
 
     var _setupWeby = function () {
 
+		if (typeof weby != "undefined") {
+			_webyId = weby.id;
+			_title = weby.title;
+			if('type' in weby.settings){
+				_background = weby.settings;
+			}
+			_titleInput.val(_title);
+
+			// Load widgets
+			if (weby.content.length > 0) {
+				App.showLoading();
+				// Load widgets
+				_load(weby.content);
+			}
+
+			// Bind title input
+			_titleInput.blur(function () {
+				_title = $(this).val();
+				if($.trim(_title) == ''){
+					_title == 'Untitled Weby';
+				}
+			})
+
+			// Create periodic save action
+			setInterval(function () {
+				App.getWeby().save();
+			}, _saveInterval);
+
+			// Catch window close event
+			$(window).bind('beforeunload', function(){
+				App.getWeby().save();
+			});
+
+			weby = undefined;
+		}
+
+		// Bind My Webies
+		$("#my-webies").click(function(e){
+			e.preventDefault();
+			$.fancybox({
+				modal: showDashboard,
+				autoSize: true,
+				href: '/editor/dashboard',
+				type: 'ajax'
+			});
+		});
+
+		if(showDashboard){
+			_setupOverlayObserver();
+			$('#my-webies').click();
+		}
+
+
         // Setup background
         _setBackground(_background);
-
-        if (typeof weby != "undefined") {
-            _webyId = weby.id;
-            _title = weby.title || 'Untitled Weby';
-            _titleInput.val(_title);
-
-            // Load widgets
-            if (typeof weby.content != "undefined") {
-                App.showLoading();
-                // Load widgets
-                _load(weby.content);
-                weby = undefined;
-            }
-        }
-
-        _titleInput.blur(function () {
-            _title = $(this).val();
-        })
-
-        setInterval(function () {
-            App.getWeby().save();
-        }, _saveInterval);
     };
 
     var _setBackground = function (settings) {
@@ -75,6 +112,16 @@ function Weby(widgets) {
             _loadYoutubeBackground(settings);
         }
     };
+
+	var _setupOverlayObserver = function(){
+		// Check if overlay exists periodically
+		var observer = setInterval(function(){
+			if(!$('.fancybox-overlay').length || $('.fancybox-overlay').css('display') == 'none' || $('.fancybox-overlay').css('visibility') == 'hidden'){
+				clearInterval(observer);
+				window.location.reload();
+			}
+		}, 500);
+	};
 
     _loadYoutubeBackground = function (settings) {
         if (_player == null) {
@@ -156,7 +203,7 @@ function Weby(widgets) {
 
     this.duplicateWidget = function (widget) {
         var data = widget.save();
-        var newWidget = new window[widgetData.common["class"]]();
+        var newWidget = new window[data.common["class"]]();
         widget.deactivate();
         data.common.top = parseInt(data.common.top) + 25;
         data.common.left = parseInt(data.common.left) + 25;
@@ -167,6 +214,10 @@ function Weby(widgets) {
     };
 
     this.save = function () {
+		if(!_webyId){
+			return;
+		}
+
         var data = {
             id: _webyId,
             title: _title,
@@ -184,7 +235,12 @@ function Weby(widgets) {
 
         $.post(WEB + 'editor/save/', data, function (data) {
             if (!data.error) {
-                console.log(data.msg);
+				// Reset widget counter
+				_counter = {};
+                _lastSavedLabel.show().find('span').html(data.data.time);
+				setTimeout(function(){
+					_lastSavedLabel.fadeOut();
+				}, 2000)
             }
         });
 

@@ -95,7 +95,7 @@ abstract class EntityAbstract implements \ArrayAccess
     /**
      * @return \App\Lib\Database;
      */
-    protected function _getDb(){
+    protected static function _getDb(){
 		return App::getInstance()->getDb();
 	}
 

@@ -6,7 +6,6 @@ use App\AppTrait;
 use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
-use App\Lib\Editor;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
@@ -38,7 +37,7 @@ class UsersHandler extends AbstractHandler
             $user->populate($serviceData)->save();
 
             // Sending welcome e-mail to our newly created user
-            $this->_sendEmail($user);
+            //$this->_sendEmail($user);
 
             // Now update users stats
             $stats = Stats::getInstance();
@@ -46,16 +45,9 @@ class UsersHandler extends AbstractHandler
 
             // Create new Weby for our new user and redirect him to it
             $weby = new WebyEntity();
-            $emptyWebyData = [
-                'title' => 'Untitled',
-                'slug' => 'untitled',
-                'user' => $user->getId()
-            ];
+            $weby->setUser($this->user())->save();
 
-            // Save
-            $weby->populate($emptyWebyData)->save();
-
-            $this->request()->redirect(Editor::getInstance()->createEditorUrl($weby));
+            $this->request()->redirect($weby->getEditorUrl());
 
         } else {
             // If user exists, then update it's data in Weby database,
@@ -63,8 +55,7 @@ class UsersHandler extends AbstractHandler
             $user->populate($serviceData)->save();
 
             // Redirect to editor
-            // @TODO: redirect to new weby or load last edited
-            $this->request()->redirect(Editor::getInstance()->createEditorUrl());
+            $this->request()->redirect($this->user()->getProfileUrl());
         }
     }
 

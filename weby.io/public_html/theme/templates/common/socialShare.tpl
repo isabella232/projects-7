@@ -1,10 +1,11 @@
 <!-- SHARING ICONS -->
+{if $weby}
 <div class="social-icons-wrapper">
 
     <!-- FACEBOOK SHARING -->
     <a href="#" onclick="
                         window.open(
-                          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('{$weby.url}'),
+                          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent('{$weby->getPublicUrl()}'),
                           'facebook-share-dialog',
                           'width=626,height=436');
                         return false;">
@@ -13,7 +14,7 @@
     <!-- TWITTER SHARING -->
 
     <a class="twitter"
-       href="http://twitter.com/intent/tweet?source=sharethiscom&text={$weby.title} {$weby.url} @WebyIO&url={$viewObject.webPath}">
+       href="http://twitter.com/intent/tweet?source=sharethiscom&text={$weby.title} {$weby->getPublicUrl()} @WebyIO&url={$viewObject.webPath}">
         <span class="share-icon social-twitter"></span></a>
     </a>
     {literal}
@@ -30,9 +31,10 @@
 
     <!-- GOOGLE+ SHARING -->
 
-        <a href="https://plus.google.com/share?url={$weby.url}" {literal}onclick="javascript:
+        <a href="https://plus.google.com/share?url={$weby->getPublicUrl()}" {literal}onclick="javascript:
                 window.open(this.href, '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=600,width=600');
                 return false;">
             <span class="share-icon social-google"></span></a>
     {/literal}
 </div>
+{/if}

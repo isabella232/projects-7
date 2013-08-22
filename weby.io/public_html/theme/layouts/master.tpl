@@ -36,7 +36,7 @@
         <div id="header-content">
             <div class="content-left">
                 <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
-                <h4 style="width: 500px">Create and share your content instantly</h4>
+                <h4>Create and share your content instantly</h4>
             </div>
             <div class="content-right">
                 {block name="headerRightTools"}{/block}

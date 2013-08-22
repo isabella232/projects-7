@@ -6,9 +6,9 @@ use App\AppTrait;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\DatabaseTrait;
 use App\Lib\AbstractHandler;
-use App\Lib\Editor;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
+use App\Lib\View;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
 use Webiny\Component\Security\SecurityTrait;
@@ -22,6 +22,12 @@ class EditorHandler extends AbstractHandler
      * @var WebyEntity
      */
     private $_weby = null;
+
+	public function create(){
+		$weby = new WebyEntity();
+		$weby->setUser($this->user())->save();
+		$this->request()->redirect($weby->getEditorUrl());
+	}
 
     public function save()
     {
@@ -42,14 +48,19 @@ class EditorHandler extends AbstractHandler
         $stats = Stats::getInstance();
         //$stats->updateWebiesStats($weby);
 
-        $this->ajaxResponse(false, 'Weby saved!');
+        $this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
     }
+
+	public function dashboard(){
+		$data = ['webies' => $this->user()->getWebies()];
+		$html = View::getInstance()->fetch('templates/common/dashboard.tpl', $data);
+		die($html);
+	}
 
 	public function route($userName, $webyId = null){
 		// If username doesn't match - redirect to correct user area
 		if($userName != $this->user()->getUsername()){
-            $v = $this->user();
-			$this->request()->redirect(Editor::getInstance()->createEditorUrl());
+			$this->request()->redirect($this->user()->getProfileUrl());
 		}
 
 		// Check if weby exists
@@ -58,11 +69,11 @@ class EditorHandler extends AbstractHandler
 			$this->_weby->load($webyId);
 
 			if(!$this->_weby->getId()){
-				$this->request()->redirect(Editor::getInstance()->createEditorUrl());
+				$this->request()->redirect($this->user()->getProfileUrl());
 			}
 
 			if($this->_weby->getUser()->getId() != $this->user()->getId()){
-				$this->request()->redirect(Editor::getInstance()->createEditorUrl());
+				$this->request()->redirect($this->user()->getProfileUrl());
 			}
 		}
 
@@ -73,15 +84,9 @@ class EditorHandler extends AbstractHandler
 	private function _editor() {
 		if($this->_weby == null){
 			$this->showDashboard = true;
-		} else {
-			$this->widgets = $this->_weby->getContent();
-			if(!$this->widgets){
-				$this->widgets = '[]';
-			}
 		}
 
 		$this->weby = $this->_weby;
-        
 		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);
 		$vIndex = rand(0, $validators->count() - 1);
 		$this->contentValidator = $validators[$vIndex];

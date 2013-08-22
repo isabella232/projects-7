@@ -3,6 +3,8 @@ routes:
     - ['about', \App\Handlers\PagesHandler, about]
     - ['security/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
     - ['editor/save', \App\Handlers\EditorHandler, save]
+    - ['editor/create', \App\Handlers\EditorHandler, create]
+    - ['editor/dashboard', \App\Handlers\EditorHandler, dashboard]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]

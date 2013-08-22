@@ -3,9 +3,12 @@
 namespace App\Entities\Weby;
 
 use App\Entities\Widget\WidgetEntity;
+use Webiny\Component\StdLib\StdLibTrait;
 
 abstract class WebyEntityCrud extends WebyEntityProperties
 {
+	use StdLibTrait;
+
     /**
      * This converts all widgets into objects (using for Stats class)
      * @param $data
@@ -21,6 +24,16 @@ abstract class WebyEntityCrud extends WebyEntityProperties
             $this->_widgets[] = clone $widget;
         }
     }
+
+	protected function _onAfterLoad() {
+		$this->_settings = json_decode($this->_settings, true);
+		if($this->_settings == null){
+			$this->_settings = [];
+		}
+
+		$this->_content = json_decode($this->_content, true);
+		if($this->_content == null){
+			$this->_content = [];
+		}
+	}
 }
-
-

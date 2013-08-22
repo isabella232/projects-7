@@ -1,18 +1,25 @@
 /* --------------- BEGIN social sharing buttons and user options --------------- */
 #header-content .content-right {
-    float: right;
-    padding-top: 3px;
-
+	width: auto;
+	float: right;
+	top: 5px;
+	position: relative;
 }
 .social-icons-wrapper {
-    display: inline-block;
+	float: left;
     width: 150px;
 }
 
 .user-options-wrapper {
-    display: inline-block;
-    width: 100px;
+	display: inline-block;
+	width: 230px;
+	height: 40px;
 }
+
+.user-options-wrapper *{
+	float:left;
+}
+
 #header-content .content-right .user-options-wrapper img#user-avatar {
     width: 32px;
     height: 32px;
@@ -47,10 +54,15 @@
 }
 
 input#weby-title {
-    border-width: 0 0 1px 0;
-    border-style: dashed;
-    border-color: lightslategray;
-    font-size: 20px;
+	width: 500px;
+	-webkit-border-radius: 4px;
+	padding: 5px;
+	box-shadow: 0px 1px 5px -1px gray inset;
+	border: none;
+	outline-color: #f05929;
+	clear: left;
+	height: 22px;
+	font-size: 19px;
 }
 
 input#weby-title:focus {

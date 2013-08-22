@@ -92,7 +92,7 @@ class DatabaseResult
         $return = array();
         foreach ($this->_result as $r) {
             $values = array_values((array)$r);
-            $return[] = $this->arr($values[0]);
+            $return[] = $values[0];
         }
         return $return;
     }

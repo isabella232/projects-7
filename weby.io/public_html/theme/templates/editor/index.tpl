@@ -21,13 +21,13 @@
         var showDashboard = {if isset($showDashboard)}true{else}false{/if};
         {if isset($contentValidator)}
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
-        $('#contentValidator').remove();
         {/if}
+        $('#contentValidator').remove();
     </script>
-    {if isset($widgets)}
+    {if $weby}
         <script type="text/javascript" id="webyLoad">
             var weby = {$weby->toJson()};
-            /*$('#webyLoad').remove();*/
+            $('#webyLoad').remove();
         </script>
     {/if}
     <script type="text/javascript" charset="utf-8">
@@ -50,18 +50,24 @@
         <a hre="javascript:void(0)" class="tool-icon background">Background</a>
         <span id="mouse-pos"></span>
     </div>
-    <div id="content-background"><div id="player"></div></div>
+    <div id="content-background">
+        <div id="player"></div>
+    </div>
     <div id="content"></div>
     <div class="clearfix"></div>
     {include file="templates/editor/includes/templates.tpl"}
-    {include file="templates/editor/includes/dashboard.tpl"}
-    <div id="screenshot"></div>
 {/block}
 
 {block name="headerRightTools"}
     {if $viewObject.user}
-        <input type="text" placeholder="Weby Title" id="weby-title"/>
-        {include file="templates/pages/includes/socialShare.tpl"}
-        {include file="templates/pages/includes/userOptions.tpl"}
+        {if $weby}
+            {include file="templates/editor/includes/webyTitle.tpl"}
+        {/if}
+        <div style="float:right">
+            <a id="my-webies" href="javascript:void(0)" style="float: left; margin: 3px 50px 0 0;" class="button">My
+                Webies</a>
+            {include file="templates/common/socialShare.tpl"}
+            {include file="templates/common/userOptions.tpl"}
+        </div>
     {/if}
 {/block}

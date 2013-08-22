@@ -3,20 +3,32 @@
 namespace App\Entities\Weby;
 
 use App\AppTrait;
+use App\Entities\User\UserEntity;
 
 class WebyEntity extends WebyEntityCrud
 {
 
     use AppTrait;
 
-    public function getUrl()
+	public static function getAllByUser(UserEntity $user){
+		$webies = self::_sqlLoadByUser($user);
+		$tmp = [];
+		foreach($webies as $wId){
+			$weby = new WebyEntity();
+			$tmp[] = $weby->load($wId);
+		}
+		return $tmp;
+	}
+
+    public function getEditorUrl()
     {
-        if (!$this->_url) {
-            $this->_url = $this->app()->getConfig()->app->web_path .
-                $this->getUser()->getUsername() . '/' . $this->getSlug() . '/' . $this->getId() . '/';
-        }
-        return $this->_url;
+		return $this->app()->getConfig()->app->web_path .$this->getUser()->getUsername() . '/' . $this->getId();
     }
+
+	public function getPublicUrl()
+	{
+		return $this->app()->getConfig()->app->web_path .$this->getUser()->getUsername() . '/' . $this->getSlug() . '/' . $this->getId();
+	}
 
     public function toJson()
     {
@@ -30,7 +42,8 @@ class WebyEntity extends WebyEntityCrud
             'id' => $this->_id,
             'username' => $this->getUser()->getUsername(),
             'title' => $this->_title,
-            'content' => is_array($this->_content) ? $this->_content : json_decode($this->_content, true)
+            'content' => $this->_content,
+			'settings' => $this->_settings
         ];
     }
 }
