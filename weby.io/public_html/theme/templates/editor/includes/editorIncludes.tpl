@@ -10,13 +10,13 @@
     widgets/mapWidget.css,
     widgets/twitterWidget.css,
     widgets/videoWidget.css,
-    widgets/linkWidget.css
+    widgets/linkWidget.css,
+    jquery.fancybox.css
 {/minify}
 
 {minify type="js"}
     mouseEvent.js,
     jQueryFix.js,
-    webyDrag.js,
     weby.js,
     webyToolbar.js,
     app.js,
@@ -24,6 +24,8 @@
     baseTool.js,
     baseWidget.js,
     baseParser.js,
+    jquery.fancybox.pack.js,
+    webyDrag.js,
     baseIframeWidget.js,
     tools/textTool.js,
     tools/mapTool.js,

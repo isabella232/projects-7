@@ -20,7 +20,7 @@
     {/minify}
 
     {minify type="js"}
-        jquery-1.8.3.js,
+        jquery-2.0.3.min.js,
         jquery-ui-1.9.2.custom.js
     {/minify}
 

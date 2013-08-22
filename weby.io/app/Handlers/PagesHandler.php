@@ -38,9 +38,11 @@ class PagesHandler extends AbstractHandler
 
         // Will check if requested Weby and URL params are valid
         $this->_checkRequest($weby, $user, $slug, $id);
-
+		
         // Asign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
+		$this->widgets = $weby->getContent();
+		$this->setTemplatePath('templates/editor')->setTemplate('index');
     }
 
     public function page404() {}

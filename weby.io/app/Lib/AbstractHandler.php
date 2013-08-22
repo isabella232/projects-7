@@ -28,11 +28,13 @@ abstract class AbstractHandler
     }
 
     public function setTemplatePath($dir) {
-        $this->_templatePath = removeTrailingSlash($dir) . '/';
+        $this->_templatePath = $dir;
+		return $this;
     }
 
     public function setTemplate($template) {
         $this->_template = $template;
+		return $this;
     }
 
     public function __set($name, $value) {

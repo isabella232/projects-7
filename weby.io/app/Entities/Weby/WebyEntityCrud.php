@@ -16,8 +16,7 @@ abstract class WebyEntityCrud extends WebyEntityProperties
             return;
         }
 
-        $widgets = json_decode($this->_content, true);
-        foreach($widgets as $widgetData) {
+        foreach($this->_content as $widgetData) {
             $widget = new WidgetEntity($widgetData);
             $this->_widgets[] = clone $widget;
         }

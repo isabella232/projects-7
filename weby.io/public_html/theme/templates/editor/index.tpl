@@ -19,12 +19,15 @@
     </script>
     <script type="text/javascript" id="contentValidator">
         var showDashboard = {if isset($showDashboard)}true{else}false{/if};
+        {if isset($contentValidator)}
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         $('#contentValidator').remove();
+        {/if}
     </script>
     {if isset($widgets)}
         <script type="text/javascript" id="widgetsLoad">
             var webyWidgets = {$widgets};
+            var webyId = '{$weby.id}';
             $('#widgetsLoad').remove();
         </script>
     {/if}
@@ -53,6 +56,7 @@
     <div class="clearfix"></div>
     {include file="templates/editor/includes/templates.tpl"}
     {include file="templates/editor/includes/dashboard.tpl"}
+    <div id="screenshot"></div>
 {/block}
 
 {block name="headerRightTools"}

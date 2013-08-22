@@ -29,20 +29,19 @@ abstract class WebyEntityStorage extends EntityAbstract
 				$this->_id,
 				$this->_title,
 				$this->_slug,
-				$this->_content,
+				json_encode($this->_content),
 				is_object($this->_user) ? $this->_user->getId() : $this->_user
 			];
 
 			return $this->_getDb()->execute($query, $bind);
 		}
 
-		$query = "UPDATE {$this->_getDb()->w_weby} SET title=?, slug=?, content=?, modified_on=NOW() WHERE id=? AND 'user'=?";
+		$query = "UPDATE {$this->_getDb()->w_weby} SET title=?, slug=?, content=?, modified_on=NOW() WHERE id=?";
 		$bind = [
 			$this->_title,
 			$this->_slug,
-			$this->_content,
-			$this->_id,
-			is_object($this->_user) ? $this->_user->getId() : $this->_user
+			json_encode($this->_content),
+			$this->_id
 		];
 
 		return $this->_getDb()->execute($query, $bind);

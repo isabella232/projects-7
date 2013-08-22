@@ -31,7 +31,7 @@ class EditorHandler extends AbstractHandler
             $weby->load($id);
 			// TODO: check if weby belongs to this user
         }
-
+		
         $weby->populate($this->request()->post());
 		$weby->setUser($this->user())->save();
 
@@ -39,7 +39,7 @@ class EditorHandler extends AbstractHandler
         $stats = Stats::getInstance();
         $stats->updateWebiesStats($weby);
 
-        $this->request()->redirect($this->app()->getConfig()->app->editor_path);
+        $this->ajaxResponse(false, 'Weby saved!');
     }
 
 	public function route($userName, $webyId = null){
@@ -71,6 +71,9 @@ class EditorHandler extends AbstractHandler
 			$this->showDashboard = true;
 		} else {
 			$this->widgets = $this->_weby->getContent();
+			if(!$this->widgets){
+				$this->widgets = '[]';
+			}
 		}
 
 		$this->weby = $this->_weby;

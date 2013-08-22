@@ -257,7 +257,7 @@ BaseWidget.prototype = {
 	/**
 	 * Delete current widget
 	 */
-	delete: function () {
+	remove: function () {
 		// Remove widget HTML
 		this._html.remove();
 		// Remove widget from the App
@@ -320,7 +320,7 @@ BaseWidget.prototype = {
 
 		_widget.append('<span class="control remove-handle"><i class="icon-remove"></i></span>');
 		_widget.find('.remove-handle').click(function () {
-			$this.delete();
+			$this.remove();
 		});
 
 		if (this._isDraggable) {
@@ -569,7 +569,7 @@ BaseWidget.prototype = {
 
 		this._isContentLoaded = true;
 
-		if(this._isContentLoaded && this._isActive){
+		if (this._isContentLoaded && this._isActive) {
 			this.addInteractionOverlay();
 		}
 

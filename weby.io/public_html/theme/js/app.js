@@ -77,7 +77,7 @@ var AppClass = function () {
 	$(document).keydown(function (e) {
 		if (e.keyCode == 46) {
 			if (_activeWidget != null && !App.isInputFocused(e)) {
-				_activeWidget.delete();
+				_activeWidget.remove();
 			}
 		}
 	});
@@ -94,7 +94,6 @@ var AppClass = function () {
 		}
 		return true;
 	}
-
 	/**
 	 * Application bootstrap
 	 */
