@@ -60,6 +60,8 @@ var BaseIframeWidget = function () {
 			return;
 		}
 
+		e.preventDefault();
+
 		if ($.trim($this.input().val()) != '') {
 			$this.input().unbind('blur keydown');
 			var targetUrl = $this.getTargetUrl($this.input().val());

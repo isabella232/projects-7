@@ -77,7 +77,7 @@ function TwitterWidget() {
 				$this.message().remove();
 
 				/**
-				 * From here on goes fine tuning of the appearance - it can work without this just fine
+				 * From here on goes fine tuning of the appearance
 				 */
 				var counter = 100;
 				var jFrame = false;

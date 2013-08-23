@@ -42,6 +42,7 @@
     tools/linkTool.js,
     tools/vineTool.js,
     tools/pinterestTool.js,
+    tools/flickerTool.js,
     widgets/textWidget.js,
     widgets/mapWidget.js,
     widgets/facebookWidget.js,
@@ -57,6 +58,7 @@
     widgets/linkWidget.js,
     widgets/vineWidget.js,
     widgets/pinterestWidget.js,
+    widgets/flickerWidget.js,
     parsers/videoParser.js,
     parsers/linkedInParser.js,
     parsers/preziParser.js,
@@ -70,5 +72,6 @@
     parsers/vineParser.js,
     parsers/linkParser.js,
     parsers/pinterestParser.js,
+    parsers/flickerParser.js,
     init.js
 {/minify}

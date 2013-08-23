@@ -17,23 +17,18 @@
         // TODO: move this to a more convenient place
         google.load('picker', '1');
     </script>
-    <script type="text/javascript" id="contentValidator">
+    <script type="text/javascript" id="initScript">
         var showDashboard = {if isset($showDashboard)}true{else}false{/if};
         {if isset($contentValidator)}
-        BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
+            BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         {/if}
-        $('#contentValidator').remove();
-    </script>
-    {if $weby}
-        <script type="text/javascript" id="webyLoad">
+        {if $weby}
             var weby = {$weby->toJson()};
-            $('#webyLoad').remove();
-        </script>
-    {/if}
-    <script type="text/javascript" charset="utf-8">
+        {/if}
         $(function () {
             App = new AppClass();
             App.init();
+            $('#initScript').remove();
         });
     </script>
 {/block}
@@ -42,13 +37,12 @@
         <a class="collapse" href="javascript:void(0);">Click to collapse</a>
     </div>
     <div id="weby-toolbar-wrapper">
-        <a hre="javascript:void(0)" class="disabled tool-icon bring-to-front">To Front</a>
-        <a hre="javascript:void(0)" class="disabled tool-icon bring-forward">Forward</a>
-        <a hre="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
-        <a hre="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
-        <a hre="javascript:void(0)" class="disabled tool-icon toggle-frame">Toggle frame</a>
-        <a hre="javascript:void(0)" class="tool-icon background">Background</a>
-        <span id="mouse-pos"></span>
+        <a href="javascript:void(0)" class="disabled tool-icon bring-to-front">To Front</a>
+        <a href="javascript:void(0)" class="disabled tool-icon bring-forward">Forward</a>
+        <a href="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
+        <a href="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
+        <a href="javascript:void(0)" class="disabled tool-icon widget">Widget</a>
+        <a href="javascript:void(0)" class="tool-icon background">Background</a>
     </div>
     <div id="content-background">
         <div id="player"></div>

@@ -27,5 +27,10 @@ class EmbedHandler extends AbstractHandler
 			$this->pinType = 'pin';
 		}
 	}
+
+	public function fbPost(){
+		$this->fbUrl = $this->request()->query('fbUrl');
+		$this->parentId = $this->request()->query('parent');
+	}
 }
 

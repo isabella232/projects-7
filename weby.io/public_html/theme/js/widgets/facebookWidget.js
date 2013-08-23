@@ -1,11 +1,11 @@
 function FacebookWidget() {
 
     this._facebookUrl = '';
+    this._facebookType = '';
     this._isResizable = false;
     this._widgetClass = 'facebook-widget';
     this._parseErrorMessage = 'We couldn\'t insert your Facebook feed. Please try a different one.';
     this._inputElement = 'textarea';
-    this._loadingMessage = 'Loading your Facebook feed...';
 
     this.getHTML = function () {
         this._html = '<textarea type="text" placeholder="Paste your Facebook page URL">www.facebook.com/webiny</textarea>' +
@@ -15,7 +15,23 @@ function FacebookWidget() {
 
     this.getIframe = function () {
         var id = 'facebook-iframe-' + this._id;
-        this._embedUrl = '//www.facebook.com/plugins/likebox.php?href=https://www.facebook.com/' + this._facebookUrl;
+
+		/**
+		 * POST EMBED
+		 */
+		if(this._facebookType == 'post'){
+			this._loadingMessage = 'Loading your Facebook post...';
+			this._embedUrl = WEB+'embed/fb-post/?fbUrl=' + this._facebookUrl+'&parent='+this._id;
+			this._customOnLoadHandler = true;
+			return '<iframe id="' + id + '" src="' + this._embedUrl +'" frameborder="0"></iframe>';
+		}
+
+		/**
+		 * FEED EMBED
+		 */
+		this._loadingMessage = 'Loading your Facebook feed...';
+		this._customOnLoadHandler = false;
+		this._embedUrl = '//www.facebook.com/plugins/likebox.php?href=https://www.facebook.com/' + this._facebookUrl;
         return '<iframe id="' + id + '" src="' + this._embedUrl +
             '&amp;width=292&amp;height=427&amp;colorscheme=light&amp;show_faces=false&amp;header=true&amp;' +
             'stream=true&amp;show_border=false&amp;appId=276232862515995" scrolling="no" frameborder="0" ' +
@@ -26,7 +42,12 @@ function FacebookWidget() {
     // This is called to construct an embed URL which will then be validated
     this.getTargetUrl = function (inputValue) {
         var parser = new FacebookParser();
-        if((this._facebookUrl = parser.parse(inputValue))){
+		this._facebookUrl = parser.parse(inputValue);
+		this._facebookType = parser.getFacebookType();
+        if(this._facebookUrl){
+			if(this._facebookType == 'post'){
+				return 'https://www.facebook.com/'+this._facebookUrl;
+			}
             return 'http://graph.facebook.com/?id=' + this._facebookUrl + '&t=' + new Date().getTime();
         }
         return false;
@@ -34,14 +55,24 @@ function FacebookWidget() {
     }
 
     this.onContentLoaded = function() {
-		var iframe = this.body('iframe');
-        iframe.show();
+		this.body('iframe').show();
 		this.contentLoaded();
     }
 
+	this.onIframeLoaded = function (width, height) {
+		$('#facebook-iframe-' + this._id).attr({width: width.replace('px', ''), height: height.replace('px', '')});
+		this.body('.loading, .message, input').remove();
+		this.html().css({
+			width: width+'px',
+			height: height+'px'
+		});
+		this.contentLoaded();
+	}
+
 	this.getSaveData = function(){
 		return {
-			facebookUrl: this._facebookUrl
+			facebookUrl: this._facebookUrl,
+			facebookType: this._facebookType
 		}
 	}
 

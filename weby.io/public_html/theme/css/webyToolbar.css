@@ -29,6 +29,7 @@
 	text-shadow: 0 1px 0 #fff;
 	float: left;
 	background: url(../images/buttons.png) 0 0 no-repeat;
+	text-decoration: none;
 }
 
 #weby-toolbar-wrapper .tool-icon:hover {
@@ -39,7 +40,7 @@
 	opacity: 0.2;
 }
 
-#background-settings{
+#background-settings, #widget-settings{
 	display: none;
 	position: fixed;
 	background-color: #fff;
@@ -49,6 +50,13 @@
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
+}
+
+#widget-settings{
+	width: 300px;
+	padding: 10px 0 0 10px;
+	line-height: 31px;
+	height: 150px;
 }
 
 #background-settings .tab{
@@ -72,4 +80,14 @@
 
 .k-state-active, .k-state-active:hover, .k-active-filter, .k-tabstrip .k-state-active{
 	border-color: #c5c5c5 !important;
+}
+
+#widget-settings span.title{
+	width: 72px;
+	float: left;
+	clear: left;
+}
+
+#widget-settings span.k-widget{
+	float: left;
 }

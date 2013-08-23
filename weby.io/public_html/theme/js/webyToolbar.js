@@ -1,10 +1,12 @@
 function WebyToolbar() {
 
 	var _activeWidget;
-
-	$('.toggle-frame').click(function () {
-		_activeWidget.toggleFrame();
-	});
+	var _widgetSettings = $('#widget-settings');
+	var _webyColorPicker;
+	var _colorPicker;
+	var _opacitySlider;
+	var _widthSlider;
+	var _radiusSlider;
 
 	$('.send-backward').click(function () {
 		_activeWidget.sendBackward();
@@ -38,7 +40,7 @@ function WebyToolbar() {
 		if (e.keyCode == 13 && val != '') {
 			var parser = new VideoParser();
 			var videoId = parser.parse(val);
-			if(videoId && parser.getVideoType() == 'youtube'){
+			if (videoId && parser.getVideoType() == 'youtube') {
 				// Check if video exists
 				App.getWeby().previewBackgroundSettings({
 					type: 'youtube',
@@ -68,9 +70,9 @@ function WebyToolbar() {
 		}
 	});
 
-	$("#color-picker").kendoFlatColorPicker({
-		preview: false,
-		value: "#000",
+	_webyColorPicker = $("#color-picker").kendoFlatColorPicker({
+		preview: true,
+		value: App.getWeby().getBackgroundColor(),
 		change: function (e) {
 			App.getWeby().previewBackgroundSettings({
 				type: 'color',
@@ -78,8 +80,7 @@ function WebyToolbar() {
 				position: ''
 			});
 		}
-
-	});
+	}).data("kendoFlatColorPicker");
 
 	var patterns = [
 		{"name": "45degreee_fabric.png"},
@@ -463,13 +464,81 @@ function WebyToolbar() {
 		}
 	});
 
+	/**
+	 * WIDGET SETTINGS
+	 */
+
+	$('#weby-toolbar-wrapper .widget').click(function () {
+		if(_activeWidget == null){
+			return;
+		}
+
+		var $this = $(this);
+		var css = {
+			top: $this.offset().top + $this.height() + 10 + 'px',
+			left: $this.offset().left + 'px'
+		};
+		_widgetSettings.css(css).toggle();
+	});
+
+	_colorPicker = $("#widget-color").kendoColorPicker({
+		value: "#ffffff",
+		buttons: true,
+		change: function(e){
+			_activeWidget.setColor(e.value);
+		}
+	}).data("kendoColorPicker");
+
+	_opacitySlider = $("#widget-opacity").kendoSlider({
+		min: 0,
+		max: 100,
+		showButtons: false,
+		slide: function(e){
+			_activeWidget.setOpacity(e.value / 100);
+		}
+	}).data("kendoSlider");
+
+	_radiusSlider = $("#widget-radius").kendoSlider({
+		min: 0,
+		max: 20,
+		showButtons: false,
+		slide: function(e){
+			_activeWidget.setRadius(e.value);
+		}
+	}).data("kendoSlider");
+
+	_widthSlider = $("#widget-width").kendoSlider({
+		min: 0,
+		max: 50,
+		showButtons: false,
+		slide: function(e){
+			_activeWidget.setPadding(e.value);
+		}
+	}).data("kendoSlider");
+
+	/**
+	 * EVENTS
+	 */
+
+	this.webyLoaded = function(){
+		// Do something when Weby is loaded
+	}
+
 	this.widgetActivated = function (widget) {
 		_activeWidget = widget;
 		$('#weby-toolbar-wrapper a.tool-icon').removeClass('disabled');
+
+		// Get widget settings
+		var settings = _activeWidget.getFrameSettings();
+		_colorPicker.value(settings.color);
+		_radiusSlider.value(settings.radius);
+		_opacitySlider.value(parseFloat(settings.opacity)*100);
+		_widthSlider.value(settings.padding);
 	}
 
 	this.widgetDeactivated = function () {
 		_activeWidget = null;
+		_widgetSettings.hide();
 		$('#weby-toolbar-wrapper a.tool-icon:not(".background")').addClass('disabled');
 	}
 }

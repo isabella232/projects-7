@@ -87,9 +87,24 @@ var BaseWidget = function () {
 	this._isInteractive = true;
 
 	/**
-	 * Does widget has a frame around it
+	 * Opacity of widget
 	 */
-	this._hasFrame = true;
+	this._opacity = 1;
+
+	/**
+	 * Frame radius
+	 */
+	this._radius = 4;
+
+	/**
+	 * Frame padding
+	 */
+	this._padding = 10;
+
+	/**
+	 * Frame color
+	 */
+	this._color = '#ffffff';
 
 	/**
 	 * Is widget currently in interaction mode?
@@ -362,6 +377,15 @@ BaseWidget.prototype = {
 		return this._html;
 	},
 
+	getFrameSettings: function () {
+		return {
+			opacity: this._opacity,
+			padding: this._padding,
+			radius: this._radius,
+			color: this._color
+		}
+	},
+
 	/**
 	 * Check if given URL really exists and is accessible
 	 * @param url
@@ -388,24 +412,6 @@ BaseWidget.prototype = {
 		App.fireEvent("widget.created", this);
 		this._bindControls();
 	},
-	/*
-	 MOVE TO WIDGET TOOLBAR
-
-	 this._html.find('.index-handle.up').click(function(){
-	 $this.increaseZIndex();
-	 });
-
-	 this._html.find('.index-handle.down').click(function(){
-	 $this.decreaseZIndex();
-	 });
-
-	 this._html.find('.lock-handle').click(function(){
-	 if($this._locked){
-	 $this.unlockWidget();
-	 } else {
-	 $this.lockWidget();
-	 }
-	 });*/
 
 	/**
 	 * Show resize handle if this widget is resizable
@@ -602,11 +608,14 @@ BaseWidget.prototype = {
 			height: this._html.height(),
 			zindex: this._zindex,
 			rotation: this._rotation,
-			hasFrame: !!this._hasFrame,
 			isInteractive: !!this._isInteractive,
 			aspectRatio: this._isResizable ? this._html.resizable("option", "aspectRatio") : false,
 			isLocked: this._isLocked,
-			embedUrl: this._embedUrl
+			embedUrl: this._embedUrl,
+			opacity: this._opacity,
+			padding: this._padding,
+			radius: this._radius,
+			color: this._color
 		};
 		var widgetData = this.getSaveData();
 
@@ -628,9 +637,6 @@ BaseWidget.prototype = {
 		this._left = parseInt(this._left);
 
 		App.getContent().append(this.getEditHTML());
-		if (!this._hasFrame || this._hasFrame == 'false') {
-			this.html().addClass('no-frame');
-		}
 		this.addInteractionOverlay();
 		this._resize();
 		this._isContentLoaded = true;
@@ -639,6 +645,10 @@ BaseWidget.prototype = {
 		if ('onEditWidgetInserted' in this) {
 			this.onEditWidgetInserted();
 		}
+		this.setOpacity(this._opacity);
+		this.setPadding(this._padding);
+		this.setColor(this._color);
+		this.setRadius(this._radius);
 		return this;
 	},
 
@@ -701,12 +711,6 @@ BaseWidget.prototype = {
 	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
 		return this;
-	},
-
-	toggleFrame: function () {
-		this._hasFrame = !this._hasFrame;
-		this.html().toggleClass('no-frame');
-		return this._hasFrame;
 	},
 
 	/**
@@ -777,10 +781,42 @@ BaseWidget.prototype = {
 		this.setPosition(this._left, parseInt(this._top) + parseInt(distance));
 	},
 
+	setOpacity: function (opacity) {
+		this._opacity = opacity;
+		this.html().css({
+			opacity: opacity
+		});
+		return this;
+	},
+
+	setRadius: function (radius) {
+		this._radius = radius;
+		this.html().css({
+			'-webkit-border-radius': radius + 'px',
+			'-moz-border-radius': radius + 'px',
+			'border-radius': radius + 'px'
+		});
+		return this;
+	},
+
+	setPadding: function (padding) {
+		this._padding = padding;
+		this.html().css("padding", padding + 'px');
+
+		this._resize();
+		return this;
+	},
+
+
+	setColor: function (color) {
+		this._color = color;
+		this.html().css('background-color', color);
+		return this;
+	},
+
 	/**
 	 * EVENT METHODS
 	 */
-
 
 	/**
 	 * Event: widget.resize.stop
@@ -812,6 +848,10 @@ BaseWidget.prototype = {
 	 */
 	_resize: function () {
 		this.html('span.text').css('line-height', this._html.outerHeight() + 'px');
+		this.html('.widget-disabled-overlay').css({
+			margin: -this._padding+'px 0 0 -'+this._padding+'px'
+		});
+
 	},
 
 	/**
@@ -900,21 +940,6 @@ BaseWidget.prototype = {
 		return overlaps;
 	},
 
-	/**
-	 * NOT USED FOR NOW!!!!!!!!!!!!!!!!!!!!!
-	 */
-	lockWidget: function () {
-		this._html.find('.control').not('.lock-handle').hide();
-		this._locked = true;
-		this._html.find('.lock-handle i').removeClass('icon-unlock-alt').addClass('icon-lock');
-	},
-
-	unlockWidget: function () {
-		this._html.find('.control').not('.lock-handle').show();
-		this._locked = false;
-		this._html.find('.lock-handle i').removeClass('icon-lock').addClass('icon-unlock-alt');
-	},
-
 	setZIndex: function (index) {
 		this._zindex = index;
 		this._html.css('z-index', index);
@@ -970,11 +995,6 @@ BaseWidget.prototype = {
 		}
 
 		var newIndex = Math.max.apply(Math, indexes) - 1;
-
-		/*if(newIndex < 10000){
-		 return;
-		 }*/
-
 		this.setZIndex(newIndex);
 		return this;
 	}

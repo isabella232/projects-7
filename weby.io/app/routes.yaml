@@ -8,6 +8,7 @@ routes:
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]
+    - ['embed/fb-post', \App\Handlers\EmbedHandler, fbPost]
     - ['link/parse', \App\Handlers\LinksHandler, parse]
     - ['/^([a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby
     - ['/^([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\EditorHandler, route] #backend editor router

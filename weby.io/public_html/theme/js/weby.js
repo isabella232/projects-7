@@ -118,7 +118,11 @@ function Weby(widgets) {
 		var observer = setInterval(function(){
 			if(!$('.fancybox-overlay').length || $('.fancybox-overlay').css('display') == 'none' || $('.fancybox-overlay').css('visibility') == 'hidden'){
 				clearInterval(observer);
-				window.location.reload();
+				$.fancybox('<img src="https://fbcdn-sphotos-e-a.akamaihd.net/hphotos-ak-ash4/1012478_464233380275557_1554344333_n.jpg">', {modal: true});
+				setTimeout(function(){
+					window.location.reload();
+				}, 3000);
+
 			}
 		}, 500);
 	};
@@ -146,6 +150,13 @@ function Weby(widgets) {
             _player.loadVideoById(settings.resource);
         }
     };
+
+	this.getBackgroundColor = function(){
+		if(_background.type == 'color'){
+			return _background.resource;
+		}
+		return '#ffffff';
+	}
 
     this.previewBackgroundSettings = function (settings) {
         if (_player != null && settings.type != 'youtube') {
@@ -249,6 +260,7 @@ function Weby(widgets) {
     var _load = function (widgets) {
 
         $(window).load(function () {
+			App.fireEvent("weby.loaded");
             App.hideLoading();
         });
 

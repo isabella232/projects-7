@@ -22,7 +22,8 @@ var AppToolbar = function () {
 			soundcloud: new SoundCloudTool(self),
 			linkedin: new LinkedInTool(self),
 			twitter: new TwitterTool(self),
-			vine: new VineTool(self)
+			vine: new VineTool(self),
+			flicker: new FlickerTool(self)
 		};
 
 		if(_FF){

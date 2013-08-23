@@ -38,6 +38,7 @@ function VideoWidget() {
 		if (e.type == "keydown" && e.keyCode != 13) {
 			return;
 		}
+		e.preventDefault();
 		var link = $.trim($this.input().val());
 		if (link == '') {
 			return;

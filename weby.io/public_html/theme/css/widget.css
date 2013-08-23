@@ -227,7 +227,9 @@
 	-khtml-user-select: none !important;
 	-webkit-user-select: none !important;
 	-ms-user-select: none !important;
-
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
 
 .widget.active .widget-disabled-overlay {
