@@ -80,10 +80,10 @@ body.unselectable * {
 	left: 120px;
 	z-index: 0;
 	background-attachment: local;
-	cursor:hand;
-	cursor:grab;
-	cursor:-moz-grab;
-	cursor:-webkit-grab;
+	cursor: hand;
+	cursor: grab;
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
 }
 
 #content-background {
@@ -94,7 +94,7 @@ body.unselectable * {
 	z-index: -1;
 }
 
-#content.grabbing, #content.grabbing .widget{
+#content.grabbing, #content.grabbing .widget {
 	cursor: grabbing;
 	cursor: -moz-grabbing;
 	cursor: -webkit-grabbing;
@@ -104,17 +104,17 @@ body.unselectable * {
 	-ms-user-select: none;
 }
 
-#content.hide-content{
+#content.hide-content {
 	cursor: hand;
 }
 
-#content.hide-content .widget-body{
+#content.hide-content .widget-body {
 	box-shadow: none;
 	display: none;
 }
 
-#content.hide-content .widget{
-	box-shadow:none;
+#content.hide-content .widget {
+	box-shadow: none;
 }
 
 ::-webkit-scrollbar {
@@ -130,7 +130,7 @@ body.unselectable * {
 }
 
 #content-overlay {
-	cursor:default !important;
+	cursor: default !important;
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -178,7 +178,7 @@ body:after {
 	height: 100%;
 	background: url(../images/whiteOpacity.png) repeat;
 	z-index: 1000000;
-	text-align:center;
+	text-align: center;
 }
 
 #app-loading span {
@@ -191,6 +191,29 @@ body:after {
 }
 
 div.content-left {
-    display: inline-block;
-    float: left;
+	display: inline-block;
+	float: left;
 }
+
+/* BACKGROUND CLASSES */
+#content.bg-fixed {
+	background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-attachment: fixed;
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+
+#content.bg-repeat {
+	background-repeat: repeat;
+	background-position: top left;
+}
+
+#content.bg-scale {
+	background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-position: top left;
+}
+

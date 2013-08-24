@@ -10,23 +10,26 @@ use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 class UserEntity extends UserEntityCrud
 {
-    use StdLibTrait, AppTrait;
-    /**
-     * Generates username from given email (removes dots from email and everything after @ sign)
-     * @param $email
-     * @return String
-     */
-    public static function generateUsername($email)
-    {
-        $parts = self::str($email)->explode('@');
-        return $parts->first()->replace('.', '')->val();
-    }
+	use StdLibTrait, AppTrait;
 
-	public function getWebies(){
+	/**
+	 * Generates username from given email (removes dots from email and everything after @ sign)
+	 *
+	 * @param $email
+	 *
+	 * @return String
+	 */
+	public static function generateUsername($email) {
+		$parts = self::str($email)->explode('@');
+
+		return $parts->first()->replace('.', '')->val();
+	}
+
+	public function getWebies() {
 		return WebyEntity::getAllByUser($this);
 	}
 
-	public function getProfileUrl(){
-		return $this->app()->getConfig()->app->web_path . $this->getUsername();
+	public function getProfileUrl() {
+		return $this->app()->getConfig()->app->web_path . $this->getUsername() . '/';
 	}
 }

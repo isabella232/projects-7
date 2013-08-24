@@ -7,6 +7,8 @@ function WebyToolbar() {
 	var _opacitySlider;
 	var _widthSlider;
 	var _radiusSlider;
+	var _shadowDistanceSlider;
+	var _shadowSpreadSlider;
 
 	$('.send-backward').click(function () {
 		_activeWidget.sendBackward();
@@ -31,7 +33,13 @@ function WebyToolbar() {
 			top: $this.offset().top + $this.height() + 10 + 'px',
 			left: $this.offset().left + 'px'
 		};
-		settings.css(css).toggle();
+
+		if(settings.css('display') == 'none'){
+			settings.css(css).show();
+			_webyColorPicker.value(_webyColorPicker.value());
+		} else {
+			settings.hide();
+		}
 	});
 
 	$('#background-settings-youtube').keydown(function (e) {
@@ -464,6 +472,13 @@ function WebyToolbar() {
 		}
 	});
 
+	var _applyBackgroundPosition = function(position){
+		var settings = App.getWeby().getBackgroundSettings();
+		settings.position = position;
+		App.getWeby().previewBackgroundSettings(settings).applyBackgroundSettings(false);
+	};
+
+
 	/**
 	 * WIDGET SETTINGS
 	 */
@@ -478,16 +493,25 @@ function WebyToolbar() {
 			top: $this.offset().top + $this.height() + 10 + 'px',
 			left: $this.offset().left + 'px'
 		};
-		_widgetSettings.css(css).toggle();
+		_widgetSettings.css(css);
+		if(_widgetSettings.css('display') == 'none'){
+			_widgetSettings.show();
+			_activeWidget.hideTools();
+			_colorPicker.value(_colorPicker.value());
+		} else {
+			_widgetSettings.hide();
+			_activeWidget.showTools();
+		}
 	});
 
-	_colorPicker = $("#widget-color").kendoColorPicker({
+	_colorPicker = $("#widget-color").kendoFlatColorPicker({
 		value: "#ffffff",
-		buttons: true,
+		opacity: true,
+		preview: true,
 		change: function(e){
 			_activeWidget.setColor(e.value);
 		}
-	}).data("kendoColorPicker");
+	}).data("kendoFlatColorPicker");
 
 	_opacitySlider = $("#widget-opacity").kendoSlider({
 		min: 0,
@@ -516,9 +540,78 @@ function WebyToolbar() {
 		}
 	}).data("kendoSlider");
 
+	_shadowDistanceSlider = $("#widget-shadow-distance").kendoSlider({
+		min: 0,
+		max: 50,
+		showButtons: false,
+		slide: function(e){
+			_activeWidget.setShadowDistance(e.value);
+		}
+	}).data("kendoSlider");
+
+	_shadowSpreadSlider = $("#widget-shadow-spread").kendoSlider({
+		min: 0,
+		max: 50,
+		showButtons: false,
+		slide: function(e){
+			_activeWidget.setShadowSpread(e.value);
+		}
+	}).data("kendoSlider");
+
+	$("#file").kendoUpload({
+		multiple: false,
+		async: {
+			saveUrl: WEB + "editor/upload-image/?weby=" + App.getWeby().getId(),
+			autoUpload: true
+		},
+		showFileList: false,
+		success: function (e) {
+			// Array with information about the uploaded files
+			var file = e.files[0];
+
+			if (e.operation == "upload") {
+				console.log(e.response.url)
+				App.getWeby().previewBackgroundSettings({
+					type: 'image',
+					resource: e.response.url,
+					position: 'repeat'
+				}).applyBackgroundSettings(false);
+			} else {
+				App.getWeby().resetBackgroundSettings();
+			}
+		},
+		select: function (e) {
+			if (e.files[0].size > 2097152) {
+				alert("Please select a file smaller than 2MB.");
+				e.preventDefault();
+			}
+		}
+	});
+
+	/**
+	 * IMAGE MODES
+	 */
+	$('#background-settings-repeat').click(function(){
+		_applyBackgroundPosition('repeat');
+	});
+
+	$('#background-settings-scale').click(function(){
+		_applyBackgroundPosition('scale');
+	});
+
+	$('#background-settings-fixed').click(function(){
+		_applyBackgroundPosition('fixed');
+	});
+
+
 	/**
 	 * EVENTS
 	 */
+
+	this.widgetClick = function(){
+		_widgetSettings.hide();
+		_activeWidget.showTools();
+	}
 
 	this.webyLoaded = function(){
 		// Do something when Weby is loaded
@@ -527,13 +620,14 @@ function WebyToolbar() {
 	this.widgetActivated = function (widget) {
 		_activeWidget = widget;
 		$('#weby-toolbar-wrapper a.tool-icon').removeClass('disabled');
-
 		// Get widget settings
 		var settings = _activeWidget.getFrameSettings();
 		_colorPicker.value(settings.color);
 		_radiusSlider.value(settings.radius);
 		_opacitySlider.value(parseFloat(settings.opacity)*100);
 		_widthSlider.value(settings.padding);
+		_shadowDistanceSlider.value(parseInt(settings.shadowY));
+		_shadowSpreadSlider.value(parseInt(settings.shadowSpread));
 	}
 
 	this.widgetDeactivated = function () {

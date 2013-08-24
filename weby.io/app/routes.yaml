@@ -5,6 +5,8 @@ routes:
     - ['editor/save', \App\Handlers\EditorHandler, save]
     - ['editor/create', \App\Handlers\EditorHandler, create]
     - ['editor/dashboard', \App\Handlers\EditorHandler, dashboard]
+    - ['editor/upload-image', \App\Handlers\EditorHandler, uploadImage]
+    - ['editor/remove-image', \App\Handlers\EditorHandler, removeImage]
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]

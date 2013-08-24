@@ -22,10 +22,16 @@
         Powered by <a target="_blank" href="http://subtlepatterns.com ">SubtlePatterns.com</a>
     </div>
     <div id="tab-image" class="tab">
-        Image
+        <div id="file-widget">
+            <input name="background-image" id="file" type="file"/>
+        </div>
+        <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
+        <a id="background-settings-fixed" href="javascript:void(0)" class="button">Fixed</a>
+        <a id="background-settings-scale" href="javascript:void(0)" class="button">Scale</a>
     </div>
     <div id="tab-youtube" class="tab">
-        <input type="text" id="background-settings-youtube" value="http://www.youtube.com/watch?v=Zs4cjyYR6c0" placeholder="Paste a Youtube video for the background and press Enter"/>
+        <input type="text" id="background-settings-youtube" value="http://www.youtube.com/watch?v=Zs4cjyYR6c0"
+               placeholder="Paste a Youtube video for the background and press Enter"/>
     </div>
     <span style="float:right">
         <a id="background-settings-apply" href="javascript:void(0)" class="button">Apply</a>

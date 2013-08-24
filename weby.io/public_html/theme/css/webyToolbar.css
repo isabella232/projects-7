@@ -56,8 +56,10 @@
 	width: 300px;
 	padding: 10px 0 0 10px;
 	line-height: 31px;
-	height: 150px;
+	height: 465px;
 }
+
+
 
 #background-settings .tab{
 	padding: 5px;
@@ -90,4 +92,8 @@
 
 #widget-settings span.k-widget{
 	float: left;
+}
+
+#widget-settings .k-flatcolorpicker .k-slider-horizontal{
+	width:260px;
 }

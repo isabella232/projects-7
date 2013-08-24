@@ -107,6 +107,26 @@ var BaseWidget = function () {
 	this._color = '#ffffff';
 
 	/**
+	 * Widget shadow X distance
+	 */
+	this._shadowX = 0;
+
+	/**
+	 * Widget shadow Y distance
+	 */
+	this._shadowY = 3;
+
+	/**
+	 * Widget shadow spread
+	 */
+	this._shadowSpread = 12;
+
+	/**
+	 * Widget shadow color
+	 */
+	this._shadowColor = 'rgb(136, 136, 136)';
+
+	/**
 	 * Is widget currently in interaction mode?
 	 */
 	this._isEditable = false;
@@ -382,7 +402,9 @@ BaseWidget.prototype = {
 			opacity: this._opacity,
 			padding: this._padding,
 			radius: this._radius,
-			color: this._color
+			color: this._color,
+			shadowY: this._shadowY,
+			shadowSpread: this._shadowSpread
 		}
 	},
 
@@ -544,6 +566,7 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	deactivate: function () {
+		this.showTools(); // in case we were in widget settings
 		this._isActive = this._isEditable = false;
 		this.controls().css("visibility", "hidden");
 		this.html().removeClass('active editable');
@@ -615,7 +638,9 @@ BaseWidget.prototype = {
 			opacity: this._opacity,
 			padding: this._padding,
 			radius: this._radius,
-			color: this._color
+			color: this._color,
+			shadowY: this._shadowY,
+			shadowSpread: this._shadowSpread
 		};
 		var widgetData = this.getSaveData();
 
@@ -649,6 +674,8 @@ BaseWidget.prototype = {
 		this.setPadding(this._padding);
 		this.setColor(this._color);
 		this.setRadius(this._radius);
+		this.setShadowDistance(this._shadowY);
+		this.setShadowSpread(this._shadowSpread);
 		return this;
 	},
 
@@ -692,6 +719,16 @@ BaseWidget.prototype = {
 			this.body().prepend(loading);
 		}
 		return this;
+	},
+
+	showTools: function(){
+		this.html('.widget-disabled-overlay').css("opacity", "0.5");
+		this.controls().show();
+	},
+
+	hideTools: function(){
+		this.html('.widget-disabled-overlay').css("opacity", "0");
+		this.controls().hide();
 	},
 
 	/**
@@ -796,6 +833,9 @@ BaseWidget.prototype = {
 			'-moz-border-radius': radius + 'px',
 			'border-radius': radius + 'px'
 		});
+		this.html('.widget-disabled-overlay').css({
+			'border-radius': this._radius+'px'
+		});
 		return this;
 	},
 
@@ -811,6 +851,18 @@ BaseWidget.prototype = {
 	setColor: function (color) {
 		this._color = color;
 		this.html().css('background-color', color);
+		return this;
+	},
+
+	setShadowDistance: function (distance) {
+		this._shadowY = parseInt(distance);
+		this.html().css('box-shadow', this._shadowX+'px '+this._shadowY+'px '+this._shadowSpread+'px '+this._shadowColor);
+		return this;
+	},
+
+	setShadowSpread: function (spread) {
+		this._shadowSpread = parseInt(spread);
+		this.html().css('box-shadow', this._shadowX+'px '+this._shadowY+'px '+this._shadowSpread+'px '+this._shadowColor);
 		return this;
 	},
 
@@ -849,9 +901,9 @@ BaseWidget.prototype = {
 	_resize: function () {
 		this.html('span.text').css('line-height', this._html.outerHeight() + 'px');
 		this.html('.widget-disabled-overlay').css({
-			margin: -this._padding+'px 0 0 -'+this._padding+'px'
+			margin: -this._padding + 'px 0 0 -' + this._padding + 'px',
+			'border-radius': this._radius+'px'
 		});
-
 	},
 
 	/**

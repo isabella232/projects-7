@@ -1,9 +1,9 @@
 /* --------------- BEGIN social sharing buttons and user options --------------- */
 #header-content .content-right {
 	width: auto;
-	float: right;
-	top: 5px;
-	position: relative;
+	top: 13px;
+	position: absolute;
+	right: 0px;
 }
 .social-icons-wrapper {
 	float: left;
