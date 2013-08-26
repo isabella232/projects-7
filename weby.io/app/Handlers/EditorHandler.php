@@ -15,6 +15,7 @@ use Webiny\Component\Security\SecurityTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\Directory\LocalDirectory;
 use Webiny\Component\Storage\File\LocalFile;
+use Webiny\Component\Storage\StorageException;
 use Webiny\Component\Storage\StorageTrait;
 
 class EditorHandler extends AbstractHandler
@@ -88,17 +89,18 @@ class EditorHandler extends AbstractHandler
 		$this->_removeImage($webyId);
 		$file = $this->request()->files('background-image');
 		$ext = $this->str($file->getName())->explode('.')->last();
-		$key = $this->user()->getUsername() . '/' . $webyId . '-background.' . $ext;
+		$key = $this->user()->getUsername() . '/' . $webyId . '-background-' . time() . '.' . $ext;
 
 		$webyFile = new LocalFile($key, $this->storage('local'));
 		$webyFile->setContents(file_get_contents($file->getTmpName()));
+
 
 		die(json_encode(['url' => $webyFile->getUrl()]));
 	}
 
 	private function _removeImage($webyId) {
 		$userDir = new LocalDirectory($this->user()->getUsername(), $this->storage('local'));
-		foreach ($userDir->filter($webyId . '-background.*') as $file) {
+		foreach ($userDir->filter($webyId . '-background*') as $file) {
 			$file->delete();
 		}
 	}

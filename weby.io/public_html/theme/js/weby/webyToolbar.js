@@ -49,25 +49,12 @@ function WebyToolbar() {
 			var parser = new VideoParser();
 			var videoId = parser.parse(val);
 			if (videoId && parser.getVideoType() == 'youtube') {
-				// Check if video exists
-				App.getWeby().previewBackgroundSettings({
-					type: 'youtube',
-					resource: videoId,
-					position: ''
-				});
+				// @TODO: Check if video exists
+				App.getWeby().getBackground().setVideo(videoId).render();
 			} else {
 				// Show error
 			}
 		}
-	});
-
-	$('#background-settings-apply').click(function () {
-		App.getWeby().applyBackgroundSettings();
-	});
-
-	$('#background-settings-cancel').click(function () {
-		App.getWeby().restoreBackgroundSettings();
-
 	});
 
 	$("#background-settings").kendoTabStrip({
@@ -78,15 +65,13 @@ function WebyToolbar() {
 		}
 	});
 
+	var currentColor = App.getWeby().getBackgroundColor();
+
 	_webyColorPicker = $("#color-picker").kendoFlatColorPicker({
 		preview: true,
-		value: App.getWeby().getBackgroundColor(),
+		value: currentColor == null ? '#ffffff' : currentColor,
 		change: function (e) {
-			App.getWeby().previewBackgroundSettings({
-				type: 'color',
-				resource: e.value,
-				position: ''
-			});
+			App.getWeby().getBackground().setColor(e.value).render();
 		}
 	}).data("kendoFlatColorPicker");
 
@@ -464,20 +449,14 @@ function WebyToolbar() {
 		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') repeat"></div>'),
 		selectable: "single",
 		change: function () {
-			App.getWeby().previewBackgroundSettings({
-				type: 'pattern',
-				resource: this.select().attr("data-pattern"),
-				position: ''
-			});
+			App.getWeby().getBackground().setPattern(this.select().attr("data-pattern")).render();
 		}
 	});
 
-	var _applyBackgroundPosition = function(position){
-		var settings = App.getWeby().getBackgroundSettings();
-		settings.position = position;
-		App.getWeby().previewBackgroundSettings(settings).applyBackgroundSettings(false);
+	var _applyBackgroundMode = function(mode){
+		App.getWeby().getBackground().setImageMode(mode).render();
+		App.getWeby().getBackground().widgetDrag();
 	};
-
 
 	/**
 	 * WIDGET SETTINGS
@@ -567,17 +546,8 @@ function WebyToolbar() {
 		showFileList: false,
 		success: function (e) {
 			// Array with information about the uploaded files
-			var file = e.files[0];
-
 			if (e.operation == "upload") {
-				console.log(e.response.url)
-				App.getWeby().previewBackgroundSettings({
-					type: 'image',
-					resource: e.response.url,
-					position: 'repeat'
-				}).applyBackgroundSettings(false);
-			} else {
-				App.getWeby().resetBackgroundSettings();
+				App.getWeby().getBackground().setImage(e.response.url).setImageMode('repeat').render();
 			}
 		},
 		select: function (e) {
@@ -591,16 +561,20 @@ function WebyToolbar() {
 	/**
 	 * IMAGE MODES
 	 */
+	$('#background-settings-no-repeat').click(function(){
+		_applyBackgroundMode('no-repeat');
+	});
+
 	$('#background-settings-repeat').click(function(){
-		_applyBackgroundPosition('repeat');
+		_applyBackgroundMode('repeat');
 	});
 
 	$('#background-settings-scale').click(function(){
-		_applyBackgroundPosition('scale');
+		_applyBackgroundMode('scale');
 	});
 
 	$('#background-settings-fixed').click(function(){
-		_applyBackgroundPosition('fixed');
+		_applyBackgroundMode('fixed');
 	});
 
 
@@ -611,6 +585,10 @@ function WebyToolbar() {
 	this.widgetClick = function(){
 		_widgetSettings.hide();
 		_activeWidget.showTools();
+	}
+
+	this.widgetDrag = function(data){
+		App.getWeby().getBackground().widgetDrag(data);
 	}
 
 	this.webyLoaded = function(){

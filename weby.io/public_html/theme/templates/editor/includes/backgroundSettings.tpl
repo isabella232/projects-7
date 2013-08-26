@@ -25,6 +25,7 @@
         <div id="file-widget">
             <input name="background-image" id="file" type="file"/>
         </div>
+        <a id="background-settings-no-repeat" href="javascript:void(0)" class="button">No Repeat</a>
         <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
         <a id="background-settings-fixed" href="javascript:void(0)" class="button">Fixed</a>
         <a id="background-settings-scale" href="javascript:void(0)" class="button">Scale</a>
@@ -33,8 +34,8 @@
         <input type="text" id="background-settings-youtube" value="http://www.youtube.com/watch?v=Zs4cjyYR6c0"
                placeholder="Paste a Youtube video for the background and press Enter"/>
     </div>
-    <span style="float:right">
+    {*<span style="float:right">
         <a id="background-settings-apply" href="javascript:void(0)" class="button">Apply</a>
         <a id="background-settings-cancel" href="javascript:void(0)" class="button">Cancel</a>
-    </span>
+    </span>*}
 </div>

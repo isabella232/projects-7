@@ -14,19 +14,18 @@ function Weby(widgets) {
 	var _webyId = false;
 	var _title = 'Untitled Weby';
 	var _settings = $('#background-settings');
-	var _player = null;
 	var _titleInput = $('#weby-title');
 	var _lastSavedLabel = $('#last-saved');
 
 	/**
 	 * Applied background settings
 	 */
-	var _background = {};
+	var _background = new WebyBackground();
 
 	/**
 	 * Preview background settings
 	 */
-	var _previewBackground = {};
+	var _previewBackground = null;
 
 	var _setupWeby = function () {
 
@@ -34,7 +33,7 @@ function Weby(widgets) {
 			_webyId = weby.id;
 			_title = weby.title;
 			if ('type' in weby.settings) {
-				_background = weby.settings;
+				_background = new WebyBackground(weby.settings);
 			}
 			_titleInput.val(_title);
 
@@ -54,9 +53,9 @@ function Weby(widgets) {
 			})
 
 			// Create periodic save action
-			setInterval(function () {
+			/*setInterval(function () {
 				App.getWeby().save();
-			}, _saveInterval);
+			}, _saveInterval);*/
 
 			// Catch window close event
 			$(window).bind('beforeunload', function () {
@@ -82,45 +81,8 @@ function Weby(widgets) {
 			$('#my-webies').click();
 		}
 
-
 		// Setup background
-		_setBackground(_background);
-	};
-
-	var _setBackground = function (settings) {
-
-		if (settings.type == 'pattern') {
-			App.getContent().css({
-				'background-image': 'url(' + THEME + 'images/patterns/' + settings.resource + '?t='+new Date().getTime()+')',
-				'background-color': 'transparent',
-				'background-repeat': 'repeat'
-			});
-		} else if (settings.type == 'color') {
-			App.getContent().css({
-				'background-image': 'none',
-				'background-color': settings.resource
-			});
-		} else if (settings.type == 'youtube') {
-			App.getContent().css({
-				'background-image': 'none',
-				'background-color': 'transparent'
-			});
-			_loadYoutubeBackground(settings);
-		} else if (settings.type == 'image') {
-			App.getContent().css({
-				'background-image': 'url(' + settings.resource + '?t='+new Date().getTime()+')',
-				'background-color': 'transparent'
-			});
-
-			if(settings.position == 'fixed'){
-				App.getContent().removeClass('bg-repeat bg-scale').addClass('bg-fixed');
-			} else if(settings.position == 'scale') {
-				App.getContent().removeClass('bg-repeat bg-fixed').addClass('bg-scale');
-			} else if(settings.position == 'repeat') {
-				App.getContent().removeClass('bg-fixed bg-scale').addClass('bg-repeat');
-			}
-
-		}
+		_background.render();
 	};
 
 	var _setupOverlayObserver = function () {
@@ -137,79 +99,13 @@ function Weby(widgets) {
 		}, 500);
 	};
 
-	_loadYoutubeBackground = function (settings) {
-		if (_player == null) {
-			_player = new YT.Player('player', {
-				width: App.getContent().width(),
-				height: App.getContent().height(),
-				videoId: settings.resource,
-				playerVars: {
-					controls: 0,
-					showinfo: 0,
-					modestbranding: 1,
-					wmode: 'transparent'
-				},
-				events: {
-					onReady: function (e) {
-						e.target.playVideo();
-						e.target.mute();
-					}
-				}
-			});
-		} else {
-			_player.loadVideoById(settings.resource);
-		}
-	};
+	this.getBackground = function(){
+		return _background;
+	}
 
 	this.getBackgroundColor = function () {
-		if (_background.type == 'color') {
-			return _background.resource;
-		}
-		return '#ffffff';
+		_background.getColor();
 	}
-
-	this.previewBackgroundSettings = function (settings) {
-		if (_player != null && settings.type != 'youtube') {
-			_player = null;
-			App.getContentBackground().html('<div id="player"></div>');
-		}
-		_previewBackground = settings;
-		_setBackground(settings);
-		return this;
-	};
-
-	this.restoreBackgroundSettings = function () {
-		if (_background != _previewBackground) {
-			_setBackground(_background);
-		}
-		_settings.hide();
-	};
-
-	this.resetBackgroundSettings = function () {
-		_background = {
-			type: 'pattern',
-			resource: 'purty_wood.png',
-			position: ''
-		};
-		_setBackground(_background);
-	}
-
-	this.applyBackgroundSettings = function (closeSettings) {
-		if(typeof closeSettings == "undefined"){
-			closeSettings = true;
-		}
-
-		if(_previewBackground.hasOwnProperty('resource')){
-			_background = _previewBackground;
-		}
-		if(closeSettings){
-			_settings.hide();
-		}
-	};
-
-	this.getBackgroundSettings = function () {
-		return _background;
-	};
 
 	this.getWidgets = function () {
 		return _widgets;
@@ -282,7 +178,9 @@ function Weby(widgets) {
 			title: _title,
 			content: [],
 			settings: _background,
-			counter: _counter
+			counter: _counter,
+			unknownFileTypes: _unknownFileTypes,
+			invalidUrls: _invalidUrls
 		};
 		// When saving widgets make sure all of them have width and height property set
 		for (var i in _widgets) {
@@ -295,8 +193,10 @@ function Weby(widgets) {
 
 		$.post(WEB + 'editor/save/', data, function (data) {
 			if (!data.error) {
-				// Reset widget counter
+				// Reset logs
 				_counter = {};
+				_unknownFileTypes = [];
+				_invalidUrls = [];
 				_lastSavedLabel.show().find('span').html(data.data.time);
 				setTimeout(function () {
 					_lastSavedLabel.fadeOut();
@@ -332,18 +232,11 @@ function Weby(widgets) {
 		for (var i in _widgets) {
 			_widgets[i].setContainment([App.getToolbarWrapper().outerWidth(), App.getHeader().outerHeight()]);
 		}
-
-		// Resize player
-		if (_player != null) {
-			$('#player').css({
-				width: App.getContent().width(),
-				left: App.getContent().css('left')
-			});
-		}
+		_background.viewportResize();
 	};
 
 	this.contentClick = function (e) {
-		this.applyBackgroundSettings();
+		_settings.hide();
 	};
 
 	this.widgetCreated = function (widget) {
@@ -362,17 +255,9 @@ function Weby(widgets) {
 		_counter[type]--;
 	};
 
-	this.viewportResize = function () {
-		// Resize player
-		if (_player != null) {
-			$('#player').css({
-				width: App.getContent().width(),
-				height: App.getContent().height()
-			});
-		}
-	};
-
-	this.resetBackgroundSettings();
+	this.widgetDragStop = function(data){
+		_background.widgetDragStop(data);
+	}
 
 	_setupWeby();
 };

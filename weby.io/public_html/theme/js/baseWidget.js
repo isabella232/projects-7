@@ -185,7 +185,7 @@ var BaseWidget = function () {
 	this._baseDraggableOptions = {
 		cancel: '.resize-handle, .widget-body',
 		scroll: true,
-		scrollSensitivity: 100,
+		scrollSensitivity: 300,
 		start: function (event, ui) {
 			App.fireEvent("widget.drag.start", {element: $(this), event: event, ui: ui});
 		},
@@ -336,8 +336,8 @@ BaseWidget.prototype = {
 			}
 		}
 
-		this._left = x;
-		this._top = y;
+		this._left = parseInt(x);
+		this._top = parseInt(y);
 		if (typeof this._html != "undefined") {
 			this._html.css({top: this._top + 'px', left: this._left + 'px'});
 		}
@@ -875,8 +875,8 @@ BaseWidget.prototype = {
 	 * @param data
 	 */
 	widgetResizeStop: function (data) {
-		this._width = data.element.width();
-		this._height = data.element.height();
+		this._width = parseInt(data.element.width());
+		this._height = parseInt(data.element.height());
 	},
 
 	widgetResize: function (data) {
