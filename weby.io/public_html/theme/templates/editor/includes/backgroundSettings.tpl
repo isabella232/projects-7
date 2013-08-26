@@ -29,6 +29,43 @@
         <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
         <a id="background-settings-fixed" href="javascript:void(0)" class="button">Fixed</a>
         <a id="background-settings-scale" href="javascript:void(0)" class="button">Scale</a>
+        <table id="background-settings-align">
+            <tbody>
+            <tr>
+                <td>
+                    <button data-align="left top">TL</button>
+                </td>
+                <td>
+                    <button data-align="center top">TC</button>
+                </td>
+                <td>
+                    <button data-align="right top">TR</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button data-align="left center">L</button>
+                </td>
+                <td>
+                    <button data-align="center center">C</button>
+                </td>
+                <td>
+                    <button data-align="right center">R</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button data-align="left bottom">BL</button>
+                </td>
+                <td>
+                    <button data-align="center bottom">BC</button>
+                </td>
+                <td>
+                    <button data-align="right bottom">BR</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div id="tab-youtube" class="tab">
         <input type="text" id="background-settings-youtube" value="http://www.youtube.com/watch?v=Zs4cjyYR6c0"

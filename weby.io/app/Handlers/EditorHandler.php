@@ -94,8 +94,17 @@ class EditorHandler extends AbstractHandler
 		$webyFile = new LocalFile($key, $this->storage('local'));
 		$webyFile->setContents(file_get_contents($file->getTmpName()));
 
+		$data = ['url' => $webyFile->getUrl()];
 
-		die(json_encode(['url' => $webyFile->getUrl()]));
+		// Get file size
+		try {
+			$imageSize = getimagesize($webyFile->getAbsolutePath());
+			$data['width'] = $imageSize[0];
+			$data['height'] = $imageSize[1];
+		} catch (\Exception $e) {
+			//
+		}
+		die(json_encode($data));
 	}
 
 	private function _removeImage($webyId) {

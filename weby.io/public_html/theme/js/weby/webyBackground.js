@@ -23,6 +23,11 @@ function WebyBackground() {
 		return this;
 	}
 
+	this.setImageSize = function(width, height){
+		_backgrounds.image.setWidth(width).setHeight(height);
+		return this;
+	}
+
 	this.setImageAlign = function(align){
 		_backgrounds.image.setAlign(align);
 		return this;
@@ -31,6 +36,7 @@ function WebyBackground() {
 	this.setColor = function(color){
 		_backgrounds.color.setColor(color);
 		_backgrounds.pattern.setPattern(null);
+		_backgrounds.image.setImage(null);
 		return this;
 	}
 

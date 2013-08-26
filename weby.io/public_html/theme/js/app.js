@@ -204,6 +204,7 @@ var AppClass = function () {
 		_webyDrag = new WebyDrag(_content);
 
 		_weby = new Weby();
+		_weby.init();
 		_webyToolbar = new WebyToolbar();
 	}
 

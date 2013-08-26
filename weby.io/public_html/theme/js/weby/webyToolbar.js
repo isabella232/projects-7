@@ -547,7 +547,8 @@ function WebyToolbar() {
 		success: function (e) {
 			// Array with information about the uploaded files
 			if (e.operation == "upload") {
-				App.getWeby().getBackground().setImage(e.response.url).setImageMode('repeat').render();
+				App.getWeby().getBackground().setImage(e.response.url).setImageMode('repeat').setImageSize(e.response.width, e.response.height).render();
+				App.getWeby().getBackground().widgetDrag();
 			}
 		},
 		select: function (e) {
@@ -575,6 +576,10 @@ function WebyToolbar() {
 
 	$('#background-settings-fixed').click(function(){
 		_applyBackgroundMode('fixed');
+	});
+
+	$('#background-settings table button').click(function(){
+		App.getWeby().getBackground().setImageAlign($(this).attr("data-align")).render();
 	});
 
 

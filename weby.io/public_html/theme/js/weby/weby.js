@@ -20,14 +20,16 @@ function Weby(widgets) {
 	/**
 	 * Applied background settings
 	 */
-	var _background = new WebyBackground();
+	var _background = null;
 
 	/**
 	 * Preview background settings
 	 */
 	var _previewBackground = null;
 
-	var _setupWeby = function () {
+	this.init = function () {
+
+		_background = new WebyBackground();
 
 		if (typeof weby != "undefined") {
 			_webyId = weby.id;
@@ -259,5 +261,4 @@ function Weby(widgets) {
 		_background.widgetDragStop(data);
 	}
 
-	_setupWeby();
 };

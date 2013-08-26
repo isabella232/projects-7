@@ -52,6 +52,15 @@
 	border-radius: 4px;
 }
 
+#background-settings-align{
+	display:none;
+}
+
+#background-settings table button{
+	width:35px;
+	height:35px;
+}
+
 #widget-settings{
 	width: 300px;
 	padding: 10px 0 0 10px;

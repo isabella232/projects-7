@@ -747,6 +747,7 @@ BaseWidget.prototype = {
 	 */
 	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
+		this._baseDraggableOptions["containment", containment];
 		return this;
 	},
 
