@@ -37,7 +37,7 @@ class UsersHandler extends AbstractHandler
             $user->populate($serviceData)->save();
 
             // Sending welcome e-mail to our newly created user
-            //$this->_sendEmail($user);
+            $this->_sendEmail($user);
 
             // Now update users stats
             $stats = Stats::getInstance();

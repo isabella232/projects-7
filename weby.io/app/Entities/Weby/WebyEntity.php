@@ -10,16 +10,16 @@ class WebyEntity extends WebyEntityCrud
 
 	use AppTrait;
 
-	public static function getAllByUser(UserEntity $user) {
-		$webies = self::_sqlLoadByUser($user);
-		$tmp = [];
-		foreach ($webies as $wId) {
-			$weby = new WebyEntity();
-			$tmp[] = $weby->load($wId);
-		}
-
-		return $tmp;
-	}
+    public static function getAllByUser(UserEntity $user)
+    {
+        $webies = self::_sqlLoadByUser($user);
+        $tmp = [];
+        foreach ($webies as $wId) {
+            $weby = new WebyEntity();
+            $tmp[] = $weby->load($wId);
+        }
+        return $tmp;
+    }
 
 	public function getEditorUrl() {
 		return $this->app()->getConfig()->app->web_path . $this->getUser()->getUsername() . '/' . $this->getId() . '/';
