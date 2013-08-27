@@ -193,19 +193,24 @@ var AppClass = function () {
 		$(window).resize(function () {
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
-			_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-			_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
-			_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-			_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
+			if(_weby && _weby.getBackground().getCanvasType() == 'auto'){
+				_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+				_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
+				_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+				_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
+			} else if(!_weby){
+				_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+				_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
+				_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+				_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
+			}
 			_toolbarWrapper.height(_viewportHeight - _header.height());
 			App.fireEvent("viewport.resize");
 		}).resize();
 
 		_webyDrag = new WebyDrag(_content);
-
 		_weby = new Weby();
 		_weby.init();
-		_webyToolbar = new WebyToolbar();
 	}
 
 	this.showLoading = function () {
@@ -220,15 +225,15 @@ var AppClass = function () {
 	}
 
 	this.resizeContentWidth = function(){
-		App.getContent().css('overflow-x', 'scroll');
 		_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
 		_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+		return this;
 	}
 
 	this.resizeContentHeight = function(){
-		App.getContent().css('overflow-y', 'scroll');
 		_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
 		_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
+		return this;
 	}
 
 

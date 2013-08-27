@@ -20,7 +20,7 @@
 
     {minify type="js"}
         jquery-2.0.3.min.js,
-        jquery-ui-1.9.2.custom.js
+        jquery-ui-1.9.2.webyio.js
     {/minify}
 
     <script type="text/javascript">

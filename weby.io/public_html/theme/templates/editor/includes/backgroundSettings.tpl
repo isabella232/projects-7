@@ -28,7 +28,6 @@
         <div id="file-widget">
             <input name="background-image" id="file" type="file"/>
         </div>
-        <a id="background-settings-limit" href="javascript:void(0)" class="button">Limit content</a>
         <a id="background-settings-aligned" href="javascript:void(0)" class="button">Aligned</a>
         <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
         <a id="background-settings-fixed" href="javascript:void(0)" class="button">Fixed</a>

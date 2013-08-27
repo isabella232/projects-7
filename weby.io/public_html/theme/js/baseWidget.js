@@ -261,7 +261,6 @@ var BaseWidget = function () {
 		resize: function (event, ui) {
 			App.fireEvent("widget.resize", {element: $(this), event: event, ui: ui});
 		},
-
 		start: function (event, ui) {
 			App.fireEvent("widget.resize.start", {element: $(this), event: event, ui: ui});
 		},
@@ -747,7 +746,9 @@ BaseWidget.prototype = {
 	 */
 	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
-		this._baseDraggableOptions["containment", containment];
+		this._baseDraggableOptions["containment"] = containment;
+		this._html.resizable("option", "containment", containment);
+		this._baseResizableOptions["containment"] = containment;
 		return this;
 	},
 
@@ -915,7 +916,12 @@ BaseWidget.prototype = {
 		var draggableOptions = {};
 		var rotatableOptions = {};
 		var resizableOptions = {};
-		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+		if(typeof this._baseDraggableOptions["containment"] == "undefined"){
+			this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+		}
+		if(typeof this._baseResizableOptions["containment"] == "undefined"){
+			this._baseResizableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+		}
 		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
 		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);

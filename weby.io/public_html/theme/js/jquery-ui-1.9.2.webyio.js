@@ -1978,7 +1978,7 @@
 				}
 
 			}
-			
+
 			var pos = {
 				top: (
 					pageY																// The absolute mouse position
@@ -1999,15 +1999,15 @@
 			/**
 			 * Weby.io hack
 			 */
-			if(this.containment){
+			if (this.containment) {
 				var scrollBarOffset = 0;
 				var outerWidth = this.element.outerWidth(true);
 				var outerHeight = this.element.outerHeight(true);
-				if(pos.left + outerWidth + parseInt(this.element.css('margin-left')) + scrollBarOffset > this.containment[2]){
+				if (pos.left + outerWidth + parseInt(this.element.css('margin-left')) + scrollBarOffset > this.containment[2]) {
 					pos.left = this.containment[2] - outerWidth;
 				}
 
-				if(pos.top + outerHeight + parseInt(this.element.css('margin-bottom')) + scrollBarOffset> this.containment[3]){
+				if (pos.top + outerHeight + parseInt(this.element.css('margin-bottom')) + scrollBarOffset > this.containment[3]) {
 					pos.top = this.containment[3] - outerHeight;
 				}
 			}
@@ -3332,6 +3332,15 @@
 					element: $(document), left: 0, top: 0,
 					width: $(document).width(), height: $(document).height() || document.body.parentNode.scrollHeight
 				};
+			} else if (ce instanceof Array) {
+				// Array containment
+				that.containment = {
+					left: ce[0],
+					top: ce[1],
+					right: ce[2] || 0,
+					bottom: ce[3] || 0
+				};
+				return;
 			}
 
 			// i'm a node, so compute top, left, right, bottom
@@ -3355,6 +3364,39 @@
 		},
 
 		resize: function (event, ui) {
+
+			/**
+			 * Weby.io hack
+			 */
+
+			var that = $(this).data("resizable");
+
+			if (typeof that.containment != "undefined") {
+				var element = $(this);
+				var hmargin = parseInt(element.css("margin-left")) * 2 + parseInt(element.css("padding-left")) * 2;
+				var vmargin = parseInt(element.css("margin-top")) * 2 + parseInt(element.css("padding-top")) * 2;
+				var width = element.width() + hmargin;
+				var height = element.height() + vmargin;
+
+				var leftOffset = parseInt(element.css("left"));
+				var topOffset = parseInt(element.css("top"));
+
+				var pos = that.size.width + hmargin + leftOffset;
+				if (that.containment.right > 0 && pos >= that.containment.right) {
+					that.size.width = that.containment.right - leftOffset - hmargin;
+				}
+
+				var pos = that.size.height + vmargin + topOffset;
+				if (that.containment.bottom > 0 && pos >= that.containment.bottom) {
+					that.size.height = that.containment.bottom - topOffset - vmargin;
+				}
+				return;
+			}
+
+			/**
+			 * / hackend
+			 */
+
 			var that = $(this).data("resizable"), o = that.options,
 				ps = that.containerSize, co = that.containerOffset, cs = that.size, cp = that.position,
 				pRatio = that._aspectRatio || event.shiftKey, cop = { top: 0, left: 0 }, ce = that.containerElement;

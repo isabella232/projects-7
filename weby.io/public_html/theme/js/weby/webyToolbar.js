@@ -547,7 +547,7 @@ function WebyToolbar() {
 		success: function (e) {
 			// Array with information about the uploaded files
 			if (e.operation == "upload") {
-				App.getWeby().getBackground().setImage(e.response.url).setImageMode('repeat').setImageSize(e.response.width, e.response.height).render();
+				App.getWeby().getBackground().setImage(e.response.url).setImageMode('repeat').render();
 				App.getWeby().getBackground().widgetDrag();
 			}
 		},
@@ -590,60 +590,10 @@ function WebyToolbar() {
 	 * CANVAS SIZE
 	 */
 
-	$('#background-size-apply').click(function () {
-		var width = $('#canvas-width').val();
-		var height = $('#canvas-height').val();
-
-		if (width == '' || height == '') {
-			$('#canvas-width').val('');
-			$('#canvas-height').val('');
-
-			App.resizeContentHeight();
-			App.resizeContentWidth();
-
-			App.getWeby().setContainment([120, 60]);
-
-			return;
-		}
-
-		if (width <= App.getContent().width()) {
-			App.getContent().width(width).css('overflow-x', 'hidden');
-		} else {
-			App.resizeContentWidth();
-		}
-
-		if (height <= App.getContent().height()) {
-			App.getContent().height(height).css('overflow-y', 'hidden');
-		} else {
-			App.resizeContentHeight();
-		}
-
-		App.getWeby().getBackground().setImageSize(width, height).render();
-
-
-		var containment = [
-			parseInt(App.getContent().css("left")),
-			parseInt(App.getContent().css("top")),
-			width,
-			height
-		];
-		App.getWeby().setContainment(containment);
-
-		// Trigger viewportResize to recalculate all background related elements
-		App.getWeby().getBackground().viewportResize();
-
-		$('#size-limit').remove();
-		var div = $('<div id="size-limit"></div>');
-		div.css({
-			position: 'absolute',
-			left: (width - 18) + 'px',
-			top: (height - 18) + 'px',
-			'background-color': 'transparent',
-			width: '1px',
-			height: '1px'
-		});
-
-		App.getContent().append(div);
+	$('#background-size-apply').click(function(){
+		var width = parseInt($('#canvas-width').val());
+		var height = parseInt($('#canvas-height').val());
+		App.getWeby().getBackground().applyCanvasSize(width, height);
 	});
 
 

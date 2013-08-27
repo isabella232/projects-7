@@ -1,4 +1,4 @@
-function Weby(widgets) {
+function Weby() {
 
 	// Prevent calling constructor twice!
 	if (_webyId) {
@@ -12,6 +12,7 @@ function Weby(widgets) {
 	var _unknownFileTypes = [];
 	var _counter = {};
 	var _webyId = false;
+	var _webyToolbar = null;
 	var _title = 'Untitled Weby';
 	var _settings = $('#background-settings');
 	var _titleInput = $('#weby-title');
@@ -22,11 +23,6 @@ function Weby(widgets) {
 	 */
 	var _background = null;
 
-	/**
-	 * Preview background settings
-	 */
-	var _previewBackground = null;
-
 	this.init = function () {
 
 		if (typeof weby != "undefined") {
@@ -34,8 +30,10 @@ function Weby(widgets) {
 			_title = weby.title;
 			if ('color' in weby.settings) {
 				_background = new WebyBackground(weby.settings);
+				_webyToolbar = new WebyToolbar(weby.settings.type);
 			} else {
 				_background = new WebyBackground();
+				_webyToolbar = new WebyToolbar();
 			}
 			_titleInput.val(_title);
 
@@ -86,6 +84,16 @@ function Weby(widgets) {
 		// Setup background
 		_background.render();
 	};
+
+	/**
+	 * Returns a scrollbar width depending on browser
+	 */
+	this.getScrollBarOffset = function(){
+		if(_FF){
+			return 18;
+		}
+		return 7;
+	}
 
 	var _setupOverlayObserver = function () {
 		// Check if overlay exists periodically
@@ -158,18 +166,6 @@ function Weby(widgets) {
 		return _webyId;
 	};
 
-	this.getBackgroundImage = function () {
-		if (_background.type == 'image') {
-			return _background.resource;
-		}
-
-		if (_previewBackground.type == 'image') {
-			return _previewBackground.resource;
-		}
-
-		return false;
-	}
-
 	this.save = function () {
 		if (!_webyId) {
 			return;
@@ -212,9 +208,14 @@ function Weby(widgets) {
 		for (var i in _widgets) {
 			_widgets[i].setContainment(containment);
 		}
+		return this;
 	}
 
 	var _load = function (widgets) {
+
+		if(widgets == ''){
+			return;
+		}
 
 		$(window).load(function () {
 			App.fireEvent("weby.loaded");

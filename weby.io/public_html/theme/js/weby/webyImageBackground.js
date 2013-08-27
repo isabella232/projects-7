@@ -3,8 +3,6 @@ function WebyImageBackground() {
 	var _image = null;
 	var _mode = 'aligned';
 	var _align = 'top left';
-	var _width = 0;
-	var _height = 0;
 
 	this.setImage = function (image) {
 		_image = image;
@@ -26,22 +24,10 @@ function WebyImageBackground() {
 		return this;
 	}
 
-	this.setWidth = function (width) {
-		_width = width;
-		return this;
-	}
-
-	this.setHeight = function (height) {
-		_height = height;
-		return this;
-	}
-
 	this.populate = function (data) {
 		_image = data.image == "" ? null : data.image;
 		_align = data.align;
 		_mode = data.mode;
-		_width = data.width;
-		_height = data.height;
 		return this;
 	}
 
@@ -72,9 +58,7 @@ function WebyImageBackground() {
 		return {
 			image: _image,
 			mode: _mode,
-			align: _align,
-			width: _width,
-			height: _height
+			align: _align
 		}
 	}
 
@@ -120,16 +104,6 @@ function WebyImageBackground() {
 		img.css({
 			width: App.getContent().width() + 18 + 'px',
 			height: App.getContent().height() + 18 + 'px'
-		});
-		App.getContent().prepend(img);
-	}
-
-	var _renderLimit = function () {
-		$('#weby-background').remove();
-		var img = $('<img id="weby-background" src="' + _image + '"/>');
-		img.css({
-			width: _width + 'px',
-			height: _height + 'px'
 		});
 		App.getContent().prepend(img);
 	}

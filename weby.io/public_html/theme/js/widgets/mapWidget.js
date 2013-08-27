@@ -23,6 +23,7 @@ function MapWidget() {
 			input.width(_widget.width() - 12);
 		}
 		_widget.find('.map').width(_widget.width()).height(_widget.height()); // -28 input height
+		this._resize();
 		google.maps.event.trigger(this._map, "resize");
 	}
 
