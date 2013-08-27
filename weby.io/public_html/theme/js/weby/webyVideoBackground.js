@@ -19,6 +19,16 @@ function WebyVideoBackground() {
 		_loadYoutubeBackground();
 	}
 
+	this.populate = function (data) {
+		_video = data.video == "" ? null : data.video;
+	}
+
+	this.save = function(){
+		return {
+			video: _video
+		}
+	}
+
 	this.resize = function(){
 		// Resize player
 		if (_player != null) {

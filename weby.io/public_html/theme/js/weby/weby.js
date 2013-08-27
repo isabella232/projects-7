@@ -29,13 +29,13 @@ function Weby(widgets) {
 
 	this.init = function () {
 
-		_background = new WebyBackground();
-
 		if (typeof weby != "undefined") {
 			_webyId = weby.id;
 			_title = weby.title;
-			if ('type' in weby.settings) {
+			if ('color' in weby.settings) {
 				_background = new WebyBackground(weby.settings);
+			} else {
+				_background = new WebyBackground();
 			}
 			_titleInput.val(_title);
 
@@ -55,9 +55,9 @@ function Weby(widgets) {
 			})
 
 			// Create periodic save action
-			/*setInterval(function () {
+			setInterval(function () {
 				App.getWeby().save();
-			}, _saveInterval);*/
+			}, _saveInterval);
 
 			// Catch window close event
 			$(window).bind('beforeunload', function () {
@@ -179,7 +179,7 @@ function Weby(widgets) {
 			id: _webyId,
 			title: _title,
 			content: [],
-			settings: _background,
+			settings: _background.save(),
 			counter: _counter,
 			unknownFileTypes: _unknownFileTypes,
 			invalidUrls: _invalidUrls
@@ -207,6 +207,12 @@ function Weby(widgets) {
 		});
 
 	};
+
+	this.setContainment = function(containment){
+		for (var i in _widgets) {
+			_widgets[i].setContainment(containment);
+		}
+	}
 
 	var _load = function (widgets) {
 

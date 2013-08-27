@@ -77,6 +77,7 @@
 #background-settings-youtube{
 	width: 400px;
 	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
 	padding: 5px;
 	box-shadow: 0px 1px 5px -1px gray inset;
 	border: none;

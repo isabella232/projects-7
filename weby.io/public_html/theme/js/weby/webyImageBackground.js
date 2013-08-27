@@ -1,7 +1,7 @@
 function WebyImageBackground() {
 
 	var _image = null;
-	var _mode = 'no-repeat';
+	var _mode = 'aligned';
 	var _align = 'top left';
 	var _width = 0;
 	var _height = 0;
@@ -36,13 +36,22 @@ function WebyImageBackground() {
 		return this;
 	}
 
+	this.populate = function (data) {
+		_image = data.image == "" ? null : data.image;
+		_align = data.align;
+		_mode = data.mode;
+		_width = data.width;
+		_height = data.height;
+		return this;
+	}
+
 	this.render = function () {
 		if (_image == null) {
 			$('#weby-background').remove();
 		}
 
-		if (_mode == 'no-repeat') {
-			_renderNoRepeat();
+		if (_mode == 'aligned') {
+			_renderAligned();
 			$('#background-settings-align').show();
 		} else if (_mode == 'repeat') {
 			_renderRepeat();
@@ -53,17 +62,31 @@ function WebyImageBackground() {
 		} else if (_mode == 'scale') {
 			_renderScale();
 			$('#background-settings-align').hide();
+		} else if (_mode == 'limit') {
+			_renderLimit();
+			$('#background-settings-align').hide();
 		}
 	}
 
-	var _renderNoRepeat = function () {
+	this.save = function () {
+		return {
+			image: _image,
+			mode: _mode,
+			align: _align,
+			width: _width,
+			height: _height
+		}
+	}
+
+	var _renderAligned = function () {
 		$('#weby-background').remove();
-		var img = $('<div id="weby-background" ></div>');
+		var img = $('<div id="weby-background"></div>');
 		img.css({
-			'background-image': 'url('+_image+')',
+			'background-image': 'url(' + _image + ')',
 			'background-position': _align == null ? 'left top' : _align,
-			width: _width + 'px',
-			height: _height + 'px',
+			'background-repeat': 'no-repeat',
+			width: App.getContent()[0].scrollWidth + 'px',
+			height: App.getContent()[0].scrollHeight + 'px',
 			top: 0,
 			left: 0,
 			position: 'absolute'
@@ -91,7 +114,6 @@ function WebyImageBackground() {
 			'background-attachment': 'fixed'
 		});
 	}
-
 	var _renderScale = function () {
 		$('#weby-background').remove();
 		var img = $('<img id="weby-background" src="' + _image + '"/>');
@@ -102,11 +124,21 @@ function WebyImageBackground() {
 		App.getContent().prepend(img);
 	}
 
+	var _renderLimit = function () {
+		$('#weby-background').remove();
+		var img = $('<img id="weby-background" src="' + _image + '"/>');
+		img.css({
+			width: _width + 'px',
+			height: _height + 'px'
+		});
+		App.getContent().prepend(img);
+	}
+
 	/**
 	 * EVENTS
 	 */
 	this.widgetDrag = function () {
-		if (_mode == 'scale' || _mode == 'repeat') {
+		if (_mode != 'fixed' && _mode != 'limit') {
 			var content = App.getContent()[0];
 			$('#weby-background').height(0).width(0).css({
 				height: content.scrollHeight + 'px',

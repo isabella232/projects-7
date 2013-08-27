@@ -219,6 +219,18 @@ var AppClass = function () {
 		});
 	}
 
+	this.resizeContentWidth = function(){
+		App.getContent().css('overflow-x', 'scroll');
+		_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+		_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
+	}
+
+	this.resizeContentHeight = function(){
+		App.getContent().css('overflow-y', 'scroll');
+		_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
+		_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
+	}
+
 
 	/**
 	 * Get current Weby

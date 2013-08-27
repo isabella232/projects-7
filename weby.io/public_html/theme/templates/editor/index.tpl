@@ -42,7 +42,8 @@
         <a href="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
         <a href="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
         <a href="javascript:void(0)" class="disabled tool-icon widget">Widget</a>
-        <a href="javascript:void(0)" class="tool-icon background">Background</a>
+        <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
+        <a href="javascript:void(0)" class="tool-icon document">Document</a>
     </div>
     <div id="content-background">
         <div id="player"></div>

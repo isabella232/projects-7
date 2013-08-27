@@ -1,4 +1,4 @@
-function WebyBackground() {
+function WebyBackground(settings) {
 
 	var _backgrounds = {
 		color: new WebyColorBackground(),
@@ -6,17 +6,32 @@ function WebyBackground() {
 		image: new WebyImageBackground(),
 		video: new WebyVideoBackground()
 	};
+
+	if(typeof settings != "undefined"){
+		for(var i in _backgrounds){
+			_backgrounds[i].populate(settings[i]);
+		}
+	}
+
+	this.save = function(){
+		var data = {};
+		for(var i in _backgrounds){
+			data[i] = _backgrounds[i].save();
+		}
+		return data;
+	}
 	
 	this.setImage = function(image){
 		_backgrounds.image.setImage(image);
-		if(_backgrounds.image.getMode() != 'no-repeat'){
+		if(_backgrounds.image.getMode() != 'aligned'){
 			_backgrounds.pattern.setPattern(null);
 		}
+		_backgrounds.video.setVideo(null);
 		return this;
 	}
 
 	this.setImageMode = function(mode){
-		if(mode != 'no-repeat'){
+		if(mode != 'aligned'){
 			_backgrounds.pattern.setPattern(null);
 		}
 		_backgrounds.image.setMode(mode);
@@ -36,7 +51,7 @@ function WebyBackground() {
 	this.setColor = function(color){
 		_backgrounds.color.setColor(color);
 		_backgrounds.pattern.setPattern(null);
-		_backgrounds.image.setImage(null);
+		_backgrounds.video.setVideo(null);
 		return this;
 	}
 
@@ -47,6 +62,7 @@ function WebyBackground() {
 	this.setPattern = function(pattern){
 		_backgrounds.pattern.setPattern(pattern);
 		_backgrounds.color.setColor(null);
+		_backgrounds.video.setVideo(null);
 		return this;
 	}
 

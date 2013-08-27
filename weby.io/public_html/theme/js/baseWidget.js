@@ -915,7 +915,7 @@ BaseWidget.prototype = {
 		var draggableOptions = {};
 		var rotatableOptions = {};
 		var resizableOptions = {};
-		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")) + 18, parseInt(App.getContent().css("top")) + 18];
+		this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
 		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
 		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);
@@ -945,7 +945,7 @@ BaseWidget.prototype = {
 				mouseup: function () {
 					setTimeout(function () {
 						$this._html.draggable("destroy");
-						$this._html.data('widget', $this).draggable(rotatableOptions);
+						$this._html.data('widget', $this).draggable(draggableOptions);
 					}, 50);
 				},
 				dblclick: function () {

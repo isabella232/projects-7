@@ -34,7 +34,7 @@ function WebyToolbar() {
 			left: $this.offset().left + 'px'
 		};
 
-		if(settings.css('display') == 'none'){
+		if (settings.css('display') == 'none') {
 			settings.css(css).show();
 			_webyColorPicker.value(_webyColorPicker.value());
 		} else {
@@ -453,7 +453,7 @@ function WebyToolbar() {
 		}
 	});
 
-	var _applyBackgroundMode = function(mode){
+	var _applyBackgroundMode = function (mode) {
 		App.getWeby().getBackground().setImageMode(mode).render();
 		App.getWeby().getBackground().widgetDrag();
 	};
@@ -463,7 +463,7 @@ function WebyToolbar() {
 	 */
 
 	$('#weby-toolbar-wrapper .widget').click(function () {
-		if(_activeWidget == null){
+		if (_activeWidget == null) {
 			return;
 		}
 
@@ -473,7 +473,7 @@ function WebyToolbar() {
 			left: $this.offset().left + 'px'
 		};
 		_widgetSettings.css(css);
-		if(_widgetSettings.css('display') == 'none'){
+		if (_widgetSettings.css('display') == 'none') {
 			_widgetSettings.show();
 			_activeWidget.hideTools();
 			_colorPicker.value(_colorPicker.value());
@@ -487,7 +487,7 @@ function WebyToolbar() {
 		value: "#ffffff",
 		opacity: true,
 		preview: true,
-		change: function(e){
+		change: function (e) {
 			_activeWidget.setColor(e.value);
 		}
 	}).data("kendoFlatColorPicker");
@@ -496,7 +496,7 @@ function WebyToolbar() {
 		min: 0,
 		max: 100,
 		showButtons: false,
-		slide: function(e){
+		slide: function (e) {
 			_activeWidget.setOpacity(e.value / 100);
 		}
 	}).data("kendoSlider");
@@ -505,7 +505,7 @@ function WebyToolbar() {
 		min: 0,
 		max: 20,
 		showButtons: false,
-		slide: function(e){
+		slide: function (e) {
 			_activeWidget.setRadius(e.value);
 		}
 	}).data("kendoSlider");
@@ -514,7 +514,7 @@ function WebyToolbar() {
 		min: 0,
 		max: 50,
 		showButtons: false,
-		slide: function(e){
+		slide: function (e) {
 			_activeWidget.setPadding(e.value);
 		}
 	}).data("kendoSlider");
@@ -523,7 +523,7 @@ function WebyToolbar() {
 		min: 0,
 		max: 50,
 		showButtons: false,
-		slide: function(e){
+		slide: function (e) {
 			_activeWidget.setShadowDistance(e.value);
 		}
 	}).data("kendoSlider");
@@ -532,7 +532,7 @@ function WebyToolbar() {
 		min: 0,
 		max: 50,
 		showButtons: false,
-		slide: function(e){
+		slide: function (e) {
 			_activeWidget.setShadowSpread(e.value);
 		}
 	}).data("kendoSlider");
@@ -562,24 +562,88 @@ function WebyToolbar() {
 	/**
 	 * IMAGE MODES
 	 */
-	$('#background-settings-no-repeat').click(function(){
-		_applyBackgroundMode('no-repeat');
+	$('#background-settings-limit').click(function () {
+		_applyBackgroundMode('limit');
 	});
 
-	$('#background-settings-repeat').click(function(){
+	$('#background-settings-aligned').click(function () {
+		_applyBackgroundMode('aligned');
+	});
+
+	$('#background-settings-repeat').click(function () {
 		_applyBackgroundMode('repeat');
 	});
 
-	$('#background-settings-scale').click(function(){
+	$('#background-settings-scale').click(function () {
 		_applyBackgroundMode('scale');
 	});
 
-	$('#background-settings-fixed').click(function(){
+	$('#background-settings-fixed').click(function () {
 		_applyBackgroundMode('fixed');
 	});
 
-	$('#background-settings table button').click(function(){
+	$('#background-settings table button').click(function () {
 		App.getWeby().getBackground().setImageAlign($(this).attr("data-align")).render();
+	});
+
+	/**
+	 * CANVAS SIZE
+	 */
+
+	$('#background-size-apply').click(function () {
+		var width = $('#canvas-width').val();
+		var height = $('#canvas-height').val();
+
+		if (width == '' || height == '') {
+			$('#canvas-width').val('');
+			$('#canvas-height').val('');
+
+			App.resizeContentHeight();
+			App.resizeContentWidth();
+
+			App.getWeby().setContainment([120, 60]);
+
+			return;
+		}
+
+		if (width <= App.getContent().width()) {
+			App.getContent().width(width).css('overflow-x', 'hidden');
+		} else {
+			App.resizeContentWidth();
+		}
+
+		if (height <= App.getContent().height()) {
+			App.getContent().height(height).css('overflow-y', 'hidden');
+		} else {
+			App.resizeContentHeight();
+		}
+
+		App.getWeby().getBackground().setImageSize(width, height).render();
+
+
+		var containment = [
+			parseInt(App.getContent().css("left")),
+			parseInt(App.getContent().css("top")),
+			width,
+			height
+		];
+		App.getWeby().setContainment(containment);
+
+		// Trigger viewportResize to recalculate all background related elements
+		App.getWeby().getBackground().viewportResize();
+
+		$('#size-limit').remove();
+		var div = $('<div id="size-limit"></div>');
+		div.css({
+			position: 'absolute',
+			left: (width - 18) + 'px',
+			top: (height - 18) + 'px',
+			'background-color': 'transparent',
+			width: '1px',
+			height: '1px'
+		});
+
+		App.getContent().append(div);
 	});
 
 
@@ -587,16 +651,16 @@ function WebyToolbar() {
 	 * EVENTS
 	 */
 
-	this.widgetClick = function(){
+	this.widgetClick = function () {
 		_widgetSettings.hide();
 		_activeWidget.showTools();
 	}
 
-	this.widgetDrag = function(data){
+	this.widgetDrag = function (data) {
 		App.getWeby().getBackground().widgetDrag(data);
 	}
 
-	this.webyLoaded = function(){
+	this.webyLoaded = function () {
 		// Do something when Weby is loaded
 	}
 
@@ -607,7 +671,7 @@ function WebyToolbar() {
 		var settings = _activeWidget.getFrameSettings();
 		_colorPicker.value(settings.color);
 		_radiusSlider.value(settings.radius);
-		_opacitySlider.value(parseFloat(settings.opacity)*100);
+		_opacitySlider.value(parseFloat(settings.opacity) * 100);
 		_widthSlider.value(settings.padding);
 		_shadowDistanceSlider.value(parseInt(settings.shadowY));
 		_shadowSpreadSlider.value(parseInt(settings.shadowSpread));
