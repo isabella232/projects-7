@@ -1,6 +1,15 @@
 routes:
     - ['', \App\Handlers\PagesHandler, index]
     - ['about', \App\Handlers\PagesHandler, about]
+
+    - ['statistics', \App\Handlers\StatisticsHandler, index]
+    - ['statistics/ajax_get_week_stats', \App\Handlers\StatisticsHandler, ajax_get_week_stats]
+    - ['statistics/ajax_get_month_stats', \App\Handlers\StatisticsHandler, ajax_get_month_stats]
+    - ['statistics/ajax_get_year_stats', \App\Handlers\StatisticsHandler, ajax_get_year_stats]
+    - ['statistics/ajax_get_stats', \App\Handlers\StatisticsHandler, ajax_get_stats]
+    - ['statistics/ajax_get_widget_usage_stats', \App\Handlers\StatisticsHandler, ajax_get_widget_usage_stats]
+    - ['statistics/ajax_get_top_user_stats', \App\Handlers\StatisticsHandler, ajax_get_top_user_stats]
+
     - ['security/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
     - ['editor/save', \App\Handlers\EditorHandler, save]
     - ['editor/create', \App\Handlers\EditorHandler, create]
