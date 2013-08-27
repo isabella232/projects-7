@@ -28,7 +28,7 @@
         $(function () {
             App = new AppClass();
             App.init();
-            $('#initScript').remove();
+            /*$('#initScript').remove();*/
         });
     </script>
 {/block}

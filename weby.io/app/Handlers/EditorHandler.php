@@ -96,14 +96,6 @@ class EditorHandler extends AbstractHandler
 
 		$data = ['url' => $webyFile->getUrl()];
 
-		// Get file size
-		try {
-			$imageSize = getimagesize($webyFile->getAbsolutePath());
-			$data['width'] = $imageSize[0];
-			$data['height'] = $imageSize[1];
-		} catch (\Exception $e) {
-			//
-		}
 		die(json_encode($data));
 	}
 
