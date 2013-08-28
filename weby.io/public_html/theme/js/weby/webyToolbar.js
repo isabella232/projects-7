@@ -601,8 +601,15 @@ function WebyToolbar() {
 		_canvasSizeChange();
 	});
 
+	var _previousWidth = 0;
+	var _previousHeight = 0;
+	var _lastWidth = 0;
+	var _lastHeight = 0;
 
 	var _canvasSizeChange = function(e){
+		if(_canvasWidth.value() == _lastWidth && _canvasHeight.value() == _lastHeight){
+			return;
+		}
 		if(_canvasWidth.value() == null){
 			_canvasWidth.value(600);
 		}
@@ -610,6 +617,11 @@ function WebyToolbar() {
 			_canvasHeight.value(600);
 		}
 		App.getWeby().getBackground().applyCanvasSize(_canvasWidth.value(), _canvasHeight.value());
+
+		_previousWidth = _lastWidth;
+		_lastWidth = _canvasWidth.value();
+		_previousHeight = _lastHeight;
+		_lastHeight = _canvasHeight.value();
 	}
 
 	_canvasWidth = $("#canvas-width").kendoNumericTextBox({
@@ -631,10 +643,15 @@ function WebyToolbar() {
 	}).data("kendoNumericTextBox");
 
 	this.setCanvasSize = function(width, height){
+		_previousWidth = _lastWidth = width;
+		_previousHeight = _lastHeight = height;
 		_canvasWidth.value(width);
 		_canvasHeight.value(height);
 	}
 
+	this.restorePreviousCanvasSize = function(){
+		this.setCanvasSize(_previousWidth, _previousHeight);
+	}
 
 	/**
 	 * EVENTS

@@ -99,17 +99,18 @@ function WebyBackground(settings) {
 	 * @param width
 	 * @param height
 	 */
-	var _getWidgetsBeyondCanvas = function(width, height){
+	var _getWidgetsBeyondCanvas = function (width, height) {
 		var widgets = App.getWeby().getWidgets();
 		var outerWidgets = [];
-		for(var i in widgets){
+		for (var i in widgets) {
 			var widget = widgets[i];
-			if(widget.html().outerWidth(true) + parseInt(widget._left) > width || widget.html().outerHeight(true) + parseInt(widget._top) > height){
+			var rect = widget.html()[0].getBoundingClientRect();
+			if (rect.width + rect.left > width + App.getContentWrapper()[0].scrollLeft || rect.height + rect.top - 94 + App.getContentWrapper()[0].scrollTop > height) {
 				outerWidgets.push(widget);
 			}
 		}
 
-		if(outerWidgets.length == 0){
+		if (outerWidgets.length == 0) {
 			return false;
 		}
 		return outerWidgets;
@@ -124,7 +125,7 @@ function WebyBackground(settings) {
 	this.applyCanvasSize = function (width, height) {
 		var $this = this;
 
-		function _applyCanvasSize(width, height){
+		function _applyCanvasSize(width, height) {
 			$this.setContentSize(width, height).setContainment(width, height).setBackgroundSize(width, height);
 
 			// Size limiter
@@ -142,19 +143,18 @@ function WebyBackground(settings) {
 		}
 
 		var outerWidgets = _getWidgetsBeyondCanvas(width, height);
-		console.log(width+':'+height)
-		console.log(outerWidgets)
-		if(outerWidgets){
-			$('#button-move-widgets').unbind('click').click(function(){
-				for(var i in outerWidgets){
+		if (outerWidgets) {
+			$('#button-move-widgets').unbind('click').click(function () {
+				for (var i in outerWidgets) {
 					var pos = Math.floor(Math.random() * (50 - 20 + 1) + 20);
 					outerWidgets[i].setPosition(pos + App.getContentWrapper()[0].scrollLeft, pos + App.getContentWrapper()[0].scrollTop);
 				}
 				$.fancybox.close();
 				_applyCanvasSize(width, height);
 			});
-			$('#button-dont-move-widgets').unbind('click').click(function(){
+			$('#button-dont-move-widgets').unbind('click').click(function () {
 				$.fancybox.close();
+				App.getWeby().getToolbar().restorePreviousCanvasSize();
 				return;
 			});
 			$.fancybox($('#outer-widgets'), {modal: true});

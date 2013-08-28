@@ -963,9 +963,10 @@ BaseWidget.prototype = {
 					$this._html.data('widget', $this).data('draggable-options', options).draggable(rotatableOptions);
 				},
 				mouseup: function () {
+					var options = $this._html.draggable().data('draggable-options');
 					setTimeout(function () {
 						$this._html.draggable("destroy");
-						$this._html.draggable(draggableOptions).data('widget', $this);
+						$this._html.draggable(options).data('widget', $this);
 					}, 50);
 				},
 				dblclick: function () {
