@@ -53,9 +53,9 @@ function Weby() {
 			})
 
 			// Create periodic save action
-			setInterval(function () {
+			/*setInterval(function () {
 				App.getWeby().save();
-			}, _saveInterval);
+			}, _saveInterval);*/
 
 			// Catch window close event
 			$(window).bind('beforeunload', function () {
@@ -111,6 +111,10 @@ function Weby() {
 
 	this.getBackground = function(){
 		return _background;
+	}
+
+	this.getToolbar = function(){
+		return _webyToolbar;
 	}
 
 	this.getBackgroundColor = function () {
@@ -247,6 +251,15 @@ function Weby() {
 	this.contentClick = function (e) {
 		_settings.hide();
 	};
+
+
+	this.widgetActivated = function(widget){
+		_webyToolbar.widgetActivated(widget);
+	}
+
+	this.widgetDeactivated = function(widget){
+		_webyToolbar.widgetDeactivated(widget);
+	}
 
 	this.widgetCreated = function (widget) {
 		var type = widget.constructor.name.replace('Widget', '').toLowerCase();

@@ -60,7 +60,7 @@ function FacebookWidget() {
     }
 
 	this.onIframeLoaded = function (width, height) {
-		$('#facebook-iframe-' + this._id).attr({width: width.replace('px', ''), height: height.replace('px', '')});
+		$('#facebook-iframe-' + this._id).attr({width: width, height: height});
 		this.body('.loading, .message, input').remove();
 		this.html().css({
 			width: width+'px',

@@ -60,41 +60,6 @@ var AppToolbar = function () {
 			}
 
 		});
-
-		/**
-		 * Toolbar collapsing
-		 * - Animates the toolbar
-		 * - Recalculates main content position and width
-		 */
-		_toolbarWrapper.find("> a").click(function () {
-			// Need to store current toolbar width for later calculations
-			var currentToolbarWidth = _toolbarWrapper.outerWidth();
-			/**
-			 * MAXIMIZE TOOLBAR
-			 */
-			if (_toolbarWrapper.hasClass("collapsed")) {
-				_toolbarWrapper.switchClass("collapsed", "", 300, function () {
-					$(this).find("> a").css("text-indent", 0);
-					var widthDiff = currentToolbarWidth - _toolbarWrapper.outerWidth();
-					App.getContent()
-						.css('left', _toolbarWrapper.outerWidth())
-						.css('width', App.getContent().width() + widthDiff+'px');
-					App.fireEvent("toolbar.maximized", _toolbarWrapper);
-				});
-			} else {
-				/**
-				 * MINIMIZED TOOLBAR
-				 */
-				$(this).css("text-indent", "-9999px");
-				_toolbarWrapper.switchClass("", "collapsed", 300, function () {
-					var widthDiff = _toolbarWrapper.outerWidth() - currentToolbarWidth;
-					App.getContent()
-						.css('left', _toolbarWrapper.outerWidth())
-						.css('width', App.getContent().width() - widthDiff+'px');
-					App.fireEvent("toolbar.minimized", _toolbarWrapper);
-				});
-			}
-		});
 	}
 
 	/**

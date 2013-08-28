@@ -1,17 +1,17 @@
 var AppClass = function () {
 	var _content = $('#content');
+	var _contentWrapper = $('#wrapper');
 	var _contentBackground = $('#content-background');
 	var _header = $('#header');
 	var _appToolbar;
 	var _weby = false;
-	var _webyToolbar = false;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _viewportHeight;
 	var _viewportWidth;
 	var _activeWidget = null
 	// Manual height offset for tweaking purposes
-	var _heightOffset = 1;
+	var _heightOffset = 94;
 	// Manual width offset for tweaking purposes
 	var _widthOffset = 7;
 
@@ -193,18 +193,10 @@ var AppClass = function () {
 		$(window).resize(function () {
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
-			if(_weby && _weby.getBackground().getCanvasType() == 'auto'){
-				_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-				_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
-				_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-				_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
-			} else if(!_weby){
-				_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-				_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
-				_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-				_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
-			}
-			_toolbarWrapper.height(_viewportHeight - _header.height());
+			_contentWrapper.width(_viewportWidth - _widthOffset);
+			_contentWrapper.height(_viewportHeight - _heightOffset);
+			_contentBackground.width(_viewportWidth - _widthOffset);
+			_contentBackground.height(_viewportHeight - _heightOffset);
 			App.fireEvent("viewport.resize");
 		}).resize();
 
@@ -223,19 +215,6 @@ var AppClass = function () {
 			$(this).remove();
 		});
 	}
-
-	this.resizeContentWidth = function(){
-		_content.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-		_contentBackground.width(_viewportWidth - _toolbarWrapper.width() - _widthOffset);
-		return this;
-	}
-
-	this.resizeContentHeight = function(){
-		_content.height(_viewportHeight - _header.height() - _heightOffset - 35);
-		_contentBackground.height(_viewportHeight - _header.height() - _heightOffset - 35);
-		return this;
-	}
-
 
 	/**
 	 * Get current Weby
@@ -274,9 +253,16 @@ var AppClass = function () {
 	}
 
 	/**
+	 * Get jQuery content wrapper element
+	 */
+	this.getContentWrapper = function () {
+		return _contentWrapper;
+	}
+
+	/**
 	 * Get jQuery content background element
 	 */
-	this.getContentBackground = function(){
+	this.getContentBackground = function () {
 		return _contentBackground;
 	}
 
@@ -326,11 +312,6 @@ var AppClass = function () {
 		// Propagate event to Weby
 		if (_weby && event in _weby) {
 			_weby[event](data);
-		}
-
-		// Propagate event to WebyToolbar
-		if (_webyToolbar && event in _webyToolbar) {
-			_webyToolbar[event](data);
 		}
 
 		// Propagate event to active widget
@@ -482,7 +463,7 @@ var AppClass = function () {
 		textWidget.setData(data);
 	}
 
-	this.toolbarMinimized = this.toolbarMaximized = function(toolbarWrapper){
+	this.toolbarMinimized = this.toolbarMaximized = function (toolbarWrapper) {
 		App.getContentBackground().css({
 			width: App.getContent().width(),
 			left: App.getContent().css('left')

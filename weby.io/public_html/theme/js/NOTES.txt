@@ -6,3 +6,9 @@ var o = this.options, iniPos = {top:this.element[0].offsetTop,left:this.element[
 
 Line 2000:
 Weby.io hack for scrollable div containment
+
+Line 3269:
+Added support for containment in form of an array [left, top, right, bottom]
+
+Line 3309:
+Added calculation for containment in form of an array

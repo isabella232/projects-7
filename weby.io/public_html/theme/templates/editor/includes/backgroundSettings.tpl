@@ -71,14 +71,15 @@
         </table>
     </div>
     <div id="tab-youtube" class="tab">
-        <input type="text" id="background-settings-youtube" value="http://www.youtube.com/watch?v=Zs4cjyYR6c0"
+        <input type="text" id="background-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
                placeholder="Paste a Youtube video for the background and press Enter"/>
     </div>
     <div id="tab-size" class="tab">
         <span>Canvas width and height in pixels (Leave blank for auto-size):</span><br />
         <input type="text" id="canvas-width" placeholder="Width" value="800"/><br />
         <input type="text" id="canvas-height" placeholder="Height" value="750"/>
-        <a id="background-size-apply" href="javascript:void(0)" class="button">Apply</a>
+        <br />
+        <a id="background-size-auto" href="javascript:void(0)" class="button">Fill my screen</a>
     </div>
     {*<span style="float:right">
         <a id="background-settings-apply" href="javascript:void(0)" class="button">Apply</a>

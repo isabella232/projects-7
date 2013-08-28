@@ -9,6 +9,8 @@ function WebyToolbar() {
 	var _radiusSlider;
 	var _shadowDistanceSlider;
 	var _shadowSpreadSlider;
+	var _canvasWidth;
+	var _canvasHeight;
 
 	$('.send-backward').click(function () {
 		_activeWidget.sendBackward();
@@ -590,11 +592,48 @@ function WebyToolbar() {
 	 * CANVAS SIZE
 	 */
 
-	$('#background-size-apply').click(function(){
-		var width = parseInt($('#canvas-width').val());
-		var height = parseInt($('#canvas-height').val());
-		App.getWeby().getBackground().applyCanvasSize(width, height);
+	var $this = this;
+	$('#background-size-auto').click(function () {
+		$this.setCanvasSize(
+			App.getViewportWidth() - App.getWeby().getScrollBarOffset(),
+			App.getViewportHeight() - 94 - App.getWeby().getScrollBarOffset()
+		);
+		_canvasSizeChange();
 	});
+
+
+	var _canvasSizeChange = function(e){
+		if(_canvasWidth.value() == null){
+			_canvasWidth.value(600);
+		}
+		if(_canvasHeight.value() == null){
+			_canvasHeight.value(600);
+		}
+		App.getWeby().getBackground().applyCanvasSize(_canvasWidth.value(), _canvasHeight.value());
+	}
+
+	_canvasWidth = $("#canvas-width").kendoNumericTextBox({
+		min: 600,
+		step: 1,
+		decimals: 0,
+		format: "n0",
+		change: _canvasSizeChange,
+		spin: _canvasSizeChange
+	}).data("kendoNumericTextBox");
+
+	_canvasHeight = $("#canvas-height").kendoNumericTextBox({
+		min: 600,
+		step: 1,
+		decimals: 0,
+		format: "n0",
+		change: _canvasSizeChange,
+		spin: _canvasSizeChange
+	}).data("kendoNumericTextBox");
+
+	this.setCanvasSize = function(width, height){
+		_canvasWidth.value(width);
+		_canvasHeight.value(height);
+	}
 
 
 	/**

@@ -104,7 +104,7 @@ var BaseWidget = function () {
 	/**
 	 * Frame color
 	 */
-	this._color = '#ffffff';
+	this._color = 'ffffff';
 
 	/**
 	 * Widget shadow X distance
@@ -746,9 +746,10 @@ BaseWidget.prototype = {
 	 */
 	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
-		this._baseDraggableOptions["containment"] = containment;
-		this._html.resizable("option", "containment", containment);
-		this._baseResizableOptions["containment"] = containment;
+		if(this._isResizable){
+			this._html.resizable("option", "containment", containment);
+		}
+		BaseWidget.CONTAINMENT = containment;
 		return this;
 	},
 
@@ -879,6 +880,8 @@ BaseWidget.prototype = {
 	widgetResizeStop: function (data) {
 		this._width = parseInt(data.element.width());
 		this._height = parseInt(data.element.height());
+		this._html.css("height", this._height+'px');
+		this._html.css("width", this._width+'px');
 	},
 
 	widgetResize: function (data) {
@@ -916,16 +919,19 @@ BaseWidget.prototype = {
 		var draggableOptions = {};
 		var rotatableOptions = {};
 		var resizableOptions = {};
-		if(typeof this._baseDraggableOptions["containment"] == "undefined"){
-			this._baseDraggableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
+
+		if(!BaseWidget.CONTAINMENT){
+			BaseWidget.CONTAINMENT = [0, 0]
 		}
-		if(typeof this._baseResizableOptions["containment"] == "undefined"){
-			this._baseResizableOptions["containment"] = [parseInt(App.getContent().css("left")), parseInt(App.getContent().css("top"))];
-		}
+
+		this._draggableOptions["containment"] = BaseWidget.CONTAINMENT;
+		this._rotatableOptions["containment"] = BaseWidget.CONTAINMENT;
+		this._resizableOptions["containment"] = BaseWidget.CONTAINMENT;
+
 		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
 		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);
-
+		
 		if (this._isDraggable) {
 			this._html.data('widget', this).draggable(draggableOptions);
 		}
@@ -1063,3 +1069,4 @@ BaseWidget.prototype = {
  * URL of the Node.js service for content validation
  */
 BaseWidget.CONTENT_VALIDATOR = '';
+BaseWidget.CONTAINMENT = false;

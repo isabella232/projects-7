@@ -13,7 +13,7 @@
                                 setTimeout(function(){
                                     var widget = window.top['App'].getWeby().getWidget({$parentId});
                                     if (widget) {
-                                        widget.onIframeLoaded(el.css("width"), el.css("height"));
+                                        widget.onIframeLoaded(parseInt(el.css("width")), parseInt(el.css("height")));
                                     }
                                 }, 1000);
                             }

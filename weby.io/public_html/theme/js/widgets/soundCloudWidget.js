@@ -1,7 +1,7 @@
 function SoundCloudWidget() {
 
 	this._trackId = '';
-	this._color = '';
+	this._trackColor = '';
 	this._widgetClass = 'soundcloud-widget';
 	this._parseErrorMessage = 'We couldn\'t insert the given URL. Please try a different one.';
 	this._inputElement = 'textarea';
@@ -28,8 +28,8 @@ function SoundCloudWidget() {
 	this.getTargetUrl = function (inputValue) {
 		var parser = new SoundCloudParser();
 		if ((this._trackId = parser.parse(inputValue))) {
-			this._color = parser.getColor();
-			return 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F' + this._trackId + '&amp;color=' + this._color + '&amp;auto_play=false';
+			this._trackColor = parser.getColor();
+			return 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F' + this._trackId + '&amp;color=' + this._trackColor + '&amp;auto_play=false';
 		}
 		return false;
 	}
@@ -40,7 +40,7 @@ function SoundCloudWidget() {
 	this.getSaveData = function(){
 		return {
 			trackId: this._trackId,
-			color: this._color
+			trackColor: this._trackColor
 		}
 	};
 

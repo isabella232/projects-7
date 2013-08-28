@@ -22,7 +22,8 @@ function WebyPatternBackground() {
 			'background-image': 'url(' + THEME + 'images/patterns/' + _pattern + ')',
 			'background-color': 'transparent',
 			'background-repeat': 'repeat',
-			'background-size': ''
+			'background-size': '',
+			'background-attachment': 'local'
 		});
 	}
 

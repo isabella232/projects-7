@@ -73,11 +73,16 @@ body.unselectable * {
 	width: 450px;
 }
 
+#wrapper{
+	position:relative;
+	overflow:scroll;
+}
+
 #content {
 	position: absolute;
-	overflow: scroll;
-	top: 94px;
-	left: 120px;
+	top:0;
+	left:0;
+	overflow: hidden;
 	z-index: 0;
 	background-attachment: local;
 	cursor: hand;
@@ -90,7 +95,7 @@ body.unselectable * {
 	position: absolute;
 	overflow: hidden;
 	top: 94px;
-	left: 120px;
+	left: 0;
 	z-index: -1;
 }
 
@@ -109,12 +114,11 @@ body.unselectable * {
 }
 
 #content.hide-content .widget-body {
-	box-shadow: none;
 	display: none;
 }
 
 #content.hide-content .widget {
-	box-shadow: none;
+	box-shadow: none !important;
 }
 
 ::-webkit-scrollbar {

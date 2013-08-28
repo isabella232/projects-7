@@ -20,10 +20,10 @@
     <script type="text/javascript" id="initScript">
         var showDashboard = {if isset($showDashboard)}true{else}false{/if};
         {if isset($contentValidator)}
-            BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
+        BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         {/if}
         {if $weby}
-            var weby = {$weby->toJson()};
+        var weby = {$weby->toJson()};
         {/if}
         $(function () {
             App = new AppClass();
@@ -33,8 +33,8 @@
     </script>
 {/block}
 {block name="content"}
-    <div id="toolbar-wrapper">
-        <a class="collapse" href="javascript:void(0);">Click to collapse</a>
+    <div id="toolbar-wrapper" class="collapsed">
+        {*<a class="collapse" href="javascript:void(0);">Click to collapse</a>*}
     </div>
     <div id="weby-toolbar-wrapper">
         <a href="javascript:void(0)" class="disabled tool-icon bring-to-front">To Front</a>
@@ -48,8 +48,10 @@
     <div id="content-background">
         <div id="player"></div>
     </div>
-    <div id="content"></div>
-    <div class="clearfix"></div>
+    <div id="wrapper">
+        <div id="content"></div>
+        <div class="clearfix"></div>
+    </div>
     {include file="templates/editor/includes/templates.tpl"}
 {/block}
 

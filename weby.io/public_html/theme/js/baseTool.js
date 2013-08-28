@@ -152,7 +152,7 @@ BaseTool.prototype = {
 
 		var x = randomBetween(100, 700);
 		var y = randomBetween(100, 300);
-		var widget = this.createWidgetAt(x + App.getContent()[0].scrollLeft, y + App.getContent()[0].scrollTop);
+		var widget = this.createWidgetAt(x + App.getContentWrapper()[0].scrollLeft, y + App.getContentWrapper()[0].scrollTop);
 		widget.setData(this._parserObject.getData());
 	},
 
@@ -175,7 +175,9 @@ BaseTool.prototype = {
 		return widget;
 	},
 
-	// EVENTS
+	/**
+	 * EVENTS
+	 */
 
 	/**
 	 * Event: document.mouse.move
@@ -190,6 +192,9 @@ BaseTool.prototype = {
 	 * @param e Mouse event
 	 */
 	contentClick: function (e) {
+		if(e.offsetX > App.getContent().width() || e.offsetY > App.getContent().height()){
+			return;
+		}
 		this.createWidgetAt(e.offsetX, e.offsetY);
 	}
 };
