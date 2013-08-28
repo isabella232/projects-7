@@ -2,8 +2,10 @@
 {if $weby}
     <div class="social-icons-wrapper">
 
-        <a href="javascript: void(0);" id="add-to-favs"><span data-fav-id="{$favorite.id}"
+        {if isset($favorite)}
+            <a href="javascript: void(0);" id="add-to-favs"><span data-fav-id="{$favorite.id}"
                   class="share-icon social-favorites{if $favorite.id > 0}-added{/if}"></span></a>
+        {/if}
         {literal}
         <script type="text/javascript">
             $(function () {
