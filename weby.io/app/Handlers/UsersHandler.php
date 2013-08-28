@@ -43,20 +43,14 @@ class UsersHandler extends AbstractHandler
             $stats = Stats::getInstance();
             $stats->updateRegisteredUsersCount();
 
-            // Create new Weby for our new user and redirect him to it
-            $weby = new WebyEntity();
-            $weby->setUser($this->user())->save();
-
-            $this->request()->redirect($weby->getEditorUrl());
-
         } else {
             // If user exists, then update it's data in Weby database,
             // Saving, so we can sync the data with our database data
             $user->populate($serviceData)->save();
-
-            // Redirect to editor
-            $this->request()->redirect($this->user()->getProfileUrl());
         }
+
+        // Redirect to editor
+        $this->request()->redirect($this->user()->getProfileUrl());
     }
 
     /**

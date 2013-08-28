@@ -47,23 +47,15 @@
     <div id="stat_wrapper">
         <div id="stat_menu">
             <ul>
-                <li>
-                    <a data-stat="registered_users" class="stat_menu_ajax_item" href="javascript:void(0);">Registered users</a>
-                </li>
-                <li>
-                    <a data-stat="top_user" class="stat_menu_ajax_item" href="javascript:void(0);">Top users</a>
-                </li>
-                <li>
-                    <a data-stat="created_webies" class="stat_menu_ajax_item" href="javascript:void(0);">Created Webies</a>
-                </li>
-                <li>
-                    <a data-stat="top_webies" class="stat_menu_ajax_item" href="javascript:void(0);">Top Webies ----</a>
-                </li>
+                <li><a data-stat="registered_users" class="stat_menu_ajax_item" href="javascript:void(0);">Registered users</a></li>
+                <li><a data-stat="created_webies" class="stat_menu_ajax_item" href="javascript:void(0);">Created Webies</a></li>
+                <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_general">Created Widgets</a></li>
+                <li><a data-stat="top_user" class="stat_menu_ajax_item" href="javascript:void(0);">Top 100 users</a></li>
+                <li><a data-stat="top_webies" class="stat_menu_ajax_item" href="javascript:void(0);">Top 100 Webies</a></li>
+                <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_usage">Top widgets</a></li>
                 <li>
                     <a class="child-menu-toggler" href="javascript:void(0);"> <span class="uncollapse-btn"></span>Widgets</a>
                     <ul class="child-menu">
-                        <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_general">General</a></li>
-                        <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_usage">Widgets by usage</a></li>
                         <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_text">Text</a></li>
                         <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_link">Link</a></li>
                         <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_video">Video</a></li>

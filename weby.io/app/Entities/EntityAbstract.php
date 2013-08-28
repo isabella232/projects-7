@@ -30,6 +30,11 @@ abstract class EntityAbstract implements \ArrayAccess
         }
         $this->_id = $id;
         $data = $this->_sqlLoad();
+
+        if (!$data->count()) {
+            $this->_id = false;
+            return $this;
+        }
         $this->_populateFromDb($data);
         $this->_onAfterLoad();
         return $this;

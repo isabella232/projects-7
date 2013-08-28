@@ -2,20 +2,24 @@
     <thead>
     <tr>
         <th column="place" class="header">#</th>
-        <th column="product" class="header">Username (email)</th>
-        <th column="product" class="header">Full name</th>
-        <th column="quantity_sold" class="header">Joined on</th>
-        <th column="quantity_sold" class="header">Number of Webies</th>
+        <th column="product" class="header">Title</th>
+        <th column="product" class="header">ID</th>
+        <th column="product" class="header">User</th>
+        <th column="quantity_sold" class="header">Created on</th>
+        <th column="quantity_sold" class="header">Hits</th>
+        <th column="quantity_sold" class="header">View</th>
     </tr>
     </thead>
     <tbody>
-    {foreach from=$users key=key item=val}
+    {foreach from=$webies key=key item=val}
         <tr>
             <td>{$key+1}</td>
-            <td>{$val.username}<br/>{$val.email}</td>
-            <td>{$val.first_name} {$val.last_name}</td>
+            <td>{$val.title}<br/></td>
+            <td>{$val.id}<br/></td>
+            <td>{$val.username}</td>
             <td>{$val.created_on}</td>
             <td>{$val.value}</td>
+            <td><a target="_blank" href="{$webPath}{$val.username}/{$val.slug}/{$val.id}">View</a></td>
         </tr>
     {/foreach}
     </tbody>
@@ -41,9 +45,9 @@
 
         {/literal}
         var chartData = [
-            ['', 'Webies count'],
-            {foreach from=$users key=key item=val}
-            ['{$val.email}', {$val.value}],
+            ['', 'Hits count'],
+            {foreach from=$webies key=key item=val}
+            ['{$val.title}', {$val.value}],
             {/foreach}
         ];
         {literal}
@@ -51,7 +55,7 @@
         data = google.visualization.arrayToDataTable(chartData);
 
         var options = {
-            title: {/literal}'Usage'{literal},
+            title: {/literal}'Hits'{literal},
             height: 400,
             width: 800,
             legend: {position: 'none'},

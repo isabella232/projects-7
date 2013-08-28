@@ -66,5 +66,4 @@ abstract class UserEntityStorage extends EntityAbstract
         $bind = array($this->_email);
         return $this->_getDb()->execute($query, $bind)->fetchArray();
     }
-
 }

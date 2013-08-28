@@ -15,11 +15,7 @@ class StatisticsHandler extends AbstractHandler
     /**
      * Shows main page
      */
-    public function index()
-    {
-        $s = Stats::getInstance();
-        $s->updateRegisteredUsersCount();
-    }
+    public function index() {}
 
     /**
      * Routes stats request to specific method
@@ -138,6 +134,37 @@ class StatisticsHandler extends AbstractHandler
 
     }
 
+    public function ajax_get_top_webies_stats()
+    {
+        $period = $this->request()->query('period');
+        $wStats = Stats::getInstance();
+        $view = View::getInstance();
+
+        $statistics['title'] = 'Widgets by usage';
+
+        switch ($period) {
+            case 'today':
+                $statistics['webies'] = $wStats->getCurrentDayTopWebies();
+                break;
+            case 'week':
+                $statistics['webies'] = $wStats->getCurrentWeekTopWebies();
+                break;
+            case 'month':
+                $statistics['webies'] = $wStats->getCurrentMonthTopWebies();
+                break;
+            case 'year':
+                $statistics['webies'] = $wStats->getCurrentYearTopWebies();
+                break;
+        }
+
+        $statistics['webPath'] = $this->app()->getConfig()->app->web_path;
+        if($statistics['webies']->count()) {
+            $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/top_webies.tpl', $statistics)]);
+        }
+        $this->ajaxResponse(true, '', [$view->fetch('templates/statistics/includes/no_data.tpl', $statistics)]);
+
+    }
+
     private function _get_widget_usage_stats()
     {
         $view = View::getInstance();
@@ -151,6 +178,14 @@ class StatisticsHandler extends AbstractHandler
         $view = View::getInstance();
         $data['title'] = 'Top users';
         $data['stat'] = 'top_user';
+        $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/period_selector.tpl', $data)]);
+    }
+
+    private function _get_top_webies_stats()
+    {
+        $view = View::getInstance();
+        $data['title'] = 'Top Webies';
+        $data['stat'] = 'top_webies';
         $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/period_selector.tpl', $data)]);
     }
 
@@ -264,7 +299,7 @@ class StatisticsHandler extends AbstractHandler
         $this->_getStandardDataView(StatsEvents::OAUTH_REG_BY_LINKEDIN, 'OAuth: Registered with Linked In');
     }
 
-    private function _getStandardDataView($event, $title, $amountUnit = '', $decimalsCount = 0)
+    private function _getStandardDataView($event, $title)
     {
         $view = View::getInstance();
 
@@ -273,9 +308,11 @@ class StatisticsHandler extends AbstractHandler
         $statistics['overallStats'] = $wStats->getOverallStatsForEvent($event);
         $statistics['title'] = $title;
         $statistics['event'] = $event;
-        $statistics['decimalsCount'] = $decimalsCount;
-        $statistics['amountUnit'] = $amountUnit != '' ? '(' . $amountUnit . ')' : '';
+        $statistics['dayOfWeek'] = date('N');
+        $statistics['dayOfMonth'] = date('j');
+        $statistics['monthOfYear'] = date('m');
 
         $this->ajaxResponse(false, '', $view->fetch('templates/statistics/includes/standard_data_presentation.tpl', $statistics));
     }
+
 }

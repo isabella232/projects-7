@@ -52,6 +52,12 @@
 .share-icon.social-google {
     background-image: url(../images/social/google-plus.png);
 }
+.share-icon.social-favorites {
+    background-image: url(../images/social/favorites.png);
+}
+.share-icon.social-favorites-added {
+    background-image: url(../images/social/favorites-added.png);
+}
 
 input#weby-title {
 	width: 500px;

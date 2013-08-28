@@ -93,5 +93,4 @@ abstract class WebyEntityProperties extends WebyEntityStorage
 		$this->_user = $user;
 		return $this;
 	}
-
 }
