@@ -51,7 +51,7 @@ class Stats
      */
     public function updateWidgetsCount($webyWidgetsCount)
     {
-        foreach($webyWidgetsCount as $widget => $count) {
+        foreach ($webyWidgetsCount as $widget => $count) {
             $widgetAdded = 'W_' . strtoupper($widget) . '_ADDED';
             $this->_updateStats(StatsEvents::$$widgetAdded, $count);
         }
@@ -66,11 +66,14 @@ class Stats
     }
 
     /**
-     * Upgrades statistics for total count of created Webies
+     * Upgrades statistics for Webies which includes:
+     * - total count of Webies created
+     * - total count of user's Webies
      */
-    public function updateWebiesCreated()
+    public function updateWebiesStats(UserEntity $user)
     {
-        $this->_updateStats(StatsEvents::WEBY_CREATED);
+        $this->_updateWebiesCreated();
+        $this->_updateUsersWebiesCount($user);
     }
 
     /**
@@ -81,17 +84,6 @@ class Stats
     public function updateWebyHits(WebyEntity $weby, $increment = 1)
     {
         $this->_sqlUpdateStatsForRef('hit_weby', $weby->getId(), $increment);
-    }
-
-    /**
-     * Updates user's count of Webies for current period
-     * @param \App\Entities\User\UserEntity $user
-     * @param int $increment
-     * @internal param \App\Entities\User\UserEntity|\App\Entities\Weby\WebyEntity $weby
-     */
-    public function updateUsersWebiesCount(UserEntity $user, $increment = 1)
-    {
-        $this->_sqlUpdateStatsForRef('creation_user_weby', $user->getId(), $increment);
     }
 
     /**
@@ -111,7 +103,6 @@ class Stats
             $event
         );
 
-        // todo: default 0
         return $stmt = $this->db()->execute($query, $bind)->fetchValue();
     }
 
@@ -172,6 +163,42 @@ class Stats
         }
 
         return $formatted;
+    }
+
+    /**
+     * Gets top users for current day
+     * @return Array
+     */
+    public function getCurrentDayTopWebies()
+    {
+        return $this->_sqlGetWebiesRefStats('hit_weby', 'd', $this->_currentDay);
+    }
+
+    /**
+     * Gets top users for current week
+     * @return Array
+     */
+    public function getCurrentWeekTopWebies()
+    {
+        return $this->_sqlGetWebiesRefStats('hit_weby', 'w', $this->_currentWeek);
+    }
+
+    /**
+     * Gets top users for current month
+     * @return Array
+     */
+    public function getCurrentMonthTopWebies()
+    {
+        return $this->_sqlGetWebiesRefStats('hit_weby', 'm', $this->_currentMonth);
+    }
+
+    /**
+     * Gets top users for current year
+     * @return Array
+     */
+    public function getCurrentYearTopWebies()
+    {
+        return $this->_sqlGetWebiesRefStats('hit_weby', 'y', $this->_currentYear);
     }
 
     /**
@@ -275,6 +302,25 @@ class Stats
     }
 
     /**
+     * Updates user's count of Webies for current period
+     * @param \App\Entities\User\UserEntity $user
+     * @param int $increment
+     * @internal param \App\Entities\User\UserEntity|\App\Entities\Weby\WebyEntity $weby
+     */
+    private function _updateUsersWebiesCount(UserEntity $user, $increment = 1)
+    {
+        $this->_sqlUpdateStatsForRef('creation_user_weby', $user->getId(), $increment);
+    }
+
+    /**
+     * Upgrades statistics for total count of created Webies
+     */
+    private function _updateWebiesCreated()
+    {
+        $this->_updateStats(StatsEvents::WEBY_CREATED);
+    }
+
+    /**
      * Updates stats for given event for increment amount
      * @param $event                    Numeric representation of event (use StatEvent constants)
      * @param int $incrementAmount      Default is 1, but any value can be specified
@@ -302,11 +348,36 @@ class Stats
      * @param $value
      * @return Array|bool|\StdClass
      */
+    private function _sqlGetWebiesRefStats($refType, $type, $value)
+    {
+        $query = "SELECT w.*, u.username, sr.value FROM {$this->db()->w_stat_period} sp
+                    LEFT JOIN {$this->db()->w_stat_by_ref} AS sr ON sr.period = sp.id
+                    LEFT JOIN {$this->db()->w_weby} AS w ON CAST(w.id AS text) = sr.ref_id
+                    LEFT JOIN {$this->db()->w_user} AS u ON u.id = w.user
+                    WHERE sp.year=? AND sp.type=? AND sp.value=? AND ref_type=?
+                    ORDER BY sr.value DESC LIMIT 100";
+
+        $bind = array(
+            $this->_currentYear,
+            $type,
+            $value,
+            $refType
+        );
+        return $this->db()->execute($query, $bind)->fetchAll();
+    }
+
+    /**
+     * SQL for getting stats for specific ref_type (eg. users_creation_of_weby), type (eg. m => month) and value (eg. 12)
+     * @param $refType
+     * @param $type
+     * @param $value
+     * @return Array|bool|\StdClass
+     */
     private function _sqlGetRefStats($refType, $type, $value)
     {
         $query = "SELECT u.email, u.first_name, u.last_name, u.created_on, u.username, sr.value FROM {$this->db()->w_stat_period} sp
                     LEFT JOIN {$this->db()->w_stat_by_ref} AS sr ON sr.period = sp.id
-                    LEFT JOIN {$this->db()->w_user} AS u ON u.id = sr.ref_id
+                    LEFT JOIN {$this->db()->w_user} AS u ON CAST(u.id AS text) = sr.ref_id
                     WHERE sp.year=? AND sp.type=? AND sp.value=? AND ref_type=?
                     ORDER BY sr.value DESC LIMIT 100";
 
@@ -361,7 +432,6 @@ class Stats
             $type,
             $value
         );
-        $var = $this->db()->interpolateQuery($query, $bind);
         return $this->db()->execute($query, $bind)->fetchAll();
     }
 

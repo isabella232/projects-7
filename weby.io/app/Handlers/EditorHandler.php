@@ -30,6 +30,11 @@ class EditorHandler extends AbstractHandler
 	public function create() {
 		$weby = new WebyEntity();
 		$weby->setUser($this->user())->save();
+
+        // Update stats
+        $stats = Stats::getInstance();
+        $stats->updateWebiesStats($this->user());
+
 		$this->request()->redirect($weby->getEditorUrl());
 	}
 
@@ -46,10 +51,6 @@ class EditorHandler extends AbstractHandler
 
 		$weby->populate($this->request()->post());
 		$weby->setUser($this->user())->save();
-
-		// Update Webies stats
-		$stats = Stats::getInstance();
-		//$stats->updateWebiesStats($weby);
 
 		$this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
 	}
@@ -118,4 +119,3 @@ class EditorHandler extends AbstractHandler
 		$this->setTemplate('index');
 	}
 }
-

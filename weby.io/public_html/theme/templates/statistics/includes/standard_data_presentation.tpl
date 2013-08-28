@@ -13,15 +13,30 @@
     </tr>
     <tr>
         <td>Week</td>
-        <td>{$w}</td>
+        <td>
+            {$w}
+            <span style="color: gray; font-size: 10px" class="">
+                (Avg <b>{math equation="x / y" x=$w y=$dayOfWeek format="%.2f"}</b> by day)
+            </span>
+        </td>
     </tr>
     <tr>
         <td>Month</td>
-        <td>{$m}</td>
+        <td>
+            {$m}
+            <span style="color: gray; font-size: 10px" class="">
+                (Avg <b>{math equation="x / y" x=$m y=$dayOfMonth format="%.2f"}</b> by day)
+            </span>
+        </td>
     </tr>
     <tr>
         <td>Year</td>
-        <td>{$y}</td>
+        <td>
+            {$y}
+            <span style="color: gray; font-size: 10px" class="">
+                (Avg <b>{math equation="x / y" x=$y y=$monthOfYear format="%.2f"}</b> by month)
+            </span>
+        </td>
     </tr>
     <tr>
         <td>Overall</td>
@@ -29,6 +44,7 @@
     </tr>
     </tbody>
 </table>
+
 
 <div class="stat-title-bar">
     Display:

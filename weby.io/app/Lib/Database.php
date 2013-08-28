@@ -51,8 +51,9 @@ class Database
         'w_user',
         'w_weby',
         'w_stat',
+        'w_favorite',
         'w_stat_by_ref',
-        'w_stat_period'
+        'w_stat_period',
     );
 
     /** Users table */
@@ -63,6 +64,9 @@ class Database
 
     /** Stats table */
     public $w_stat;
+
+    /** Favorites of users */
+    public $w_favorite;
 
     /** Stats periods table */
     public $w_stat_period;

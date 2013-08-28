@@ -86,11 +86,12 @@ div#stat_wrapper div#stat_data div#stat_data_graph {
 
 /* ----------------------------*/
 
-table {
+table.stat-std-grid {
     *border-collapse: collapse; /* IE7 and lower */
     border-spacing: 0;
-    width: 500px;
+    width: 300px;
     margin-bottom: 30px;
+    display: inline-table;
 }
 
 .bordered {
