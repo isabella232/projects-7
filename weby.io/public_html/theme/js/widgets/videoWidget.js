@@ -151,7 +151,7 @@ function VideoWidget() {
 		});
 		this.body().prepend(playOverlay);
 		this._html.resizable("option", "alsoResize", '#video-preview-' + this._id + ', .widget[data-id=' + this._id + '] .play-overlay');
-		this.contentLoaded();
+		this.contentLoaded().showResizeHandle();
 	}
 
 	this.getIframe = function () {

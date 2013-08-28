@@ -94,42 +94,73 @@ function WebyBackground(settings) {
 		this.applyCanvasSize(_canvasWidth, _canvasHeight);
 	}
 
-	this.applyCanvasSize = function (width, height) {
-
-		// @TODO: detect widgets outside the new canvas size
-
-		if (width == '' || height == '' || isNaN(parseInt(width)) || isNaN(parseInt(height))) {
-			width = App.getViewportWidth() - App.getWeby().getScrollBarOffset();
-			height = App.getViewportHeight() - 94 - App.getWeby().getScrollBarOffset();
-
-			this.setBackgroundSize(width, height);
-
-			$('#canvas-width').val(width);
-			$('#canvas-height').val(height);
-
-			App.getContent().width(width).height(height);
-			App.getContentWrapper().width(width + App.getWeby().getScrollBarOffset()).height(height + App.getWeby().getScrollBarOffset());
-			App.getContentBackground().width(width).height(height);
-			this.setContainment(width, height);
-			return;
+	/**
+	 * Get widgets that are located outside the given width and height of the canvas
+	 * @param width
+	 * @param height
+	 */
+	var _getWidgetsBeyondCanvas = function(width, height){
+		var widgets = App.getWeby().getWidgets();
+		var outerWidgets = [];
+		for(var i in widgets){
+			var widget = widgets[i];
+			if(widget.html().outerWidth(true) + parseInt(widget._left) > width || widget.html().outerHeight(true) + parseInt(widget._top) > height){
+				outerWidgets.push(widget);
+			}
 		}
 
-		$('#canvas-width').val(width);
-		$('#canvas-height').val(height);
-		this.setContentSize(width, height).setContainment(width, height).setBackgroundSize(width, height);
+		if(outerWidgets.length == 0){
+			return false;
+		}
+		return outerWidgets;
 
-		// Size limiter
-		$('#size-limit').remove();
-		var div = $('<div id="size-limit"></div>');
-		div.css({
-			position: 'absolute',
-			left: width + 'px',
-			top: height + 'px',
-			'background-color': 'transparent',
-			width: '1px',
-			height: '1px'
-		});
-		App.getContent().append(div);
+	}
+
+	/**
+	 * Apply given canvas size
+	 * @param width
+	 * @param height
+	 */
+	this.applyCanvasSize = function (width, height) {
+		var $this = this;
+
+		function _applyCanvasSize(width, height){
+			$this.setContentSize(width, height).setContainment(width, height).setBackgroundSize(width, height);
+
+			// Size limiter
+			$('#size-limit').remove();
+			var div = $('<div id="size-limit"></div>');
+			div.css({
+				position: 'absolute',
+				left: width + 'px',
+				top: height + 'px',
+				'background-color': 'transparent',
+				width: '1px',
+				height: '1px'
+			});
+			App.getContent().append(div);
+		}
+
+		var outerWidgets = _getWidgetsBeyondCanvas(width, height);
+		console.log(width+':'+height)
+		console.log(outerWidgets)
+		if(outerWidgets){
+			$('#button-move-widgets').unbind('click').click(function(){
+				for(var i in outerWidgets){
+					var pos = Math.floor(Math.random() * (50 - 20 + 1) + 20);
+					outerWidgets[i].setPosition(pos + App.getContentWrapper()[0].scrollLeft, pos + App.getContentWrapper()[0].scrollTop);
+				}
+				$.fancybox.close();
+				_applyCanvasSize(width, height);
+			});
+			$('#button-dont-move-widgets').unbind('click').click(function(){
+				$.fancybox.close();
+				return;
+			});
+			$.fancybox($('#outer-widgets'), {modal: true});
+		} else {
+			_applyCanvasSize(width, height);
+		}
 	};
 
 	/**
@@ -143,14 +174,14 @@ function WebyBackground(settings) {
 			App.getContentWrapper().width(width + App.getWeby().getScrollBarOffset());
 			App.getContentBackground().width(width);
 		} else {
-			App.getContentWrapper().width(App.getViewportWidth() - App.getWeby().getScrollBarOffset());
+			App.getContentWrapper().width(App.getViewportWidth());
 		}
 
 		if (height <= App.getViewportHeight() - App.getHeader().height()) {
 			App.getContentWrapper().height(height + App.getWeby().getScrollBarOffset());
 			App.getContentBackground().height(height);
 		} else {
-			App.getContentWrapper().height(App.getViewportHeight() - 94 - App.getWeby().getScrollBarOffset());
+			App.getContentWrapper().height(App.getViewportHeight() - 94);
 		}
 
 		App.getContent().width(width).height(height);
@@ -169,6 +200,7 @@ function WebyBackground(settings) {
 			var containment = [0, 94, width, height];
 		}
 
+		BaseWidget.CONTAINMENT = containment;
 		// Trigger viewportResize to recalculate all background related elements
 		App.getWeby().setContainment(containment).getBackground().viewportResize();
 		return this;

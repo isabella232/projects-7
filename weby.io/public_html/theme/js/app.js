@@ -12,8 +12,6 @@ var AppClass = function () {
 	var _activeWidget = null
 	// Manual height offset for tweaking purposes
 	var _heightOffset = 94;
-	// Manual width offset for tweaking purposes
-	var _widthOffset = 7;
 
 	/**
 	 * Catch Ctrl+V key press
@@ -191,11 +189,16 @@ var AppClass = function () {
 
 		// Recalculate editor dimensions when window is resized
 		$(window).resize(function () {
+
+			// prevent recalculation if the resize is triggered by jQuery UI resizable
+			if($('.ui-resizable-resizing').length > 0){
+				return;
+			}
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
-			_contentWrapper.width(_viewportWidth - _widthOffset);
+			_contentWrapper.width(_viewportWidth);
 			_contentWrapper.height(_viewportHeight - _heightOffset);
-			_contentBackground.width(_viewportWidth - _widthOffset);
+			_contentBackground.width(_viewportWidth);
 			_contentBackground.height(_viewportHeight - _heightOffset);
 			App.fireEvent("viewport.resize");
 		}).resize();

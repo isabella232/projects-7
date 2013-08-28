@@ -81,8 +81,10 @@
         <br />
         <a id="background-size-auto" href="javascript:void(0)" class="button">Fill my screen</a>
     </div>
-    {*<span style="float:right">
-        <a id="background-settings-apply" href="javascript:void(0)" class="button">Apply</a>
-        <a id="background-settings-cancel" href="javascript:void(0)" class="button">Cancel</a>
-    </span>*}
+</div>
+
+<div id="outer-widgets" style="display:none">
+    <p>There are some widgets located outside of your new canvas.<br /> Would you like to move them inside your new canvas?</p>
+    <button id="button-move-widgets">Yes, sure!</button>
+    <button id="button-dont-move-widgets">No, leave them.</button>
 </div>

@@ -241,11 +241,12 @@ var BaseWidget = function () {
 			App.fireEvent("widget.rotate.start", {element: $(this), event: event, ui: ui});
 		},
 		stop: function (event, ui) {
+			var options = $(this).data('draggable-options');
 			var $this = $(this).data('widget');
 			App.fireEvent("widget.rotate.stop", {element: $(this), event: event, ui: ui});
 			setTimeout(function () {
 				$this._html.draggable("destroy");
-				$this._html.draggable($this._baseDraggableOptions);
+				$this._html.draggable(options);
 			}, 50);
 		}
 	};
@@ -588,8 +589,15 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	contentLoaded: function () {
-		this._width = this.html().width();
-		this._height = this.html().height();
+		if(App.getContent().hasClass('hide-content')){
+			// Calculate height by selecting widget-body content
+			this._width = this.html('.widget-body *').width();
+			this._height = this.html('.widget-body *').height();
+		} else {
+			this._width = this.html().width();
+			this._height = this.html().height();
+		}
+
 		this.html().css({
 			width: this._width + 'px',
 			height: this._height + 'px'
@@ -749,7 +757,6 @@ BaseWidget.prototype = {
 		if(this._isResizable){
 			this._html.resizable("option", "containment", containment);
 		}
-		BaseWidget.CONTAINMENT = containment;
 		return this;
 	},
 
@@ -921,7 +928,7 @@ BaseWidget.prototype = {
 		var resizableOptions = {};
 
 		if(!BaseWidget.CONTAINMENT){
-			BaseWidget.CONTAINMENT = [0, 0]
+			BaseWidget.CONTAINMENT = [0, 94];
 		}
 
 		this._draggableOptions["containment"] = BaseWidget.CONTAINMENT;
@@ -951,13 +958,14 @@ BaseWidget.prototype = {
 			this.html().find('span.rotate-handle').bind({
 				mousedown: function (e) {
 					$this._rotateStart = e.pageX;
+					var options = $this._html.draggable("option");
 					$this._html.draggable("destroy");
-					$this._html.data('widget', $this).draggable(rotatableOptions);
+					$this._html.data('widget', $this).data('draggable-options', options).draggable(rotatableOptions);
 				},
 				mouseup: function () {
 					setTimeout(function () {
 						$this._html.draggable("destroy");
-						$this._html.data('widget', $this).draggable(draggableOptions);
+						$this._html.draggable(draggableOptions).data('widget', $this);
 					}, 50);
 				},
 				dblclick: function () {

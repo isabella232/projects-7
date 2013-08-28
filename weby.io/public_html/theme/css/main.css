@@ -114,7 +114,7 @@ body.unselectable * {
 }
 
 #content.hide-content .widget-body {
-	display: none;
+	visibility: hidden;
 }
 
 #content.hide-content .widget {

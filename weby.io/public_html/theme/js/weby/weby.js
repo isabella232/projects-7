@@ -53,9 +53,9 @@ function Weby() {
 			})
 
 			// Create periodic save action
-			/*setInterval(function () {
+			setInterval(function () {
 				App.getWeby().save();
-			}, _saveInterval);*/
+			}, _saveInterval);
 
 			// Catch window close event
 			$(window).bind('beforeunload', function () {
@@ -240,6 +240,10 @@ function Weby() {
 	};
 
 	// EVENTS
+
+	this.widgetActivated = function(widget){
+		_webyToolbar.widgetActivated(widget);
+	}
 
 	this.toolbarMaximized = this.toolbarMinimized = function (toolbarWrapper) {
 		for (var i in _widgets) {

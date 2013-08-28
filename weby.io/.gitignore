@@ -168,7 +168,8 @@ pip-log.txt
 # PHP Storm
 .idea/
 
-# Project excludes
+# Project excludes,
+
 library/
 public_html/cache/minify/*
 public_html/cache/smarty/compile/*
