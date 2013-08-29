@@ -19,9 +19,14 @@ function Weby() {
 	var _lastSavedLabel = $('#last-saved');
 
 	/**
-	 * Applied background settings
+	 * Content background
 	 */
 	var _background = null;
+
+	/**
+	 * Document background
+	 */
+	var _documentBackground = null;
 
 	this.init = function () {
 
@@ -30,17 +35,18 @@ function Weby() {
 			_title = weby.title;
 			if ('color' in weby.settings) {
 				_background = new WebyBackground(weby.settings);
-				_webyToolbar = new WebyToolbar(weby.settings.type);
+				_documentBackground = new WebyDocumentBackground(weby.settings);
 			} else {
 				_background = new WebyBackground();
-				_webyToolbar = new WebyToolbar();
+				_documentBackground = new WebyDocumentBackground();
 			}
+
+			_webyToolbar = new WebyToolbar();
 			_titleInput.val(_title);
 
 			// Load widgets
 			if (weby.content.length > 0) {
 				App.showLoading();
-				// Load widgets
 				_load(weby.content);
 			}
 
@@ -83,6 +89,9 @@ function Weby() {
 
 		// Setup background
 		_background.render();
+		_documentBackground.render();
+
+
 	};
 
 	/**
@@ -113,12 +122,12 @@ function Weby() {
 		return _background;
 	}
 
-	this.getToolbar = function(){
-		return _webyToolbar;
+	this.getDocumentBackground = function(){
+		return _documentBackground;
 	}
 
-	this.getBackgroundColor = function () {
-		_background.getColor();
+	this.getToolbar = function(){
+		return _webyToolbar;
 	}
 
 	this.getWidgets = function () {
@@ -175,11 +184,14 @@ function Weby() {
 			return;
 		}
 
+		var settings = _background.save();
+		settings['document'] = _documentBackground.save();
+
 		var data = {
 			id: _webyId,
 			title: _title,
 			content: [],
-			settings: _background.save(),
+			settings: settings,
 			counter: _counter,
 			unknownFileTypes: _unknownFileTypes,
 			invalidUrls: _invalidUrls

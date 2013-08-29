@@ -9,6 +9,10 @@ function WebyImageBackground() {
 		return this;
 	}
 
+	this.getImage = function () {
+		return _image;
+	}
+
 	this.setMode = function (mode) {
 		_mode = mode;
 		return this;

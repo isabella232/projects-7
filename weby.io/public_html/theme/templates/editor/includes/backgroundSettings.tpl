@@ -17,16 +17,21 @@
         </li>
     </ul>
     <div id="tab-color" class="tab">
-        <div id="color-picker"></div>
+        <div id="color-picker" style="width: 264px; border: none;"></div>
     </div>
     <div id="tab-pattern" class="tab">
-        <div id="patternsList"></div>
-        <div id="patternsPager" class="k-pager-wrap"></div>
+        <div id="patternsList" class="patternsList"></div>
+        <div class="k-pager-wrap patternsPager"></div>
         Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
     </div>
     <div id="tab-image" class="tab">
+        <span class="file-error"></span>
+
         <div id="file-widget">
             <input name="background-image" id="file" type="file"/>
+        </div>
+        <div class="button-wrapper">
+            <a id="background-image-remove" href="javascript:void(0)" class="button" style="display: block; text-align: center;">Remove background image</a>
         </div>
         <a id="background-settings-aligned" href="javascript:void(0)" class="button">Aligned</a>
         <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
@@ -75,16 +80,36 @@
                placeholder="Paste a Youtube video for the background and press Enter"/>
     </div>
     <div id="tab-size" class="tab">
-        <span>Canvas width and height in pixels (Leave blank for auto-size):</span><br />
-        <input type="text" id="canvas-width" placeholder="Width" value="800"/><br />
+        <span>Canvas width and height in pixels (Leave blank for auto-size):</span><br/>
+        <input type="text" id="canvas-width" placeholder="Width" value="800"/><br/>
         <input type="text" id="canvas-height" placeholder="Height" value="750"/>
-        <br />
+        <br/>
         <a id="background-size-auto" href="javascript:void(0)" class="button">Fill my screen</a>
     </div>
 </div>
 
+<div id="document-background-settings" style="display:none">
+    <ul>
+        <li class="k-state-active">
+            Color
+        </li>
+        <li>
+            Pattern
+        </li>
+    </ul>
+    <div class="tab">
+        <div id="document-color-picker" style="width: 264px; border: none;"></div>
+    </div>
+    <div class="tab">
+        <div id="documentPatternsList" class="patternsList"></div>
+        <div class="k-pager-wrap patternsPager"></div>
+        Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
+    </div>
+</div>
+
 <div id="outer-widgets" style="display:none">
-    <p>There are some widgets located outside of your new canvas.<br /> Would you like to move them inside your new canvas?</p>
+    <p>There are some widgets located outside of your new canvas.<br/> Would you like to move them inside your new
+        canvas?</p>
     <button id="button-move-widgets">Yes, sure!</button>
     <button id="button-dont-move-widgets">No, leave them.</button>
 </div>

@@ -1,6 +1,7 @@
-function WebyPatternBackground() {
+function WebyPatternBackground(el, defaultPattern) {
 
-	var _pattern = 'purty_wood.png';
+	var _el = el;
+	var _pattern = defaultPattern;
 
 	this.setPattern = function (pattern) {
 		_pattern = pattern;
@@ -13,12 +14,12 @@ function WebyPatternBackground() {
 
 	this.render = function () {
 		if (_pattern == null) {
-			return App.getContent().css({
+			return _el.css({
 				'background-image': 'none'
 			});
 		}
 
-		App.getContent().css({
+		_el.css({
 			'background-image': 'url(' + THEME + 'images/patterns/' + _pattern + ')',
 			'background-color': 'transparent',
 			'background-repeat': 'repeat',

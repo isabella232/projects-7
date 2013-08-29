@@ -189,20 +189,26 @@ var AppClass = function () {
 
 		// Recalculate editor dimensions when window is resized
 		$(window).resize(function () {
-
 			// prevent recalculation if the resize is triggered by jQuery UI resizable
 			if($('.ui-resizable-resizing').length > 0){
 				return;
 			}
 			_viewportWidth = $(window).width();
 			_viewportHeight = $(window).height();
-			_contentWrapper.width(_viewportWidth);
-			_contentWrapper.height(_viewportHeight - _heightOffset);
-			_contentBackground.width(_viewportWidth);
-			_contentBackground.height(_viewportHeight - _heightOffset);
+			App.getWeby().getBackground().recalculateContentSize();
 			App.fireEvent("viewport.resize");
-		}).resize();
+		});
 
+
+		// Setup initial content sizes
+		_viewportWidth = $(window).width();
+		_viewportHeight = $(window).height();
+		_contentWrapper.width(_viewportWidth);
+		_contentWrapper.height(_viewportHeight - _heightOffset);
+		_contentBackground.width(_viewportWidth);
+		_contentBackground.height(_viewportHeight - _heightOffset);
+
+		// Setup dragging and Weby
 		_webyDrag = new WebyDrag(_content);
 		_weby = new Weby();
 		_weby.init();

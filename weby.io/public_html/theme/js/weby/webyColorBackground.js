@@ -1,5 +1,6 @@
-function WebyColorBackground() {
+function WebyColorBackground(el) {
 
+	var _el = el;
 	var _color = null;
 
 	this.setColor = function (color) {
@@ -17,7 +18,7 @@ function WebyColorBackground() {
 
 	this.render = function () {
 		if (_color != null) {
-			App.getContent().css({
+			_el.css({
 				'background-color': _color,
 				'background-image': 'none'
 			});

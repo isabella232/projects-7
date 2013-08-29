@@ -45,12 +45,14 @@
         <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
         <a href="javascript:void(0)" class="tool-icon document">Document</a>
     </div>
-    <div id="content-background">
-        <div id="player"></div>
-    </div>
-    <div id="wrapper">
-        <div id="content"></div>
-        <div class="clearfix"></div>
+    <div id="workspace">
+        <div id="content-background">
+            <div id="player"></div>
+        </div>
+        <div id="wrapper">
+            <div id="content"></div>
+            <div class="clearfix"></div>
+        </div>
     </div>
     {include file="templates/editor/includes/templates.tpl"}
 {/block}

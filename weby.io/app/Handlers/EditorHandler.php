@@ -15,7 +15,6 @@ use Webiny\Component\Security\SecurityTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\Directory\LocalDirectory;
 use Webiny\Component\Storage\File\LocalFile;
-use Webiny\Component\Storage\StorageException;
 use Webiny\Component\Storage\StorageTrait;
 
 class EditorHandler extends AbstractHandler
@@ -31,9 +30,9 @@ class EditorHandler extends AbstractHandler
 		$weby = new WebyEntity();
 		$weby->setUser($this->user())->save();
 
-        // Update stats
-        $stats = Stats::getInstance();
-        $stats->updateWebiesStats($this->user());
+		// Update stats
+		$stats = Stats::getInstance();
+		$stats->updateWebiesStats($this->user());
 
 		$this->request()->redirect($weby->getEditorUrl());
 	}
@@ -89,15 +88,17 @@ class EditorHandler extends AbstractHandler
 		$webyId = $this->request()->query('weby');
 		$this->_removeImage($webyId);
 		$file = $this->request()->files('background-image');
+
+		if(!$this->file($file->getTmpName())->isImage()){
+			$this->ajaxResponse(true, 'Given file type is not allowed!');
+		}
+
 		$ext = $this->str($file->getName())->explode('.')->last();
 		$key = $this->user()->getUsername() . '/' . $webyId . '-background-' . time() . '.' . $ext;
 
 		$webyFile = new LocalFile($key, $this->storage('local'));
 		$webyFile->setContents(file_get_contents($file->getTmpName()));
-
-		$data = ['url' => $webyFile->getUrl()];
-
-		die(json_encode($data));
+		die(json_encode(['url' => $webyFile->getUrl()]));
 	}
 
 	private function _removeImage($webyId) {

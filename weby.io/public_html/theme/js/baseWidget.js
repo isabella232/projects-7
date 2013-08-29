@@ -325,7 +325,19 @@ BaseWidget.prototype = {
 	 * @param int y
 	 * @returns this
 	 */
-	setPosition: function (x, y) {
+	setPosition: function (x, y, animate) {
+
+		if (x === false) {
+			x = this._left;
+		}
+
+		if (y === false) {
+			y = this._top;
+		}
+
+		if (typeof animate == "undefined") {
+			animate = false;
+		}
 
 		if (this._html != undefined) {
 			if (x < 0) {
@@ -339,7 +351,12 @@ BaseWidget.prototype = {
 		this._left = parseInt(x);
 		this._top = parseInt(y);
 		if (typeof this._html != "undefined") {
-			this._html.css({top: this._top + 'px', left: this._left + 'px'});
+			var css = {top: this._top + 'px', left: this._left + 'px'};
+			if (animate) {
+				this._html.animate(css, 500)
+			} else {
+				this._html.css(css);
+			}
 		}
 		return this;
 	},
@@ -404,7 +421,8 @@ BaseWidget.prototype = {
 			radius: this._radius,
 			color: this._color,
 			shadowY: this._shadowY,
-			shadowSpread: this._shadowSpread
+			shadowSpread: this._shadowSpread,
+			shadowColor: this._shadowColor
 		}
 	},
 
@@ -589,7 +607,7 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	contentLoaded: function () {
-		if(App.getContent().hasClass('hide-content')){
+		if (App.getContent().hasClass('hide-content')) {
 			// Calculate height by selecting widget-body content
 			this._width = this.html('.widget-body *').width();
 			this._height = this.html('.widget-body *').height();
@@ -647,7 +665,8 @@ BaseWidget.prototype = {
 			radius: this._radius,
 			color: this._color,
 			shadowY: this._shadowY,
-			shadowSpread: this._shadowSpread
+			shadowSpread: this._shadowSpread,
+			shadowColor: this._shadowColor,
 		};
 		var widgetData = this.getSaveData();
 
@@ -683,6 +702,7 @@ BaseWidget.prototype = {
 		this.setRadius(this._radius);
 		this.setShadowDistance(this._shadowY);
 		this.setShadowSpread(this._shadowSpread);
+		this.setShadowColor(this._shadowColor);
 		return this;
 	},
 
@@ -728,12 +748,12 @@ BaseWidget.prototype = {
 		return this;
 	},
 
-	showTools: function(){
+	showTools: function () {
 		this.html('.widget-disabled-overlay').css("opacity", "0.5");
 		this.controls().show();
 	},
 
-	hideTools: function(){
+	hideTools: function () {
 		this.html('.widget-disabled-overlay').css("opacity", "0");
 		this.controls().hide();
 	},
@@ -754,7 +774,7 @@ BaseWidget.prototype = {
 	 */
 	setContainment: function (containment) {
 		this._html.draggable("option", "containment", containment);
-		if(this._isResizable){
+		if (this._isResizable) {
 			this._html.resizable("option", "containment", containment);
 		}
 		return this;
@@ -844,7 +864,7 @@ BaseWidget.prototype = {
 			'border-radius': radius + 'px'
 		});
 		this.html('.widget-disabled-overlay').css({
-			'border-radius': this._radius+'px'
+			'border-radius': this._radius + 'px'
 		});
 		return this;
 	},
@@ -864,15 +884,21 @@ BaseWidget.prototype = {
 		return this;
 	},
 
+	setShadowColor: function (color) {
+		this._shadowColor = color;
+		this.html().css('box-shadow', this._shadowX + 'px ' + this._shadowY + 'px ' + this._shadowSpread + 'px ' + this._shadowColor);
+		return this;
+	},
+
 	setShadowDistance: function (distance) {
 		this._shadowY = parseInt(distance);
-		this.html().css('box-shadow', this._shadowX+'px '+this._shadowY+'px '+this._shadowSpread+'px '+this._shadowColor);
+		this.html().css('box-shadow', this._shadowX + 'px ' + this._shadowY + 'px ' + this._shadowSpread + 'px ' + this._shadowColor);
 		return this;
 	},
 
 	setShadowSpread: function (spread) {
 		this._shadowSpread = parseInt(spread);
-		this.html().css('box-shadow', this._shadowX+'px '+this._shadowY+'px '+this._shadowSpread+'px '+this._shadowColor);
+		this.html().css('box-shadow', this._shadowX + 'px ' + this._shadowY + 'px ' + this._shadowSpread + 'px ' + this._shadowColor);
 		return this;
 	},
 
@@ -887,8 +913,8 @@ BaseWidget.prototype = {
 	widgetResizeStop: function (data) {
 		this._width = parseInt(data.element.width());
 		this._height = parseInt(data.element.height());
-		this._html.css("height", this._height+'px');
-		this._html.css("width", this._width+'px');
+		this._html.css("height", this._height + 'px');
+		this._html.css("width", this._width + 'px');
 	},
 
 	widgetResize: function (data) {
@@ -914,7 +940,7 @@ BaseWidget.prototype = {
 		this.html('span.text').css('line-height', this._html.outerHeight() + 'px');
 		this.html('.widget-disabled-overlay').css({
 			margin: -this._padding + 'px 0 0 -' + this._padding + 'px',
-			'border-radius': this._radius+'px'
+			'border-radius': this._radius + 'px'
 		});
 	},
 
@@ -927,7 +953,7 @@ BaseWidget.prototype = {
 		var rotatableOptions = {};
 		var resizableOptions = {};
 
-		if(!BaseWidget.CONTAINMENT){
+		if (!BaseWidget.CONTAINMENT) {
 			BaseWidget.CONTAINMENT = [0, 94];
 		}
 
@@ -938,7 +964,7 @@ BaseWidget.prototype = {
 		$.extend(draggableOptions, this._baseDraggableOptions, this._draggableOptions);
 		$.extend(rotatableOptions, this._baseRotatableOptions, this._rotatableOptions);
 		$.extend(resizableOptions, this._baseResizableOptions, this._resizableOptions);
-		
+
 		if (this._isDraggable) {
 			this._html.data('widget', this).draggable(draggableOptions);
 		}

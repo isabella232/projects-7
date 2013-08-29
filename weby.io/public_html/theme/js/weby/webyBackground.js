@@ -4,8 +4,8 @@ function WebyBackground(settings) {
 	var _canvasHeight = 0;
 
 	var _backgrounds = {
-		color: new WebyColorBackground(),
-		pattern: new WebyPatternBackground(),
+		color: new WebyColorBackground(App.getContent()),
+		pattern: new WebyPatternBackground(App.getContent(), 'purty_wood.png'),
 		image: new WebyImageBackground(),
 		video: new WebyVideoBackground()
 	};
@@ -72,6 +72,10 @@ function WebyBackground(settings) {
 		return _backgrounds.color.getColor();
 	}
 
+	this.getImage = function(){
+		return _backgrounds.image.getImage();
+	}
+
 	this.setPattern = function (pattern) {
 		_backgrounds.pattern.setPattern(pattern);
 		_backgrounds.color.setColor(null);
@@ -102,11 +106,30 @@ function WebyBackground(settings) {
 	var _getWidgetsBeyondCanvas = function (width, height) {
 		var widgets = App.getWeby().getWidgets();
 		var outerWidgets = [];
+		var el = App.getContentWrapper()[0];
 		for (var i in widgets) {
 			var widget = widgets[i];
 			var rect = widget.html()[0].getBoundingClientRect();
-			if (rect.width + rect.left > width + App.getContentWrapper()[0].scrollLeft || rect.height + rect.top - 94 + App.getContentWrapper()[0].scrollTop > height) {
-				outerWidgets.push(widget);
+			var maxLeft = false;
+			var maxTop = false;
+
+			var marginLeft = parseInt(widget.html().css('margin-left'));
+			var marginTop = parseInt(widget.html().css('margin-top'));
+
+			if (rect.width + rect.left + el.scrollLeft + marginLeft > width) {
+				maxLeft = width - rect.width - marginLeft * 2;
+			}
+
+			if (rect.height + rect.top - 94 + el.scrollTop + marginTop > height) {
+				maxTop = height - rect.height - marginTop * 2;
+			}
+
+			if (maxLeft || maxTop) {
+				outerWidgets.push({
+					widget: widget,
+					maxLeft: maxLeft,
+					maxTop: maxTop
+				});
 			}
 		}
 
@@ -121,33 +144,21 @@ function WebyBackground(settings) {
 	 * Apply given canvas size
 	 * @param width
 	 * @param height
+	 * @param type change|spin
 	 */
-	this.applyCanvasSize = function (width, height) {
+	this.applyCanvasSize = function (width, height, type) {
 		var $this = this;
 
 		function _applyCanvasSize(width, height) {
-			$this.setContentSize(width, height).setContainment(width, height).setBackgroundSize(width, height);
-
-			// Size limiter
-			$('#size-limit').remove();
-			var div = $('<div id="size-limit"></div>');
-			div.css({
-				position: 'absolute',
-				left: width + 'px',
-				top: height + 'px',
-				'background-color': 'transparent',
-				width: '1px',
-				height: '1px'
-			});
-			App.getContent().append(div);
+			$this.setContentSize(width, height, type).setContainment(width, height).setBackgroundSize(width, height);
 		}
 
 		var outerWidgets = _getWidgetsBeyondCanvas(width, height);
 		if (outerWidgets) {
 			$('#button-move-widgets').unbind('click').click(function () {
 				for (var i in outerWidgets) {
-					var pos = Math.floor(Math.random() * (50 - 20 + 1) + 20);
-					outerWidgets[i].setPosition(pos + App.getContentWrapper()[0].scrollLeft, pos + App.getContentWrapper()[0].scrollTop);
+					var data = outerWidgets[i];
+					data.widget.setPosition(data.maxLeft, data.maxTop, true);
 				}
 				$.fancybox.close();
 				_applyCanvasSize(width, height);
@@ -157,6 +168,7 @@ function WebyBackground(settings) {
 				App.getWeby().getToolbar().restorePreviousCanvasSize();
 				return;
 			});
+			$(':focus').blur();
 			$.fancybox($('#outer-widgets'), {modal: true});
 		} else {
 			_applyCanvasSize(width, height);
@@ -167,25 +179,45 @@ function WebyBackground(settings) {
 	 * Set App content size (calculates scrollbars)
 	 * @param width
 	 * @param height
+	 * @param type change|spin
 	 */
-	this.setContentSize = function (width, height) {
+	this.setContentSize = function (width, height, type) {
+		function _resize(el, dimension, size, duration) {
+			if (typeof duration == "undefined") {
+				duration = 500;
+			}
+			if(type == 'spin'){
+				duration = 0;
+			}
+			var data = {};
+			data[dimension] = size;
+			el.animate(data, {duration: duration, queue: false});
+		}
+
 		App.getWeby().getToolbar().setCanvasSize(width, height);
 		if (width <= App.getViewportWidth() - App.getWeby().getScrollBarOffset()) {
-			App.getContentWrapper().width(width + App.getWeby().getScrollBarOffset());
+			_resize(App.getContent(), "width", width + 'px');
+			_resize(App.getContentWrapper(), "width", width + App.getWeby().getScrollBarOffset() + 'px');
 			App.getContentBackground().width(width);
 		} else {
-			App.getContentWrapper().width(App.getViewportWidth());
+			_resize(App.getContent(), "width", width + 'px');
+			_resize(App.getContentWrapper(), "width", App.getViewportWidth() + 'px');
 		}
 
 		if (height <= App.getViewportHeight() - App.getHeader().height()) {
-			App.getContentWrapper().height(height + App.getWeby().getScrollBarOffset());
+			_resize(App.getContent(), "height", height + 'px');
+			_resize(App.getContentWrapper(), "height", height + App.getWeby().getScrollBarOffset() + 'px');
 			App.getContentBackground().height(height);
 		} else {
-			App.getContentWrapper().height(App.getViewportHeight() - 94);
+			_resize(App.getContent(), "height", height + 'px');
+			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - 94 + 'px');
 		}
 
-		App.getContent().width(width).height(height);
 		return this;
+	}
+
+	this.recalculateContentSize = function(){
+		this.setContentSize(_canvasWidth, _canvasHeight, 'change');
 	}
 
 	/**
