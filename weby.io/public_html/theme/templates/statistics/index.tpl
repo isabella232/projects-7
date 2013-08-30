@@ -48,6 +48,7 @@
         <div id="stat_menu">
             <ul>
                 <li><a data-stat="registered_users" class="stat_menu_ajax_item" href="javascript:void(0);">Registered users</a></li>
+                <li><a data-stat="active_users" class="stat_menu_ajax_item" href="javascript:void(0);">Active users</a></li>
                 <li><a data-stat="created_webies" class="stat_menu_ajax_item" href="javascript:void(0);">Created Webies</a></li>
                 <li><a href="javascript:void(0);" class="stat_menu_ajax_item" data-stat="widget_general">Created Widgets</a></li>
                 <li><a data-stat="top_user" class="stat_menu_ajax_item" href="javascript:void(0);">Top 100 users</a></li>

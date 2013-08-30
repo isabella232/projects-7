@@ -25,6 +25,7 @@
         {if $weby}
         var weby = {$weby->toJson()};
         {/if}
+        var myWebies = {$viewObject->user->getWebies(true)};
         $(function () {
             App = new AppClass();
             App.init();

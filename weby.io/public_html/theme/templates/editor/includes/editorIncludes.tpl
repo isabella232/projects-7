@@ -20,6 +20,7 @@
     weby/weby.js,
     weby/webyDrag.js,
     weby/webyToolbar.js,
+    weby/webyDashboard.js,
     weby/webyBackground.js,
     weby/webyDocumentBackground.js,
     weby/webyColorBackground.js,

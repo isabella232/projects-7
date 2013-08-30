@@ -12,8 +12,9 @@ abstract class UserEntityStorage extends EntityAbstract
     protected $_username = '';
     protected $_firstName = '';
     protected $_lastName = '';
-    protected $_createdOn = '';
     protected $_avatarUrl = '';
+    protected $_createdOn = '';
+    protected $_lastLogin = '';
 
     /**
      * Saves user into the database with it's service type
@@ -22,14 +23,14 @@ abstract class UserEntityStorage extends EntityAbstract
     protected function _sqlSave()
     {
         if ($this->_id == 0) {
-            $query = "INSERT INTO {$this->_getDb()->w_user} (username, service_name, email, first_name, last_name, avatar_url, created_on)
-                        VALUES (?, ?, ?, ?, ?, ?, NOW()) RETURNING id";
+            $query = "INSERT INTO {$this->_getDb()->w_user} (username, service_name, email, first_name, last_name, avatar_url, created_on, last_login)
+                        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW()) RETURNING id";
             $bind = [$this->_username, $this->_serviceName, $this->_email, $this->_firstName, $this->_lastName, $this->_avatarUrl];
             $this->_id = $this->_getDb()->execute($query, $bind)->fetchValue();
             return true;
         }
 
-        $query = "UPDATE {$this->_getDb()->w_user} SET service_name=?, first_name=?, last_name=?, avatar_url=? WHERE id=?";
+        $query = "UPDATE {$this->_getDb()->w_user} SET service_name=?, first_name=?, last_name=?, avatar_url=?, last_login=NOW() WHERE id=?";
 
         $bind = [$this->_serviceName, $this->_firstName, $this->_lastName, $this->_avatarUrl, $this->_id];
         return $this->_getDb()->execute($query, $bind);

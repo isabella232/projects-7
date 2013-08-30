@@ -47,7 +47,7 @@ class PagesHandler extends AbstractHandler
 
         // Check if our user has added this Weby to his favorites list
         $favorite = new FavoriteEntity();
-        $this->favorite = $favorite->loadByUserAndWeby($this->user(), $weby);
+        $this->favorite = $favorite->loadByWebyAndUser($weby, $this->user());
 
         // Update Weby's hits stats
         $stats = Stats::getInstance();
@@ -61,21 +61,36 @@ class PagesHandler extends AbstractHandler
      */
     public function toggleFavorite()
     {
+        // We won't be instantianting Weby and User because we want to reduce loading and querying the database
+        $webyId = $this->request()->post('wid');
+        $userId = $this->request()->post('uid');
+
         $favorite = new FavoriteEntity();
-        $favorite->load($this->request()->post('fav-id'));
+        $favorite->loadByWebyAndUser($webyId, $userId);
 
         // If we got a valid favorite, that means we are deleting it
-        if ($favorite->getId()) {
+        if ($favorite->getCreatedOn()) {
             $favorite->delete();
             $this->ajaxResponse(false);
         }
         // In other case, we are creating a new favorite
-        // NOTE: we aren't passing whole objects, because then we don't have unnecessary WebyEntity loading
-        $favorite->setUser($this->user()->getId())->setWeby($this->request()->post('weby'))->save();
-        $this->ajaxResponse(false, '', ['fav-id' => $favorite->getId()]);
+        $data = [
+            'weby' => $webyId,
+            'user' => $userId,
+            'ownerId' => $this->request()->post('wowner')
+        ];
+        $favorite->populate($data)->save();
+        $this->ajaxResponse(false, '', '');
     }
 
-    public function page404() {}
+    public function page404()
+    {
+    }
+
+
+    public function about()
+    {
+    }
 
     /**
      * Used for checking request, if user has edited an URL, we will automatically redirect them to correct one
@@ -91,7 +106,7 @@ class PagesHandler extends AbstractHandler
 
         // If Weby was created by a valid user, that means given Weby ID was okay, else redirect to 404 page
         if (!$weby->getUser()->getEmail()) {
-            $this->request()->redirect($cfg->web_path . 'asdasd', 404);
+            $this->request()->redirect($cfg->web_path, 404);
         }
 
         // If user edited username or title, redirect him to proper URL via 301 header data

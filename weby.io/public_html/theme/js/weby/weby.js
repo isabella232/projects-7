@@ -71,26 +71,9 @@ function Weby() {
 			weby = undefined;
 		}
 
-		// Bind My Webies
-		$("#my-webies").click(function (e) {
-			e.preventDefault();
-			$.fancybox({
-				modal: showDashboard,
-				autoSize: true,
-				href: '/editor/dashboard',
-				type: 'ajax'
-			});
-		});
-
-		if (showDashboard) {
-			_setupOverlayObserver();
-			$('#my-webies').click();
-		}
-
 		// Setup background
 		_background.render();
 		_documentBackground.render();
-
 
 	};
 

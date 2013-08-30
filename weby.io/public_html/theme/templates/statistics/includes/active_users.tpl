@@ -2,45 +2,33 @@
 <table class="stat-std-grid bordered">
     <thead>
     <tr>
-        <th>Period</th>
+        <th>Current</th>
         <th>Value</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td>Today</td>
-        <td>{$d}</td>
+        <td>Total users</td>
+        <td>
+            {math equation="x + y" x=$active y=$inactive}
+        </td>
     </tr>
     <tr>
-        <td>Week</td>
-        <td>
-            {$w}
+        <td>Active users</td>
+        <td>{$active}
             <span class="small-grayed">
-                (Avg <b>{math equation="x / y" x=$w y=$dayOfWeek format="%.2f"}</b> by day)
+            (<b>{math equation="x / (x + y) * 100" x=$active y=$inactive format="%.2f"}%</b>)
             </span>
         </td>
     </tr>
     <tr>
-        <td>Month</td>
+        <td>Inactive users</td>
         <td>
-            {$m}
+            {$inactive}
             <span class="small-grayed">
-                (Avg <b>{math equation="x / y" x=$m y=$dayOfMonth format="%.2f"}</b> by day)
+            (<b>{math equation="y / (x + y) * 100" x=$active y=$inactive format="%.2f"}%</b>)
             </span>
         </td>
-    </tr>
-    <tr>
-        <td>Year</td>
-        <td>
-            {$y}
-            <span class="small-grayed">
-                (Avg <b>{math equation="x / y" x=$y y=$monthOfYear format="%.2f"}</b> by month)
-            </span>
-        </td>
-    </tr>
-    <tr>
-        <td>Overall</td>
-        <td>{$overallStats}</td>
     </tr>
     </tbody>
 </table>
@@ -51,7 +39,6 @@
     <select id="periodical-stats-period">
         <option value="week">Week</option>
         <option value="month">Month</option>
-        <option value="year">Year</option>
     </select>
     <input type="hidden" value="{$event}" id="stat_id"/>
 </div>

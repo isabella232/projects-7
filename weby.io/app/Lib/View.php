@@ -53,6 +53,12 @@ class View
 
     }
 
+    /**
+     * Fetches template, default path is theme_abs_path, so you must include additional directory path if needed
+     * @param $template
+     * @param $data
+     * @return string
+     */
     public function fetch($template, $data) {
         return $this->_smarty->fetch($template, $data);
     }

@@ -3,8 +3,8 @@
     <div class="social-icons-wrapper">
 
         {if isset($favorite)}
-            <a href="javascript: void(0);" id="add-to-favs"><span data-fav-id="{$favorite.id}"
-                  class="share-icon social-favorites{if $favorite.id > 0}-added{/if}"></span></a>
+            <a href="javascript: void(0);" id="add-to-favs">
+                <span class="share-icon social-favorites{if $favorite.weby.id}-added{/if}"></span></a>
         {/if}
         {literal}
         <script type="text/javascript">
@@ -14,9 +14,8 @@
                     $.ajax({
                         type: "POST",
                         url: WEB + 'favorite',
-                        data: {{/literal}'fav-id': span.data('fav-id'), weby: '{$weby.id}'{literal}},
-                        success: function (response) {
-                            span.data('fav-id', response.data['fav-id']);
+                        data: {{/literal}uid: {$viewObject.user.id}, wid: '{$weby.id}', wowner: '{$weby.user.id}'{literal}},
+                        success: function () {
                             span.toggleClass('social-favorites social-favorites-added');
                         }
                     });

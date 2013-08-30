@@ -9,11 +9,13 @@ a {
     -webkit-transition: 0.5s ease;
     transition: 0.5s ease;
 }
+
 a:hover {
     text-decoration: underline;
     -webkit-transition: 0.5s ease;
     transition: 0.5s ease;
 }
+
 div#stat_wrapper {
     width: 1100px;
     margin: 40px auto 0 auto;
@@ -74,6 +76,11 @@ div#stat_wrapper div#stat_menu ul ul.child-menu li {
 div#stat_wrapper div#stat_data div#stat_data_graph {
     float: left;
     width: 600px
+}
+
+span.small-grayed {
+    color: gray;
+    font-size: 10px;
 }
 
 .left {
@@ -185,3 +192,4 @@ div#footer {
     text-align: right;
     width: 1100px;
 }
+

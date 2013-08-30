@@ -36,7 +36,6 @@ class User
         if ($this->_user->getId() == 0) {
             // If user is logged, we are returning Weby's user object (straight from the database)
             if ($this->security()->getUser()) {
-                $v = $this->security()->getUser()->getUsername();
                 $this->_user->getByEmail($this->security()->getUser()->getUsername());
             }
         }

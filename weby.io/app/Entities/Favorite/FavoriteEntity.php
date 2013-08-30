@@ -11,10 +11,26 @@ use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 class FavoriteEntity extends FavoriteEntityCrud
 {
-    public function loadByUserAndWeby(UserEntity $user, WebyEntity $weby)
+
+    public static function getAllFavoritesByUser($userId, $page = 1, $limit = 10, $orderBy = 'created_on', $orderType = 'DESC')
     {
-        $this->_user = $user->getId();
-        $this->_weby = $weby->getId();
-        return $this->populate($this->_sqlLoadByUserAndWeby());
+        $userId = $userId instanceof UserEntity ? $userId->getId() : $userId;
+
+        $limitOffset = "OFFSET " . ($page - 1) * $limit . " LIMIT " . $limit;
+        $query = "SELECT weby FROM " . self::_getDb()->w_favorite . " WHERE \"user\"=?
+                     ORDER BY {$orderBy} {$orderType} {$limitOffset}";
+        $result = self::_getDb()->execute($query, [$userId])->fetchColumn();
+
+        $favorites = [];
+
+        if ($result) {
+            foreach ($result as $webyId) {
+                $newFavorite = new FavoriteEntity();
+                $newFavorite->loadByWebyAndUser($webyId, $userId);
+                $favorites[] = clone $newFavorite;
+            }
+        }
+
+        return $favorites;
     }
 }

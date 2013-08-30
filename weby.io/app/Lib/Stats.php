@@ -31,6 +31,11 @@ class Stats
     private $_currentMonthDaysNumber;
 
     /**
+     * Activity expiration (in days)
+     */
+    private $_activeExpiration = 15;
+
+    /**
      * Initalizes current date values
      */
     public function init()
@@ -302,6 +307,28 @@ class Stats
     }
 
     /**
+     * Used by our CRON to update daily statistics of inactive users
+     */
+    public function updateDailyActiveUsersCount() {
+        $this->_sqlGetPeriodIds();
+        $activeUsersCount = $this->_sqlCountActiveUsers();
+        $query = "SELECT UPDATE_STATS_VALUE(?,?,?)";
+        $bind = [$this->_periodIds['d'], StatsEvents::ACTIVE_USERS, $activeUsersCount];
+        $this->db()->execute($query, $bind);
+    }
+
+    public function getInactiveUsersCount() {
+        return $this->_sqlCountInactiveUsers();
+    }
+
+    /**
+     * Get's current active users count
+     * @return DatabaseResult
+     */
+    public function getActiveUsersCount() {
+        return $this->_sqlCountActiveUsers();
+    }
+    /**
      * Updates user's count of Webies for current period
      * @param \App\Entities\User\UserEntity $user
      * @param int $increment
@@ -472,6 +499,26 @@ class Stats
             $finishDay,
             $event);
         return $this->db()->execute($query, $bind)->fetchAll();
+    }
+
+    /**
+ * Counts active users
+ * @return DatabaseResult
+ */
+    private function _sqlCountActiveUsers() {
+        // Expiration of active user status (in days)
+        $query = "SELECT COUNT(email) FROM w_user WHERE last_login > (NOW() - INTERVAL '{$this->_activeExpiration} days')";
+        return $this->db()->execute($query)->fetchValue();
+    }
+
+    /**
+     * Counts active users
+     * @return DatabaseResult
+     */
+    private function _sqlCountInactiveUsers() {
+        // Expiration of active user status (in days)
+        $query = "SELECT COUNT(email) FROM w_user WHERE last_login < (NOW() - INTERVAL '{$this->_activeExpiration} days')";
+        return $this->db()->execute($query)->fetchValue();
     }
 
     /**

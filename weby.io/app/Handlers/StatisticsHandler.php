@@ -15,7 +15,10 @@ class StatisticsHandler extends AbstractHandler
     /**
      * Shows main page
      */
-    public function index() {}
+    public function index()
+    {
+
+    }
 
     /**
      * Routes stats request to specific method
@@ -96,14 +99,44 @@ class StatisticsHandler extends AbstractHandler
             $w['widgetName'] = StatsEvents::getToolName($w['event']);
         }
 
-        if($statistics['widgets']->count()) {
+        if ($statistics['widgets']->count()) {
             $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/usage_widgets.tpl', $statistics)]);
         }
         $this->ajaxResponse(true, '', [$view->fetch('templates/statistics/includes/no_data.tpl', $statistics)]);
 
     }
 
-    public function ajax_get_top_user_stats()
+    public function ajax_get_active_users_stats()
+    {
+        $period = $this->request()->query('period');
+        $wStats = Stats::getInstance();
+        $view = View::getInstance();
+
+        $statistics['title'] = 'Widgets by usage';
+
+        switch ($period) {
+            case 'today':
+                $statistics['users'] = $wStats->getCurrentDayTopUsers();
+                break;
+            case 'week':
+                $statistics['users'] = $wStats->getCurrentWeekTopUsers();
+                break;
+            case 'month':
+                $statistics['users'] = $wStats->getCurrentMonthTopUsers();
+                break;
+            case 'year':
+                $statistics['users'] = $wStats->getCurrentYearTopUsers();
+                break;
+        }
+
+        if ($statistics['users']->count()) {
+            $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/active_users.tpl', $statistics)]);
+        }
+        $this->ajaxResponse(true, '', [$view->fetch('templates/statistics/includes/no_data.tpl', $statistics)]);
+
+    }
+
+    public function ajax_get_top_users_stats()
     {
 
         $period = $this->request()->query('period');
@@ -127,7 +160,7 @@ class StatisticsHandler extends AbstractHandler
                 break;
         }
 
-        if($statistics['users']->count()) {
+        if ($statistics['users']->count()) {
             $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/top_users.tpl', $statistics)]);
         }
         $this->ajaxResponse(true, '', [$view->fetch('templates/statistics/includes/no_data.tpl', $statistics)]);
@@ -158,7 +191,7 @@ class StatisticsHandler extends AbstractHandler
         }
 
         $statistics['webPath'] = $this->app()->getConfig()->app->web_path;
-        if($statistics['webies']->count()) {
+        if ($statistics['webies']->count()) {
             $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/top_webies.tpl', $statistics)]);
         }
         $this->ajaxResponse(true, '', [$view->fetch('templates/statistics/includes/no_data.tpl', $statistics)]);
@@ -167,31 +200,35 @@ class StatisticsHandler extends AbstractHandler
 
     private function _get_widget_usage_stats()
     {
-        $view = View::getInstance();
-        $data['title'] = 'Widgets by usage';
-        $data['stat'] = 'widget_usage';
-        $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/period_selector.tpl', $data)]);
+        $this->_getPeriodSelector('Widgets by usage', 'widget_usage');
     }
 
     private function _get_top_user_stats()
     {
-        $view = View::getInstance();
-        $data['title'] = 'Top users';
-        $data['stat'] = 'top_user';
-        $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/period_selector.tpl', $data)]);
+        $this->_getPeriodSelector('Top users', 'top_users');
     }
 
     private function _get_top_webies_stats()
     {
+        $this->_getPeriodSelector('Top webies', 'top_webies');
+    }
+
+    private function _get_active_users_stats()
+    {
         $view = View::getInstance();
-        $data['title'] = 'Top Webies';
-        $data['stat'] = 'top_webies';
-        $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/period_selector.tpl', $data)]);
+
+        $wStats = Stats::getInstance();
+        $statistics['active'] = $wStats->getActiveUsersCount();
+        $statistics['inactive'] = $wStats->getInactiveUsersCount();
+        $statistics['title'] = 'Active users';
+        $statistics['event'] = StatsEvents::ACTIVE_USERS;
+
+        $this->ajaxResponse(false, '', $view->fetch('templates/statistics/includes/active_users.tpl', $statistics));
     }
 
     private function _get_registered_users_stats()
     {
-        $this->_getStandardDataView(StatsEvents::USER_REGISTERED, 'Users registered');
+        $this->_getStandardDataView(StatsEvents::USER_REGISTERED, 'Widgets: Users registered');
     }
 
     private function _get_created_webies_stats()
@@ -299,7 +336,27 @@ class StatisticsHandler extends AbstractHandler
         $this->_getStandardDataView(StatsEvents::OAUTH_REG_BY_LINKEDIN, 'OAuth: Registered with Linked In');
     }
 
-    private function _getStandardDataView($event, $title)
+    /**
+     * Used for data that is shown in table on certain order
+     * @param $title
+     * @param $stats
+     * @param string $template
+     */
+    private function _getPeriodSelector($title, $stats, $template='period_selector')
+    {
+        $view = View::getInstance();
+        $data['title'] = $title;
+        $data['stat'] = $stats;
+        $this->ajaxResponse(false, '', [$view->fetch('templates/statistics/includes/' . $template . '.tpl', $data)]);
+    }
+
+    /**
+     * Shows standard template with periods statistics and chart
+     * @param $event
+     * @param $title
+     * @param $template
+     */
+    private function _getStandardDataView($event, $title, $template = 'standard_data_presentation')
     {
         $view = View::getInstance();
 
@@ -312,7 +369,7 @@ class StatisticsHandler extends AbstractHandler
         $statistics['dayOfMonth'] = date('j');
         $statistics['monthOfYear'] = date('m');
 
-        $this->ajaxResponse(false, '', $view->fetch('templates/statistics/includes/standard_data_presentation.tpl', $statistics));
+        $this->ajaxResponse(false, '', $view->fetch('templates/statistics/includes/' . $template .'.tpl', $statistics));
     }
 
 }

@@ -27,11 +27,21 @@ abstract class AbstractHandler
         View::getInstance()->display($this->_template, $this->_dataContainer, $this->_templatePath);
     }
 
+    /**
+     * Changes directory of template to load, it starts with theme_abs_path (from config) and from passed $dir
+     * @param $dir String Final path will be theme_abs_path/$dir
+     * @return $this
+     */
     public function setTemplatePath($dir) {
         $this->_templatePath = $dir;
 		return $this;
     }
 
+    /**
+     * Sets template name from selected directory
+     * @param $template String Template name WITHOUT .tpl extension
+     * @return $this
+     */
     public function setTemplate($template) {
         $this->_template = $template;
 		return $this;

@@ -2,15 +2,7 @@ routes:
     - ['', \App\Handlers\PagesHandler, index]
     - ['about', \App\Handlers\PagesHandler, about]
     - ['favorite', \App\Handlers\PagesHandler, toggleFavorite]
-
-    - ['statistics', \App\Handlers\StatisticsHandler, index]
-    - ['statistics/ajax_get_week_stats', \App\Handlers\StatisticsHandler, ajax_get_week_stats]
-    - ['statistics/ajax_get_month_stats', \App\Handlers\StatisticsHandler, ajax_get_month_stats]
-    - ['statistics/ajax_get_year_stats', \App\Handlers\StatisticsHandler, ajax_get_year_stats]
-    - ['statistics/ajax_get_stats', \App\Handlers\StatisticsHandler, ajax_get_stats]
-    - ['statistics/ajax_get_widget_usage_stats', \App\Handlers\StatisticsHandler, ajax_get_widget_usage_stats]
-    - ['statistics/ajax_get_top_user_stats', \App\Handlers\StatisticsHandler, ajax_get_top_user_stats]
-    - ['statistics/ajax_get_top_webies_stats', \App\Handlers\StatisticsHandler, ajax_get_top_webies_stats]
+    - ['favorites', \App\Handlers\PagesHandler, ajax_get_favorites]
 
     - ['security/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
     - ['editor/save', \App\Handlers\EditorHandler, save]
@@ -23,6 +15,23 @@ routes:
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]
     - ['embed/fb-post', \App\Handlers\EmbedHandler, fbPost]
     - ['link/parse', \App\Handlers\LinksHandler, parse]
+
+    # CRON ROUTES
+    - ['cron/inactive-users', \App\Handlers\CronHandler, checkInactiveUsers]
+
+    # STATISTICS ROUTES
+    - ['statistics', \App\Handlers\StatisticsHandler, index]
+    - ['statistics/ajax_get_week_stats', \App\Handlers\StatisticsHandler, ajax_get_week_stats]
+    - ['statistics/ajax_get_month_stats', \App\Handlers\StatisticsHandler, ajax_get_month_stats]
+    - ['statistics/ajax_get_year_stats', \App\Handlers\StatisticsHandler, ajax_get_year_stats]
+    - ['statistics/ajax_get_stats', \App\Handlers\StatisticsHandler, ajax_get_stats]
+    - ['statistics/ajax_get_widget_usage_stats', \App\Handlers\StatisticsHandler, ajax_get_widget_usage_stats]
+    - ['statistics/ajax_get_top_users_stats', \App\Handlers\StatisticsHandler, ajax_get_top_users_stats]
+    - ['statistics/ajax_get_top_webies_stats', \App\Handlers\StatisticsHandler, ajax_get_top_webies_stats]
+    - ['statistics/ajax_get_active_users_stats', \App\Handlers\StatisticsHandler, ajax_get_active_users_stats]
+
+
+    # GLOBAL ROUTES
     - ['/^([a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby
     - ['/^([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\EditorHandler, route] #backend editor router
     - ['/^([a-z0-9_-]*)$/', \App\Handlers\EditorHandler, route] #backend editor router

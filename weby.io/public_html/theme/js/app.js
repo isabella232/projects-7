@@ -4,6 +4,7 @@ var AppClass = function () {
 	var _contentBackground = $('#content-background');
 	var _header = $('#header');
 	var _appToolbar;
+    var _dashboard = null;
 	var _weby = false;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
@@ -99,6 +100,8 @@ var AppClass = function () {
 		_appToolbar = new AppToolbar();
 		_appToolbar.init();
 
+        _dashboard = new WebyDashboard();
+
 		// Bind events
 		$(document).keydown(function (e) {
 			// Backspace
@@ -188,17 +191,18 @@ var AppClass = function () {
 		});
 
 		// Recalculate editor dimensions when window is resized
-		$(window).resize(function () {
-			// prevent recalculation if the resize is triggered by jQuery UI resizable
-			if($('.ui-resizable-resizing').length > 0){
-				return;
-			}
-			_viewportWidth = $(window).width();
-			_viewportHeight = $(window).height();
-			App.getWeby().getBackground().recalculateContentSize();
-			App.fireEvent("viewport.resize");
-		});
-
+        if(!showDashboard){
+            $(window).resize(function () {
+                // prevent recalculation if the resize is triggered by jQuery UI resizable
+                if($('.ui-resizable-resizing').length > 0){
+                    return;
+                }
+                _viewportWidth = $(window).width();
+                _viewportHeight = $(window).height();
+                App.getWeby().getBackground().recalculateContentSize();
+                App.fireEvent("viewport.resize");
+            });
+        }
 
 		// Setup initial content sizes
 		_viewportWidth = $(window).width();
@@ -208,10 +212,14 @@ var AppClass = function () {
 		_contentBackground.width(_viewportWidth);
 		_contentBackground.height(_viewportHeight - _heightOffset);
 
-		// Setup dragging and Weby
-		_webyDrag = new WebyDrag(_content);
-		_weby = new Weby();
-		_weby.init();
+        if (showDashboard) {
+            _dashboard.open(true);
+        } else {
+            // Setup dragging and Weby
+            _webyDrag = new WebyDrag(_content);
+            _weby = new Weby();
+            _weby.init();
+        }
 	}
 
 	this.showLoading = function () {
@@ -288,6 +296,10 @@ var AppClass = function () {
 	this.getToolbarWrapper = function () {
 		return _toolbarWrapper;
 	}
+
+    this.getDashboard = function(){
+        return _dashboard;
+    }
 
 	/**
 	 * Main APP event manager

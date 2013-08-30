@@ -5,10 +5,12 @@ namespace App\Lib;
 class StatsEvents
 {
     const USER_REGISTERED = 1;
-    const WEBY_CREATED = 2;
-    const OAUTH_REG_BY_FACEBOOK = 3;
-    const OAUTH_REG_BY_GOOGLE = 4;
-    const OAUTH_REG_BY_LINKEDIN = 5;
+    // const XY = 2
+    const ACTIVE_USERS = 3;
+    const WEBY_CREATED = 4;
+    const OAUTH_REG_BY_FACEBOOK = 5;
+    const OAUTH_REG_BY_GOOGLE = 6;
+    const OAUTH_REG_BY_LINKEDIN = 7;
 
     // Widgets added events (must have format of W_{WIDGETNAME}_ADDED)
     public static $W_ADDED = 100;
@@ -29,6 +31,11 @@ class StatsEvents
     public static $W_VINE_ADDED = 115;
     public static $W_FLICKR_ADDED = 116;
 
+    /**
+     * Gets tool name from given ID
+     * @param $numericRepresentation
+     * @return mixed
+     */
     public static function getToolName($numericRepresentation)
     {
         $map = [

@@ -37,7 +37,7 @@ class UsersHandler extends AbstractHandler
             $user->populate($serviceData)->save();
 
             // Sending welcome e-mail to our newly created user
-            #$this->_sendEmail($user);
+            $this->_sendEmail($user);
 
             // Now update users stats
             $stats = Stats::getInstance();
@@ -73,10 +73,10 @@ class UsersHandler extends AbstractHandler
         $msg->setSubject('Welcome to Weby.io!')
             ->setBodyFromTemplate($config->theme_abs_path . 'templates/emails/welcoming.tpl')
             ->setContentType('text/html')
-            ->setTo($user->getEmail())
-            ->setFrom('info@weby.io');
+            ->setTo($user->getEmail());
 
         // Send it
-        $mailer->setDecorators($data)->send($msg);
+        $mailer->setDecorators($data);
+        $mailer->send($msg);
     }
 }
