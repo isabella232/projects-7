@@ -3,32 +3,25 @@
 {block name="title"}Weby editor{/block}
 {block name="head"}
     {include file="templates/editor/includes/editorIncludes.tpl"}
-    {include file="templates/editor/includes/editorThirdPartyIncludes.tpl"}
+    {include file="templates/editor/includes/editorRemoteIncludes.tpl"}
     <!-- The standard Google Loader script. -->
     <script type="text/javascript">
         // TODO: move this to a more convenient place
         google.load('picker', '1');
     </script>
     <script type="text/javascript" id="initScript">
-        var showDashboard = {if isset($showDashboard)}true{else}false{/if};
-        {if isset($contentValidator)}
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
-        {/if}
-        {if $weby}
         var weby = {$weby->toJson()};
-        {/if}
         var myWebies = {$viewObject->user->getWebies(true)};
         $(function () {
             App = new AppClass();
             App.init();
-            /*$('#initScript').remove();*/
+            $('#initScript').remove();
         });
     </script>
 {/block}
 {block name="content"}
-    <div id="toolbar-wrapper" class="collapsed">
-        {*<a class="collapse" href="javascript:void(0);">Click to collapse</a>*}
-    </div>
+    <div id="toolbar-wrapper" class="collapsed"></div>
     <div id="weby-toolbar-wrapper">
         <a href="javascript:void(0)" class="disabled tool-icon bring-to-front">To Front</a>
         <a href="javascript:void(0)" class="disabled tool-icon bring-forward">Forward</a>

@@ -119,11 +119,8 @@ class EditorHandler extends AbstractHandler
 	 * Shows Weby editor
 	 */
 	private function _editor() {
-		$this->user()->getWebies(true);
 		if($this->_weby == null) {
-			$this->showDashboard = true;
 			$this->setTemplate('dashboard');
-
 			return;
 		}
 		$this->weby = $this->_weby;
