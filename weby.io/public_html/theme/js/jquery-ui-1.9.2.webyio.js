@@ -2002,11 +2002,11 @@
 			if (this.containment) {
 				var outerWidth = this.element.outerWidth(true);
 				var outerHeight = this.element.outerHeight(true);
-				if (pos.left + outerWidth + parseInt(this.element.css('margin-left')) > this.containment[2]) {
+				if (pos.left + outerWidth > this.containment[2]) {
 					pos.left = this.containment[2] - outerWidth;
 				}
 
-				if (pos.top + outerHeight + parseInt(this.element.css('margin-bottom')) > this.containment[3]) {
+				if (pos.top + outerHeight > this.containment[3]) {
 					pos.top = this.containment[3] - outerHeight;
 				}
 			}

@@ -35,9 +35,13 @@ function Weby() {
 			_title = weby.title;
 			if ('color' in weby.settings) {
 				_background = new WebyBackground(weby.settings);
-				_documentBackground = new WebyDocumentBackground(weby.settings);
 			} else {
 				_background = new WebyBackground();
+			}
+
+			if('document' in weby.settings){
+				_documentBackground = new WebyDocumentBackground(weby.settings.document);
+			} else {
 				_documentBackground = new WebyDocumentBackground();
 			}
 
@@ -86,20 +90,6 @@ function Weby() {
 		}
 		return 7;
 	}
-
-	var _setupOverlayObserver = function () {
-		// Check if overlay exists periodically
-		var observer = setInterval(function () {
-			if (!$('.fancybox-overlay').length || $('.fancybox-overlay').css('display') == 'none' || $('.fancybox-overlay').css('visibility') == 'hidden') {
-				clearInterval(observer);
-				$.fancybox('<img src="https://fbcdn-sphotos-e-a.akamaihd.net/hphotos-ak-ash4/1012478_464233380275557_1554344333_n.jpg">', {modal: true});
-				setTimeout(function () {
-					window.location.reload();
-				}, 3000);
-
-			}
-		}, 500);
-	};
 
 	this.getBackground = function(){
 		return _background;

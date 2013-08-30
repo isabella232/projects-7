@@ -283,7 +283,7 @@ function WebyToolbar() {
 	$('#background-size-auto').click(function () {
 		$this.setCanvasSize(
 			App.getViewportWidth() - App.getWeby().getScrollBarOffset(),
-			App.getViewportHeight() - 94 - App.getWeby().getScrollBarOffset()
+			App.getViewportHeight() - App.getTopOffset() - App.getWeby().getScrollBarOffset()
 		);
 		_canvasSizeChange();
 	});

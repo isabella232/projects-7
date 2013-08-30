@@ -954,7 +954,7 @@ BaseWidget.prototype = {
 		var resizableOptions = {};
 
 		if (!BaseWidget.CONTAINMENT) {
-			BaseWidget.CONTAINMENT = [0, 94];
+			BaseWidget.CONTAINMENT = [0, App.getTopOffset()];
 		}
 
 		this._draggableOptions["containment"] = BaseWidget.CONTAINMENT;

@@ -20,121 +20,116 @@ use Webiny\Component\Storage\StorageTrait;
 
 class EditorHandler extends AbstractHandler
 {
-    use AppTrait, StdLibTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, StorageTrait;
+	use AppTrait, StdLibTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, StorageTrait;
 
-    /**
-     * @var WebyEntity
-     */
-    private $_weby = null;
+	/**
+	 * @var WebyEntity
+	 */
+	private $_weby = null;
 
-    public function create()
-    {
-        $weby = new WebyEntity();
-        $weby->setUser($this->user())->save();
+	public function create() {
+		$weby = new WebyEntity();
+		$weby->setUser($this->user())->save();
 
-        // Update stats
-        $stats = Stats::getInstance();
-        $stats->updateWebiesStats($this->user());
+		// Update stats
+		$stats = Stats::getInstance();
+		$stats->updateWebiesStats($this->user());
 
-        $this->request()->redirect($weby->getEditorUrl());
-    }
+		$this->request()->redirect($weby->getEditorUrl());
+	}
 
-    public function save()
-    {
-        // Create new Weby entity, populate it and save into database
-        $weby = new WebyEntity();
+	public function save() {
+		// Create new Weby entity, populate it and save into database
+		$weby = new WebyEntity();
 
-        // Get ID of existing Weby and load
-        $id = $this->request()->post('id');
-        if ($id) {
-            $weby->load($id);
-            // TODO: check if weby belongs to this user
-        }
+		// Get ID of existing Weby and load
+		$id = $this->request()->post('id');
+		if($id) {
+			$weby->load($id);
+			// TODO: check if weby belongs to this user
+		}
 
-        $weby->populate($this->request()->post());
-        $weby->setUser($this->user())->save();
+		$weby->populate($this->request()->post());
+		$weby->setUser($this->user())->save();
 
-        $this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
-    }
+		$this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
+	}
 
-    public function dashboard()
-    {
-        $data = [
-            'webies' => $this->user()->getWebies(true),
-            'favorites' => FavoriteEntity::getAllFavoritesByUser($this->user())
-        ];
-        $html = View::getInstance()->fetch('templates/common/dashboard.tpl', $data);
-        die($html);
-    }
+	public function dashboard() {
+		$data = [
+			'webies'    => $this->user()->getWebies(true),
+			'favorites' => FavoriteEntity::getAllFavoritesByUser($this->user())
+		];
+		$html = View::getInstance()->fetch('templates/common/dashboard.tpl', $data);
+		die($html);
+	}
 
-    public function route($userName, $webyId = null)
-    {
-        // If username doesn't match - redirect to correct user area
-        if ($userName != $this->user()->getUsername()) {
-            if ($this->user()->getId()) {
-                $this->request()->redirect($this->user()->getProfileUrl());
-            }
-            $this->request()->redirect($this->app()->getConfig()->app->web_path);
-        }
+	public function route($userName, $webyId = null) {
+		// If username doesn't match - redirect to correct user area
+		if($userName != $this->user()->getUsername()) {
+			if($this->user()->getId()) {
+				$this->request()->redirect($this->user()->getProfileUrl());
+			}
+			$this->request()->redirect($this->app()->getConfig()->app->web_path);
+		}
 
-        // Check if weby exists
-        if ($webyId != null) {
-            $this->_weby = new WebyEntity();
-            $this->_weby->load($webyId);
+		// Check if weby exists
+		if($webyId != null) {
+			$this->_weby = new WebyEntity();
+			$this->_weby->load($webyId);
 
-            if (!$this->_weby->getId()) {
-                $this->request()->redirect($this->user()->getProfileUrl());
-            }
+			if(!$this->_weby->getId()) {
+				$this->request()->redirect($this->user()->getProfileUrl());
+			}
 
-            if ($this->_weby->getUser()->getId() != $this->user()->getId()) {
-                $this->request()->redirect($this->user()->getProfileUrl());
-            }
-        }
+			if($this->_weby->getUser()->getId() != $this->user()->getId()) {
+				$this->request()->redirect($this->user()->getProfileUrl());
+			}
+		}
 
-        // Load Weby in editor
-        $this->_editor();
-    }
+		// Load Weby in editor
+		$this->_editor();
+	}
 
-    public function uploadImage()
-    {
-        $webyId = $this->request()->query('weby');
-        $this->_removeImage($webyId);
-        $file = $this->request()->files('background-image');
+	public function uploadImage() {
+		$webyId = $this->request()->query('weby');
+		$this->_removeImage($webyId);
+		$file = $this->request()->files('background-image');
 
-        if (!$this->file($file->getTmpName())->isImage()) {
-            $this->ajaxResponse(true, 'Given file type is not allowed!');
-        }
+		if(!$this->file($file->getTmpName())->isImage()) {
+			$this->ajaxResponse(true, 'Given file type is not allowed!');
+		}
 
-        $ext = $this->str($file->getName())->explode('.')->last();
-        $key = $this->user()->getUsername() . '/' . $webyId . '-background-' . time() . '.' . $ext;
+		$ext = $this->str($file->getName())->explode('.')->last();
+		$key = $this->user()->getUsername() . '/' . $webyId . '-background-' . time() . '.' . $ext;
 
-        $webyFile = new LocalFile($key, $this->storage('local'));
-        $webyFile->setContents(file_get_contents($file->getTmpName()));
-        die(json_encode(['url' => $webyFile->getUrl()]));
-    }
+		$webyFile = new LocalFile($key, $this->storage('local'));
+		$webyFile->setContents(file_get_contents($file->getTmpName()));
+		die(json_encode(['url' => $webyFile->getUrl()]));
+	}
 
-    private function _removeImage($webyId)
-    {
-        $userDir = new LocalDirectory($this->user()->getUsername(), $this->storage('local'));
-        foreach ($userDir->filter($webyId . '-background*') as $file) {
-            $file->delete();
-        }
-    }
+	private function _removeImage($webyId) {
+		$userDir = new LocalDirectory($this->user()->getUsername(), $this->storage('local'));
+		foreach ($userDir->filter($webyId . '-background*') as $file) {
+			$file->delete();
+		}
+	}
 
-    /**
-     * Shows Weby editor
-     */
-    private function _editor()
-    {
-        $this->user()->getWebies(true);
-        if ($this->_weby == null) {
-            $this->showDashboard = true;
-        }
+	/**
+	 * Shows Weby editor
+	 */
+	private function _editor() {
+		$this->user()->getWebies(true);
+		if($this->_weby == null) {
+			$this->showDashboard = true;
+			$this->setTemplate('dashboard');
 
-        $this->weby = $this->_weby;
-        $validators = $this->app()->getConfig()->app->content_validators->toArray(true);
-        $vIndex = rand(0, $validators->count() - 1);
-        $this->contentValidator = $validators[$vIndex];
-        $this->setTemplate('index');
-    }
+			return;
+		}
+		$this->weby = $this->_weby;
+		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);
+		$vIndex = rand(0, $validators->count() - 1);
+		$this->contentValidator = $validators[$vIndex];
+		$this->setTemplate('index');
+	}
 }

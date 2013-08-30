@@ -83,3 +83,4 @@
     parsers/flickerParser.js,
     init.js
 {/minify}
+<script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

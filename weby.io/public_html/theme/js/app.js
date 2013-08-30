@@ -4,15 +4,15 @@ var AppClass = function () {
 	var _contentBackground = $('#content-background');
 	var _header = $('#header');
 	var _appToolbar;
-    var _dashboard = null;
+	var _dashboard = null;
 	var _weby = false;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');
 	var _viewportHeight;
 	var _viewportWidth;
 	var _activeWidget = null
-	// Manual height offset for tweaking purposes
-	var _heightOffset = 94;
+	var _topOffset = 94;
+	var _bottomOffset = 0;
 
 	/**
 	 * Catch Ctrl+V key press
@@ -100,7 +100,7 @@ var AppClass = function () {
 		_appToolbar = new AppToolbar();
 		_appToolbar.init();
 
-        _dashboard = new WebyDashboard();
+		_dashboard = new WebyDashboard();
 
 		// Bind events
 		$(document).keydown(function (e) {
@@ -191,35 +191,29 @@ var AppClass = function () {
 		});
 
 		// Recalculate editor dimensions when window is resized
-        if(!showDashboard){
-            $(window).resize(function () {
-                // prevent recalculation if the resize is triggered by jQuery UI resizable
-                if($('.ui-resizable-resizing').length > 0){
-                    return;
-                }
-                _viewportWidth = $(window).width();
-                _viewportHeight = $(window).height();
-                App.getWeby().getBackground().recalculateContentSize();
-                App.fireEvent("viewport.resize");
-            });
-        }
+		$(window).resize(function () {
+			// prevent recalculation if the resize is triggered by jQuery UI resizable
+			if ($('.ui-resizable-resizing').length > 0) {
+				return;
+			}
+			_viewportWidth = $(window).width();
+			_viewportHeight = $(window).height();
+			App.getWeby().getBackground().recalculateContentSize();
+			App.fireEvent("viewport.resize");
+		});
 
 		// Setup initial content sizes
 		_viewportWidth = $(window).width();
 		_viewportHeight = $(window).height();
 		_contentWrapper.width(_viewportWidth);
-		_contentWrapper.height(_viewportHeight - _heightOffset);
+		_contentWrapper.height(_viewportHeight - _topOffset);
 		_contentBackground.width(_viewportWidth);
-		_contentBackground.height(_viewportHeight - _heightOffset);
+		_contentBackground.height(_viewportHeight - _topOffset);
 
-        if (showDashboard) {
-            _dashboard.open(true);
-        } else {
-            // Setup dragging and Weby
-            _webyDrag = new WebyDrag(_content);
-            _weby = new Weby();
-            _weby.init();
-        }
+		// Setup dragging and Weby
+		_webyDrag = new WebyDrag(_content);
+		_weby = new Weby();
+		_weby.init();
 	}
 
 	this.showLoading = function () {
@@ -253,6 +247,22 @@ var AppClass = function () {
 	 */
 	this.getViewportHeight = function () {
 		return _viewportHeight;
+	}
+
+	this.getAvailableContentWidth = function () {
+		return _viewportWidth - _weby.getScrollBarOffset();
+	}
+
+	this.getAvailableContentHeight = function () {
+		return _viewportHeight - _topOffset - _bottomOffset - _weby.getScrollBarOffset();
+	}
+
+	this.getTopOffset = function () {
+		return _topOffset;
+	}
+
+	this.getBottomOffset = function () {
+		return _bottomOffset;
 	}
 
 	/**
@@ -297,9 +307,9 @@ var AppClass = function () {
 		return _toolbarWrapper;
 	}
 
-    this.getDashboard = function(){
-        return _dashboard;
-    }
+	this.getDashboard = function () {
+		return _dashboard;
+	}
 
 	/**
 	 * Main APP event manager

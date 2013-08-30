@@ -5,9 +5,9 @@ function WebyDocumentBackground(settings) {
 		pattern: new WebyPatternBackground($('#workspace'), null)
 	};
 
-	if (typeof settings.document != "undefined") {
+	if (typeof settings != "undefined") {
 		for (var i in _backgrounds) {
-			_backgrounds[i].populate(settings.document[i]);
+			_backgrounds[i].populate(settings[i]);
 		}
 	}
 

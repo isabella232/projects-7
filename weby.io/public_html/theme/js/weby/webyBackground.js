@@ -1,7 +1,7 @@
 function WebyBackground(settings) {
 
-	var _canvasWidth = 0;
-	var _canvasHeight = 0;
+	var _canvasWidth = App.getAvailableContentWidth();
+	var _canvasHeight = App.getAvailableContentHeight();
 
 	var _backgrounds = {
 		color: new WebyColorBackground(App.getContent()),
@@ -120,7 +120,7 @@ function WebyBackground(settings) {
 				maxLeft = width - rect.width - marginLeft * 2;
 			}
 
-			if (rect.height + rect.top - 94 + el.scrollTop + marginTop > height) {
+			if (rect.height + rect.top - App.getTopOffset() + el.scrollTop + marginTop > height) {
 				maxTop = height - rect.height - marginTop * 2;
 			}
 
@@ -210,7 +210,7 @@ function WebyBackground(settings) {
 			App.getContentBackground().height(height);
 		} else {
 			_resize(App.getContent(), "height", height + 'px');
-			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - 94 + 'px');
+			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() + 'px');
 		}
 
 		return this;
@@ -227,9 +227,9 @@ function WebyBackground(settings) {
 	 */
 	this.setContainment = function (width, height) {
 		if (!width && !height) {
-			var containment = [0, 94];
+			var containment = [0, App.getTopOffset()];
 		} else {
-			var containment = [0, 94, width, height];
+			var containment = [0, App.getTopOffset(), width, height];
 		}
 
 		BaseWidget.CONTAINMENT = containment;
