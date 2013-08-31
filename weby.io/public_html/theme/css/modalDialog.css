@@ -1,0 +1,169 @@
+/* ---------- General ---------- */
+
+div.modal-dialog {
+    width: 532px;
+    height: 300px;
+    position: absolute;
+    color: white;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+p {
+    color: white;
+    clear: both;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+}
+
+/* ---------- Elements styles ---------- */
+
+.modal-dialog h1 {
+    margin: 0 0 0 8px;
+    padding: 0;
+    color: white;
+    font: 20px "SourceSansPro", "Calibri", "Arial", sans-serif;
+}
+
+.modal-dialog .webies-list-item {
+    background-color: #f25b2b;
+    border-bottom: 1px solid #dc420e;
+    margin: 11px 0 0 10px;
+    width: 530px;
+    float: left;
+    padding-bottom: 12px;
+}
+
+.modal-dialog .webies-list-item div.weby-data {
+    width: 230px;
+}
+
+.modal-dialog .webies-list-item div.weby-actions {
+    width: 200px;
+}
+
+.modal-dialog .webies-list-item h2 {
+    color: white;
+    font: 18px "SourceSansPro", "Calibri", "Arial", sans-serif;
+    margin: 0px;
+    float: left;
+    clear: both;
+}
+
+.modal-dialog .webies-list-item h3 {
+    color: white;
+    font: 16px "SourceSansPro", "Calibri", "Arial", sans-serif;
+    margin: 0px;
+    float: left;
+    clear: both;
+}
+
+.modal-dialog .webies-list-item img.weby-thumbnail {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    border-bottom: 3px solid #dc420e;
+    vertical-align: top;
+
+    margin-right: 14px;
+    float: left;
+}
+
+.modal-dialog div.webies-list-item span.weby-tag {
+    background-color: white;
+    background-image: url(../images/btn-tag-left-triangle.png);
+    background-repeat: no-repeat;
+    color: #f25b2b;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin: 0 2px 0 2px;
+    padding: 0 4px 0 2px;
+    display: inline-block;
+    height: 16px;
+    text-indent: 10px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    -moz-border-radius-bottomright: 2px;
+
+}
+
+/* ---------- Buttons ---------- */
+
+span.dialog-button {
+    background-color: #dc420e;
+    display: inline-block;
+    height: 17px;
+    color: #fdf5f2;
+    padding: 5px;
+    margin: 0 2px 0 2px;
+    font-size: 13px;
+    text-indent: 12px;
+}
+
+span.dialog-button.delete {
+    background-image: url(../images/icons/btn-delete.png);
+    background-repeat: no-repeat;
+    background-position: 4px 8px;
+}
+
+span.dialog-button.edit {
+    background-image: url(../images/icons/btn-edit.png);
+    background-repeat: no-repeat;
+    background-position: 4px 8px;
+}
+
+span.dialog-button.view {
+    text-indent: 0px;
+    background-color: #a8320b;
+}
+/* ---------- Kendo overrides ---------- */
+
+.modal-dialog .k-pager-wrap {
+    background: #f25b2b none;
+    border: none;
+}
+
+.modal-dialog .k-listview {
+    border: none;
+}
+
+.modal-dialog .k-widget {
+    background-color: #f25b2b;
+}
+
+/* ---------- Kendo Pager overrides ---------- */
+
+#webiesPager a {
+    border: none;
+    background-color: #dc420e;
+    color:white;
+    padding: 0 7px;
+    line-height: 22px;
+}
+
+#webiesPager a:hover {
+    border: none;
+    background-color: #dc420e;
+    background-image: none;
+    color:white;
+}
+
+#webiesPager li span.k-state-selected {
+    border: none;
+    background: white none;
+    color: #f25b2b;
+    font-weight: bold;
+}
+
+#webiesPager .k-pager-info {
+    color: white;
+}

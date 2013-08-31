@@ -32,11 +32,15 @@ class UserEntity extends UserEntityCrud
         if ($json) {
             $tmp = [];
             foreach($webies as $weby){
+                /**@var $weby \App\Entities\Weby\WebyEntity */
                 $tmp[] = [
                     'id' => $weby->getId(),
+                    'thumbnail' => 'http://graph.facebook.com/1594713365/picture?type=large',
                     'title' => $weby->getTitle(),
                     'slug' => $weby->getSlug(),
-                    'modified_on' => $weby->getModifiedOn()
+                    'modified_on' => $weby->getModifiedOn(),
+                    'public_url' => $weby->getPublicUrl(),
+                    'editor_url' => $weby->getEditorUrl(),
                 ];
             }
             $webies = json_encode($tmp);

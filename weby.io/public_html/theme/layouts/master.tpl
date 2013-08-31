@@ -15,7 +15,8 @@
 
    {minify type="css"}
         main.css,
-        user.css
+        user.css,
+        modalDialog.css
     {/minify}
 
     {minify type="js"}
