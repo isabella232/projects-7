@@ -40,10 +40,6 @@ function GoogleDriveWidget() {
 		return 'https://docs.google.com/' + this._documentType + '/d/' + this._documentId + '/pub';
 	}
 
-	this.onContentLoaded = function () {
-		this._html.find('iframe').show();
-	}
-
 	/**
 	 * EDIT methods
 	 */

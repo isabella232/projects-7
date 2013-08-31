@@ -1,6 +1,7 @@
 function InstagramWidget() {
 
     this._instagramId = '';
+	this._widgetClass = 'instagram-widget';
 
     this.getHTML = function () {
         this._html = '<iframe src="'+this._embedUrl+'" width="'+this._width+'" height="'+this._height+'" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';

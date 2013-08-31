@@ -72,7 +72,7 @@ function WebyBackground(settings) {
 		return _backgrounds.color.getColor();
 	}
 
-	this.getImage = function(){
+	this.getImage = function () {
 		return _backgrounds.image.getImage();
 	}
 
@@ -116,7 +116,17 @@ function WebyBackground(settings) {
 			var marginLeft = parseInt(widget.html().css('margin-left'));
 			var marginTop = parseInt(widget.html().css('margin-top'));
 
-			if (rect.width + rect.left + el.scrollLeft + marginLeft > width) {
+			var wrapperMarginLeft = parseInt(App.getContentWrapper().css('margin-left'));
+
+			if (isNaN(marginTop)) {
+				marginTop = 0;
+			}
+
+			if (isNaN(marginLeft)) {
+				marginLeft = 0;
+			}
+
+			if (rect.width + rect.left + el.scrollLeft + marginLeft - wrapperMarginLeft > width) {
 				maxLeft = width - rect.width - marginLeft * 2;
 			}
 
@@ -150,7 +160,7 @@ function WebyBackground(settings) {
 		var $this = this;
 
 		function _applyCanvasSize(width, height) {
-			$this.setContentSize(width, height, type).setContainment(width, height).setBackgroundSize(width, height);
+			$this.setContentSize(width, height, type).setBackgroundSize(width, height);
 		}
 
 		var outerWidgets = _getWidgetsBeyondCanvas(width, height);
@@ -186,12 +196,18 @@ function WebyBackground(settings) {
 			if (typeof duration == "undefined") {
 				duration = 500;
 			}
-			if(type == 'spin'){
+			if (type == 'spin') {
 				duration = 0;
 			}
 			var data = {};
 			data[dimension] = size;
-			el.animate(data, {duration: duration, queue: false});
+			if (el == App.getContentWrapper()) {
+				el.animate(data, {duration: duration, queue: false, complete: function () {
+					App.getWeby().getBackground().setContainment(width, height)
+				}});
+			} else {
+				el.animate(data, {duration: duration, queue: false});
+			}
 		}
 
 		App.getWeby().getToolbar().setCanvasSize(width, height);
@@ -216,7 +232,7 @@ function WebyBackground(settings) {
 		return this;
 	}
 
-	this.recalculateContentSize = function(){
+	this.recalculateContentSize = function () {
 		this.setContentSize(_canvasWidth, _canvasHeight, 'change');
 	}
 
@@ -227,9 +243,9 @@ function WebyBackground(settings) {
 	 */
 	this.setContainment = function (width, height) {
 		if (!width && !height) {
-			var containment = [0, App.getTopOffset()];
+			var containment = [App.getLeftOffset(), App.getTopOffset()];
 		} else {
-			var containment = [0, App.getTopOffset(), width, height];
+			var containment = [App.getLeftOffset(), App.getTopOffset(), width, height];
 		}
 
 		BaseWidget.CONTAINMENT = containment;

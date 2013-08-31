@@ -6,6 +6,7 @@
             <a href="javascript: void(0);" id="add-to-favs">
                 <span class="share-icon social-favorites{if $favorite.weby.id}-added{/if}"></span></a>
         {/if}
+        {if $viewObject.user}
         {literal}
         <script type="text/javascript">
             $(function () {
@@ -23,6 +24,7 @@
             });
         </script>
         {/literal}
+        {/if}
         <!-- FACEBOOK SHARING -->
         <a href="#" onclick="
                 window.open(

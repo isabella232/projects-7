@@ -3,6 +3,7 @@ function VideoWidget() {
 	this._videoType = '';
 	this._videoId = false;
 	this._previewUrl = '';
+	this._widgetClass = 'video-widget';
 
 	this.getHTML = function () {
 		if (this._videoType == 'youtube') {

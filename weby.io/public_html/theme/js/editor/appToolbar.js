@@ -15,7 +15,6 @@ var AppToolbar = function () {
 			instagram: new InstagramTool(self),
 			pinterest: new PinterestTool(self),
 			facebook: new FacebookTool(self),
-			prezi: new PreziTool(self),
 			slideshare: new SlideShareTool(self),
 			googledrive: new GoogleDriveTool(self),
 			skydrive: new SkyDriveTool(self),
@@ -146,8 +145,8 @@ var AppToolbar = function () {
 					return;
 				}
 
-				var x = event.clientX - _toolBar.outerWidth() + App.getContent()[0].scrollLeft;
-				var y = event.clientY - $('#header').outerHeight() + App.getContent()[0].scrollTop;
+				var x = event.clientX - App.getLeftOffset() + App.getContentWrapper()[0].scrollLeft;
+				var y = event.clientY - App.getTopOffset() + App.getContentWrapper()[0].scrollTop;
 				activeTool.createWidgetAt(x, y);
 			}
 		});

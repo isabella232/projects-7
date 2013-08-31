@@ -35,9 +35,11 @@
                             // Call my custom event handler and give it the new size
                             var parentId = '{$id}';
                             if (parseInt(parentId) > 0) {
-                                var widget = window.top['App'].getWeby().getWidget(parentId);
-                                if (widget) {
-                                    widget.onIframeLoaded(liIframe.css("width"), liIframe.css("height"));
+                                if ('App' in window.top && 'getWidget' in window.top['App'].getWeby()) {
+                                    var widget = window.top['App'].getWeby().getWidget(parentId);
+                                    if (widget) {
+                                        widget.onIframeLoaded(liIframe.css("width"), liIframe.css("height"));
+                                    }
                                 }
                             }
                         }, 50);

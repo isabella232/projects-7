@@ -243,26 +243,53 @@ var AppClass = function () {
 	}
 
 	/**
-	 * Returns current viewport height
+	 * Returns width that is available for content div
+	 * (used when canvas size is unknown and we need to find maximum available content size)
+	 * @returns {number}
 	 */
-	this.getViewportHeight = function () {
-		return _viewportHeight;
-	}
-
 	this.getAvailableContentWidth = function () {
 		return _viewportWidth - _weby.getScrollBarOffset();
 	}
 
+	/**
+	 * Returns height that is available for content div
+	 * (used when canvas size is unknown and we need to find maximum available content size)
+	 * @returns {number}
+	 */
 	this.getAvailableContentHeight = function () {
 		return _viewportHeight - _topOffset - _bottomOffset - _weby.getScrollBarOffset();
 	}
 
+	/**
+	 * Returns content offset from the top of the window (header, height is changing depending on view mode (embed, normal, screenshot...))
+	 * @returns {number}
+	 */
 	this.getTopOffset = function () {
 		return _topOffset;
 	}
 
+	/**
+	 * Returns content offset from the bottom of the window
+	 * @returns {number}
+	 */
 	this.getBottomOffset = function () {
 		return _bottomOffset;
+	}
+
+	/**
+	 * Returns content offset from the left border of the window
+	 * @returns {number}
+	 */
+	this.getLeftOffset = function () {
+		return parseInt(_contentWrapper.css("margin-left"));
+	}
+
+
+	/**
+	 * Returns current viewport height
+	 */
+	this.getViewportHeight = function () {
+		return _viewportHeight;
 	}
 
 	/**

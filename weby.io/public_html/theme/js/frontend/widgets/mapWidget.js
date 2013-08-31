@@ -8,6 +8,7 @@ function MapWidget() {
 	this._gmapZoom = 16;
 	this._mapView = 'map';
 	this._panoramaPov = {}; // heading, pitch, zoom
+	this._widgetClass = 'map-widget';
 
 	this.getHTML = function () {
 		this._html = '<div class="map" style="width:100%;"></div>';

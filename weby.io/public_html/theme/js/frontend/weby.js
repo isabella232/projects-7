@@ -52,20 +52,33 @@ function Weby() {
 			return;
 		}
 
-		$(window).load(function () {
-			$('[type="weby/linkWidgetTemplate"]').remove();
-			$('#initScript').remove();
-			App.fireEvent("weby.loaded");
-			App.hideLoading();
-		});
+		var loaded = 0;
+		var _checkLoading = function() {
+			loaded++;
+			if (loaded == widgets.length) {
+				$('[type="weby/linkWidgetTemplate"]').remove();
+				App.fireEvent("weby.loaded");
+				App.hideLoading();
+			}
+		}
 
-		// Skip prezi widgets if editing Weby in FF
 		for (var i in widgets) {
 			var widgetData = widgets[i];
 			var widget = new window[widgetData.common["class"]]();
 			var html = widget.createFromData(widgetData);
+
+			// Bind load events
+			if (html.find('.widget-body iframe').length > 0) {
+				html.find('iframe').load(_checkLoading);
+			} else if (html.find('.widget-body img').length > 0) {
+				html.find('img').load(_checkLoading);
+			} else {
+				_checkLoading();
+			}
+
+			// Append to DOM
 			App.getContent().append(html);
-			if('onWidgetInserted' in widget){
+			if ('onWidgetInserted' in widget) {
 				widget.onWidgetInserted();
 			}
 		}

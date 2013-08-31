@@ -101,6 +101,7 @@ function LinkWidget() {
 				$this.showLoading();
 				$.get(WEB + 'link/parse/?url=' + encodeURIComponent(url), function (data) {
 					if (!data.error) {
+						$this._isResizable = false;
 						$this._title = data.data.title;
 						$this._description = data.data.description;
 						$this._imageUrl = data.data.imageUrl;

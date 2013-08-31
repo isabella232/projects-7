@@ -1,6 +1,7 @@
 function FlickerWidget() {
 
 	this._flickerCode = '';
+	this._widgetClass = 'flicker-widget';
 
 	this.getHTML = function () {
 		this._html = this._flickerCode;

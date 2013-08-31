@@ -1,4 +1,5 @@
-var AppClass = function () {
+var AppClass = function (topOffset) {
+
 	var _content = $('#content');
 	var _contentWrapper = $('#wrapper');
 	var _contentBackground = $('#content-background');
@@ -10,6 +11,10 @@ var AppClass = function () {
 	var _viewportWidth;
 	var _topOffset = 60;
 	var _bottomOffset = 0;
+
+	if(typeof topOffset != "undefined"){
+		_topOffset = topOffset;
+	}
 
 
 	/**
@@ -113,27 +118,53 @@ var AppClass = function () {
 		return _viewportHeight;
 	}
 
-	this.getAvailableContentWidth = function () {
-		return _viewportWidth - _weby.getScrollBarOffset();
-	}
-
-	this.getAvailableContentHeight = function () {
-		return _viewportHeight - _topOffset - _bottomOffset - _weby.getScrollBarOffset();
-	}
-
-	this.getTopOffset = function () {
-		return _topOffset;
-	}
-
-	this.getBottomOffset = function () {
-		return _bottomOffset;
-	}
-
 	/**
 	 * Returns current viewport width
 	 */
 	this.getViewportWidth = function () {
 		return _viewportWidth;
+	}
+
+	/**
+	 * Returns width that is available for content div
+	 * (used when canvas size is unknown and we need to find maximum available content size)
+	 * @returns {number}
+	 */
+	this.getAvailableContentWidth = function () {
+		return _viewportWidth - _weby.getScrollBarOffset();
+	}
+
+	/**
+	 * Returns height that is available for content div
+	 * (used when canvas size is unknown and we need to find maximum available content size)
+	 * @returns {number}
+	 */
+	this.getAvailableContentHeight = function () {
+		return _viewportHeight - _topOffset - _bottomOffset - _weby.getScrollBarOffset();
+	}
+
+	/**
+	 * Returns content offset from the top of the window (header, height is changing depending on view mode (embed, normal, screenshot...))
+	 * @returns {number}
+	 */
+	this.getTopOffset = function () {
+		return _topOffset;
+	}
+
+	/**
+	 * Returns content offset from the bottom of the window
+	 * @returns {number}
+	 */
+	this.getBottomOffset = function () {
+		return _bottomOffset;
+	}
+
+	/**
+	 * Returns content offset from the left border of the window
+	 * @returns {number}
+	 */
+	this.getLeftOffset = function () {
+		return parseInt(_contentWrapper.css("margin-left"));
 	}
 
 	/**

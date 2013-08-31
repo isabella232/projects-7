@@ -89,6 +89,8 @@ var BaseWidget = function () {
 	 * Z-index of the widget
 	 */
 	this._zindex = 1;
+
+	this._widgetClass = '';
 }
 
 BaseWidget.prototype = {

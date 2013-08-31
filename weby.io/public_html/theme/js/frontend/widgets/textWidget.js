@@ -1,6 +1,7 @@
 function TextWidget() {
 
 	this._content = '';
+	this._widgetClass = 'text-widget';
 
 	this.getHTML = function () {
 		this._html = this._content;

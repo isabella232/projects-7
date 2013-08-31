@@ -13,8 +13,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
 
-    {minify type="css"}
-        main.css,
+   {minify type="css"}
+        embed.css,
         weby.css,
         user.css
     {/minify}
@@ -34,18 +34,17 @@
     {block name="head"}{/block}
 
 </head>
-<body>
-<div id="header">
-    <div id="header-content">
-        <div class="content-left">
-            <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
-            <h4>Create and share your content instantly</h4>
-        </div>
-        <div class="content-right">
-            {block name="headerRightTools"}{/block}
+<body class="embed">
+    <div id="header">
+        <div id="header-content">
+            <div class="content-left">
+                <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
+            </div>
+            <div class="content-right">
+                {block name="headerRightTools"}{/block}
+            </div>
         </div>
     </div>
-</div>
-{block name="content"}{/block}
+    {block name="content"}{/block}
 </body>
 </html>

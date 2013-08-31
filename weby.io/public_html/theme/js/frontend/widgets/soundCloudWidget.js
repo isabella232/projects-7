@@ -2,6 +2,7 @@ function SoundCloudWidget() {
 
 	this._trackId = '';
 	this._trackColor = '';
+	this._widgetClass = 'soundcloud-widget';
 
 
 	this.getHTML = function () {

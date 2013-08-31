@@ -14,6 +14,8 @@ function LinkWidget() {
 	this._description = '';
 	this._imageUrl = '';
 
+	this._widgetClass = 'link-widget';
+
 
 // Methods for generating content for various link types (eg. jpg, gif, ppt, xls ...)
 // For every filetype, you can specify it's template (in LinkTool.ALLOWED_TYPES object)

@@ -35,17 +35,21 @@ class PagesHandler extends AbstractHandler
      */
     public function viewWeby($user, $slug, $id)
     {
+
         $weby = new WebyEntity();
         $weby->load($id);
 
         // Will check if requested Weby and URL params are valid
         $this->_checkRequest($weby, $user, $slug, $id);
 
-        // Asign whole weby to $this, so we can pass it to view
+        // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
         $this->widgets = $weby->getContent();
-		$this->contentValidator = '';
 
+		if($this->request()->query('embed', false, true)){
+			$this->setTemplate('embedWeby');
+			return;
+		}
         // Check if our user has added this Weby to his favorites list
         $favorite = new FavoriteEntity();
         $this->favorite = $favorite->loadByWebyAndUser($weby, $this->user());
@@ -110,7 +114,11 @@ class PagesHandler extends AbstractHandler
 
         // If user edited username or title, redirect him to proper URL via 301 header data
         if ($weby->getSlug() != $slug || $weby->getUser()->getUsername() != $user) {
-            $this->request()->redirect($cfg->web_path . $weby->getUser()->getUsername() . '/' . $weby->getSlug() . '/' . $id, 301);
+			$url = $cfg->web_path . $weby->getUser()->getUsername() . '/' . $weby->getSlug() . '/' . $id.'/';
+			if($this->request()->query('embed', false)){
+				$url .= '?embed=true';
+			}
+            $this->request()->redirect($url, 301);
         }
     }
 

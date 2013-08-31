@@ -2,18 +2,20 @@
 {block name="head"}
     <script type="text/javascript">
         $(window).load(function () {
-            var interval = setInterval(function(){
-                if($('iframe[title*=post]').length > 0){
+            var interval = setInterval(function () {
+                if ($('iframe[title*=post]').length > 0) {
                     clearInterval(interval);
                     var el = $('iframe[title*=post]');
-                    el.bind("load", function(){
-                        var sizeInterval = setInterval(function(){
-                            if(el.attr("style").indexOf("width") > -1 && el.attr("style").indexOf("height") > -1){
+                    el.bind("load", function () {
+                        var sizeInterval = setInterval(function () {
+                            if (el.attr("style").indexOf("width") > -1 && el.attr("style").indexOf("height") > -1) {
                                 clearInterval(sizeInterval);
-                                setTimeout(function(){
-                                    var widget = window.top['App'].getWeby().getWidget({$parentId});
-                                    if (widget) {
-                                        widget.onIframeLoaded(parseInt(el.css("width")), parseInt(el.css("height")));
+                                setTimeout(function () {
+                                    if ('App' in window.top && 'getWidget' in window.top['App'].getWeby()) {
+                                        var widget = window.top['App'].getWeby().getWidget({$parentId});
+                                        if (widget) {
+                                            widget.onIframeLoaded(parseInt(el.css("width")), parseInt(el.css("height")));
+                                        }
                                     }
                                 }, 1000);
                             }
