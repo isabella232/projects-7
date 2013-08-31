@@ -21,7 +21,7 @@ function GoogleDriveWidget() {
 		}
 		var id = 'googledrive-iframe-' + this._id;
 		this._alsoResize = "#" + id;
-		return '<iframe id="' + id + '" src="' + this._embedUrl + '" width="480" height="389" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
+		return '<iframe id="' + id + '" src="' + this._embedUrl + '" width="480" height="389" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>';
 	}
 
 

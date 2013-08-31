@@ -25,6 +25,6 @@ abstract class WebyEntityCrud extends WebyEntityProperties
 	}
 
     protected function _onBeforeSave() {
-        //$this->_slug = $this->_toSlug($this->_title);
+        $this->_slug = $this->_toSlug($this->_title);
     }
 }

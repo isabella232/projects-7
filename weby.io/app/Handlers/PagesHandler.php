@@ -44,6 +44,7 @@ class PagesHandler extends AbstractHandler
         // Asign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
         $this->widgets = $weby->getContent();
+		$this->contentValidator = '';
 
         // Check if our user has added this Weby to his favorites list
         $favorite = new FavoriteEntity();
@@ -52,8 +53,6 @@ class PagesHandler extends AbstractHandler
         // Update Weby's hits stats
         $stats = Stats::getInstance();
         $stats->updateWebyHits($weby);
-
-        $this->setTemplatePath('templates/editor')->setTemplate('index');
     }
 
     /**
