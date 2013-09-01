@@ -7,8 +7,16 @@ use App\Entities\User\UserEntity;
 
 abstract class WebyEntityProperties extends WebyEntityStorage
 {
-    // Weby URL
-    protected $_url=false;
+
+    /**
+     * Total count of hits to this Weby
+     */
+    protected $_hitCount = null;
+
+    /**
+     * Total count of times somebody put this Weby to his favorite's list
+     */
+    protected $_favoriteCount = null;
 
     /**
      * @return int
@@ -17,6 +25,7 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     {
         return $this->_slug;
     }
+
     /**
      * Holds array of widget objects
      * @var array
@@ -27,7 +36,8 @@ abstract class WebyEntityProperties extends WebyEntityStorage
      * Returns array of Widget objects
      * @return array
      */
-    public function getWidgets() {
+    public function getWidgets()
+    {
         return $this->_widgets;
     }
 
@@ -76,7 +86,7 @@ abstract class WebyEntityProperties extends WebyEntityStorage
      */
     public function getUser()
     {
-        if(!$this->_user instanceof UserEntity) {
+        if (!$this->_user instanceof UserEntity) {
             $user = new UserEntity();
             $user->load($this->_user);
             $this->_user = $user;
@@ -84,13 +94,29 @@ abstract class WebyEntityProperties extends WebyEntityStorage
         return $this->_user;
     }
 
-	/**
-	 * @param \App\Entities\User\UserEntity $user
-	 * @return $this
-	 */
-	public function setUser(UserEntity $user)
-	{
-		$this->_user = $user;
-		return $this;
-	}
+    /**
+     * @param \App\Entities\User\UserEntity $user
+     * @return $this
+     */
+    public function setUser(UserEntity $user)
+    {
+        $this->_user = $user;
+        return $this;
+    }
+
+    public function getHitCount()
+    {
+        if(!$this->_hitCount) {
+            $this->_hitCount = $this->_sqlGetHitCount();
+        }
+        return $this->_hitCount;
+    }
+
+    public function getFavoriteCount()
+    {
+        if(!$this->_favoriteCount) {
+            $this->_favoriteCount = $this->_sqlGetFavoriteCount();
+        }
+        return $this->_favoriteCount;
+    }
 }

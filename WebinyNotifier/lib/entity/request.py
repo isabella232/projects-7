@@ -1,9 +1,9 @@
 from lib.database import Database
 from lib.entity.message import Message
 from lib.entity.settings import Settings
-from lib.logLevel import LogLevel
 from lib.tools.JSON import JSON
 from lib.tools.debugger import Debugger
+from lib.tools.memory import formatMemory
 
 
 class Request(object):
@@ -66,7 +66,7 @@ class Request(object):
 
         # Restore 1 item from database is possible
         query = "SELECT * FROM requests ORDER BY id DESC LIMIT ?, 1"
-        results = db.execute(query, [settings.requests_limit-1]).fetchAll()
+        results = db.execute(query, [settings.requests_limit - 1]).fetchAll()
 
         if results:
             req = Request()
@@ -120,7 +120,7 @@ class Request(object):
         return self._id
 
     def getMemory(self):
-        return self._format(self._memory)
+        return formatMemory(self._memory)
 
     def getDateTime(self):
         return self._datetime
@@ -178,10 +178,3 @@ class Request(object):
         for k in data:
             setattr(self, '_' + k, data[k])
         self._stats = JSON.decode(self._stats)
-
-    def _format(self, num):
-        for x in ['bytes','KB','MB','GB']:
-            if num < 1024.0:
-                return "%3.2f %s" % (num, x)
-            num /= 1024.0
-        return "%3.2f %s" % (num, 'TB')

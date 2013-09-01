@@ -3,6 +3,7 @@ from PyQt4.QtGui import QTableView
 
 
 class RequestsTableView(QTableView):
+
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Delete:
             if len(self.selectedIndexes()) > 0:

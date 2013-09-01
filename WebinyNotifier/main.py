@@ -14,7 +14,7 @@ class output:
 
 if __name__ == "__main__":
     # Override standard error output
-    out = output()
+    #out = output()
     #sys.stderr = out
     app = WebinyNotifier([])
     qInitResources()

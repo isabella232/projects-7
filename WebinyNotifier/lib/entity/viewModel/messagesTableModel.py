@@ -1,5 +1,4 @@
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import QFrame, QColor
 from lib.entity.settings import Settings
 
 
@@ -9,8 +8,8 @@ class MessagesTableModel(QtCore.QAbstractTableModel):
         QtCore.QAbstractTableModel.__init__(self, parent, *args)
         self.parent = parent
         self.arrayData = dataIn
-        self.headerData = ['Datetime', 'Level', 'Group', 'Message']
-        self.tableData = ['getDateTime', 'getLevel', 'getGroup', 'getMessage']
+        self.headerData = ['Datetime', 'Logger', 'File', 'Line', 'Memory', 'Level', 'Message']
+        self.tableData = ['getDateTime', 'getGroup', 'getFile', 'getLine', 'getMemory', 'getLevel', 'getMessage']
         self._emptyVariant = QtCore.QVariant()
 
     def rowCount(self, parent):

@@ -13,6 +13,7 @@
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
         var myWebies = {$viewObject->user->getWebies(true)};
+        var myFavoriteWebies = {$viewObject->user->getFavoriteWebies(true)};
         $(function () {
             App = new AppClass();
             App.init();
