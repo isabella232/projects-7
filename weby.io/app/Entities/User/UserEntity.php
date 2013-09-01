@@ -22,7 +22,6 @@ class UserEntity extends UserEntityCrud
     public static function generateUsername($email)
     {
         $parts = self::str($email)->explode('@');
-
         return $parts->first()->replace('.', '')->val();
     }
 
@@ -38,9 +37,11 @@ class UserEntity extends UserEntityCrud
                     'thumbnail' => 'http://graph.facebook.com/1594713365/picture?type=large',
                     'title' => $weby->getTitle(),
                     'slug' => $weby->getSlug(),
-                    'modified_on' => $weby->getModifiedOn(),
+                    'modified_on' => date('F d, Y \a\t h:m a', strtotime($weby->getModifiedOn())),
                     'public_url' => $weby->getPublicUrl(),
                     'editor_url' => $weby->getEditorUrl(),
+                    'hits' => $weby->getHitCount(),
+                    'favorites' => $weby->getFavoriteCount(),
                 ];
             }
             $webies = json_encode($tmp);
@@ -53,4 +54,5 @@ class UserEntity extends UserEntityCrud
     {
         return $this->app()->getConfig()->app->web_path . $this->getUsername() . '/';
     }
+
 }

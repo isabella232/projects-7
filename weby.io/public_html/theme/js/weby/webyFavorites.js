@@ -1,9 +1,10 @@
 function WebyDashboard() {
 
     var $this = this;
+    var favoritesOpen = $('#user-favorites');
 
     var webiesDataSource = new kendo.data.DataSource({
-        data: myWebies,
+        data: myFavoriteWebies,
         pageSize: 3
     });
 
@@ -11,7 +12,6 @@ function WebyDashboard() {
         dataSource: webiesDataSource,
         buttonCount: 5
     });
-
 
     // TODO: move this HTML to another place because it got really big
     $("#webiesList").kendoListView({
@@ -63,7 +63,7 @@ function WebyDashboard() {
     });
 
     // Bind My Webies
-    $("#my-webies").click(function (e) {
+    favoritesOpen.click(function (e) {
         e.preventDefault();
         $this.open();
     });
