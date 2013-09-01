@@ -12,7 +12,7 @@ var AppClass = function (topOffset) {
 	var _topOffset = 60;
 	var _bottomOffset = 0;
 
-	if(typeof topOffset != "undefined"){
+	if (typeof topOffset != "undefined") {
 		_topOffset = topOffset;
 	}
 
@@ -94,7 +94,9 @@ var AppClass = function (topOffset) {
 
 	this.showLoading = function () {
 		var margin = $(window).height() / 2 - 50;
-		$('body').append('<div id="app-loading"><span style="top: ' + margin + 'px">Loading your Weby...</span></div>');
+		$('body').append('<div id="app-loading"><span style="top: ' + margin + 'px">Loading your Weby...<br/>' +
+			'<span class="progressbar"><span id="progress"></span>' +
+			'</div>');
 	}
 
 	this.hideLoading = function () {

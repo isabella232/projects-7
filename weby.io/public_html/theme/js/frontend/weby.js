@@ -52,9 +52,11 @@ function Weby() {
 			return;
 		}
 
+		var progress = new WebyProgress($('#progress'), widgets.length, 280);
 		var loaded = 0;
 		var _checkLoading = function() {
 			loaded++;
+			progress.next();
 			if (loaded == widgets.length) {
 				$('[type="weby/linkWidgetTemplate"]').remove();
 				App.fireEvent("weby.loaded");

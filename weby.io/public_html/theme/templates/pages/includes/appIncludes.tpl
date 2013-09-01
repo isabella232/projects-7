@@ -25,6 +25,7 @@
     weby/webyVideoBackground.js,
     frontend/app.js,
     frontend/baseWidget.js,
+    frontend/progress.js,
     frontend/widgets/textWidget.js,
     frontend/widgets/mapWidget.js,
     frontend/widgets/facebookWidget.js,
