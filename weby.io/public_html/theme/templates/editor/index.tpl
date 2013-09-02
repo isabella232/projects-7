@@ -9,11 +9,10 @@
         // TODO: move this to a more convenient place
         google.load('picker', '1');
     </script>
-    <script type="text/javascript" id="initScript">
+    <script type="text/javascript" id="initScript" >
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
         var myWebies = {$viewObject->user->getWebies(true)};
-        var myFavoriteWebies = {$viewObject->user->getFavoriteWebies(true)};
         $(function () {
             App = new AppClass();
             App.init();

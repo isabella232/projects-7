@@ -73,8 +73,8 @@ abstract class UserEntityStorage extends EntityAbstract
      * @return \ArrayObject|bool
      */
     protected function _sqlGetFavoriteWebies() {
-        $query = "SELECT weby FROM {$this->_getDb()->w_favorite} WHERE \"user\"=?";
+        $query = "SELECT weby, created_on FROM {$this->_getDb()->w_favorite} WHERE \"user\"=?";
         $bind = array($this->_id);
-        return $this->_getDb()->execute($query, $bind)->fetchColumn();
+        return $this->_getDb()->execute($query, $bind)->fetchAll();
     }
 }

@@ -75,10 +75,13 @@ abstract class UserEntityProperties extends UserEntityStorage
             $favorites = $this->_sqlGetFavoriteWebies();
             if ($favorites) {
                 $weby = new WebyEntity();
-                foreach ($favorites as $id) {
-                    $weby->load($id);
+                foreach ($favorites as $data) {
+                    $weby->load($data['weby']);
+                    $weby->setAddedToFavoritesTime($data['created_on']);
                     $this->_favoriteWebies[] = clone $weby;
                 }
+            } else {
+                $this->_favoriteWebies = [];
             }
         }
 
@@ -92,11 +95,10 @@ abstract class UserEntityProperties extends UserEntityStorage
                     'thumbnail' => 'http://graph.facebook.com/1594713365/picture?type=large',
                     'title' => $weby->getTitle(),
                     'slug' => $weby->getSlug(),
-                    'modified_on' => date('F d, Y \a\t h:m a', strtotime($weby->getModifiedOn())),
                     'public_url' => $weby->getPublicUrl(),
-                    'editor_url' => $weby->getEditorUrl(),
                     'hits' => $weby->getHitCount(),
                     'favorites' => $weby->getFavoriteCount(),
+                    'addedToFavoritesTime' => $weby->getAddedToFavoritesTime(),
                 ];
             }
             return json_encode($tmp);

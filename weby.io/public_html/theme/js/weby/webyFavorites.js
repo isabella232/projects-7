@@ -1,4 +1,4 @@
-function WebyDashboard() {
+function WebyFavorites() {
 
     var $this = this;
     var favoritesOpen = $('#user-favorites');
@@ -8,13 +8,13 @@ function WebyDashboard() {
         pageSize: 3
     });
 
-    $("#webiesPager").kendoPager({
+    $("#favoritesPager").kendoPager({
         dataSource: webiesDataSource,
         buttonCount: 5
     });
 
     // TODO: move this HTML to another place because it got really big
-    $("#webiesList").kendoListView({
+    $("#favoritesList").kendoListView({
         dataSource: webiesDataSource,
         template: kendo.template(
             '<div class="webies-list-item" style="position: relative;">' +
@@ -33,8 +33,6 @@ function WebyDashboard() {
                             '<span class="weby-tag">Math</span>' +
                             '<span class="weby-tag">Math</span>' +
                             '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
                             '<span class="weby-tag">Power</span>' +
                             '<span class="weby-tag">Power</span>' +
                             '<span class="weby-tag">Power</span>' +
@@ -45,7 +43,7 @@ function WebyDashboard() {
                     '</p>' +
                 '</div>' +
                 '<div class="weby-actions right">' +
-                    '<p>${modified_on}</p>' +
+                    '<p>Added ${addedToFavoritesTime}</p>' +
                     '<p>' +
                         '<span class="weby-quick-data">${hits} hits</span>' +
                         '<span class="weby-quick-data">${favorites} favorites</span>' +
@@ -53,8 +51,6 @@ function WebyDashboard() {
                 '</div>' +
                 '<div class="weby-actions pushed-bot right">' +
                     '<p style="">' +
-                    '<a href="javascript:void(0);"><span class="dialog-button delete">Delete</span></a>' +
-                    '<a href="${editor_url}"><span class="dialog-button edit">Edit</span></a>' +
                     '<a href="${public_url}"><span class="dialog-button view">View</span></a>' +
                     '</p>' +
                 '</div>' +
@@ -73,7 +69,7 @@ function WebyDashboard() {
             modal = false;
         }
 
-        $.fancybox($('#my-webies-dialog'), {
+        $.fancybox($('#my-favorites-dialog'), {
             modal: modal,
             type: 'inline',
             width: 772,

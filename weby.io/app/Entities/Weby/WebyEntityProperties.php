@@ -19,6 +19,11 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     protected $_favoriteCount = null;
 
     /**
+     * Here we can store the time when this Weby was added to favorites (used by favorites section)
+     */
+    protected $_addedToFavoritesTime = null;
+
+    /**
      * @return int
      */
     public function getSlug()
@@ -94,16 +99,6 @@ abstract class WebyEntityProperties extends WebyEntityStorage
         return $this->_user;
     }
 
-    /**
-     * @param \App\Entities\User\UserEntity $user
-     * @return $this
-     */
-    public function setUser(UserEntity $user)
-    {
-        $this->_user = $user;
-        return $this;
-    }
-
     public function getHitCount()
     {
         if(!$this->_hitCount) {
@@ -118,5 +113,33 @@ abstract class WebyEntityProperties extends WebyEntityStorage
             $this->_favoriteCount = $this->_sqlGetFavoriteCount();
         }
         return $this->_favoriteCount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddedToFavoritesTime()
+    {
+        return $this->_addedToFavoritesTime;
+    }
+
+    /**
+     * @param \App\Entities\User\UserEntity $user
+     * @return $this
+     */
+    public function setUser(UserEntity $user)
+    {
+        $this->_user = $user;
+        return $this;
+    }
+
+    /**
+     * Sets the time when this Weby was added to favorites (used by Favorites section)
+     * @param $time
+     * @return $this
+     */
+    public function setAddedToFavoritesTime($time) {
+        $this->_addedToFavoritesTime = $time;
+        return $this;
     }
 }

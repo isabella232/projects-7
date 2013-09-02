@@ -9,6 +9,7 @@
     {include file="templates/pages/includes/appIncludes.tpl"}
     {include file="templates/pages/includes/appRemoteIncludes.tpl"}
     {include file="templates/common/linkWidgetTemplates.tpl"}
+    {include file="templates/common/favorites.tpl"}
     <script type="text/javascript" id="initScript">
         var weby = {$weby->toJson()};
         $(function(){

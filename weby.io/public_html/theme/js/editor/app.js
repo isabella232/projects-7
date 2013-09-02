@@ -5,6 +5,7 @@ var AppClass = function () {
 	var _header = $('#header');
 	var _appToolbar;
 	var _dashboard = null;
+	var _favorites = null;
 	var _weby = false;
 	var _webyDrag;
 	var _toolbarWrapper = $('#toolbar-wrapper');

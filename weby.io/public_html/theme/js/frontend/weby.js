@@ -1,3 +1,4 @@
+
 function Weby() {
 
 	var _FF = !(window.mozInnerScreenX == null);

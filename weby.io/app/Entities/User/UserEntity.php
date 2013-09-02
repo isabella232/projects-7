@@ -55,4 +55,5 @@ class UserEntity extends UserEntityCrud
         return $this->app()->getConfig()->app->web_path . $this->getUsername() . '/';
     }
 
+
 }

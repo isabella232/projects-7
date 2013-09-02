@@ -5,6 +5,8 @@
     {include file="templates/editor/includes/editorIncludes.tpl"}
     <script type="text/javascript" id="initScript">
         var myWebies = {$viewObject->user->getWebies(true)};
+        var myFavoriteWebies = {$viewObject->user->getFavoriteWebies(true)};
+
         {literal}
         var observer = setInterval(function () {
             if (!$('.fancybox-overlay').length || $('.fancybox-overlay').css('display') == 'none' || $('.fancybox-overlay').css('visibility') == 'hidden') {
