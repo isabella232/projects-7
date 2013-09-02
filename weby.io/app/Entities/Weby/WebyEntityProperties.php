@@ -102,7 +102,8 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     public function getHitCount()
     {
         if(!$this->_hitCount) {
-            $this->_hitCount = $this->_sqlGetHitCount();
+            $count = $this->_sqlGetHitCount();
+            $this->_hitCount = $count ? $count : 0;
         }
         return $this->_hitCount;
     }

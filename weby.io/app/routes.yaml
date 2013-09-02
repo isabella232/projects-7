@@ -1,10 +1,16 @@
 routes:
+
+    # PUBLIC PAGES
     - ['', \App\Handlers\PagesHandler, index]
     - ['about', \App\Handlers\PagesHandler, about]
+
+    # GENERAL
     - ['favorite', \App\Handlers\PagesHandler, toggleFavorite]
     - ['favorites', \App\Handlers\PagesHandler, ajax_get_favorites]
-
     - ['security/check-logged-user', \App\Handlers\UsersHandler, checkUserExists]
+    - ['log', \App\Handlers\LoggerHandler, log]
+
+    # EDITOR
     - ['editor/save', \App\Handlers\EditorHandler, save]
     - ['editor/create', \App\Handlers\EditorHandler, create]
     - ['editor/dashboard', \App\Handlers\EditorHandler, dashboard]
@@ -29,7 +35,6 @@ routes:
     - ['statistics/ajax_get_top_users_stats', \App\Handlers\StatisticsHandler, ajax_get_top_users_stats]
     - ['statistics/ajax_get_top_webies_stats', \App\Handlers\StatisticsHandler, ajax_get_top_webies_stats]
     - ['statistics/ajax_get_active_users_stats', \App\Handlers\StatisticsHandler, ajax_get_active_users_stats]
-
 
     # GLOBAL ROUTES
     - ['/^([a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby

@@ -1,5 +1,4 @@
 function WebyFavorites() {
-
     var $this = this;
     var favoritesOpen = $('#user-favorites');
 
@@ -20,41 +19,41 @@ function WebyFavorites() {
             '<div class="webies-list-item" style="position: relative;">' +
                 '<img class="weby-thumbnail" src="${thumbnail}"/>' +
                 '<div class="weby-data left">' +
-                    '<h2>${title}</h2>' +
-                    '<p><h3>Tags</h3>' +
-                        '<div class="weby-tags-list">' +
-                            '<span class="weby-tag">Metal</span>' +
-                            '<span class="weby-tag">Metal</span>' +
-                            '<span class="weby-tag">Progressive</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Math</span>' +
-                            '<span class="weby-tag">Power</span>' +
-                            '<span class="weby-tag">Power</span>' +
-                            '<span class="weby-tag">Power</span>' +
-                            '<span class="weby-tag">Power</span>' +
-                            '<a href="javascript:void(0);">' +
-                            '</a>' +
-                        '</div>' +
-                    '</p>' +
+                '<h2>${title}</h2>' +
+                '<p><h3>Tags</h3>' +
+                '<div class="weby-tags-list">' +
+                '<span class="weby-tag">Metal</span>' +
+                '<span class="weby-tag">Metal</span>' +
+                '<span class="weby-tag">Progressive</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Math</span>' +
+                '<span class="weby-tag">Power</span>' +
+                '<span class="weby-tag">Power</span>' +
+                '<span class="weby-tag">Power</span>' +
+                '<span class="weby-tag">Power</span>' +
+                '<a href="javascript:void(0);">' +
+                '</a>' +
+                '</div>' +
+                '</p>' +
                 '</div>' +
                 '<div class="weby-actions right">' +
-                    '<p>Added ${addedToFavoritesTime}</p>' +
-                    '<p>' +
-                        '<span class="weby-quick-data">${hits} hits</span>' +
-                        '<span class="weby-quick-data">${favorites} favorites</span>' +
-                    '</p>' +
+                '<p>Added ${addedToFavoritesTime}</p>' +
+                '<p>' +
+                '<span class="weby-quick-data">${hits} hits</span>' +
+                '<span class="weby-quick-data">${favorites} favorites</span>' +
+                '</p>' +
                 '</div>' +
                 '<div class="weby-actions pushed-bot right">' +
-                    '<p style="">' +
-                    '<a href="${public_url}"><span class="dialog-button view">View</span></a>' +
-                    '</p>' +
+                '<p style="">' +
+                '<a href="${public_url}"><span class="dialog-button view">View</span></a>' +
+                '</p>' +
                 '</div>' +
-            '</div>'
+                '</div>'
         )
     });
 

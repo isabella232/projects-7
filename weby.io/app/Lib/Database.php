@@ -54,6 +54,7 @@ class Database
         'w_favorite',
         'w_stat_by_ref',
         'w_stat_period',
+        'w_log',
     );
 
     /** Users table */
@@ -73,6 +74,8 @@ class Database
 
     /** Stats periods by ref_type table */
     public $w_stat_by_ref;
+    /** Stats periods by ref_type table */
+    public $w_log;
 
     // ** Result Set types - used by fetchAll method **//
     const RT_ARRAY = 'array';

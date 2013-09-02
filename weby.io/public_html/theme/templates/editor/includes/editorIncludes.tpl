@@ -17,6 +17,7 @@
 {minify type="js"}
     mouseEvent.js,
     weby/weby.js,
+    weby/webyLogger.js,
     weby/webyDrag.js,
     weby/webyToolbar.js,
     weby/webyDashboard.js,

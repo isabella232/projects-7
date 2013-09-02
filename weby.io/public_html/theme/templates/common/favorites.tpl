@@ -1,11 +1,7 @@
 <script type="text/javascript">
     var myFavoriteWebies = {$viewObject->user->getFavoriteWebies(true)};
     $(function () {
-        try{
         new WebyFavorites();
-        } catch(e) {
-            console.error("WebyFavorites: "+e.message);
-        }
     });
 </script>
 
