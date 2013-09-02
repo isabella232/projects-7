@@ -59,6 +59,7 @@ class UserEntity extends UserEntityCrud
     {
         // Check to see if we already have loaded all favorites
         if (is_null($this->_favoriteWebies)) {
+            $this->_favoriteWebies = [];
             $favorites = $this->_sqlGetFavoriteWebies();
             if ($favorites) {
                 $weby = new WebyEntity();
@@ -68,7 +69,6 @@ class UserEntity extends UserEntityCrud
                     $this->_favoriteWebies[] = clone $weby;
                 }
             } else {
-                $this->_favoriteWebies = [];
             }
         }
 
