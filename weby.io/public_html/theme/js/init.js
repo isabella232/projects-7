@@ -1,3 +1,5 @@
 $(function () {
-	// Add custom JS here
+	App = new AppClass(42);
+	App.init();
+	$('#playWeby').remove();
 });

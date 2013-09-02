@@ -13,20 +13,36 @@ function Weby() {
 	 */
 	var _documentBackground = null;
 
+	var _progress = new WebyProgress();
+
 	this.init = function () {
+		var items = weby.content.length;
 
 		_background = new WebyBackground(weby.settings);
 		_documentBackground = new WebyDocumentBackground(weby.settings.document);
 
-		if (weby.content.length > 0) {
-			App.showLoading();
-			_load(weby.content);
+		_progress.startLoading();
+		if(_background.getImage() != null){
+			items++;
+			_progress.setMessage('Loading background...');
+			var img = $('<img src="'+_background.getImage()+'" width="1" height="1" style="visibility:hidden"/>')
+			img.load(function(){
+				$(this).remove();
+				_progress.next();
+				_background.render();
+				if (weby.content.length > 0) {
+					_load(weby.content);
+				}
+			});
+			$('body').append(img);
+		} else {
+			_background.render();
+			if (weby.content.length > 0) {
+				_load(weby.content);
+			}
 		}
-
-		// Setup background
-		_background.render();
+		_progress.setSteps(items);
 		_documentBackground.render();
-
 	};
 
 	/**
@@ -50,18 +66,20 @@ function Weby() {
 	var _load = function (widgets) {
 
 		if (widgets == '') {
+			_progress.hideProgress();
 			return;
 		}
 
-		var progress = new WebyProgress($('#progress'), widgets.length, 280);
+		_progress.setMessage('Loading content...');
 		var loaded = 0;
 		var _checkLoading = function() {
 			loaded++;
-			progress.next();
+			_progress.next();
 			if (loaded == widgets.length) {
+				_progress.setMessage("Done!");
 				$('[type="weby/linkWidgetTemplate"]').remove();
 				App.fireEvent("weby.loaded");
-				App.hideLoading();
+				_progress.hideProgress();
 			}
 		}
 

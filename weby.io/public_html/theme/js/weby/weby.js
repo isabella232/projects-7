@@ -38,13 +38,13 @@ function Weby() {
 			} else {
 				_background = new WebyBackground();
 			}
-
+			
 			if('document' in weby.settings){
 				_documentBackground = new WebyDocumentBackground(weby.settings.document);
 			} else {
 				_documentBackground = new WebyDocumentBackground();
 			}
-
+			
 			_webyToolbar = new WebyToolbar();
 			_titleInput.val(_title);
 

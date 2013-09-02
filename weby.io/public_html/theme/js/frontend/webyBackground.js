@@ -24,6 +24,10 @@ function WebyBackground(settings) {
 		});
 	}
 
+	this.getImage = function () {
+		return _backgrounds.image.getImage();
+	}
+
 	this.render = function () {
 		for (var i in _backgrounds) {
 			_backgrounds[i].render();

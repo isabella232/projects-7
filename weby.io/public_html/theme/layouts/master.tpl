@@ -35,7 +35,7 @@
     {block name="head"}{/block}
 
 </head>
-<body>
+<body class="{block name="body-class"}{/block}">
     <div id="header">
         <div id="header-content">
             <div class="content-left">

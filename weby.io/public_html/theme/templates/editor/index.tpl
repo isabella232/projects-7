@@ -1,6 +1,7 @@
 {extends file="layouts/master.tpl"}
 
 {block name="title"}Weby editor{/block}
+{block name="body-class"}editor{/block}
 {block name="head"}
     {include file="templates/editor/includes/editorIncludes.tpl"}
     {include file="templates/editor/includes/editorRemoteIncludes.tpl"}

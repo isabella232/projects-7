@@ -79,7 +79,6 @@
     editor/parsers/vineParser.js,
     editor/parsers/linkParser.js,
     editor/parsers/pinterestParser.js,
-    editor/parsers/flickerParser.js,
-    init.js
+    editor/parsers/flickerParser.js
 {/minify}
 <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

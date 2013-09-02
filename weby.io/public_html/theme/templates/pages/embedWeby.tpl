@@ -2,8 +2,6 @@
 
 {block name="title"}{$weby.title}{/block}
 {block name="head"}
-    {include file="templates/pages/includes/appIncludes.tpl"}
-    {include file="templates/pages/includes/appRemoteIncludes.tpl"}
     {include file="templates/common/linkWidgetTemplates.tpl"}
     <script type="text/javascript" id="initScript">
         var weby = {$weby->toJson()};
@@ -16,11 +14,14 @@
         $(function () {
             $(window).resize();
             $('#playWeby .button').click(function () {
-                App = new AppClass(42);
-                App.init();
-                $('#playWeby').remove();
+                var scripts = $.trim($('#lazyLoad').html()).replace('<!--', '');
+                scripts = $.trim(scripts.replace('-->', ''));
+                $(this).html("Getting Weby...");
+                setTimeout(function(){
+                    $('head').prepend(scripts);}, 1000)
+
             });
-            $('#initScript').remove();
+            /*$('#initScript').remove();*/
         });
     </script>
 {/block}
@@ -42,6 +43,12 @@
             <div class="clearfix"></div>
         </div>
     </div>
+    <span id="lazyLoad" style="display:none">
+        <!--
+        {include file="templates/pages/includes/embedIncludes.tpl"}
+        {include file="templates/pages/includes/embedRemoteIncludes.tpl"}
+        -->
+    </span>
 {/block}
 {block name="headerRightTools"}
     {include file="templates/common/socialShare.tpl"}

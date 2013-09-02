@@ -92,19 +92,6 @@ var AppClass = function (topOffset) {
 		_weby.init();
 	}
 
-	this.showLoading = function () {
-		var margin = $(window).height() / 2 - 50;
-		$('body').append('<div id="app-loading"><span style="top: ' + margin + 'px">Loading your Weby...<br/>' +
-			'<span class="progressbar"><span id="progress"></span>' +
-			'</div>');
-	}
-
-	this.hideLoading = function () {
-		$('#app-loading').fadeOut('slow', function () {
-			$(this).remove();
-		});
-	}
-
 	/**
 	 * Get current Weby
 	 * @returns Weby

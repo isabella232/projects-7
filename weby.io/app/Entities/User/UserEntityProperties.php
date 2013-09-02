@@ -73,6 +73,7 @@ abstract class UserEntityProperties extends UserEntityStorage
         // Check to see if we already have loaded all favorites
         if (is_null($this->_favoriteWebies)) {
             $favorites = $this->_sqlGetFavoriteWebies();
+			$this->_favoriteWebies = [];
             if ($favorites) {
                 $weby = new WebyEntity();
                 foreach ($favorites as $data) {
@@ -80,8 +81,6 @@ abstract class UserEntityProperties extends UserEntityStorage
                     $weby->setAddedToFavoritesTime($data['created_on']);
                     $this->_favoriteWebies[] = clone $weby;
                 }
-            } else {
-                $this->_favoriteWebies = [];
             }
         }
 
