@@ -15,6 +15,7 @@
 {minify type="js"}
     mouseEvent.js,
     frontend/weby.js,
+    weby/webyLogger.js,
     weby/webyDrag.js,
     weby/webyDashboard.js,
     weby/webyFavorites.js,
@@ -24,9 +25,9 @@
     weby/webyPatternBackground.js,
     weby/webyImageBackground.js,
     weby/webyVideoBackground.js,
+    weby/progress.js,
     frontend/app.js,
     frontend/baseWidget.js,
-    frontend/progress.js,
     frontend/widgets/textWidget.js,
     frontend/widgets/mapWidget.js,
     frontend/widgets/facebookWidget.js,

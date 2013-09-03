@@ -37,6 +37,18 @@ var AppClass = function () {
 	});
 
 	/**
+	 * Catch Ctrl+S key press
+	 */
+	$(document).keydown(function (e) {
+
+		if (!(e.ctrlKey && e.keyCode == 83)) {
+			return;
+		}
+		e.preventDefault();
+		App.getWeby().save();
+	});
+
+	/**
 	 * Catch arrow keys
 	 */
 	$(document).keydown(function (e) {
@@ -519,12 +531,5 @@ var AppClass = function () {
 		// Insert plain text
 		var textWidget = tools['text'].createWidgetAt(100, 100);
 		textWidget.setData(data);
-	}
-
-	this.toolbarMinimized = this.toolbarMaximized = function (toolbarWrapper) {
-		App.getContentBackground().css({
-			width: App.getContent().width(),
-			left: App.getContent().css('left')
-		});
 	}
 }

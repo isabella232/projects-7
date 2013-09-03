@@ -136,6 +136,10 @@ div.content-left {
 
 /** EDITOR CLASSES **/
 
+body.editor .k-widget.k-window.k-window-titleless{
+	width: 700px !important;
+}
+
 #content.hide-content {
 	cursor: hand;
 }

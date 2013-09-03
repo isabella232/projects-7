@@ -8,8 +8,8 @@
 .text-editable {
 	font-family: SourceSansPro;
 	position: relative;
-	min-height: 50px;
-	min-width: 300px;
+	min-height: 36px;
+	min-width: 208px;
 	height:100%;
 	border: 1px dashed #B9B9B9 !important;
 	overflow: hidden;

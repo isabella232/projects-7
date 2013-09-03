@@ -1,3 +1,4 @@
+{if $viewObject->user}
 <script type="text/javascript">
     var myFavoriteWebies = {$viewObject->user->getFavoriteWebies(true)};
     $(function () {
@@ -11,3 +12,4 @@
     <div id="favoritesList"></div>
     <div id="favoritesPager"></div>
 </div>
+{/if}

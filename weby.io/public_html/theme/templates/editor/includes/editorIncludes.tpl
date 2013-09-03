@@ -18,6 +18,7 @@
     mouseEvent.js,
     weby/weby.js,
     weby/webyLogger.js,
+    weby/progress.js,
     weby/webyDrag.js,
     weby/webyToolbar.js,
     weby/webyDashboard.js,

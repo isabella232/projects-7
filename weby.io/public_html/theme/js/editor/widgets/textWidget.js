@@ -1,12 +1,13 @@
 function TextWidget() {
 
 	this._content = '';
+	this._firstActivate = true;
 	this._widgetClass = 'text-widget';
 	this._inputElement = '.text-editable';
 
 	this._resizableOptions = {
-		minHeight: 63,
-		minWidth: 412
+		minHeight: 38,
+		minWidth: 210
 	};
 
 	this.getHTML = function () {
@@ -14,12 +15,28 @@ function TextWidget() {
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
+	this.onActivate = function(){
+		if(this._firstActivate){
+			this._firstActivate = false;
+			this.controls().css("visibility", "hidden");
+		}
+	}
+
+	this.onDeactivate = function () {
+		this.body(".text-editable").blur();
+	}
+
+	this.remove = function(){
+		this.body(".text-editable").blur().data("kendoEditor").destroy();
+		BaseWidget.prototype.remove.call(this);
+	}
+
 	this.onMakeEditable = function () {
-		this._html.find(".text-editable").click().focus();
+		this.body(".text-editable").click().focus();
 	}
 
 	this.widgetResize = function (data) {
-		this._html.find('.text-editable').width(this._html.width() - 2).height(this._html.height() - 2);
+		this.body('.text-editable').width(this._html.width() - 2).height(this._html.height() - 2);
 		this._resize();
 	}
 
@@ -29,18 +46,17 @@ function TextWidget() {
 		App.deactivateTool();
 		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2).click();
 		this.contentLoaded();
-
 	}
 
 	this.setData = function (data) {
 		this.input().css("width", "400px").html(data);
 	}
 
-	this._createEditor = function(){
+	this._createEditor = function () {
 		var $this = this;
 		this._html.resizable("option", "alsoResize", '#text-editable-' + this._id);
 		this._html.resizable("option", "aspectRatio", false);
-		var element = this.input();
+		var element = this.body('.text-editable');
 		element.kendoEditor({
 			tools: [
 				"bold",
@@ -49,10 +65,33 @@ function TextWidget() {
 				"justifyCenter",
 				"justifyRight",
 				"justifyFull",
-				"insertUnorderedList",
-				"insertOrderedList",
 				"createLink",
 				"unlink",
+				{
+					name: "fontSize",
+					items: [
+						{ text: "8px", value: "8px" },
+						{ text: "10px", value: "10px" },
+						{ text: "12px", value: "12px" },
+						{ text: "14px", value: "14px" },
+						{ text: "16px", value: "16px" },
+						{ text: "18px", value: "18px" },
+						{ text: "20px", value: "20px" },
+						{ text: "24px", value: "24px" },
+						{ text: "26px", value: "26px" },
+						{ text: "28px", value: "28px" },
+						{ text: "32px", value: "32px" },
+						{ text: "36px", value: "36px" },
+						{ text: "40px", value: "40px" },
+						{ text: "44px", value: "44px" },
+						{ text: "48px", value: "48px" },
+						{ text: "54px", value: "54px" },
+						{ text: "60px", value: "60px" },
+						{ text: "72px", value: "72px" }
+					]
+				},
+				"foreColor",
+				"fontName"
 			],
 			paste: function () {
 
@@ -100,11 +139,12 @@ function TextWidget() {
 	};
 
 	this.getEditHTML = function () {
-		this._html = '<div style="width:'+(this._width-2)+'px; height:'+(this._height-2)+'px" id="text-editable-' + this._id + '" class="text-editable">'+this._content+'</div>';
+		this._firstActivate = false;
+		this._html = '<div style="width:' + (this._width - 2) + 'px; height:' + (this._height - 2) + 'px" id="text-editable-' + this._id + '" class="text-editable">' + this._content + '</div>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
-	this.onEditWidgetInserted = function(){
+	this.onEditWidgetInserted = function () {
 		this._createEditor();
 	}
 }

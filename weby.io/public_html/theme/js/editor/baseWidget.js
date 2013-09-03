@@ -185,7 +185,7 @@ var BaseWidget = function () {
 	this._baseDraggableOptions = {
 		cancel: '.resize-handle, .widget-body',
 		scroll: true,
-		scrollSensitivity: 300,
+		scrollSensitivity: 100,
 		start: function (event, ui) {
 			App.fireEvent("widget.drag.start", {element: $(this), event: event, ui: ui});
 		},
@@ -534,15 +534,10 @@ BaseWidget.prototype = {
 		this._isActive = true;
 		this.html().draggable("enable");
 		this.controls().css("visibility", "visible");
-		if (!this._isContentLoaded) {
-			this.hideResizeHandle();
-		}
 		this.html().addClass('active');
 		if (!this._isContentLoaded) {
+			this.hideResizeHandle();
 			this.makeEditable();
-		}
-
-		if (!this._isContentLoaded) {
 			this.input().focus();
 		}
 
@@ -815,7 +810,7 @@ BaseWidget.prototype = {
 
 	controls: function () {
 		if (!this._jWidgetControls) {
-			this._jWidgetControls = this._html.find('span.control');
+			this._jWidgetControls = this.html('span.control');
 		}
 		return this._jWidgetControls;
 	},

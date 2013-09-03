@@ -163,7 +163,7 @@ function VideoWidget() {
 			this._embedUrl = 'http://www.youtube.com/embed/' + this._videoId + '?wmode=transparent&autoplay=1&html5=1';
 			return $('<iframe id="' + id + '" src="' + this._embedUrl + '" width="' + width + '" height="' + height + '" frameborder="0" wmode="Opaque" allowfullscreen></iframe>');
 		}
-		this._embedUrl = 'http://player.vimeo.com/video/' + this._videoId + '?wmode=transparent&autoplay=1';
+		this._embedUrl = 'http://player.vimeo.com/video/' + this._videoId + '?wmode=transparent&autoplay=1&type=html5';
 		return $('<iframe id="' + id + '" src="' + this._embedUrl + '" width="' + width + '" height="' + height + '" frameborder="0" wmode="Opaque" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>');
 
 	}
