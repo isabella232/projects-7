@@ -2,6 +2,8 @@ function WebyProgress() {
 
 	var _el = null;
 	var _steps = 0;
+	var _curStep = 0;
+	var _stepWidth = 0;
 
 	this.startLoading = function () {
 		var margin = $(window).height() / 2 - 50;
@@ -18,11 +20,12 @@ function WebyProgress() {
 
 	this.setSteps = function (steps) {
 		_steps = steps;
+		_stepWidth = Math.round(280 * 1000 / _steps) / 1000;
 	}
 
 	this.next = function () {
-		var width = parseInt(_el.css('width')) + (280 / _steps);
-		_el.css({width: width + 'px'});
+		_curStep++;
+		_el.css({width: _curStep * _stepWidth + 'px'});
 	}
 
 	this.hideProgress = function () {

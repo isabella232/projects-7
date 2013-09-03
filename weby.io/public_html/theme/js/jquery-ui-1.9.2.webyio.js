@@ -1695,7 +1695,7 @@
 			//Compute the helpers position
 			this.position = this._generatePosition(event);
 			this.positionAbs = this._convertPositionTo("absolute");
-
+			
 			//Call plugins and callbacks and use the resulting position if something is returned
 			if (!noPropagation) {
 				var ui = this._uiHash();
@@ -2002,9 +2002,18 @@
 			if (this.containment) {
 				var outerWidth = this.element.outerWidth(true);
 				var outerHeight = this.element.outerHeight(true);
+
+				// Left border
+				if(pos.left < this.containment[0]){
+					pos.left = this.containment[0];
+				}
+
+				// Right border
 				if (pos.left + outerWidth > this.containment[2]) {
 					pos.left = this.containment[2] - outerWidth;
 				}
+
+
 
 				if (pos.top + outerHeight > this.containment[3]) {
 					pos.top = this.containment[3] - outerHeight;
@@ -3308,7 +3317,7 @@
 
 			var that = $(this).data("resizable");
 			var pRatio = that._aspectRatio || event.shiftKey;
-			
+
 			if (typeof that.containment != "undefined") {
 				var pos = that.size.width + that.containment.object.horizontalMargin + that.containment.object.leftOffset;
 				if (that.containment.right > 0 && pos >= that.containment.right) {

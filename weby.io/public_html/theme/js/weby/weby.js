@@ -42,13 +42,13 @@ function Weby() {
 			} else {
 				_background = new WebyBackground();
 			}
-			
+
 			if('document' in weby.settings){
 				_documentBackground = new WebyDocumentBackground(weby.settings.document);
 			} else {
 				_documentBackground = new WebyDocumentBackground();
 			}
-			
+
 			_webyToolbar = new WebyToolbar();
 			_titleInput.val(_title);
 
@@ -61,16 +61,12 @@ function Weby() {
 					$(this).remove();
 					_progress.next();
 					_background.render();
-					if (weby.content.length > 0) {
-						_load(weby.content);
-					}
+					_load(weby.content);
 				});
 				$('body').append(img);
 			} else {
 				_background.render();
-				if (weby.content.length > 0) {
-					_load(weby.content);
-				}
+				_load(weby.content);
 			}
 			_progress.setSteps(items);
 			_documentBackground.render();

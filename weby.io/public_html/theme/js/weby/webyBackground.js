@@ -243,9 +243,9 @@ function WebyBackground(settings) {
 	 */
 	this.setContainment = function (width, height) {
 		if (!width && !height) {
-			var containment = [App.getLeftOffset(), App.getTopOffset()];
+			var containment = [0, App.getTopOffset()];
 		} else {
-			var containment = [App.getLeftOffset(), App.getTopOffset(), width, height];
+			var containment = [0, App.getTopOffset(), width, height];
 		}
 
 		BaseWidget.CONTAINMENT = containment;
