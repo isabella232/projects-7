@@ -20,17 +20,15 @@ abstract class FavoriteEntityCrud extends FavoriteEntityProperties
         $user = $user instanceof UserEntity ? $user->getId() : $user;
 
         if (empty($weby) || empty($user)) {
-            return $this;
+            return false;
         }
         $this->_weby = $weby;
         $this->_user = $user;
 
         $data = $this->_sqlLoadByWebyAndUser();
-
-        if (!$data->count()) {
-            $this->_weby = false;
-            $this->_user = false;
-            return $this;
+		
+        if (!$data) {
+            return false;
         }
         $this->_populateFromDb($data);
         $this->_onAfterLoad();

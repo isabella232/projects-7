@@ -61,7 +61,7 @@ abstract class WebyEntityStorage extends EntityAbstract
         $query = "SELECT * FROM {$this->_getDb()->w_weby} WHERE id=? LIMIT 1";
         $bind = array($this->_id);
 
-        return $this->_getDb()->execute($query, $bind)->fetchAll();
+        return $this->_getDb()->execute($query, $bind)->fetchArray();
     }
 
     /**

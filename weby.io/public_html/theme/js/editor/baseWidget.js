@@ -243,11 +243,10 @@ var BaseWidget = function () {
 		stop: function (event, ui) {
 			var options = $(this).data('draggable-options');
 			var $this = $(this).data('widget');
-			App.fireEvent("widget.rotate.stop", {element: $(this), event: event, ui: ui});
 			setTimeout(function () {
-				$this._html.draggable("destroy");
 				$this._html.draggable(options);
 			}, 50);
+			App.fireEvent("widget.rotate.stop", {element: $(this), event: event, ui: ui});
 		}
 	};
 
@@ -976,18 +975,16 @@ BaseWidget.prototype = {
 
 		if (this._isRotatable) {
 			var $this = this;
-			this.html().find('span.rotate-handle').bind({
+			this.html().find('span.rotate-handle').unbind("mousedown mouseup dblclick").bind({
 				mousedown: function (e) {
 					$this._rotateStart = e.pageX;
 					var options = $this._html.draggable("option");
-					$this._html.draggable("destroy");
 					$this._html.data('widget', $this).data('draggable-options', options).draggable(rotatableOptions);
 				},
 				mouseup: function () {
 					var options = $this._html.draggable().data('draggable-options');
 					setTimeout(function () {
-						$this._html.draggable("destroy");
-						$this._html.draggable(options).data('widget', $this);
+						$this._html.data('widget', $this).draggable(options);
 					}, 50);
 				},
 				dblclick: function () {

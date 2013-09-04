@@ -18,7 +18,8 @@
                 scripts = $.trim(scripts.replace('-->', ''));
                 $(this).html("Getting Weby...");
                 setTimeout(function(){
-                    $('head').prepend(scripts);}, 1000)
+                    $('head').prepend(scripts);
+                }, 1000)
 
             });
             /*$('#initScript').remove();*/

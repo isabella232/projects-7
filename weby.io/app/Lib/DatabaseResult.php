@@ -28,7 +28,6 @@ class DatabaseResult
     public function  __construct(&$result)
     {
         $this->_result = $result;
-        return $this;
     }
 
     /**
@@ -37,13 +36,13 @@ class DatabaseResult
      */
     public function fetchArray()
     {
-        $row = (array)$this->_fetch();
+        $row = $this->_fetch();
 
-        if ($row != false) {
-            return $this->arr($row);
-        }
+		if($row === false){
+			return false;
+		}
 
-        return false;
+		return $this->arr((array)$row);
     }
 
     /**

@@ -5,12 +5,13 @@ namespace App\Lib;
 use App\AppTrait;
 use Webiny\Component\Config\ConfigObject;
 use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\StdLib\SingletonTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 
 class Router
 {
-	use SingletonTrait, AppTrait, StdLibTrait, HttpTrait;
+	use SingletonTrait, AppTrait, StdLibTrait, HttpTrait, LoggerTrait;
 
 	private $_routes = array();
 	private $_requestParams;
@@ -52,7 +53,7 @@ class Router
 			$handler = new $handlerClass;
 			if($this->isInstanceOf($handler, '\App\Lib\AbstractHandler')) {
 				call_user_func_array([$handler, $this->_handlerMethod], $this->_requestParams);
-
+				$this->logger('webiny_logger')->info("Rendering...");
 				return $handler->output();
 			}
 			throw new \Exception('Handler class must implement `AbstractHandler`');

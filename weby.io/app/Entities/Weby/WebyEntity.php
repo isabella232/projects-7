@@ -3,12 +3,26 @@
 namespace App\Entities\Weby;
 
 use App\AppTrait;
+use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\User\UserEntity;
+use App\Lib\UserTrait;
 
 class WebyEntity extends WebyEntityCrud
 {
 
-	use AppTrait;
+	use AppTrait, UserTrait;
+
+
+	public function isInFavorites(){
+		if(!$this->user()){
+			return false;
+		}
+
+		// Check if our user has added this Weby to his favorites list
+		$favorite = new FavoriteEntity();
+		return $favorite->loadByWebyAndUser($this, $this->user());
+
+	}
 
     /**
      * Gets all Webies for given user

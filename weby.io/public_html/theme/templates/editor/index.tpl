@@ -7,7 +7,6 @@
     {include file="templates/editor/includes/editorRemoteIncludes.tpl"}
     <!-- The standard Google Loader script. -->
     <script type="text/javascript">
-        // TODO: move this to a more convenient place
         google.load('picker', '1');
     </script>
     <script type="text/javascript" id="initScript" >
@@ -21,6 +20,22 @@
         });
     </script>
 {/block}
+
+{block name="headerRightTools"}
+    {assign var="editor" value="true"}
+    {if $viewObject.user}
+        {if $weby}
+            {include file="templates/editor/includes/webyTitle.tpl"}
+        {/if}
+        <div style="float:right">
+            <a id="my-webies" href="javascript:void(0)" style="float: left; margin: 3px 50px 0 0;" class="button">My
+                Webies</a>
+            {include file="templates/common/socialShare.tpl"}
+            {include file="templates/common/userOptions.tpl"}
+        </div>
+    {/if}
+{/block}
+
 {block name="content"}
     <div id="toolbar-wrapper" class="collapsed"></div>
     <div id="weby-toolbar-wrapper">
@@ -43,18 +58,4 @@
     </div>
     {include file="templates/editor/includes/templates.tpl"}
     {include file="templates/common/dashboard.tpl"}
-{/block}
-
-{block name="headerRightTools"}
-    {if $viewObject.user}
-        {if $weby}
-            {include file="templates/editor/includes/webyTitle.tpl"}
-        {/if}
-        <div style="float:right">
-            <a id="my-webies" href="javascript:void(0)" style="float: left; margin: 3px 50px 0 0;" class="button">My
-                Webies</a>
-            {include file="templates/common/socialShare.tpl"}
-            {include file="templates/common/userOptions.tpl"}
-        </div>
-    {/if}
 {/block}

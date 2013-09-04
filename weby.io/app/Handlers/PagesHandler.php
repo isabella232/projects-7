@@ -50,40 +50,10 @@ class PagesHandler extends AbstractHandler
 			$this->setTemplate('embedWeby');
 			return;
 		}
-        // Check if our user has added this Weby to his favorites list
-        $favorite = new FavoriteEntity();
-        $this->favorite = $favorite->loadByWebyAndUser($weby, $this->user());
 
         // Update Weby's hits stats
         $stats = Stats::getInstance();
         $stats->updateWebyHits($weby);
-    }
-
-    /**
-     * Toggling Weby favorite
-     */
-    public function toggleFavorite()
-    {
-        // We won't be instantianting Weby and User because we want to reduce loading and querying the database
-        $webyId = $this->request()->post('wid');
-        $userId = $this->request()->post('uid');
-
-        $favorite = new FavoriteEntity();
-        $favorite->loadByWebyAndUser($webyId, $userId);
-
-        // If we got a valid favorite, that means we are deleting it
-        if ($favorite->getCreatedOn()) {
-            $favorite->delete();
-            $this->ajaxResponse(false);
-        }
-        // In other case, we are creating a new favorite
-        $data = [
-            'weby' => $webyId,
-            'user' => $userId,
-            'ownerId' => $this->request()->post('wowner')
-        ];
-        $favorite->populate($data)->save();
-        $this->ajaxResponse(false, '', '');
     }
 
     public function page404()

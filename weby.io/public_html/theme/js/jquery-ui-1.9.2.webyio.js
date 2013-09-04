@@ -1695,7 +1695,7 @@
 			//Compute the helpers position
 			this.position = this._generatePosition(event);
 			this.positionAbs = this._convertPositionTo("absolute");
-			
+
 			//Call plugins and callbacks and use the resulting position if something is returned
 			if (!noPropagation) {
 				var ui = this._uiHash();
@@ -1961,22 +1961,15 @@
 						containment = this.containment;
 					}
 
+					/**
+					 * Weby.io hack - commented to fix margin calculation bug
+					 */
 
-					if (event.pageX - this.offset.click.left < containment[0]) pageX = containment[0] + this.offset.click.left;
+					/*if (event.pageX - this.offset.click.left < containment[0]) pageX = containment[0] + this.offset.click.left;*/
+					/*if (event.pageX - this.offset.click.left > containment[2]) pageX = containment[2] + this.offset.click.left;*/
 					if (event.pageY - this.offset.click.top < containment[1]) pageY = containment[1] + this.offset.click.top;
-					if (event.pageX - this.offset.click.left > containment[2]) pageX = containment[2] + this.offset.click.left;
 					if (event.pageY - this.offset.click.top > containment[3]) pageY = containment[3] + this.offset.click.top;
 				}
-
-				if (o.grid) {
-					//Check for grid elements set to 0 to prevent divide by 0 error causing invalid argument errors in IE (see ticket #6950)
-					var top = o.grid[1] ? this.originalPageY + Math.round((pageY - this.originalPageY) / o.grid[1]) * o.grid[1] : this.originalPageY;
-					pageY = containment ? (!(top - this.offset.click.top < containment[1] || top - this.offset.click.top > containment[3]) ? top : (!(top - this.offset.click.top < containment[1]) ? top - o.grid[1] : top + o.grid[1])) : top;
-
-					var left = o.grid[0] ? this.originalPageX + Math.round((pageX - this.originalPageX) / o.grid[0]) * o.grid[0] : this.originalPageX;
-					pageX = containment ? (!(left - this.offset.click.left < containment[0] || left - this.offset.click.left > containment[2]) ? left : (!(left - this.offset.click.left < containment[0]) ? left - o.grid[0] : left + o.grid[0])) : left;
-				}
-
 			}
 
 			var pos = {
@@ -2004,7 +1997,7 @@
 				var outerHeight = this.element.outerHeight(true);
 
 				// Left border
-				if(pos.left < this.containment[0]){
+				if (pos.left < this.containment[0]) {
 					pos.left = this.containment[0];
 				}
 
@@ -2014,14 +2007,11 @@
 				}
 
 
-
 				if (pos.top + outerHeight > this.containment[3]) {
 					pos.top = this.containment[3] - outerHeight;
 				}
 			}
-
 			return pos;
-
 		},
 
 		_clear: function () {

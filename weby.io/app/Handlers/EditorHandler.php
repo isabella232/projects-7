@@ -11,6 +11,7 @@ use App\Lib\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
 use Webiny\Component\Security\SecurityTrait;
 use Webiny\Component\StdLib\StdLibTrait;
@@ -20,7 +21,7 @@ use Webiny\Component\Storage\StorageTrait;
 
 class EditorHandler extends AbstractHandler
 {
-	use AppTrait, StdLibTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, StorageTrait;
+	use AppTrait, StdLibTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, StorageTrait, LoggerTrait;
 
 	/**
 	 * @var WebyEntity
@@ -53,15 +54,6 @@ class EditorHandler extends AbstractHandler
 		$weby->setUser($this->user())->save();
 
 		$this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
-	}
-
-	public function dashboard() {
-		$data = [
-			'webies'    => $this->user()->getWebies(true),
-			'favorites' => FavoriteEntity::getAllFavoritesByUser($this->user())
-		];
-		$html = View::getInstance()->fetch('templates/common/dashboard.tpl', $data);
-		die($html);
 	}
 
 	public function route($userName, $webyId = null) {

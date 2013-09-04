@@ -38,6 +38,7 @@ function WebyImageBackground() {
 	this.render = function () {
 		if (_image == null) {
 			$('#weby-background').remove();
+			return;
 		}
 
 		if (_mode == 'aligned') {

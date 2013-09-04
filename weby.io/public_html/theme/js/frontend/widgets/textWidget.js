@@ -7,6 +7,10 @@ function TextWidget() {
 		this._html = this._content;
 		return BaseWidget.prototype.getHTML.call(this);
 	};
+
+	this.onWidgetInserted = function(){
+		this.body().css({height: this._height+'px', width: this._width+'px'});
+	}
 }
 
 TextWidget.prototype = new BaseWidget();

@@ -40,7 +40,8 @@ abstract class FavoriteEntityStorage extends EntityAbstract
     {
         $query = "SELECT * FROM {$this->_getDb()->w_favorite} WHERE weby=? AND \"user\"=? LIMIT 1";
         $bind = array($this->_weby, $this->_user);
-        return $this->_getDb()->execute($query, $bind)->fetchAll();
+        $res = $this->_getDb()->execute($query, $bind)->fetchArray();
+		return $res;
     }
 
     /**

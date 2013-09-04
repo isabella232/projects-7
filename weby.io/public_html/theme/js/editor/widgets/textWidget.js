@@ -44,7 +44,10 @@ function TextWidget() {
 		BaseWidget.prototype.onWidgetInserted.call(this);
 		this._createEditor();
 		App.deactivateTool();
-		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2).click();
+		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2);
+		if(this._firstActivate){
+			this.html(".text-editable").click();
+		}
 		this.contentLoaded();
 	}
 

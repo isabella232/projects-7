@@ -1,29 +1,9 @@
 <!-- SHARING ICONS -->
 {if $weby}
     <div class="social-icons-wrapper">
-
-        {if isset($favorite)}
+        {if !isset($editor) || !$editor}
             <a href="javascript: void(0);" id="add-to-favs">
-                <span class="share-icon social-favorites{if $favorite.weby.id}-added{/if}"></span></a>
-        {/if}
-        {if $viewObject.user}
-        {literal}
-        <script type="text/javascript">
-            $(function () {
-                $('#add-to-favs').click(function () {
-                    var span = $(this).find('span');
-                    $.ajax({
-                        type: "POST",
-                        url: WEB + 'favorite',
-                        data: {{/literal}uid: {$viewObject.user.id}, wid: '{$weby.id}', wowner: '{$weby.user.id}'{literal}},
-                        success: function () {
-                            span.toggleClass('social-favorites social-favorites-added');
-                        }
-                    });
-                });
-            });
-        </script>
-        {/literal}
+                <span class="share-icon social-favorites{if $weby->isInFavorites()}-added{/if}"></span></a>
         {/if}
         <!-- FACEBOOK SHARING -->
         <a href="#" onclick="
