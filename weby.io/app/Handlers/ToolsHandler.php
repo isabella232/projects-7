@@ -10,12 +10,13 @@ use App\Lib\Stats;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Logger\LoggerTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\StorageTrait;
 
 class ToolsHandler extends AbstractHandler
 {
-	use HttpTrait, LoggerTrait, UserTrait, StorageTrait;
+	use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait;
 
 	/**
 	 * Log JS exception
@@ -87,7 +88,7 @@ class ToolsHandler extends AbstractHandler
 	public function ajaxGetWebies() {
 		$webies = $this->user()->getWebies(true);
 		$data = [
-			'webies' => json_decode($webies),
+			'webies' => $this->_truncateWebyTitle(json_decode($webies, true)),
 			'count' => WebyEntity::getTotalRows()
 		];
 		die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
@@ -97,6 +98,16 @@ class ToolsHandler extends AbstractHandler
 		$weby = new WebyEntity();
 		$this->weby = $weby->load($id);
 		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
+	}
+
+	private function _truncateWebyTitle($webies){
+		foreach($webies as &$w){
+			$title = $this->str($w['title']);
+			if($title->length() > 35){
+				$w['title'] = $title->truncate(32, '...')->val();
+			}
+		}
+		return $webies;
 	}
 
 }

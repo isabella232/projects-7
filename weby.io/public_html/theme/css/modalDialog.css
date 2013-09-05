@@ -1,6 +1,6 @@
 /* ---------- General ---------- */
 
-div.modal-dialog {
+.modal-dialog {
     position: absolute;
     color: white;
 }
@@ -31,15 +31,11 @@ p {
     font: 26px "SourceSansPro", "Calibri", "Arial", sans-serif;
 }
 
-#my-webies-dialog.modal-dialog .webies-list .k-loading-mask{
-	display:none !important;
-}
-
-#my-webies-dialog.modal-dialog .webies-list {
+#my-webies-dialog .webies-list {
 	float: left;
 }
 
-#my-webies-dialog.modal-dialog .webies-list .webies-list-item {
+#my-webies-dialog .webies-list-item {
 	background-color: #f25b2b;
 	border-bottom: 1px solid #dc420e;
 	margin: 11px 0px;
@@ -48,34 +44,45 @@ p {
 	padding-bottom: 12px;
 }
 
-#my-webies-dialog.modal-dialog .webies-footer{
+#my-webies-dialog .webies-footer{
 	float:left;
 	width:100%;
 	bottom: 0;
 	position: absolute;
 }
 
-#my-webies-dialog.modal-dialog .webies-footer .webies-pager{
+#my-webies-dialog .webies-footer .webies-pager{
 	float: left;
 	width: 564px;
+	margin: 4px 0;
 }
 
-#my-webies-dialog.modal-dialog .dialog-loading{
-	margin: 0 auto;
-	color: #fff;
-	width: 100%;
-	text-align: center;
-	font-weight: bold;
-	font-size: 16px;
+#my-webies-dialog .dialog-loading{
 	position: absolute;
-	display:none;
+	width: 100%;
+	height: 100%;
 }
 
-#my-webies-dialog.modal-dialog .webies-list-item div.weby-data {
+#my-webies-dialog .dialog-loading .overlay{
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	position: absolute;
+}
+
+#my-webies-dialog .dialog-loading .text{
+	color: #fff;
+	font-size: 16px;
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+}
+
+#my-webies-dialog .weby-data {
     width: 350px;
 }
 
-#my-webies-dialog.modal-dialog .webies-list-item div.weby-actions {
+#my-webies-dialog .weby-actions {
     width: 265px;
     text-align: right;
 }
@@ -84,7 +91,7 @@ div.weby-actions.pushed-bot {
     position:absolute; bottom: 0; right: 0; margin-bottom: 10px
 }
 
-#my-webies-dialog.modal-dialog .webies-list .webies-list-item h2 {
+#my-webies-dialog h2 {
     color: white;
     font: 24px "SourceSansPro", "Calibri", "Arial", sans-serif;
     margin: 0px;
@@ -92,7 +99,7 @@ div.weby-actions.pushed-bot {
     clear: both;
 }
 
-#my-webies-dialog.modal-dialog .webies-list .webies-list-item h3 {
+#my-webies-dialog h3 {
     color: white;
     font: 18px "SourceSansPro", "Calibri", "Arial", sans-serif;
     margin: 0px;
@@ -100,7 +107,7 @@ div.weby-actions.pushed-bot {
     clear: both;
 }
 
-#my-webies-dialog.modal-dialog .webies-list-item img.weby-thumbnail {
+#my-webies-dialog .weby-thumbnail {
     display: inline-block;
     width: 88px;
     height: 88px;
@@ -110,12 +117,12 @@ div.weby-actions.pushed-bot {
     float: left;
 }
 
-#my-webies-dialog.modal-dialog .webies-list-item .weby-tags-list {
+#my-webies-dialog .weby-tags-list {
     width: 310px;
     display: inline-block;
 }
 
-#my-webies-dialog.modal-dialog div.webies-list-item span.weby-tag {
+#my-webies-dialog .weby-tag {
     background-color: white;
     background-image: url(../images/btn-tag-left-triangle.png);
     background-repeat: no-repeat;
@@ -195,7 +202,7 @@ span.dialog-button.view {
 
 /* ---------- Kendo Pager overrides ---------- */
 
-#webiesPager a {
+.modal-dialog .webies-pager a {
     border: none;
     background-color: #dc420e;
     color: white;
@@ -203,20 +210,20 @@ span.dialog-button.view {
     line-height: 22px;
 }
 
-#webiesPager a:hover {
+.modal-dialog .webies-pager a:hover {
     border: none;
     background-color: #dc420e;
     background-image: none;
     color: white;
 }
 
-#webiesPager li span.k-state-selected {
+.modal-dialog span.k-state-selected {
     border: none;
     background: white none;
     color: #f25b2b;
     font-weight: bold;
 }
 
-#webiesPager .k-pager-info {
-    color: white;
+.modal-dialog .k-loading-mask{
+	display:none !important;
 }

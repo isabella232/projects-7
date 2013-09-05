@@ -25,8 +25,6 @@ function WebyBackground(settings) {
 		}
 		data.canvasWidth = _canvasWidth;
 		data.canvasHeight = _canvasHeight;
-		data.canvasX = App.getContent().offset().left;
-		data.canvasY = App.getContent().offset().top;
 		return data;
 	}
 

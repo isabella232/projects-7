@@ -1,7 +1,7 @@
 function WebyDashboard() {
 
 	var $this = this;
-	var _loading = $('.modal-dialog span.dialog-loading');
+	var _loading = $('.modal-dialog .dialog-loading');
 	var _template = kendo.template(
 		'<div class="webies-list-item" style="position: relative;">' +
 			'<img class="weby-thumbnail" src="${thumbnail}"/>' +
@@ -21,10 +21,7 @@ function WebyDashboard() {
 			'<span class="weby-tag">Math</span>' +
 			'<span class="weby-tag">Math</span>' +
 			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Power</span>' +
-			'<span class="weby-tag">Power</span>' +
-			'<span class="weby-tag">Power</span>' +
-			'<span class="weby-tag">Power</span>' +
+
 			'<a href="javascript:void(0);">' +
 			'</a>' +
 			'</div>' +
@@ -51,7 +48,7 @@ function WebyDashboard() {
 		type: "odata",
 		serverPaging: true,
 		serverSorting: true,
-		pageSize: 3,
+		pageSize: 2,
 		transport: {
 			read: {
 				url: WEB + 'tools/webies/',
