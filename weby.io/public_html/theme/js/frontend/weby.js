@@ -30,16 +30,12 @@ function Weby() {
 				$(this).remove();
 				_progress.next();
 				_background.render();
-				if (weby.content.length > 0) {
-					_load(weby.content);
-				}
+				_load(weby.content);
 			});
 			$('body').append(img);
 		} else {
 			_background.render();
-			if (weby.content.length > 0) {
-				_load(weby.content);
-			}
+			_load(weby.content);
 		}
 		_progress.setSteps(items);
 		_documentBackground.render();

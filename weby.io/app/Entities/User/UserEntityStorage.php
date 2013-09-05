@@ -59,16 +59,6 @@ abstract class UserEntityStorage extends EntityAbstract
     }
 
     /**
-     * Queries the database for user based on his service type (fb, g+ etc.) and service registered email
-     * @return \ArrayObject|bool
-     */
-    protected function _sqlLoadByEmail() {
-        $query = "SELECT * FROM {$this->_getDb()->w_user} WHERE email=? LIMIT 1";
-        $bind = array($this->_email);
-        return $this->_getDb()->execute($query, $bind)->fetchArray();
-    }
-
-    /**
      * Queries the database for user's favorite Webies
      * @return \ArrayObject|bool
      */
@@ -77,4 +67,17 @@ abstract class UserEntityStorage extends EntityAbstract
         $bind = array($this->_id);
         return $this->_getDb()->execute($query, $bind)->fetchAll();
     }
+
+	/**
+	 * Queries the database for user based on his service type (fb, g+ etc.) and service registered email
+	 *
+	 * @param $email
+	 *
+	 * @return \ArrayObject|bool
+	 */
+	protected static function _sqlLoadByEmail($email) {
+		$query = "SELECT * FROM ".self::_getDb()->w_user." WHERE email=? LIMIT 1";
+		$bind = array($email);
+		return self::_getDb()->execute($query, $bind)->fetchArray();
+	}
 }

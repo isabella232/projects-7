@@ -2,16 +2,20 @@
 
 namespace App\Handlers;
 
+use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Logger;
+use App\Lib\Screenshot;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Logger\LoggerTrait;
+use Webiny\Component\Storage\File\LocalFile;
+use Webiny\Component\Storage\StorageTrait;
 
 class ToolsHandler extends AbstractHandler
 {
-	use HttpTrait, LoggerTrait, UserTrait;
+	use HttpTrait, LoggerTrait, UserTrait, StorageTrait;
 
 	/**
 	 * Log JS exception
@@ -28,6 +32,19 @@ class ToolsHandler extends AbstractHandler
 									 ]);
 		}
 		$this->ajaxResponse(false, 'Got it :)');
+	}
+
+	public function takeScreenshot(){
+		$weby = $this->request()->query('weby');
+		$screenshot = new Screenshot();
+		$path = $this->storage('local')->getAbsolutePath('webies/'.$weby.'.png');
+		try{
+			$screenshot->takeScreenshot($weby, $path);
+			$file = new LocalFile('webies/'.$weby.'.png', $this->storage('local'));
+		} catch(\Exception $e){
+			die(print_r($e));
+		}
+		die($file->getUrl());
 	}
 
 	/**
@@ -63,16 +80,23 @@ class ToolsHandler extends AbstractHandler
 	 * Get user's favorite Webies (paginated)
 	 */
 	public function ajaxGetFavorites() {
-		$page = $this->request()->query('page');
+		$limit = $this->request()->query('\$top');
+		$offset = $this->request()->query('\$skip');
 	}
 
 	public function ajaxGetWebies() {
 		$webies = $this->user()->getWebies(true);
 		$data = [
 			'webies' => json_decode($webies),
-			'count' => 12
+			'count' => WebyEntity::getTotalRows()
 		];
 		die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
+	}
+
+	public function viewWeby($id){
+		$weby = new WebyEntity();
+		$this->weby = $weby->load($id);
+		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
 	}
 
 }

@@ -44,7 +44,6 @@ class PagesHandler extends AbstractHandler
 
         // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
-        $this->widgets = $weby->getContent();
 
 		if($this->request()->query('embed', false, true)){
 			$this->setTemplate('embedWeby');

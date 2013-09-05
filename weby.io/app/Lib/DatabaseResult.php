@@ -51,7 +51,7 @@ class DatabaseResult
      *
      * @param String $resultType
      * @internal param String $query
-     * @return \StdClass|Boolean|Array
+     * @return ArrayObject|Boolean
      */
     public function fetchAll($resultType = Database::RT_ARRAY)
     {

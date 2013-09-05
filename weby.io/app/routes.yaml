@@ -12,6 +12,8 @@ routes:
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
     - ['tools/log', \App\Handlers\ToolsHandler, log]
     - ['tools/parse-link', \App\Handlers\LinksHandler, parse]
+    - ['tools/take-screenshot', \App\Handlers\ToolsHandler, takeScreenshot]
+    - ['/^tools\/screenshot\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, viewWeby] # render Weby for screenshot
 
     # EDITOR
     - ['editor/save', \App\Handlers\EditorHandler, save]

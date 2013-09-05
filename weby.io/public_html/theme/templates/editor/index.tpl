@@ -12,7 +12,6 @@
     <script type="text/javascript" id="initScript" >
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
-        var myWebies = {$viewObject->user->getWebies(true)};
         $(function () {
             App = new AppClass();
             App.init();

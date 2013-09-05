@@ -1,7 +1,8 @@
 function WebyDashboard() {
 
 	var $this = this;
-	var template = kendo.template(
+	var _loading = $('.modal-dialog span.dialog-loading');
+	var _template = kendo.template(
 		'<div class="webies-list-item" style="position: relative;">' +
 			'<img class="weby-thumbnail" src="${thumbnail}"/>' +
 			'<div class="weby-data left">' +
@@ -61,25 +62,30 @@ function WebyDashboard() {
 		},
 		schema: {
 			data: function (response) {
-				console.log(response)
 				return response.webies;
 			},
 			total: function (response) {
 				return response.count;
 			}
+		},
+		requestStart: function(e) {
+			_loading.css("display", "block");
+		},
+		requestEnd: function(e) {
+			_loading.hide();
 		}
 	});
 
-	$("#webiesPager").kendoPager({
+	$(".modal-dialog .webies-pager").kendoPager({
 		dataSource: webiesDataSource,
-		buttonCount: 5
+		buttonCount: 5,
+		info: false
 	});
 
 
-	// TODO: move this HTML to another place because it got really big
-	$("#webiesList").kendoListView({
+	$(".modal-dialog .webies-list").kendoListView({
 		dataSource: webiesDataSource,
-		template: template
+		template: _template
 	});
 
 	// Bind My Webies

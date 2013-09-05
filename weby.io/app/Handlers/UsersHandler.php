@@ -24,12 +24,11 @@ class UsersHandler extends AbstractHandler
     {
         // Get data from OAuth service
         $serviceData = $this->request()->session('oauth_user')->get('oauth2_user');
-
+		
         // Load user by email
-        $user = new UserEntity();
-        $user->getByEmail($serviceData->email);
+        $user = UserEntity::getByEmail($serviceData->email);
 
-        if (!$user->getId()) {
+        if (!$user) {
             // If user doesn't exist, create him, send him an e-mail,
             // update registered users statistics, create new Weby and then redirect
 

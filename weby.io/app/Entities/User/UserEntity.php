@@ -25,9 +25,25 @@ class UserEntity extends UserEntityCrud
         return $parts->first()->replace('.', '')->val();
     }
 
+	/**
+	 * Gets user from database based on his profile email
+	 * @param String $email             E-mail which was registered on service
+	 * @return UserEntityCrud $this     Instance of User
+	 */
+	public static function getByEmail($email)
+	{
+		$user = new static;
+		$data = self::_sqlLoadByEmail($email);
+		if(!$data){
+			return false;
+		}
+		return $user->populate($data);
+	}
+
     public function getWebies($json = false)
     {
         $webies = WebyEntity::getAllByUser($this);
+
         if ($json) {
             $tmp = [];
             foreach($webies as $weby){

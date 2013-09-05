@@ -10,6 +10,8 @@ abstract class EntityAbstract implements \ArrayAccess
 {
 	use StdLibTrait;
 
+	protected static $_totalRows = 0;
+
 	abstract protected function _sqlSave();
 
 	abstract protected function _sqlLoad();
@@ -130,6 +132,14 @@ abstract class EntityAbstract implements \ArrayAccess
 
 	protected function _onAfterDelete() {
 		return false;
+	}
+
+	/**
+	 * Get total number of found rows
+	 * @return int
+	 */
+	public static function getTotalRows(){
+		return self::$_totalRows;
 	}
 
 	/**

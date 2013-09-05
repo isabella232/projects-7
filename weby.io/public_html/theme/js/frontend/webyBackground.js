@@ -61,7 +61,7 @@ function WebyBackground(settings) {
 			}
 			var data = {};
 			data[dimension] = size;
-			el.animate(data, {duration: duration, queue: false});
+			el.css(data);
 		}
 
 		if (width <= App.getViewportWidth() - App.getWeby().getScrollBarOffset()) {

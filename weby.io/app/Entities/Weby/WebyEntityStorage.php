@@ -5,10 +5,13 @@ namespace App\Entities\Weby;
 
 use App\Entities\EntityAbstract;
 use App\Entities\User\UserEntity;
+use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class WebyEntityStorage extends EntityAbstract
 {
+	use HttpTrait;
+
     protected $_id = '';
     protected $_title = 'Untitled';
     protected $_slug = 'untitled';
@@ -85,14 +88,30 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected static function _sqlLoadByUser(UserEntity $user)
     {
-        $query = 'SELECT id FROM ' . self::_getDb()->w_weby . ' WHERE "user"=?';
-        $bind = array($user->getId());
+        $query = 'SELECT id, count(*) OVER() total_count FROM ' . self::_getDb()->w_weby . ' WHERE "user"=? ORDER BY created_on DESC';
+        $bind = [$user->getId()];
 
-        $res = self::_getDb()->execute($query, $bind)->fetchColumn();
+		if(self::request()->query('$top')){
+			$query .= " LIMIT ?";
+			$bind[] = self::request()->query('$top');
+		}
+
+		if(self::request()->query('$skip')){
+			$query .= " OFFSET ?";
+			$bind[] = self::request()->query('$skip');
+		}
+
+        $res = self::_getDb()->execute($query, $bind)->fetchAll();
         if (!$res) {
             return [];
         }
-        return $res;
+
+		self::$_totalRows = $res->first()->key('total_count');
+		$ids = [];
+		foreach($res as $r){
+			$ids[] = $r->key('id');
+		}
+        return $ids;
     }
 
     protected function _sqlGetHitCount()
