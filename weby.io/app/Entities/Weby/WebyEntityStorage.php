@@ -20,6 +20,7 @@ abstract class WebyEntityStorage extends EntityAbstract
     protected $_user = 0;
     protected $_createdOn = '';
     protected $_modifiedOn = '';
+	protected $_storage = '';
 
     /**
      * Saves weby into the database with it's service type
@@ -54,6 +55,20 @@ abstract class WebyEntityStorage extends EntityAbstract
 
         return $this->_getDb()->execute($query, $bind);
     }
+
+	/**
+	 * Set storage folder
+	 * @return \App\Lib\DatabaseResult
+	 */
+	protected function _sqlSetStorage(){
+		$query = "UPDATE {$this->_getDb()->w_weby} SET storage=? WHERE id=?";
+		$bind = [
+			$this->_storage,
+			$this->_id
+		];
+
+		return $this->_getDb()->execute($query, $bind);
+	}
 
     /**
      * Loads weby

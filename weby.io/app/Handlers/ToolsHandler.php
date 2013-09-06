@@ -35,14 +35,18 @@ class ToolsHandler extends AbstractHandler
 		$this->ajaxResponse(false, 'Got it :)');
 	}
 
-	public function takeScreenshot(){
-		$weby = $this->request()->query('weby');
+	public function takeScreenshot() {
+		$webyId = $this->request()->query('weby');
+		$weby = new WebyEntity();
+		$weby->load($webyId);
+
 		$screenshot = new Screenshot();
-		$path = $this->storage('local')->getAbsolutePath('webies/'.$weby.'.png');
-		try{
+		$path = $this->storage('webies')->getAbsolutePath($weby->getStorageFolder() . '/screenshot.png');
+		try {
+
 			$screenshot->takeScreenshot($weby, $path);
-			$file = new LocalFile('webies/'.$weby.'.png', $this->storage('local'));
-		} catch(\Exception $e){
+			$file = new LocalFile($weby->getStorageFolder() . '/screenshot.png', $this->storage('webies'));
+		} catch (\Exception $e) {
 			die(print_r($e));
 		}
 		die($file->getUrl());
@@ -89,24 +93,25 @@ class ToolsHandler extends AbstractHandler
 		$webies = $this->user()->getWebies(true);
 		$data = [
 			'webies' => $this->_truncateWebyTitle(json_decode($webies, true)),
-			'count' => WebyEntity::getTotalRows()
+			'count'  => WebyEntity::getTotalRows()
 		];
 		die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
 	}
 
-	public function viewWeby($id){
+	public function viewWeby($id) {
 		$weby = new WebyEntity();
 		$this->weby = $weby->load($id);
 		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
 	}
 
-	private function _truncateWebyTitle($webies){
-		foreach($webies as &$w){
+	private function _truncateWebyTitle($webies) {
+		foreach ($webies as &$w) {
 			$title = $this->str($w['title']);
-			if($title->length() > 35){
+			if($title->length() > 35) {
 				$w['title'] = $title->truncate(32, '...')->val();
 			}
 		}
+
 		return $webies;
 	}
 

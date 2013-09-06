@@ -1,3 +1,5 @@
+WebyBackground.ANIMATE = true;
+
 function WebyBackground(settings) {
 
 	var _canvasHeight = parseInt(settings.canvasHeight);
@@ -61,7 +63,18 @@ function WebyBackground(settings) {
 			}
 			var data = {};
 			data[dimension] = size;
-			el.css(data);
+			if(WebyBackground.ANIMATE){
+				if (el == App.getContentWrapper()) {
+					el.animate(data, {duration: duration, queue: false, complete: function () {
+						App.getWeby().getBackground().setContainment(width, height)
+					}});
+				} else {
+					el.animate(data, {duration: duration, queue: false});
+				}
+			} else {
+				el.css(data);
+			}
+
 		}
 
 		if (width <= App.getViewportWidth() - App.getWeby().getScrollBarOffset()) {

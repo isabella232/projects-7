@@ -57,6 +57,9 @@ class EditorHandler extends AbstractHandler
 	}
 
 	public function route($userName, $webyId = null) {
+		if(!$this->user()){
+			$this->request()->redirect($this->app()->getConfig()->app->web_path);
+		}
 		// If username doesn't match - redirect to correct user area
 		if($userName != $this->user()->getUsername()) {
 			if($this->user()->getId()) {

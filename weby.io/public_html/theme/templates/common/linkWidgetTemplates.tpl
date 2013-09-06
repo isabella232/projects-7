@@ -25,7 +25,7 @@
 
     <!-- File template - used for types of files which displays basic information such as name, size etc. -->
     <script type="weby/linkWidgetTemplate" id="link-widget-file-tpl">
-        <div style="400px">
+        <div style="width:400px">
             <a href="{url}" target="_blank"><span class="link-widget-type-icon type-{extension}"></span></a>
         <span class="link-widget-details">
             <table class="link-widget-file-details">

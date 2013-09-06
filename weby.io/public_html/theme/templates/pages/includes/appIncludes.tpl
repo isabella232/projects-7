@@ -43,6 +43,8 @@
     frontend/widgets/linkWidget.js,
     frontend/widgets/vineWidget.js,
     frontend/widgets/pinterestWidget.js,
-    frontend/widgets/flickerWidget.js
+    frontend/widgets/flickerWidget.js,
+    editor/baseTool.js,
+    editor/tools/linkTool.js
 {/minify}
 <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

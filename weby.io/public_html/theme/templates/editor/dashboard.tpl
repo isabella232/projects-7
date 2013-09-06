@@ -4,11 +4,8 @@
 {block name="head"}
     {include file="templates/editor/includes/editorIncludes.tpl"}
     <script type="text/javascript" id="initScript">
-        var myWebies = {$viewObject->user->getWebies(true)};
-        var myFavoriteWebies = {$viewObject->user->getFavoriteWebies(true)};
-
         {literal}
-        var observer = setInterval(function () {
+        /*var observer = setInterval(function () {
             if (!$('.fancybox-overlay').length || $('.fancybox-overlay').css('display') == 'none' || $('.fancybox-overlay').css('visibility') == 'hidden') {
                 clearInterval(observer);
                 $.fancybox('<img src="https://fbcdn-sphotos-e-a.akamaihd.net/hphotos-ak-ash4/1012478_464233380275557_1554344333_n.jpg">', {modal: true, autoSize: true});
@@ -17,7 +14,7 @@
                 }, 3000);
 
             }
-        }, 500);
+        }, 500);*/
 
         $(function () {
             var dashboard = new WebyDashboard();

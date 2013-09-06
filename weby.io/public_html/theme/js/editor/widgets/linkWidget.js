@@ -99,7 +99,7 @@ function LinkWidget() {
 			if ($this._contentType == 'text/html') {
 				$this._linkType = 'web';
 				$this.showLoading();
-				$.get(WEB + 'link/parse/?url=' + encodeURIComponent(url), function (data) {
+				$.get(WEB + 'tools/parse-link/?url=' + encodeURIComponent(url), function (data) {
 					if (!data.error) {
 						$this._isResizable = false;
 						$this._title = data.data.title;

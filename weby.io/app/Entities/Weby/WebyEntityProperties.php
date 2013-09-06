@@ -54,6 +54,14 @@ abstract class WebyEntityProperties extends WebyEntityStorage
         return $this->_content;
     }
 
+	/**
+	 * @return string
+	 */
+	public function getSettings()
+	{
+		return $this->_settings;
+	}
+
     /**
      * @return string
      */
@@ -85,6 +93,14 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     {
         return $this->_title;
     }
+
+	/**
+	 * @return string
+	 */
+	public function getStorageFolder()
+	{
+		return $this->_storage;
+	}
 
     /**
      * @return UserEntity

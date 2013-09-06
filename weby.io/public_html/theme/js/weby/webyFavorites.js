@@ -16,7 +16,7 @@ function WebyFavorites() {
 		var span = $(this).find('span');
 		$.ajax({
 			type: "POST",
-			url: WEB + 'favorite',
+			url: WEB + 'tools/favorite',
 			data: {
 				wid: App.getWeby().getId()
 			},

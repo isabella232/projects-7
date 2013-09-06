@@ -229,7 +229,6 @@ function Weby() {
 			_progress.next();
 			if (loaded == widgets.length) {
 				_progress.setMessage("Done!");
-				$('[type="weby/linkWidgetTemplate"]').remove();
 				App.fireEvent("weby.loaded");
 				_progress.hideProgress();
 			}

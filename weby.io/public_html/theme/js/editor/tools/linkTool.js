@@ -56,4 +56,4 @@ LinkTool.ALLOWED_TYPES = {
 };
 
 LinkTool.prototype = new BaseTool();
-LinkTool.prototype.constructor = TextTool;
+LinkTool.prototype.constructor = LinkTool;

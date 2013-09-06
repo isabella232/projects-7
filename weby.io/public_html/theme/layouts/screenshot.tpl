@@ -15,9 +15,8 @@
 
     {minify type="css"}
         main.css,
-        user.css,
         weby.css,
-        modalDialog.css
+        screenshot.css
     {/minify}
 
     {minify type="js"}
@@ -36,9 +35,6 @@
 
 </head>
 <body class="{block name="body-class"}{/block}">
-<div id="header">
-    <div id="header-content"></div>
-</div>
 {block name="content"}{/block}
 </body>
 </html>

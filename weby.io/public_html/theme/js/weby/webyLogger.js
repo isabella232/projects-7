@@ -5,7 +5,7 @@ WebyLogger =
     errorQueue: '',
     errorCount: 0,
     _logInterval: 1000,
-    _errorHandler: 'http://weby.com/log',
+    _errorHandler: WEB+'tools/log',
     _production: true,
 
     init: function () {
