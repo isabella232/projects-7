@@ -1,19 +1,21 @@
 app:
-    abs_path: /www/webiny/projects/weby.io/app/
-    web_path: http://pavel910.homeftp.net/
-    public_html: /www/webiny/projects/weby.io/public_html/
-    theme_abs_path: /www/webiny/projects/weby.io/public_html/theme/
-    theme_web_path: http://pavel910.homeftp.net/theme/
-    storage_abs_path: /www/webiny/projects/weby.io/public_html/storage/
-    storage_web_path: http://pavel910.homeftp.net/storage/
+    abs_path: /var/www/newwebiny/projects/weby.io/app/
+    web_path: http://weby.com/
+    public_html: /var/www/newwebiny/projects/weby.io/public_html/
+    theme_abs_path: /var/www/newwebiny/projects/weby.io/public_html/theme/
+    theme_web_path: http://weby.com/theme/
+    storage_abs_path: /var/www/newwebiny/projects/weby.io/public_html/storage/
+    storage_web_path: http://weby.com/storage/
     default_class: '\App\Handlers\PagesHandler'
     default_method: page404
     mode: development
     content_validators: #will be randomly switched by the app
         - http://mrcina.ath.cx:8080
+    caching_ttl: #stores TTL times for various caching (in seconds)
+        social_share_counts: 5
 
 database:
     name: weby.io
-    user: root
-    password: 'paveL!'
+    user: adrian
+    password: 4ndr055!
     host: localhost

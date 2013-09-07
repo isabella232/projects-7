@@ -7,6 +7,11 @@ use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use Webiny\Component\StdLib\SingletonTrait;
 
+/**
+ * Used for tracking various stats across our site
+ * Class Stats
+ * @package App\Lib
+ */
 class Stats
 {
     use DatabaseTrait, SingletonTrait;

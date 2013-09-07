@@ -7,7 +7,7 @@
 }
 .social-icons-wrapper {
 	float: left;
-    width: 150px;
+    width: 170px;
 }
 
 .user-options-wrapper {
@@ -39,6 +39,10 @@
     width: 32px;
     height: 32px;
     display: inline-block;
+}
+
+.share-icon:hover {
+    cursor: pointer;
 }
 
 .share-icon.social-facebook {

@@ -9,17 +9,13 @@ abstract class WebyEntityProperties extends WebyEntityStorage
 {
 
     /**
-     * Total count of hits to this Weby
-     */
-    protected $_hitCount = null;
-
-    /**
      * Total count of times somebody put this Weby to his favorite's list
      */
     protected $_favoriteCount = null;
 
     /**
-     * Here we can store the time when this Weby was added to favorites (used by favorites section)
+     * Here we can store the time when this Weby was added to favorites (used by users favorites section, when
+     * opening his favorites dialog, then he can see when he added something to his favorites list)
      */
     protected $_addedToFavoritesTime = null;
 
@@ -115,15 +111,18 @@ abstract class WebyEntityProperties extends WebyEntityStorage
         return $this->_user;
     }
 
+    /**
+     * @return null
+     */
     public function getHitCount()
     {
-        if(!$this->_hitCount) {
-            $count = $this->_sqlGetHitCount();
-            $this->_hitCount = $count ? $count : 0;
-        }
         return $this->_hitCount;
     }
 
+    /**
+     * Returns count of total times this Weby was put on someone's favorites list
+     * @return bool|Mixed|null
+     */
     public function getFavoriteCount()
     {
         if(!$this->_favoriteCount) {
@@ -141,12 +140,35 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     }
 
     /**
+     * Gets share counts for every social service (Facebook, Google, Twitter)
+     * @return Array Array with keys [facebook], [google] & [twitter], and counts as values
+     */
+    public function getShareCount() {
+        // First, try to get data from cache or social service
+        $social = SocialData::getInstance();
+        $data = $social->getAllShareCount($this);
+
+        // If that didn't succeed for some reason, return database data
+        return $data ? $data : unserialize($this->_shareCount);
+    }
+
+    /**
      * @param \App\Entities\User\UserEntity $user
      * @return $this
      */
     public function setUser(UserEntity $user)
     {
         $this->_user = $user;
+        return $this;
+    }
+
+    /**
+     * Sets new sharing counts data
+     * @param $counts
+     * @return $this
+     */
+    public function setShareCount($counts) {
+        $this->_shareCount = is_array($counts) ? serialize($counts) : $counts;
         return $this;
     }
 

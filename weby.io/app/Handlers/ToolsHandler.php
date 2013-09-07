@@ -2,6 +2,7 @@
 
 namespace App\Handlers;
 
+use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Logger;
@@ -55,8 +56,8 @@ class ToolsHandler extends AbstractHandler
 	/**
 	 * Toggle Weby favorite
 	 */
-	public function toggleFavorite() {
-		// We won't be instantianting Weby and User because we want to reduce loading and querying the database
+	public function ajaxToggleFavorite() {
+		// We won't be instantiating Weby and User because we want to reduce loading and querying the database
 		$webyId = $this->request()->post('wid');
 		$weby = new WebyEntity();
 		if(!$weby->load($webyId)) {
@@ -103,6 +104,33 @@ class ToolsHandler extends AbstractHandler
 		$this->weby = $weby->load($id);
 		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
 	}
+
+    // TODO: this isn't finished as some parts are still needed to complete this
+    /**
+     * Gets Webies from given tags
+     * Also used by Wordpress Webies widget
+     */
+    public function ajaxGetWebiesByTags()
+    {
+        $tags = $this->request()->query('q');
+        $webiesIds = WebyEntity::getWebiesByTags($tags);
+        $json = [];
+
+        $weby = new WebyEntity();
+        foreach($webiesIds as $id) {
+            $temp['id'] = $weby->load($id)->getId();
+            $temp['title'] = $weby->load($id)->getTitle();
+            $temp['thumbnail'] = 'http://www.hdwallpaperstop.com/wp-content/uploads/2013/02/Cute-Puppy-Black-Eyes-Wallpaper.jpg';
+            $temp['author'] = $weby->getUser()->getFirstName() . ' ' . $weby->getUser()->getLastName();
+            $temp['hits'] = $weby->getHitCount();
+            $temp['favorites'] = $weby->getFavoriteCount();
+            $temp['url'] = $weby->getPublicUrl();
+            $json[] = $temp;
+        }
+
+        header('Content-type: application/json; charset=utf-8;');
+        die("showWebies(".json_encode($json).");");
+    }
 
 	private function _truncateWebyTitle($webies) {
 		foreach ($webies as &$w) {

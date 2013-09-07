@@ -6,6 +6,8 @@ use App\AppTrait;
 use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
+use App\Lib\ShareCount;
+use App\Lib\Social;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
@@ -35,7 +37,7 @@ class PagesHandler extends AbstractHandler
      */
     public function viewWeby($user, $slug, $id)
     {
-
+        // Try to load Weby
         $weby = new WebyEntity();
         $weby->load($id);
 
@@ -45,14 +47,17 @@ class PagesHandler extends AbstractHandler
         // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
 
-		if($this->request()->query('embed', false, true)){
-			$this->setTemplate('embedWeby');
-			return;
-		}
+        if ($this->request()->query('embed', false, true)) {
+            $this->setTemplate('embedWeby');
+            // TODO: track embeded hits
+            return;
+        }
 
         // Update Weby's hits stats
         $stats = Stats::getInstance();
         $stats->updateWebyHits($weby);
+
+
     }
 
     public function page404()
@@ -83,10 +88,10 @@ class PagesHandler extends AbstractHandler
 
         // If user edited username or title, redirect him to proper URL via 301 header data
         if ($weby->getSlug() != $slug || $weby->getUser()->getUsername() != $user) {
-			$url = $cfg->web_path . $weby->getUser()->getUsername() . '/' . $weby->getSlug() . '/' . $id.'/';
-			if($this->request()->query('embed', false)){
-				$url .= '?embed=true';
-			}
+            $url = $cfg->web_path . $weby->getUser()->getUsername() . '/' . $weby->getSlug() . '/' . $id . '/';
+            if ($this->request()->query('embed', false)) {
+                $url .= '?embed=true';
+            }
             $this->request()->redirect($url, 301);
         }
     }

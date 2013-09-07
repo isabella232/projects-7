@@ -12,7 +12,8 @@
     {include file="templates/common/favorites.tpl"}
     <script type="text/javascript" id="initScript">
         var weby = {$weby->toJson()};
-        $(function(){
+        var myFavoriteWebies = [];
+        $(function () {
             App = new AppClass();
             App.init();
             $('#initScript').remove();

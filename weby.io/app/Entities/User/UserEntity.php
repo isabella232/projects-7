@@ -40,6 +40,11 @@ class UserEntity extends UserEntityCrud
 		return $user->populate($data);
 	}
 
+    /**
+     * Used by Wordpress widget (when searching Webies by tags)
+     * @param bool $json
+     * @return array|string
+     */
     public function getWebies($json = false)
     {
         $webies = WebyEntity::getAllByUser($this);

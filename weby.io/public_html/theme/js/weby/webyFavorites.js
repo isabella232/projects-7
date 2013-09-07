@@ -71,7 +71,7 @@ function WebyFavorites() {
 		)
 	});
 
-	// Bind My Webies
+	// My Favorites
 	favoritesOpen.click(function (e) {
 		e.preventDefault();
 		$this.open();

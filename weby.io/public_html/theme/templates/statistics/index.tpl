@@ -47,6 +47,9 @@
     <div id="stat_wrapper">
         <div id="stat_menu">
             <ul>
+                <li><a data-stat="error_log" class="stat_menu_ajax_item" href="javascript:void(0);">Error Log</a></li>
+                <li><a data-stat="uknown_filetypes" class="stat_menu_ajax_item" href="javascript:void(0);">Uknown filetypes</a></li>
+                <li><a data-stat="unsupported_links" class="stat_menu_ajax_item" href="javascript:void(0);">Unsupported links</a></li>
                 <li><a data-stat="registered_users" class="stat_menu_ajax_item" href="javascript:void(0);">Registered users</a></li>
                 <li><a data-stat="active_users" class="stat_menu_ajax_item" href="javascript:void(0);">Active users</a></li>
                 <li><a data-stat="created_webies" class="stat_menu_ajax_item" href="javascript:void(0);">Created Webies</a></li>

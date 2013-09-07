@@ -12,13 +12,16 @@ use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 class FavoriteEntity extends FavoriteEntityCrud
 {
 
-    public static function getAllFavoritesByUser($userId, $page = 1, $limit = 10, $orderBy = 'created_on', $orderType = 'DESC')
+    /**
+     * Gets all favorite Webies for given user (can be passed as an object or pure ID)
+     * @param $userId
+     * @return array
+     */
+    public static function getAllFavoritesByUser($userId)
     {
         $userId = $userId instanceof UserEntity ? $userId->getId() : $userId;
-
-        $limitOffset = "OFFSET " . ($page - 1) * $limit . " LIMIT " . $limit;
         $query = "SELECT weby FROM " . self::_getDb()->w_favorite . " WHERE \"user\"=?
-                     ORDER BY {$orderBy} {$orderType} {$limitOffset}";
+                     ORDER BY created_on DESC";
         $result = self::_getDb()->execute($query, [$userId])->fetchColumn();
 
         $favorites = [];

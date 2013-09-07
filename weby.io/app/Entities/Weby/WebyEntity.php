@@ -41,6 +41,13 @@ class WebyEntity extends WebyEntityCrud
     }
 
     /**
+     * Searches database for Webies with given tags attached
+     */
+    public static function getWebiesByTags($tags) {
+        return self::_sqlGetWebiesByTags($tags);
+    }
+
+    /**
      * Generates full editor URL for this Weby
      * @return string
      */
@@ -54,15 +61,23 @@ class WebyEntity extends WebyEntityCrud
      */
     public function getPublicUrl() {
 		return $this->app()->getConfig()->app->web_path . $this->getUser()
-														  ->getUsername() . '/' . $this->getSlug() . '/' . $this->getId() . '/';
+                  ->getUsername() . '/' . $this->getSlug() . '/' . $this->getId() . '/';
 	}
 
-	public function toJson() {
+    /**
+     * Returns WebyEntity object to JSON
+     * @return string
+     */
+    public function toJson() {
 		return json_encode($this->toArray());
 
 	}
 
-	public function toArray() {
+    /**
+     * Returns WebyEntity object to array
+     * @return array
+     */
+    public function toArray() {
 		return [
 			'id'       => $this->_id,
 			'username' => $this->getUser()->getUsername(),

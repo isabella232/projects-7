@@ -8,7 +8,8 @@ routes:
 
     # TOOLS
     - ['tools/webies', \App\Handlers\ToolsHandler, ajaxGetWebies]
-    - ['tools/favorite', \App\Handlers\ToolsHandler, toggleFavorite]
+    - ['tools/webies/tags', \App\Handlers\ToolsHandler, ajaxGetWebiesByTags]
+    - ['tools/favorite', \App\Handlers\ToolsHandler, ajaxToggleFavorite]
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
     - ['tools/log', \App\Handlers\ToolsHandler, log]
     - ['tools/parse-link', \App\Handlers\LinksHandler, parse]
