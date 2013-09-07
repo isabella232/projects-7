@@ -7,11 +7,12 @@ use App\Entities\EntityAbstract;
 use App\Entities\User\ServiceType;
 use App\Entities\User\UserEntity;
 use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class WebyEntityStorage extends EntityAbstract
 {
-	use HttpTrait;
+	use HttpTrait, StdLibTrait;
 
     protected $_id = '';
     protected $_title = 'Untitled';
@@ -19,12 +20,16 @@ abstract class WebyEntityStorage extends EntityAbstract
     protected $_content = [];
     protected $_settings = [];
     protected $_user = 0;
-    protected $_shareCount = [];
+    protected $_shareCount = '';
     protected $_hitCount = [];
     protected $_deleted = false;
     protected $_createdOn = '';
     protected $_modifiedOn = '';
 	protected $_storage = '';
+	/**
+	 * @var null|ArrayObject
+	 */
+	protected $_images = null;
 
     /**
      * Saves weby into the database with it's service type
@@ -88,8 +93,9 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected function _sqlLoad()
     {
+		$this->_images = $this->arr();
         $query = "SELECT * FROM {$this->_getDb()->w_weby} WHERE id=? LIMIT 1";
-        $bind = array($this->_id);
+        $bind = [$this->_id];
 
         return $this->_getDb()->execute($query, $bind)->fetchArray();
     }
@@ -101,7 +107,7 @@ abstract class WebyEntityStorage extends EntityAbstract
     protected function _sqlDelete()
     {
         $query = "DELETE FROM {$this->_getDb()->w_weby} WHERE id=?";
-        $bind = array($this->_id);
+        $bind = [$this->_id];
 
         return $this->_getDb()->execute($query, $bind);
     }
@@ -160,5 +166,11 @@ abstract class WebyEntityStorage extends EntityAbstract
         $bind = [];
         return self::_getDb()->execute($query, $bind)->fetchColumn();
     }
+
+	protected function _sqlLoadImages(){
+		$query = "SELECT * FROM {$this->_getDb()->w_weby_image} WHERE weby = ?";
+		$bind = [$this->_id];
+		return $this->_getDb()->execute($query, $bind)->fetchAll();
+	}
 
 }

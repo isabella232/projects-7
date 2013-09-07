@@ -1,5 +1,6 @@
 <?php
 use App\App;
+
 // Display errors in browser or not (will be used for system debugger)
 ini_set('display_errors', true);
 

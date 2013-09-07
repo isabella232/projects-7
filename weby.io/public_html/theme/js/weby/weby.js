@@ -85,8 +85,8 @@ function Weby() {
 			}, _saveInterval);
 
 			// Catch window close event
-			$(window).bind('beforeunload', function () {
-				App.getWeby().save();
+			$(window).bind("beforeunload", function() {
+				App.getWeby().save(true);
 			});
 		} else {
 			// Setup background
@@ -166,7 +166,7 @@ function Weby() {
 		return _webyId;
 	};
 
-	this.save = function () {
+	this.save = function (takeScreenshot) {
 		if (!_webyId) {
 			return;
 		}
@@ -184,6 +184,11 @@ function Weby() {
 			unknownFileTypes: _unknownFileTypes,
 			invalidUrls: _invalidUrls
 		};
+
+		if(takeScreenshot != undefined){
+			data['takeScreenshot'] = true;
+		}
+
 		// When saving widgets make sure all of them have width and height property set
 		for (var i in _widgets) {
 			var widget = _widgets[i];
@@ -193,16 +198,22 @@ function Weby() {
 			data.content.push(widget.save());
 		}
 
-		$.post(WEB + 'editor/save/', data, function (data) {
-			if (!data.error) {
-				// Reset logs
-				_counter = {};
-				_unknownFileTypes = [];
-				_invalidUrls = [];
-				_lastSavedLabel.show().find('span').html(data.data.time);
-				_labelTimeout = setTimeout(function () {
-					_lastSavedLabel.fadeOut();
-				}, 2000)
+		$.ajax({
+			url:WEB + 'editor/save/',
+		 	data: data,
+			method: 'POST',
+			async: !(takeScreenshot == undefined),
+			success: function (data) {
+				if (!data.error) {
+					// Reset logs
+					_counter = {};
+					_unknownFileTypes = [];
+					_invalidUrls = [];
+					_lastSavedLabel.show().find('span').html(data.data.time);
+					_labelTimeout = setTimeout(function () {
+						_lastSavedLabel.fadeOut();
+					}, 2000)
+				}
 			}
 		});
 

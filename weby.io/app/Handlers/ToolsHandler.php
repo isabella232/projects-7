@@ -5,14 +5,12 @@ namespace App\Handlers;
 use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
-use App\Lib\Logger;
 use App\Lib\Screenshot;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\StdLib\StdLibTrait;
-use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\StorageTrait;
 
 class ToolsHandler extends AbstractHandler
@@ -36,21 +34,23 @@ class ToolsHandler extends AbstractHandler
 		$this->ajaxResponse(false, 'Got it :)');
 	}
 
-	public function takeScreenshot() {
-		$webyId = $this->request()->query('weby');
+	public function takeScreenshot($webyId) {
 		$weby = new WebyEntity();
 		$weby->load($webyId);
 
-		$screenshot = new Screenshot();
-		$path = $this->storage('webies')->getAbsolutePath($weby->getStorageFolder() . '/screenshot.png');
-		try {
+		$screenshot = new Screenshot\Screenshot();
+		$queue = new Screenshot\ScreenshotQueue();
 
+		$key = $weby->getStorageFolder() . '/original-screenshot-' . time() . '.png';
+		$path = $this->storage('local')->getAbsolutePath($key);
+		try {
 			$screenshot->takeScreenshot($weby, $path);
-			$file = new LocalFile($weby->getStorageFolder() . '/screenshot.png', $this->storage('webies'));
+			$weby->getImage('original-screenshot')->setKey($key)->save();
+			$queue->complete($webyId)->processQueue();
 		} catch (\Exception $e) {
-			die(print_r($e));
+			$queue->abort($webyId)->processQueue();
 		}
-		die($file->getUrl());
+		die();
 	}
 
 	/**
@@ -105,32 +105,31 @@ class ToolsHandler extends AbstractHandler
 		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
 	}
 
-    // TODO: this isn't finished as some parts are still needed to complete this
-    /**
-     * Gets Webies from given tags
-     * Also used by Wordpress Webies widget
-     */
-    public function ajaxGetWebiesByTags()
-    {
-        $tags = $this->request()->query('q');
-        $webiesIds = WebyEntity::getWebiesByTags($tags);
-        $json = [];
+	// TODO: this isn't finished as some parts are still needed to complete this
+	/**
+	 * Gets Webies from given tags
+	 * Also used by Wordpress Webies widget
+	 */
+	public function ajaxGetWebiesByTags() {
+		$tags = $this->request()->query('q');
+		$webiesIds = WebyEntity::getWebiesByTags($tags);
+		$json = [];
 
-        $weby = new WebyEntity();
-        foreach($webiesIds as $id) {
-            $temp['id'] = $weby->load($id)->getId();
-            $temp['title'] = $weby->load($id)->getTitle();
-            $temp['thumbnail'] = 'http://www.hdwallpaperstop.com/wp-content/uploads/2013/02/Cute-Puppy-Black-Eyes-Wallpaper.jpg';
-            $temp['author'] = $weby->getUser()->getFirstName() . ' ' . $weby->getUser()->getLastName();
-            $temp['hits'] = $weby->getHitCount();
-            $temp['favorites'] = $weby->getFavoriteCount();
-            $temp['url'] = $weby->getPublicUrl();
-            $json[] = $temp;
-        }
+		$weby = new WebyEntity();
+		foreach ($webiesIds as $id) {
+			$temp['id'] = $weby->load($id)->getId();
+			$temp['title'] = $weby->load($id)->getTitle();
+			$temp['thumbnail'] = 'http://www.hdwallpaperstop.com/wp-content/uploads/2013/02/Cute-Puppy-Black-Eyes-Wallpaper.jpg';
+			$temp['author'] = $weby->getUser()->getFirstName() . ' ' . $weby->getUser()->getLastName();
+			$temp['hits'] = $weby->getHitCount();
+			$temp['favorites'] = $weby->getFavoriteCount();
+			$temp['url'] = $weby->getPublicUrl();
+			$json[] = $temp;
+		}
 
-        header('Content-type: application/json; charset=utf-8;');
-        die("showWebies(".json_encode($json).");");
-    }
+		header('Content-type: application/json; charset=utf-8;');
+		die("showWebies(" . json_encode($json) . ");");
+	}
 
 	private function _truncateWebyTitle($webies) {
 		foreach ($webies as &$w) {

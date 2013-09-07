@@ -9,7 +9,7 @@
     <div class="webies-list"></div>
     <div class="webies-footer">
         <div class="webies-pager"></div>
-        <a href="http://weby.com/editor/create/" style="float:right;"><span
+        <a href="{$viewObject.webPath}editor/create/" style="float:right;"><span
                     class="dialog-button create">Create new Weby</span></a>
     </div>
 </div>

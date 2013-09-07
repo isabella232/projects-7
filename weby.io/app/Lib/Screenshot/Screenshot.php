@@ -1,5 +1,5 @@
 <?php
-namespace App\Lib;
+namespace App\Lib\Screenshot;
 
 use App\AppTrait;
 use App\Entities\Weby\WebyEntity;

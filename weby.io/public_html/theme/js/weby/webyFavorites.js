@@ -3,7 +3,7 @@ function WebyFavorites() {
 	var favoritesOpen = $('#user-favorites');
 
 	var webiesDataSource = new kendo.data.DataSource({
-		data: myFavoriteWebies,
+		data: [],
 		pageSize: 3
 	});
 

@@ -7,6 +7,7 @@ use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\DatabaseTrait;
 use App\Lib\AbstractHandler;
+use App\Lib\Screenshot\ScreenshotQueue;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
@@ -53,6 +54,11 @@ class EditorHandler extends AbstractHandler
 		$weby->populate($this->request()->post());
 		$weby->setUser($this->user())->save();
 
+		// Add to screenshot queue if requested
+		if($this->request()->post('takeScreenshot', false)){
+			$queue = new ScreenshotQueue();
+			$queue->add($id)->processQueue();
+		}
 		$this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
 	}
 
@@ -88,18 +94,21 @@ class EditorHandler extends AbstractHandler
 
 	public function uploadImage() {
 		$webyId = $this->request()->query('weby');
-		$this->_removeImage($webyId);
 		$file = $this->request()->files('background-image');
 
-		if(!$this->file($file->getTmpName())->isImage()) {
+		if(!$file->asFileObject()->isImage()) {
 			$this->ajaxResponse(true, 'Given file type is not allowed!');
 		}
 
-		$ext = $this->str($file->getName())->explode('.')->last();
-		$key = $this->user()->getUsername() . '/' . $webyId . '-background-' . time() . '.' . $ext;
+		$weby = new WebyEntity();
+		$weby->load($webyId);
 
+		$ext = $this->str($file->getName())->explode('.')->last();
+		$key = $weby->getStorageFolder() . '/background-' . time() . '.' . $ext;
 		$webyFile = new LocalFile($key, $this->storage('local'));
-		$webyFile->setContents(file_get_contents($file->getTmpName()));
+		if($webyFile->setContents($file->asFileObject()->getFileContent()) !== false){
+			$weby->getImage('background')->setKey($key)->save();
+		}
 		die(json_encode(['url' => $webyFile->getUrl()]));
 	}
 

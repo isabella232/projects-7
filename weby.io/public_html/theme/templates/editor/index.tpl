@@ -12,7 +12,6 @@
     <script type="text/javascript" id="initScript" >
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
-        var myFavoriteWebies = [];
         $(function () {
             App = new AppClass();
             App.init();

@@ -1,4 +1,10 @@
 (function (d) {
+	if(typeof Weby == "undefined"){
+		Weby = true;
+	} else {
+		return;
+	}
+
 	var webies = document.getElementsByClassName("weby-embed");
 
 	if (!webies) {
@@ -41,13 +47,13 @@
 			weby.appendChild(iframe);
 
 			// Create brand line
-			if(attrs.branding){
+			/*if(attrs.branding){*/
 				var brand = document.createElement("span");
 				brand.innerHTML = 'Powered by <a href="http://weby.io">Weby.io</a>';
 				brand.style.float = "right";
 				brand.style.clear = "both";
 				weby.appendChild(brand);
-			}
+			/*}*/
 
 			// Insert Weby in DOM
 			webies[wi].parentNode.replaceChild(weby, webies[wi]);

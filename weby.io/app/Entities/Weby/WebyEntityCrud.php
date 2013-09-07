@@ -26,6 +26,14 @@ abstract class WebyEntityCrud extends WebyEntityProperties
 		} else {
 			$this->_content = json_decode($this->_content, true);
 		}
+
+		// Load images
+		$images = $this->_sqlLoadImages();
+		if($images && $images->count() > 0){
+			foreach($images as $i){
+				$this->_images[$i['tag']] = new WebyImage($this->_id, $i['tag'], $i['file']);
+			}
+		}
 	}
 
 	protected function _onBeforeSave() {
