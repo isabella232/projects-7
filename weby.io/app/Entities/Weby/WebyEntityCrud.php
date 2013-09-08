@@ -43,6 +43,12 @@ abstract class WebyEntityCrud extends WebyEntityProperties
 		$this->_slug = $this->_toSlug($this->_title);
 	}
 
+	protected function _onBeforePopulate($data){
+		if(!$this->arr($data)->keyExists('content')){
+			$this->_content = [];
+		}
+	}
+
 	protected function _onAfterSave() {
 		if($this->_createStorageFolder){
 			$this->_createStorageFolder = false;

@@ -1,9 +1,10 @@
 function WebyDashboard() {
 
 	var $this = this;
+	var _currentWebyId = '';
 	var _loading = $('.modal-dialog .dialog-loading');
 	var _template = kendo.template(
-		'<div class="webies-list-item" style="position: relative;">' +
+		'<div class="webies-list-item" style="position: relative;" data-id="${id}">' +
 			'<img class="weby-thumbnail" src="${thumbnail}"/>' +
 			'<div class="weby-data left">' +
 			'<h2>${title}</h2>' +
@@ -47,7 +48,6 @@ function WebyDashboard() {
 	var webiesDataSource = new kendo.data.DataSource({
 		type: "odata",
 		serverPaging: true,
-		serverSorting: true,
 		pageSize: 2,
 		transport: {
 			read: {
@@ -55,9 +55,19 @@ function WebyDashboard() {
 				contentType: "application/json; charset=utf-8",
 				type: "GET",
 				dataType: "jsonp"
+			},
+			destroy: {
+				url: function () {
+					return WEB + 'tools/delete-weby/' + _currentWebyId + '/'
+				},
+				dataType: "json",
+				type: "POST"
 			}
 		},
 		schema: {
+			model: kendo.data.Model.define({
+				id: "id"
+			}),
 			data: function (response) {
 				return response.webies;
 			},
@@ -65,10 +75,10 @@ function WebyDashboard() {
 				return response.count;
 			}
 		},
-		requestStart: function(e) {
+		requestStart: function (e) {
 			_loading.css("display", "block");
 		},
-		requestEnd: function(e) {
+		requestEnd: function (e) {
 			_loading.hide();
 		}
 	});
@@ -83,6 +93,14 @@ function WebyDashboard() {
 	$(".modal-dialog .webies-list").kendoListView({
 		dataSource: webiesDataSource,
 		template: _template
+	});
+
+	$('.webies-list').on('click', '.dialog-button.delete', function () {
+		var item = $(this).closest('.webies-list-item');
+		_currentWebyId = item.attr("data-id");
+		webiesDataSource.remove(webiesDataSource.get(_currentWebyId));
+		webiesDataSource.sync();
+		webiesDataSource.read();
 	});
 
 	// Bind My Webies

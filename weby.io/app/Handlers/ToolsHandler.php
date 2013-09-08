@@ -105,6 +105,10 @@ class ToolsHandler extends AbstractHandler
 		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
 	}
 
+	public function deleteWeby($webyId){
+		$this->ajaxResponse(false);
+	}
+
 	// TODO: this isn't finished as some parts are still needed to complete this
 	/**
 	 * Gets Webies from given tags

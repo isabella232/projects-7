@@ -5,7 +5,8 @@ function Weby() {
 		return;
 	}
 
-	var _saveInterval = 15000;
+	var _saveInterval = null;
+	var _saveIntervalTime = 15000;
 	var _FF = !(window.mozInnerScreenX == null);
 	var _widgets = {};
 	var _invalidUrls = [];
@@ -80,9 +81,7 @@ function Weby() {
 			})
 
 			// Create periodic save action
-			setInterval(function () {
-				App.getWeby().save();
-			}, _saveInterval);
+			_saveInterval = setInterval(_save, _saveIntervalTime);
 
 			// Catch window close event
 			$(window).bind("beforeunload", function() {
@@ -186,7 +185,7 @@ function Weby() {
 		};
 
 		if(takeScreenshot != undefined){
-			data['takeScreenshot'] = true;
+			//data['takeScreenshot'] = true;
 		}
 
 		// When saving widgets make sure all of them have width and height property set
@@ -198,11 +197,11 @@ function Weby() {
 			data.content.push(widget.save());
 		}
 
-		$.ajax({
+		var options = {
 			url:WEB + 'editor/save/',
-		 	data: data,
+			data: data,
 			method: 'POST',
-			async: !(takeScreenshot == undefined),
+			async: takeScreenshot == undefined,
 			success: function (data) {
 				if (!data.error) {
 					// Reset logs
@@ -213,9 +212,12 @@ function Weby() {
 					_labelTimeout = setTimeout(function () {
 						_lastSavedLabel.fadeOut();
 					}, 2000)
+					clearInterval(_saveInterval);
+					_saveInterval = setInterval(_save, _saveIntervalTime);
 				}
 			}
-		});
+		};
+		$.ajax(options);
 
 	};
 
@@ -262,10 +264,14 @@ function Weby() {
 
 			// Append to DOM
 			App.getContent().append(html);
-			if ('onWidgetInserted' in widget) {
-				widget.onWidgetInserted();
+			if ('onEditWidgetInserted' in widget) {
+				widget.onEditWidgetInserted();
 			}
 		}
+	};
+
+	var _save = function () {
+		App.getWeby().save();
 	};
 
 	// EVENTS
