@@ -7,7 +7,7 @@ function WebyBackground(settings) {
 		color: new WebyColorBackground(App.getContent()),
 		pattern: new WebyPatternBackground(App.getContent(), 'purty_wood.png'),
 		image: new WebyImageBackground(),
-		video: new WebyVideoBackground()
+		//video: new WebyVideoBackground()
 	};
 
 	if (typeof settings != "undefined") {

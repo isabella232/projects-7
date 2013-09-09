@@ -46,6 +46,17 @@ function LinkWidget() {
 		return tpl;
 	};
 
+	this._verifyUrl = function () {
+		var check = ['http://', 'https://', 'ftp://']
+
+		for (var i in check) {
+			if (this._linkUrl.indexOf(check[i]) == 0) {
+				return;
+			}
+		}
+		this._linkUrl = 'http://' + this._linkUrl;
+	};
+
 // Renders image
 	this.generateImage = function () {
 		this._isInteractive = false;

@@ -1,5 +1,6 @@
 function DashboardLoading(){
 	var _el = $('.modal-dialog .dialog-loading');
+	var _initialMessage = 'Loading Webies...';
 
 	this.show = function(){
 		_el.css("display", "block");
@@ -15,6 +16,8 @@ function DashboardLoading(){
 		_el.find('.text').html(message);
 		return this;
 	}
+
+	this.setMessage(_initialMessage);
 }
 
 function WebyDashboard() {
@@ -29,7 +32,7 @@ function WebyDashboard() {
 	var webiesDataSource = new kendo.data.DataSource({
 		type: "odata",
 		serverPaging: true,
-		pageSize: 2,
+		pageSize: 3,
 		transport: {
 			read: {
 				url: WEB + 'tools/webies/',
@@ -60,7 +63,7 @@ function WebyDashboard() {
 			_loading.show();
 		},
 		requestEnd: function (e) {
-			_loading.hide().setMessage("Loading...");
+			_loading.hide().setMessage("Loading Webies...");
 			if(e.type == "destroy"){
 				if(this.data().length == 0){
 					var curPage = this.page();
@@ -80,7 +83,7 @@ function WebyDashboard() {
 
 	$(".modal-dialog .webies-pager").kendoPager({
 		dataSource: webiesDataSource,
-		buttonCount: 5,
+		buttonCount: 10,
 		info: false
 	});
 

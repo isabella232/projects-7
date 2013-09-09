@@ -9,7 +9,7 @@ function WebyBackground(settings) {
 		color: new WebyColorBackground(App.getContent()),
 		pattern: new WebyPatternBackground(App.getContent(), 'purty_wood.png'),
 		image: new WebyImageBackground(),
-		video: new WebyVideoBackground()
+		//video: new WebyVideoBackground()
 	};
 
 	for (var i in _backgrounds) {
@@ -64,13 +64,7 @@ function WebyBackground(settings) {
 			var data = {};
 			data[dimension] = size;
 			if(WebyBackground.ANIMATE){
-				if (el == App.getContentWrapper()) {
-					el.animate(data, {duration: duration, queue: false, complete: function () {
-						App.getWeby().getBackground().setContainment(width, height)
-					}});
-				} else {
-					el.animate(data, {duration: duration, queue: false});
-				}
+				el.animate(data, {duration: duration, queue: false});
 			} else {
 				el.css(data);
 			}

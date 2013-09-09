@@ -173,5 +173,12 @@ BaseWidget.prototype = {
 			return this._jWidgetBody.find(selector);
 		}
 		return this._jWidgetBody;
+	},
+
+	truncate: function (text, length, end) {
+		if (text.length > length) {
+			return $.trim(text).substring(0, length).split(" ").slice(0, -1).join(" ") + end;
+		}
+		return text;
 	}
 };
