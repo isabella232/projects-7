@@ -33,6 +33,7 @@ p {
 
 #my-webies-dialog .webies-list {
 	float: left;
+	width: 100%;
 }
 
 #my-webies-dialog .webies-list-item {
@@ -57,7 +58,7 @@ p {
 	margin: 4px 0;
 }
 
-#my-webies-dialog .dialog-loading{
+#my-webies-dialog .dialog-loading {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -78,6 +79,38 @@ p {
 	text-align: center;
 }
 
+#my-webies-dialog .delete-confirmation{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+
+#my-webies-dialog .delete-confirmation .overlay{
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	position: absolute;
+	background-color: #f25b2b;
+	opacity: 0.95;
+}
+
+#my-webies-dialog .delete-confirmation .message{
+	text-align: center;
+	font-size: 24px;
+	margin-top: 170px;
+	z-index: 1001;
+	color: #fff;
+	position: relative;
+}
+
+#my-webies-dialog .delete-confirmation .actions{
+	text-align: center;
+	margin-top: 20px;
+	z-index: 1001;
+	position: relative;
+}
+
 #my-webies-dialog .weby-data {
     width: 350px;
 }
@@ -87,7 +120,7 @@ p {
     text-align: right;
 }
 
-div.weby-actions.pushed-bot {
+#my-webies-dialog .weby-actions.buttons {
     position:absolute; bottom: 0; right: 0; margin-bottom: 10px
 }
 

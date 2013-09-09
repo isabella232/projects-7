@@ -51,4 +51,4 @@
 </div>
 {block name="content"}{/block}
 </body>
-</html>tml>
+</html>

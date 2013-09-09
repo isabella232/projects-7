@@ -11,6 +11,7 @@ use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\StdLib\StdLibTrait;
+use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\StorageTrait;
 
 class ToolsHandler extends AbstractHandler
@@ -57,7 +58,6 @@ class ToolsHandler extends AbstractHandler
 	 * Toggle Weby favorite
 	 */
 	public function ajaxToggleFavorite() {
-		// We won't be instantiating Weby and User because we want to reduce loading and querying the database
 		$webyId = $this->request()->post('wid');
 		$weby = new WebyEntity();
 		if(!$weby->load($webyId)) {
@@ -83,13 +83,15 @@ class ToolsHandler extends AbstractHandler
 	}
 
 	/**
-	 * Get user's favorite Webies (paginated)
+	 * Get user's favorite Webies
 	 */
 	public function ajaxGetFavorites() {
-		$limit = $this->request()->query('\$top');
-		$offset = $this->request()->query('\$skip');
+
 	}
 
+	/**
+	 * Get user's Webies
+	 */
 	public function ajaxGetWebies() {
 		$webies = $this->user()->getWebies(true);
 		$data = [
@@ -99,13 +101,29 @@ class ToolsHandler extends AbstractHandler
 		die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
 	}
 
+	/**
+	 * View Weby for screnshot
+	 * @param $id
+	 */
 	public function viewWeby($id) {
 		$weby = new WebyEntity();
 		$this->weby = $weby->load($id);
 		$this->setTemplatePath('templates/pages')->setTemplate('screenshotWeby');
 	}
 
+	/**
+	 * Mark Weby deleted
+	 * @param $webyId
+	 */
 	public function deleteWeby($webyId){
+		$weby = new WebyEntity();
+		$weby->load($webyId);
+
+		if($weby->getUser()->getId() != $this->user()->getId()){
+			$this->ajaxResponse(true, 'You can not delete a Weby that does not belong to you!');
+		}
+
+		$weby->delete();
 		$this->ajaxResponse(false);
 	}
 

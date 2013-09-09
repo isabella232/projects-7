@@ -1,49 +1,30 @@
+function DashboardLoading(){
+	var _el = $('.modal-dialog .dialog-loading');
+
+	this.show = function(){
+		_el.css("display", "block");
+		return this;
+	}
+
+	this.hide = function(){
+		_el.hide();
+		return this;
+	}
+
+	this.setMessage = function(message){
+		_el.find('.text').html(message);
+		return this;
+	}
+}
+
 function WebyDashboard() {
 
 	var $this = this;
 	var _currentWebyId = '';
-	var _loading = $('.modal-dialog .dialog-loading');
-	var _template = kendo.template(
-		'<div class="webies-list-item" style="position: relative;" data-id="${id}">' +
-			'<img class="weby-thumbnail" src="${thumbnail}"/>' +
-			'<div class="weby-data left">' +
-			'<h2>${title}</h2>' +
-			'<p><h3>Tags</h3>' +
-			'<div class="weby-tags-list">' +
-			'<span class="weby-tag">Metal</span>' +
-			'<span class="weby-tag">Metal</span>' +
-			'<span class="weby-tag">Progressive</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-			'<span class="weby-tag">Math</span>' +
-
-			'<a href="javascript:void(0);">' +
-			'</a>' +
-			'</div>' +
-			'</p>' +
-			'</div>' +
-			'<div class="weby-actions right">' +
-			'<p>${modified_on}</p>' +
-			'<p>' +
-			'<span class="weby-quick-data">${hits} hits</span>' +
-			'<span class="weby-quick-data">${favorites} favorites</span>' +
-			'</p>' +
-			'</div>' +
-			'<div class="weby-actions pushed-bot right">' +
-			'<p style="">' +
-			'<a href="javascript:void(0);"><span class="dialog-button delete">Delete</span></a>' +
-			'<a href="${editor_url}"><span class="dialog-button edit">Edit</span></a>' +
-			'<a href="${public_url}"><span class="dialog-button view">View</span></a>' +
-			'</p>' +
-			'</div>' +
-			'</div>'
-	);
+	var _dialog = $(".modal-dialog");
+	var _deleteDialog = $('.delete-confirmation');
+	var _loading = new DashboardLoading();
+	var _template = kendo.template($('#webies-list-item-tpl').html());
 
 	var webiesDataSource = new kendo.data.DataSource({
 		type: "odata",
@@ -76,10 +57,24 @@ function WebyDashboard() {
 			}
 		},
 		requestStart: function (e) {
-			_loading.css("display", "block");
+			_loading.show();
 		},
 		requestEnd: function (e) {
-			_loading.hide();
+			_loading.hide().setMessage("Loading...");
+			if(e.type == "destroy"){
+				if(this.data().length == 0){
+					var curPage = this.page();
+					if(curPage > 1){
+						this.page(--curPage);
+					} else {
+						_dialog.find(".empty-list").show();
+						_dialog.find("h1").hide();
+						_dialog.find(".webies-pager").hide();
+					}
+				} else {
+					this.read();
+				}
+			}
 		}
 	});
 
@@ -95,12 +90,21 @@ function WebyDashboard() {
 		template: _template
 	});
 
+	_deleteDialog.find('[data-role="btn-cancel"]').click(function(){
+		_deleteDialog.hide();
+	});
+
+	_deleteDialog.find('[data-role="btn-delete"]').click(function(){
+		_deleteDialog.hide();
+		webiesDataSource.remove(webiesDataSource.get(_currentWebyId));
+		_loading.setMessage("Removing Weby...");
+		webiesDataSource.sync();
+	});
+
 	$('.webies-list').on('click', '.dialog-button.delete', function () {
 		var item = $(this).closest('.webies-list-item');
 		_currentWebyId = item.attr("data-id");
-		webiesDataSource.remove(webiesDataSource.get(_currentWebyId));
-		webiesDataSource.sync();
-		webiesDataSource.read();
+		_deleteDialog.show();
 	});
 
 	// Bind My Webies

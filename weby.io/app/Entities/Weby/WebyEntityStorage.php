@@ -106,7 +106,7 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected function _sqlDelete()
     {
-        $query = "DELETE FROM {$this->_getDb()->w_weby} WHERE id=?";
+        $query = "UPDATE {$this->_getDb()->w_weby} SET deleted = 1::bit, deleted_on = NOW() WHERE id=?";
         $bind = [$this->_id];
 
         return $this->_getDb()->execute($query, $bind);
@@ -121,7 +121,7 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected static function _sqlLoadByUser(UserEntity $user)
     {
-        $query = 'SELECT id, count(*) OVER() total_count FROM ' . self::_getDb()->w_weby . ' WHERE "user"=? ORDER BY created_on DESC';
+        $query = 'SELECT id, count(*) OVER() total_count FROM ' . self::_getDb()->w_weby . ' WHERE "user"=? AND deleted = 0::bit ORDER BY created_on DESC';
         $bind = [$user->getId()];
 
 		if(self::request()->query('$top')){
@@ -135,7 +135,8 @@ abstract class WebyEntityStorage extends EntityAbstract
 		}
 
         $res = self::_getDb()->execute($query, $bind)->fetchAll();
-        if (!$res) {
+        if ($res->count() == 0) {
+			self::$_totalRows = 0;
             return [];
         }
 
