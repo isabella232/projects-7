@@ -1,5 +1,8 @@
 <!-- TODO: refactor A LOT (move to separate file, change logic of initializing and general logic -->
-
+{*{if (!isset($editor) || !$editor) && $weby.user.id != $viewObject.user.id}
+            <a href="javascript: void(0);" id="add-to-favs">
+                <span class="share-icon social-favorites{if $weby->isInFavorites()}-added{/if}"></span></a>
+        {/if}*}
 <script type="text/javascript">
 
     var SocialShare = {
@@ -12,9 +15,9 @@
          * Initialize social share functionality
          */
         init: function () {
-            this.facebookBtn = $('.share-icon.social-facebook');
-            this.googleBtn = $('.share-icon.social-google');
-            this.twitterBtn = $('.share-icon.social-twitter');
+            this.facebookBtn = $('[data-role="facebook-share"]');
+            this.googleBtn = $('[data-role="twitter-share"]');
+            this.twitterBtn = $('[data-role="gplus-share"]');
 
             // Binding event handlers
             this._bindFacebookShare();
@@ -68,21 +71,21 @@
 
 <!-- SHARING ICONS -->
 {if $weby}
-    <div class="social-icons-wrapper">
-        {if (!isset($editor) || !$editor) && $weby.user.id != $viewObject.user.id}
-            <a href="javascript: void(0);" id="add-to-favs">
-                <span class="share-icon social-favorites{if $weby->isInFavorites()}-added{/if}"></span></a>
-        {/if}
-        <!-- FACEBOOK SHARING -->
-        <span class="share-icon social-facebook"></span>
-        {$weby.shareCount.facebook}
-
-        <!-- TWITTER SHARING -->
-        <span class="share-icon social-twitter"></span>
-        {$weby.shareCount.twitter}
-
-        <!-- GOOGLE+ SHARING -->
-        <span class="share-icon social-google"></span>
-        {$weby.shareCount.google}
-    </div>
+    <li>
+        <p>Share</p>
+        <ul>
+            <li class="facebook" data-role="facebook-share">
+                <a href=""></a>
+                <span class="social-counter">{$weby.shareCount.facebook}</span>
+            </li>
+            <li class="twitter" data-role="twitter-share">
+                <a href=""></a>
+                <span class="social-counter">{$weby.shareCount.twitter}</span>
+            </li>
+            <li class="gplus" data-role="gplus-share">
+                <a href=""></a>
+                <span class="social-counter">{$weby.shareCount.google}</span>
+            </li>
+        </ul>
+    </li>
 {/if}

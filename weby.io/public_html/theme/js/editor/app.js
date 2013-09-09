@@ -11,8 +11,8 @@ var AppClass = function () {
 	var _viewportHeight;
 	var _viewportWidth;
 	var _activeWidget = null
-	var _topOffset = 94;
-	var _bottomOffset = 0;
+	var _topOffset = 95;
+	var _bottomOffset = 30;
 
 	/**
 	 * Catch Ctrl+V key press
@@ -218,9 +218,9 @@ var AppClass = function () {
 		_viewportWidth = $(window).width();
 		_viewportHeight = $(window).height();
 		_contentWrapper.width(_viewportWidth);
-		_contentWrapper.height(_viewportHeight - _topOffset);
+		_contentWrapper.height(_viewportHeight - _topOffset - _bottomOffset);
 		_contentBackground.width(_viewportWidth);
-		_contentBackground.height(_viewportHeight - _topOffset);
+		_contentBackground.height(_viewportHeight - _topOffset - _bottomOffset);
 
 		// Setup dragging and Weby
 		_webyDrag = new WebyDrag(_content);

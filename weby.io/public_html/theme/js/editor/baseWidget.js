@@ -94,7 +94,7 @@ var BaseWidget = function () {
 	/**
 	 * Frame radius
 	 */
-	this._radius = 4;
+	this._radius = 0;
 
 	/**
 	 * Frame padding
@@ -369,19 +369,19 @@ BaseWidget.prototype = {
 		var _widget = $('<div data-id="' + this._id + '" class="widget"><div class="widget-body ' + this._widgetClass + '">' +
 			'</div></div>');
 
-		_widget.append('<span class="control remove-handle"><i class="icon-remove"></i></span>');
+		_widget.append('<span class="control remove-handle"></span>');
 		_widget.find('.remove-handle').click(function () {
 			$this.remove();
 		});
 
 		if (this._isDraggable) {
-			_widget.append('<span class="control drag-handle"><i class="icon-move"></i></span>');
+			_widget.append('<span class="control drag-handle"></span>');
 		}
 		if (this._isResizable) {
-			_widget.append('<span class="control resize-handle ui-resizable-handle"><i class="icon-crop"></i></span>');
+			_widget.append('<span class="control resize-handle ui-resizable-handle"></span>');
 		}
 		if (this._isRotatable) {
-			_widget.append('<span class="control rotate-handle"><i class="icon-undo"></i></span>');
+			_widget.append('<span class="control rotate-handle"></span>');
 		}
 
 		_widget.find('.widget-body').append(this._html);
@@ -743,12 +743,10 @@ BaseWidget.prototype = {
 	},
 
 	showTools: function () {
-		this.html('.widget-disabled-overlay').css("opacity", "0.5");
 		this.controls().show();
 	},
 
 	hideTools: function () {
-		this.html('.widget-disabled-overlay').css("opacity", "0");
 		this.controls().hide();
 	},
 
@@ -933,8 +931,13 @@ BaseWidget.prototype = {
 	_resize: function () {
 		this.html('span.text').css('line-height', this._html.outerHeight() + 'px');
 		this.html('.widget-disabled-overlay').css({
-			margin: -this._padding + 'px 0 0 -' + this._padding + 'px',
-			'border-radius': this._radius + 'px'
+			margin: -this._padding + 'px 0 0 -' + this._padding + 'px'
+		});
+
+		var margin = (this._html.outerWidth() - 193) / 2 + 'px';
+		this.html('.widget-disabled-overlay span').css({
+			marginLeft: margin,
+			marginRight: margin
 		});
 	},
 

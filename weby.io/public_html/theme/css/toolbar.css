@@ -1,165 +1,179 @@
+#toolbar ul{
+	list-style: none;
+	margin: 0 0;
+	padding: 0 0;
+}
+
+#toolbar ul li.tools-drop-arrow{
+	position: relative;
+}
+
+#toolbar ul li.tools-drop-arrow ul{
+	position: absolute;
+	top: -130px;
+	left: 40px;
+	padding: 10px 10px 0 0px;
+	background-color: #fff;
+	border: 1px solid #dddcda;
+	display:none;
+	width: 284px;
+}
+
+#toolbar ul li.tools-drop-arrow:hover ul{
+	display: block;
+}
+
+#toolbar ul li.tools-drop-arrow ul li{
+	width: 130px;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#f4f4f4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+	margin-bottom: 10px;
+	float:left;
+	margin-left: 10px;
+	border-bottom: 1px solid #cacaca;
+	border-right: 1px solid #cacaca;
+}
+
+#toolbar ul li.tools-drop-arrow:hover{
+	background: #ffffff;
+}
+
+#toolbar ul li.tools-drop-arrow ul li a{
+	text-indent: 0px !important;
+	line-height: 43px !important;
+	padding-left: 50px !important;
+	background-repeat: no-repeat;
+	height: 41px !important;
+}
+
+#toolbar ul li.tools-drop-arrow ul li a.pinterest{
+	background-position: 0% -157px !important;
+}
+
+#toolbar ul li.tools-drop-arrow ul li a.facebook{
+	background-position: 0% -196px !important;
+}
+
+#toolbar ul li.tools-drop-arrow ul li a.twitter{
+	background-position: 0% -235px !important;
+}
+
 #toolbar-wrapper {
 	height: 100%;
-	width: 115px;
-	/*background-color: rgba(0, 0, 0, 0.4);*/
+	width: 41px;
+	top: 130px;
+	left: 30px;
 	z-index: 999999;
 	position: fixed;
-	margin-top: -1px;
-	padding-left: 5px;
 	float: left;
-	/*box-shadow: 1px 0 0 rgba(255, 255, 255, 0.4);*/
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
 }
 
-#toolbar-wrapper.collapsed {
-	width: 30px;
-}
-
-#toolbar {
-	padding-top: 12px;
-	margin-top: 28px;
-}
-
 #toolbar .tool-icon {
-	width: 78px;
-	height: 24px;
-	background: url(../images/buttons.png) 0 0 no-repeat;
-	display: block;
-	position: relative;
-	margin: 0px 0px 7px 0;
-	padding: 0 0 0 30px;
-	line-height: 23px;
-	cursor: pointer;
-	box-shadow: 0 0 1px rgba(0, 0, 0, 0.4);
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	color: #3c3c3c;
-	font-weight: bold;
-	text-shadow: 0 1px 0 #fff;
-}
-
-#toolbar .tool-icon:hover {
-	background-position: 0 100%;
-}
-
-#toolbar .tool-icon:before {
-	display: block;
-	content: " ";
-	width: 16px;
-	height: 16px;
-	position: absolute;
-	top: 4px;
-	left: 4px;
-	background: url(../images/toolbar-icons.png) 0 0 no-repeat;
-}
-
-#toolbar .tool-icon.link:before {
-	background-position: 0 -16px;
-}
-
-#toolbar .tool-icon.map:before {
-	background-position: 0 -32px;
-}
-
-#toolbar .tool-icon.video:before {
-	background-position: 0 -48px;
-}
-
-#toolbar .tool-icon.prezi:before {
-	background-position: 0 -64px;
-}
-
-#toolbar .tool-icon.slideshare:before {
-	background-position: 0 -80px;
-}
-
-#toolbar .tool-icon.googledrive:before {
-	background-position: 0 -96px;
-}
-
-#toolbar .tool-icon.skydrive:before {
-	background-position: 0 -112px;
-}
-
-#toolbar .tool-icon.soundcloud:before {
-	background-position: 0 -128px;
-}
-
-#toolbar .tool-icon.linkedin:before {
-	background-position: 0 -144px;
-}
-
-#toolbar .tool-icon.twitter:before {
-	background-position: 0 -160px;
-}
-
-#toolbar .tool-icon.instagram:before {
-	background-position: 0 -176px;
-}
-
-#toolbar .tool-icon.pinterest:before {
-	background-position: 0 -192px;
-}
-
-#toolbar .tool-icon.facebook:before {
-	background-position: 0 -208px;
-}
-
-#toolbar .tool-icon.vine:before {
-	background-position: 0 -224px;
-}
-
-.collapsed #toolbar .tool-icon {
-	width: 24px;
-	background-image: url(../images/buttons-mini.png);
+	width: 41px;
+	background-image: url(../images/sprite1.png);
 	padding: 0;
 	text-indent: -9999px;
-}
-
-#toolbar-wrapper .collapse {
+	height: 40px;
 	display: block;
-	color: #fff;
-	text-decoration: none;
-	margin: 10px 0 5px 0;
-	padding: 0 0 0 20px;
-	position: absolute;
-}
-
-#toolbar-wrapper .collapse:before {
-	display: block;
-	content: " ";
-	width: 11px;
-	height: 10px;
-	position: absolute;
-	top: 3px;
-	left: 4px;
-	background: url(../images/icons.png) 0 0 no-repeat;
-}
-
-#toolbar-wrapper.collapsed .collapse {
-	text-indent: -9999px;
-}
-
-#toolbar-wrapper.collapsed .collapse:before {
-	background-position: -11px 0;
-	left: 8px;
-}
-
-/*#toolbar .tool-icon {
-	background: no-repeat 0 0px;
-	padding: 1px 2px 5px 22px;
-	width: 78px;
-	background-position: 3px 3px;
-	display: block;
-	margin: 0px 0px 5px;
+	position: relative;
+	margin: 0 0;
+	padding: 0 0;
+	line-height: 23px;
 	cursor: pointer;
-	border-bottom: 1px solid #E4E4E4;
-}*/
+}
 
-/*#toolbar .tool-icon:hover {
-	background-color: orangered;
-	color: #fff;
-}*/
+#toolbar ul{
+	border-bottom: 1px solid #cacaca;
+}
+
+#toolbar ul li{
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#f4f4f4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+	border-top: 1px solid #cacaca;
+	border-left: 1px solid #cacaca;
+	position: relative;
+	font-size: 16px;
+}
+
+#toolbar ul li a.toolbar-icon-hover{
+	position: absolute;
+	top: -1px;
+	left: 41px;
+	text-indent: 0px;
+	line-height: 40px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-repeat: no-repeat;
+	height: 40px;
+	background: #ffffff;
+	background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4));
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f4f4f4 100%);
+	background: -o-linear-gradient(top, #ffffff 0%,#f4f4f4 100%);
+	background: -ms-linear-gradient(top, #ffffff 0%,#f4f4f4 100%);
+	background: linear-gradient(to bottom, #ffffff 0%,#f4f4f4 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 );
+	border-top: 1px solid #cacaca;
+	border-right: 1px solid #cacaca;
+	border-bottom: 1px solid #cacaca;
+	width: 81px;
+	text-decoration: none;
+	color: #666;
+	display: none;
+}
+
+#toolbar ul li:hover a.toolbar-icon-hover{
+	display: block;
+}
+
+#toolbar .link{
+	background-position: 50% -40px;
+}
+
+#toolbar .map{
+	background-position: 50% -79px;
+}
+
+#toolbar .instagram{
+	background-position: 50% -118px;
+}
+
+#toolbar .pinterest{
+	background-position: 50% -156px;
+}
+
+#toolbar .facebook{
+	background-position: 50% -195px;
+}
+
+#toolbar .twitter{
+	background-position: 50% -236px;
+}
+
+#toolbar .linkedin{
+	background-position: 50% -274px;
+}
+
+#toolbar .googleplus{
+	background-position: 50% -312px;
+}
+
+#toolbar .tools-drop{
+	background-position: 50% -351px;
+}

@@ -2,7 +2,7 @@ var AppToolbar = function () {
 	var _FF = !(window.mozInnerScreenX == null);
 	var self = this;
 	var _activeTool = null;
-	var _toolBar = $('<div id="toolbar"></div>')
+	var _toolBar = $('<div id="toolbar"><ul></ul></div>')
 	var _toolbarWrapper = $("#toolbar-wrapper");
 	var _tools = {};
 
@@ -10,22 +10,24 @@ var AppToolbar = function () {
 		_tools = {
 			text: new TextTool(self),
 			link: new LinkTool(self),
-			video: new VideoTool(self),
 			map: new MapTool(self),
 			instagram: new InstagramTool(self),
 			pinterest: new PinterestTool(self),
 			facebook: new FacebookTool(self),
+			twitter: new TwitterTool(self),
+			linkedin: new LinkedInTool(self),
+			video: new VideoTool(self),
 			slideshare: new SlideShareTool(self),
 			googledrive: new GoogleDriveTool(self),
 			skydrive: new SkyDriveTool(self),
 			soundcloud: new SoundCloudTool(self),
-			linkedin: new LinkedInTool(self),
-			twitter: new TwitterTool(self),
 			vine: new VineTool(self),
 			flicker: new FlickerTool(self)
-		};
+		}
+		_mainTools = ['text', 'link', 'map', 'instagram', 'pinterest', 'facebook', 'twitter', 'linkedin', 'gplus'];
+		_otherTools = ['video', 'slideshare', 'googledrive', 'skydrive', 'soundcloud', 'vine', 'flicker'];
 
-		if(_FF){
+		if (_FF) {
 			delete _tools.prezi;
 		}
 
@@ -34,7 +36,7 @@ var AppToolbar = function () {
 		 */
 		$.each(_tools, function (index, object) {
 			object.init();
-			_toolBar.append(object.getToolbarIcon());
+			_toolBar.find('ul').append(object.getToolbarIcon());
 		});
 
 		_toolbarWrapper.append(_toolBar);
@@ -44,10 +46,10 @@ var AppToolbar = function () {
 		/**
 		 * Toolbar clicked
 		 */
-		_toolBar.find('a.tool-icon').click(function (e) {
+		_toolBar.find('a.tool-icon').closest('li').click(function (e) {
 			App.fireEvent("tool.icon.clicked", e);
 			e.stopPropagation();
-			var toolType = $(this).attr('data-tool');
+			var toolType = $(this).find('a.tool-icon').attr('data-tool');
 			if (_activeTool == null) {
 				_activateTool(toolType);
 			} else {

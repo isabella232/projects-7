@@ -111,7 +111,7 @@ function WebyDashboard() {
 	});
 
 	// Bind My Webies
-	$("#my-webies").click(function (e) {
+	$('[data-role="my-webies"]').click(function (e) {
 		e.preventDefault();
 		$this.open();
 	});

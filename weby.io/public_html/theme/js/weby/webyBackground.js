@@ -130,7 +130,7 @@ function WebyBackground(settings) {
 				maxLeft = width - rect.width - marginLeft * 2;
 			}
 
-			if (rect.height + rect.top - App.getTopOffset() + el.scrollTop + marginTop > height) {
+			if (rect.height + rect.top - App.getTopOffset() - App.getBottomOffset() + el.scrollTop + marginTop > height) {
 				maxTop = height - rect.height - marginTop * 2;
 			}
 
@@ -226,7 +226,7 @@ function WebyBackground(settings) {
 			App.getContentBackground().height(height);
 		} else {
 			_resize(App.getContent(), "height", height + 'px');
-			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() + 'px');
+			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset() + 'px');
 		}
 
 		return this;
@@ -267,6 +267,6 @@ function WebyBackground(settings) {
 	}
 
 	this.viewportResize = function () {
-		_backgrounds.video.resize();
+		//_backgrounds.video.resize();
 	};
 }

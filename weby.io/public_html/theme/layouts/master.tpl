@@ -17,7 +17,8 @@
         main.css,
         user.css,
         weby.css,
-        modalDialog.css
+        dialog/dialog.css,
+        dialog/myWebies.css
     {/minify}
 
     {minify type="js"}
@@ -38,7 +39,47 @@
 <div id="fb-root"></div>
 <div id="sharePost"></div>
 
-<div id="header">
+<div class="header">
+    <div data-role="weby-save" class="saving">
+        <p>Saving...</p>
+    </div>
+    <div class="logo">
+        <a href="/"><img src="{$viewObject.themeWebPath}images/weby-logo.png"></a>
+    </div>
+
+    <div class="header-middle">
+        <h2>Your page name</h2>
+        <span class="weby-url">
+            www.youweby.com
+        </span>
+
+        <div class="share-drop">
+            <form>
+                <fieldset>
+                    <p>
+                        <label>Url</label>
+                        <input type="text" class="youweby-url" placeholder="http://www.youweby.com">
+                    </p>
+
+                    <p>
+                        <label>Embed</label>
+                        <input type="text" class="youweby-embed">
+                    </p>
+                    <a href="" class="close-form"></a>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <ul>
+            {block name="headerRightTools"}{/block}
+        </ul>
+    </div>
+
+</div>
+
+{*<div id="header">
     <div id="header-content">
         <div class="content-left">
             <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
@@ -48,7 +89,24 @@
             {block name="headerRightTools"}{/block}
         </div>
     </div>
-</div>
+</div>*}
 {block name="content"}{/block}
+<div class="footer">
+    <ul>
+        <li>
+            <a href="">Help</a>
+        </li>
+        <li>
+            <a href="">About</a>
+        </li>
+        <li>
+            <a href="">Terms of Service</a>
+        </li>
+        <li>
+            <a href="">Keyboard Shortcuts</a>
+        </li>
+    </ul>
+    <span><a href="http://www.webiny.com"></a></span>
+</div>
 </body>
 </html>

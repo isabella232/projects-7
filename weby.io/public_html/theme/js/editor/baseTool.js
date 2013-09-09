@@ -113,7 +113,8 @@ BaseTool.prototype = {
 	 * @returns {*|jQuery|HTMLElement}
 	 */
 	getToolbarIcon: function () {
-		return $('<a data-tool="' + this._toolTag + '" class="tool-icon ' + this._toolTag + '" title="' + this._tooltipText + '">' + this._tooltipText + '</a>');
+		return $('<li><a data-tool="' + this._toolTag + '" class="tool-icon ' + this._toolTag + '" title="' + this._tooltipText + '">' + this._tooltipText + '</a>' +
+			'<a class="toolbar-icon-hover" href="javascript:void(0)">'+this._tooltipText+'</a></li>');
 	},
 
 	/**

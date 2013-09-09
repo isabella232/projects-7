@@ -1,0 +1,120 @@
+.dialog{
+	background-color: #f25b2b;
+	width: 470px;
+	padding: 30px;
+	margin-left: 130px;
+	float:left;
+}
+
+.dialog fieldset{
+	border: none;
+	margin: 0 0;
+	padding: 0 0;
+	position: relative;
+}
+
+.dialog fieldset a.close-dialog{
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	background-image: url("../images/sprite2.png");
+	background-repeat: no-repeat;
+	background-position: 50% -803px;
+	width:15px;
+	height:15px;
+}
+
+.my-webies-dialog a.close-dialog{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	background-image: url("../images/sprite2.png");
+	background-repeat: no-repeat;
+	background-position: 50% -803px;
+	width:15px;
+	height:15px;
+}
+
+.dialog fieldset h1, .my-webies-dialog h1{
+	color:#fff;
+	font-weight: 400;
+	font-size: 26px;
+	margin: 0 0;
+}
+
+.dialog fieldset input{
+	width: 460px;
+	padding: 10px 0 10px 10px;
+	margin: 10px 0;
+	border-top:none;
+	border-bottom: 3px solid #dc420e;
+	border-left: none;
+	border-right: none;
+	font-size: 16px;
+	font-style: italic;
+}
+
+.dialog p{
+	text-align: right;
+	margin: 0 0;
+}
+
+.dialog p button{
+	color: #fff;
+	padding: 7px 11px 10px 11px;
+	margin: 0 0 0 4px;
+	font-size: 18px;
+	border: none;
+	font-weight: 400;
+	font-family: 'Source Sans Pro', sans-serif;
+	cursor: pointer;
+}
+
+.dialog p button.dialog-cancel{
+	background-color: #dc420e;
+}
+
+.dialog p button.dialog-save-changes{
+	background-color: #a8320b;
+}
+
+span.dialog-button {
+	background-color: #dc420e;
+	display: inline-block;
+	height: 23px;
+	color: #fff;
+	padding: 7px 11px 10px 34px;
+	margin: 30px 0 0 4px;
+	font-size: 18px;
+}
+
+span.dialog-button:hover, .dialog p button:hover {
+	opacity: 0.85;
+}
+
+span.dialog-button.delete {
+	background-image: url(../images/sprite2.png);
+	background-repeat: no-repeat;
+	background-position:-156px -969px;
+}
+
+span.dialog-button.edit {
+	background-image: url(../images/sprite2.png);
+	background-repeat: no-repeat;
+	background-position:-156px -1089px;
+}
+
+span.dialog-button.view {
+	padding-left: 11px;
+	background-color: #a8320b;
+}
+
+ul.webies-list li.webies-list-item{
+	border-top: 1px solid #dc420e;
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+ul.webies-list li.webies-list-item:first-child{
+	border-top: none;
+}

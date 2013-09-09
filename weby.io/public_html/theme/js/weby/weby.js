@@ -14,10 +14,9 @@ function Weby() {
 	var _counter = {};
 	var _webyId = false;
 	var _webyToolbar = null;
-	var _title = 'Untitled Weby';
+	var _title = 'My Weby';
 	var _settings = $('#background-settings');
-	var _titleInput = $('#weby-title');
-	var _lastSavedLabel = $('#last-saved');
+	var _webySave = new WebySave();
 	var _labelTimeout = null;
 
 	/**
@@ -44,21 +43,20 @@ function Weby() {
 				_background = new WebyBackground();
 			}
 
-			if('document' in weby.settings){
+			if ('document' in weby.settings) {
 				_documentBackground = new WebyDocumentBackground(weby.settings.document);
 			} else {
 				_documentBackground = new WebyDocumentBackground();
 			}
 
 			_webyToolbar = new WebyToolbar();
-			_titleInput.val(_title);
 
 			_progress.startLoading();
-			if(_background.getImage() != null){
+			if (_background.getImage() != null) {
 				items++;
 				_progress.setMessage('Loading background...');
-				var img = $('<img src="'+_background.getImage()+'" width="1" height="1" style="visibility:hidden"/>')
-				img.load(function(){
+				var img = $('<img src="' + _background.getImage() + '" width="1" height="1" style="visibility:hidden"/>')
+				img.load(function () {
 					$(this).remove();
 					_progress.next();
 					_background.render();
@@ -72,19 +70,11 @@ function Weby() {
 			_progress.setSteps(items);
 			_documentBackground.render();
 
-			// Bind title input
-			_titleInput.blur(function () {
-				_title = $(this).val();
-				if ($.trim(_title) == '') {
-					_title == 'Untitled Weby';
-				}
-			})
-
 			// Create periodic save action
 			_saveInterval = setInterval(_save, _saveIntervalTime);
 
 			// Catch window close event
-			$(window).bind("beforeunload", function() {
+			$(window).bind("beforeunload", function () {
 				App.getWeby().save(true);
 			});
 		} else {
@@ -97,22 +87,22 @@ function Weby() {
 	/**
 	 * Returns a scrollbar width depending on browser
 	 */
-	this.getScrollBarOffset = function(){
-		if(_FF){
+	this.getScrollBarOffset = function () {
+		if (_FF) {
 			return 18;
 		}
 		return 7;
 	}
 
-	this.getBackground = function(){
+	this.getBackground = function () {
 		return _background;
 	}
 
-	this.getDocumentBackground = function(){
+	this.getDocumentBackground = function () {
 		return _documentBackground;
 	}
 
-	this.getToolbar = function(){
+	this.getToolbar = function () {
 		return _webyToolbar;
 	}
 
@@ -184,7 +174,7 @@ function Weby() {
 			invalidUrls: _invalidUrls
 		};
 
-		if(takeScreenshot != undefined){
+		if (takeScreenshot != undefined) {
 			//data['takeScreenshot'] = true;
 		}
 
@@ -198,7 +188,7 @@ function Weby() {
 		}
 
 		var options = {
-			url:WEB + 'editor/save/',
+			url: WEB + 'editor/save/',
 			data: data,
 			method: 'POST',
 			async: takeScreenshot == undefined,
@@ -208,20 +198,21 @@ function Weby() {
 					_counter = {};
 					_unknownFileTypes = [];
 					_invalidUrls = [];
-					_lastSavedLabel.show().find('span').html(data.data.time);
+					_webySave.setMessage('Last saved at ' + data.data.time);
 					_labelTimeout = setTimeout(function () {
-						_lastSavedLabel.fadeOut();
+						_webySave.hide();
 					}, 2000)
 					clearInterval(_saveInterval);
 					_saveInterval = setInterval(_save, _saveIntervalTime);
 				}
 			}
 		};
+		_webySave.setMessage('Saving...').show();
 		$.ajax(options);
 
 	};
 
-	this.setContainment = function(containment){
+	this.setContainment = function (containment) {
 		for (var i in _widgets) {
 			_widgets[i].setContainment(containment);
 		}
@@ -237,7 +228,7 @@ function Weby() {
 
 		_progress.setMessage('Loading content...');
 		var loaded = 0;
-		var _checkLoading = function() {
+		var _checkLoading = function () {
 			loaded++;
 			_progress.next();
 			if (loaded == widgets.length) {
@@ -276,7 +267,7 @@ function Weby() {
 
 	// EVENTS
 
-	this.widgetActivated = function(widget){
+	this.widgetActivated = function (widget) {
 		_webyToolbar.widgetActivated(widget);
 	}
 
@@ -292,11 +283,11 @@ function Weby() {
 	};
 
 
-	this.widgetActivated = function(widget){
+	this.widgetActivated = function (widget) {
 		_webyToolbar.widgetActivated(widget);
 	}
 
-	this.widgetDeactivated = function(widget){
+	this.widgetDeactivated = function (widget) {
 		_webyToolbar.widgetDeactivated(widget);
 	}
 
@@ -316,7 +307,7 @@ function Weby() {
 		_counter[type]--;
 	};
 
-	this.widgetDragStop = function(data){
+	this.widgetDragStop = function (data) {
 		_background.widgetDragStop(data);
 	}
 };
