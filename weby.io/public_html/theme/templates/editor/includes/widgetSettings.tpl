@@ -1,16 +1,16 @@
 <div id="widget-settings">
     <span class="title">Frame color: </span>
     <div id="widget-color" style="width: 288px; border: none;"></div>
-    <span class="title">Opacity: </span>
+    <span class="title">Transparency: </span>
     <input id="widget-opacity"/>
     <span class="title">Radius:</span>
     <input id="widget-radius"/>
     <span class="title">Width:</span>
     <input id="widget-width"/>
-    <span class="title">Sh-distance:</span>
+    <span class="title">Shadow distance:</span>
     <input id="widget-shadow-distance"/>
-    <span class="title">Sh-spread:</span>
+    <span class="title">Shadow spread:</span>
     <input id="widget-shadow-spread"/>
-    <span class="title">Sh-color: </span>
+    <span class="title">Shadow color: </span>
     <div id="shadow-color" style="width: 288px; border: none;"></div>
 </div>

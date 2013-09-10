@@ -9,7 +9,7 @@
     <script type="text/javascript">
         google.load('picker', '1');
     </script>
-    <script type="text/javascript" id="initScript" >
+    <script type="text/javascript" id="initScript">
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
         $(function () {
@@ -18,6 +18,10 @@
             $('#initScript').remove();
         });
     </script>
+{/block}
+
+{block name="headerMiddle"}
+    {include file="templates/editor/includes/title.tpl"}
 {/block}
 
 {block name="headerRightTools"}
@@ -48,11 +52,24 @@
             <li>
                 <a href="javascript:void(0);" class="disabled tool-icon send-to-back">To Back</a>
             </li>
-            <li>
+            <li class="dropdown frame">
                 <a href="javascript:void(0);" class="disabled tool-icon frame">Frame</a>
+                <ul id="widget-settings-dropdown">
+                    <li>
+                        {include file="templates/editor/includes/widgetSettings.tpl"}
+                    </li>
+                </ul>
             </li>
-            <li class="canvas">
-                <a href="" class="tool-icon background">Canvas</a>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
+                <ul id="canvas-settings-dropdown">
+                    <li>
+                        {include file="templates/editor/includes/backgroundSettings.tpl"}
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="tool-icon document">Document</a>
                 <ul>
                     <li class="selected-tab">
                         <a href="">Color</a>
@@ -60,16 +77,7 @@
                     <li>
                         <a href="">Pattern</a>
                     </li>
-                    <li>
-                        <a href="">Image</a>
-                    </li>
-                    <li>
-                        <a href="">Youtube</a>
-                    </li>
                 </ul>
-            </li>
-            <li>
-                <a href="" class="tool-icon document">Document</a>
             </li>
         </ul>
     </div>

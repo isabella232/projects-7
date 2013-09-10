@@ -1,7 +1,10 @@
 function WebyToolbar() {
 
+	App.addEventListener(this);
+
 	var _activeWidget;
-	var _widgetSettings = $('#widget-settings');
+	var _widgetSettings = $('#widget-settings-dropdown');
+	var _canvasSettings = $('#canvas-settings-dropdown');
 	var _documentBackgroundSettings = $('#document-background-settings');
 	var _webyColorPicker;
 	var _documentColorPicker;
@@ -34,18 +37,11 @@ function WebyToolbar() {
 	});
 
 	$('.background').click(function () {
-		var $this = $(this);
-		var settings = $('#background-settings');
-		var css = {
-			top: $this.offset().top + $this.height() + 10 + 'px',
-			left: $this.offset().left + 'px'
-		};
-
-		if (settings.css('display') == 'none') {
-			settings.css(css).show();
+		if (_canvasSettings.css('display') == 'none') {
+			_canvasSettings.show();
 			_webyColorPicker.value(_webyColorPicker.value());
 		} else {
-			settings.hide();
+			_canvasSettings.hide();
 		}
 	});
 
@@ -64,13 +60,7 @@ function WebyToolbar() {
 		}
 	});
 
-	$("#background-settings").kendoTabStrip({
-		animation: {
-			open: {
-				effects: "fadeIn"
-			}
-		}
-	});
+	$('#background-settings').tabs();
 
 	var currentColor = App.getWeby().getBackground().getColor();
 
@@ -110,24 +100,17 @@ function WebyToolbar() {
 	 * WIDGET SETTINGS
 	 */
 
-	$('#weby-toolbar-wrapper .widget').click(function () {
+	$('#weby-toolbar-wrapper .tool-icon.frame').click(function () {
 		if (_activeWidget == null) {
 			return;
 		}
-
-		var $this = $(this);
-		var css = {
-			top: $this.offset().top + $this.height() + 10 + 'px',
-			left: $this.offset().left + 'px'
-		};
-		_widgetSettings.css(css);
 		if (_widgetSettings.css('display') == 'none') {
 			_widgetSettings.show();
-			_activeWidget.hideTools();
+			_activeWidget.hideTools().html('.widget-disabled-overlay').hide();
 			_colorPicker.value(_colorPicker.value());
 		} else {
 			_widgetSettings.hide();
-			_activeWidget.showTools();
+			_activeWidget.showTools().html('.widget-disabled-overlay').show();
 		}
 	});
 
@@ -402,17 +385,17 @@ function WebyToolbar() {
 	 * EVENTS
 	 */
 
+	this.contentClick = function (e) {
+		_canvasSettings.hide();
+	};
+
 	this.widgetClick = function () {
 		_widgetSettings.hide();
-		_activeWidget.showTools();
+		_activeWidget.showTools().html('.widget-disabled-overlay').show();
 	}
 
 	this.widgetDrag = function (data) {
 		App.getWeby().getBackground().widgetDrag(data);
-	}
-
-	this.webyLoaded = function () {
-		// Do something when Weby is loaded
 	}
 
 	this.widgetActivated = function (widget) {

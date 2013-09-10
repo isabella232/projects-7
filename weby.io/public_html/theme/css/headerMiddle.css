@@ -1,0 +1,157 @@
+/**
+ CSS related to header-middle section
+ **/
+
+.header .header-middle h2 {
+	margin: 0 0;
+	font-weight: 300;
+	font-size: 24px;
+	padding-top: 13px;
+	line-height: 1;
+	padding-bottom: 3px;
+	float: left;
+	min-width: 230px;
+}
+
+.header .header-middle-wrap {
+	white-space: nowrap;
+	width: auto;
+}
+
+.header .header-middle-wrap h2 {
+	min-width: 186px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-moz-binding: url('ellipsis.xml#ellipsis');
+}
+
+.header .header-middle {
+	float: left;
+	margin-top: -13px;
+	padding-left: 70px;
+	border-left: 1px solid #e5e5e5;
+	background: url("../images/sprite2.png") no-repeat -140px -600px;
+	min-width: 210px;
+}
+
+.header .header-middle .edit-title {
+	float: left;
+	cursor: pointer;
+}
+
+.header .header-middle .edit-title:hover a {
+	display: inline-block;
+}
+
+.header .header-middle .edit-title a {
+	width: 15px;
+	height: 34px;
+	display: none;
+	margin-left: 10px;
+	background: url("../images/sprite2.png") no-repeat 50% -1286px;
+	text-indent: -999999px;
+}
+
+.header .header-middle-wrap .weby-url {
+	margin: 0 0;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-ms-text-overflow: ellipsis;
+	-moz-binding: url('ellipsis.xml#ellipsis');
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: 300;
+	float: left;
+	width: 190px;
+	display: block;
+	clear: left;
+	min-width: 186px;
+}
+
+.header .share-drop {
+	float: left;
+	width: 24px;
+	height: 22px;
+	position: relative;
+	margin-left: 4px;
+}
+
+.header .share-drop span.share-url {
+	cursor:pointer;
+	background: url("../images/sprite2.png") no-repeat 50% -373px;
+	width: 24px;
+	height: 22px;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2000;
+	border-top: 1px solid #fff;
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+	margin-top: -3px;
+}
+
+.header .share-drop:hover span.share-url {
+	background-color: #fff;
+	border: 1px solid #f0f0f0;
+}
+
+.header .share-drop form {
+	position: absolute;
+	top: 19px;
+	border: 1px solid #f0f0f0;
+	background-color: #fff;
+	padding: 10px 10px 0 10px;
+	display: none;
+	z-index: 1999;
+	white-space: normal;
+}
+
+.header .share-drop.active > span.share-url {
+	background-color: #fff;
+	border: 1px solid #f0f0f0;
+	border-bottom: none;
+}
+
+.header .share-drop fieldset {
+	border: none;
+	background-color: #fff;
+	position: relative;
+}
+
+.header .share-drop fieldset p {
+	margin: 0 0;
+	padding: 0 0 10px 0;
+}
+
+.header .share-drop fieldset label {
+	font-size: 14px;
+}
+
+.header .share-drop fieldset input {
+	border: 1px solid #d3d3d3;
+	padding: 5px 0 5px 5px;
+	width: 245px;
+}
+
+.header .share-drop fieldset textarea{
+	border: 1px solid #d3d3d3;
+	padding: 5px 0 5px 5px;
+	width: 245px;
+	max-width: 245px;
+}
+
+.header .share-drop form a.close-form {
+	position: absolute;
+	display: block;
+	width: 10px;
+	height: 10px;
+	background-image: url("../images/sprite2.png");
+	background-repeat: no-repeat;
+	background-position: 50% -742px;
+	top: 0;
+	right: 0;
+}

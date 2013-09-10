@@ -744,10 +744,12 @@ BaseWidget.prototype = {
 
 	showTools: function () {
 		this.controls().show();
+		return this;
 	},
 
 	hideTools: function () {
 		this.controls().hide();
+		return this;
 	},
 
 	/**
@@ -986,9 +988,7 @@ BaseWidget.prototype = {
 				},
 				mouseup: function () {
 					var options = $this._html.draggable().data('draggable-options');
-					setTimeout(function () {
-						$this._html.data('widget', $this).draggable(options);
-					}, 50);
+					$this._html.draggable(options);
 				},
 				dblclick: function () {
 					$this._rotation = 0;
