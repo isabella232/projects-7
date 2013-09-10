@@ -223,6 +223,7 @@ function Weby() {
 
 		if (widgets == '') {
 			_progress.hideProgress();
+            App.fireEvent("weby.loaded");
 			return;
 		}
 
