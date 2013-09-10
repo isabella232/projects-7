@@ -44,7 +44,7 @@ function WebyBackground(settings) {
 		if (_backgrounds.image.getMode() != 'aligned') {
 			_backgrounds.pattern.setPattern(null);
 		}
-		_backgrounds.video.setVideo(null);
+		//_backgrounds.video.setVideo(null);
 		return this;
 	}
 
@@ -64,7 +64,7 @@ function WebyBackground(settings) {
 	this.setColor = function (color) {
 		_backgrounds.color.setColor(color);
 		_backgrounds.pattern.setPattern(null);
-		_backgrounds.video.setVideo(null);
+		//_backgrounds.video.setVideo(null);
 		return this;
 	}
 
@@ -79,12 +79,12 @@ function WebyBackground(settings) {
 	this.setPattern = function (pattern) {
 		_backgrounds.pattern.setPattern(pattern);
 		_backgrounds.color.setColor(null);
-		_backgrounds.video.setVideo(null);
+		//_backgrounds.video.setVideo(null);
 		return this;
 	}
 
 	this.setVideo = function (video) {
-		_backgrounds.video.setVideo(video);
+		//_backgrounds.video.setVideo(video);
 		_backgrounds.image.setImage(null);
 		_backgrounds.pattern.setPattern(null);
 		_backgrounds.color.setColor(null);

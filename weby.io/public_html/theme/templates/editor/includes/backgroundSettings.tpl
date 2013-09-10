@@ -1,30 +1,30 @@
 <div id="background-settings">
     <ul>
-        <li class="k-state-active">
-            Color
+        <li>
+            <a href="#cnv-color">Color</a>
         </li>
         <li>
-            Pattern
+            <a href="#cnv-pattern">Pattern</a>
         </li>
         <li>
-            Image
+            <a href="#cnv-image">Image</a>
         </li>
         <li>
-            Youtube
+            <a href="#cnv-youtube">Youtube</a>
         </li>
         <li>
-            Size
+            <a href="#cnv-size">Size</a>
         </li>
     </ul>
-    <div id="tab-color" class="tab">
+    <div id="cnv-color" class="tab">
         <div id="color-picker" style="width: 264px; border: none;"></div>
     </div>
-    <div id="tab-pattern" class="tab">
+    <div id="cnv-pattern" class="tab">
         <div id="patternsList" class="patternsList"></div>
         <div class="k-pager-wrap patternsPager"></div>
         Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
     </div>
-    <div id="tab-image" class="tab">
+    <div id="cnv-image" class="tab">
         <span class="file-error"></span>
 
         <div id="file-widget">
@@ -75,41 +75,15 @@
             </tbody>
         </table>
     </div>
-    <div id="tab-youtube" class="tab">
+    <div id="cnv-youtube" class="tab">
         <input type="text" id="background-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
                placeholder="Paste a Youtube video for the background and press Enter"/>
     </div>
-    <div id="tab-size" class="tab">
+    <div id="cnv-size" class="tab">
         <span>Canvas width and height in pixels (Leave blank for auto-size):</span><br/>
         <input type="text" id="canvas-width" placeholder="Width" value="800"/><br/>
         <input type="text" id="canvas-height" placeholder="Height" value="750"/>
         <br/>
         <a id="background-size-auto" href="javascript:void(0)" class="button">Fill my screen</a>
     </div>
-</div>
-
-<div id="document-background-settings" style="display:none">
-    <ul>
-        <li class="k-state-active">
-            Color
-        </li>
-        <li>
-            Pattern
-        </li>
-    </ul>
-    <div class="tab">
-        <div id="document-color-picker" style="width: 264px; border: none;"></div>
-    </div>
-    <div class="tab">
-        <div id="documentPatternsList" class="patternsList"></div>
-        <div class="k-pager-wrap patternsPager"></div>
-        Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
-    </div>
-</div>
-
-<div id="outer-widgets" style="display:none">
-    <p>There are some widgets located outside of your new canvas.<br/> Would you like to move them inside your new
-        canvas?</p>
-    <button id="button-move-widgets">Yes, sure!</button>
-    <button id="button-dont-move-widgets">No, leave them.</button>
 </div>

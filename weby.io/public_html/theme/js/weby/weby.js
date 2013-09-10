@@ -15,7 +15,6 @@ function Weby() {
 	var _webyId = false;
 	var _webyToolbar = null;
 	var _title = 'My Weby';
-	var _settings = $('#background-settings');
 	var _webySave = new WebySave();
 	var _labelTimeout = null;
 	var _webyTitle = new WebyTitle();
@@ -279,11 +278,6 @@ function Weby() {
 		}
 		_background.viewportResize();
 	};
-
-	this.contentClick = function (e) {
-		_settings.hide();
-	};
-
 
 	this.widgetActivated = function (widget) {
 		_webyToolbar.widgetActivated(widget);
