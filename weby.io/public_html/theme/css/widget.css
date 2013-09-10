@@ -18,7 +18,8 @@
 	top: -6px;
 	left: -27px;
 	background: url(../images/sprite1.png) 0 0 no-repeat;
-	pointer-events: none;
+	border: 1px solid red;
+	/*pointer-events: none;*/
 }
 
 .mouse-icon.link:before {

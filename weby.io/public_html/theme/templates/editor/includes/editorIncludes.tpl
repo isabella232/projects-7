@@ -21,6 +21,7 @@
     weby/webyLogger.js,
     weby/progress.js,
     weby/webyDrag.js,
+    weby/webyTitle.js,
     weby/webyToolbar.js,
     weby/webyDashboard.js,
     weby/webyFavorites.js,

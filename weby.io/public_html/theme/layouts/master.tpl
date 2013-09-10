@@ -15,7 +15,6 @@
 
     {minify type="css"}
         main.css,
-        user.css,
         weby.css,
         dialog/dialog.css,
         dialog/myWebies.css
@@ -47,20 +46,20 @@
         <a href="/"><img src="{$viewObject.themeWebPath}images/weby-logo.png"></a>
     </div>
 
-    <div class="header-middle">
-        <h2>Your page name</h2>
-        <span class="weby-url">
-            www.youweby.com
-        </span>
-
+    <div class="header-middle header-middle-wrap" data-role="weby-title">
+        <div class="edit-title">
+            <h2>Your page name goes tooooo long</h2>
+            <a href="javascript:void(0)" data-role="edit-title">Edit title</a>
+        </div>
+        <p class="weby-url">www.youweby.com/and-this-link-is-longer-than-it-should-be/</p>
         <div class="share-drop">
+            <span class="share-url"></span>
             <form>
                 <fieldset>
                     <p>
                         <label>Url</label>
                         <input type="text" class="youweby-url" placeholder="http://www.youweby.com">
                     </p>
-
                     <p>
                         <label>Embed</label>
                         <input type="text" class="youweby-embed">
@@ -68,6 +67,7 @@
                     <a href="" class="close-form"></a>
                 </fieldset>
             </form>
+
         </div>
     </div>
 

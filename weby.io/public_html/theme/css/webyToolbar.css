@@ -4,6 +4,7 @@
 	right: 0;
 	padding-right: 30px;
 	z-index: 8020;
+	top: 130px;
 }
 
 #weby-toolbar-wrapper .tool-icon {
@@ -102,6 +103,11 @@
 	text-decoration: none;
 	color: #666;
 
+}
+
+#weby-toolbar-wrapper .disabled {
+	opacity: 0.3;
+	pointer-events: none;
 }
 
 /** BACKGROUND SETTINGS **/

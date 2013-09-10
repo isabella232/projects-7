@@ -35,13 +35,43 @@
 {block name="content"}
     <div id="toolbar-wrapper"></div>
     <div id="weby-toolbar-wrapper">
-        <a href="javascript:void(0)" class="disabled tool-icon bring-to-front">To Front</a>
-        <a href="javascript:void(0)" class="disabled tool-icon bring-forward">Forward</a>
-        <a href="javascript:void(0)" class="disabled tool-icon send-backward">Backward</a>
-        <a href="javascript:void(0)" class="disabled tool-icon send-to-back">To Back</a>
-        <a href="javascript:void(0)" class="disabled tool-icon widget">Widget</a>
-        <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
-        <a href="javascript:void(0)" class="tool-icon document">Document</a>
+        <ul>
+            <li>
+                <a href="javascript:void(0);" class="disabled tool-icon bring-to-front">To Front</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="disabled tool-icon bring-forward">Forward</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="disabled tool-icon send-backward">Backward</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="disabled tool-icon send-to-back">To Back</a>
+            </li>
+            <li>
+                <a href="javascript:void(0);" class="disabled tool-icon frame">Frame</a>
+            </li>
+            <li class="canvas">
+                <a href="" class="tool-icon background">Canvas</a>
+                <ul>
+                    <li class="selected-tab">
+                        <a href="">Color</a>
+                    </li>
+                    <li>
+                        <a href="">Pattern</a>
+                    </li>
+                    <li>
+                        <a href="">Image</a>
+                    </li>
+                    <li>
+                        <a href="">Youtube</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="" class="tool-icon document">Document</a>
+            </li>
+        </ul>
     </div>
     <div id="workspace">
         <div id="content-background">

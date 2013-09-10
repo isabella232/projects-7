@@ -18,6 +18,7 @@ function Weby() {
 	var _settings = $('#background-settings');
 	var _webySave = new WebySave();
 	var _labelTimeout = null;
+	var _webyTitle = new WebyTitle();
 
 	/**
 	 * Content background
