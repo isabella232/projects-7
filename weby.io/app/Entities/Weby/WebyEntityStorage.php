@@ -21,8 +21,9 @@ abstract class WebyEntityStorage extends EntityAbstract
     protected $_settings = [];
     protected $_user = 0;
     protected $_shareCount = '';
-    protected $_hitCount = [];
     protected $_deleted = false;
+    protected $_hits = 0;
+    protected $_hitsEmbedded = 0;
     protected $_createdOn = '';
     protected $_modifiedOn = '';
 	protected $_storage = '';
@@ -146,6 +147,13 @@ abstract class WebyEntityStorage extends EntityAbstract
 			$ids[] = $r->key('id');
 		}
         return $ids;
+    }
+
+    protected function _sql()
+    {
+        $query = "SELECT value FROM {$this->_getDb()->w_stat_by_ref} WHERE ref_type=? AND ref_id=?";
+        $bind = ['hit_weby', $this->_id];
+        return $this->_getDb()->execute($query, $bind)->fetchValue();
     }
 
     protected function _sqlGetHitCount()

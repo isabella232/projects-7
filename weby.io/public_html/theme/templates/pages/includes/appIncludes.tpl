@@ -19,6 +19,7 @@
     weby/webyDrag.js,
     weby/webyDashboard.js,
     weby/webyFavorites.js,
+    weby/webySocialShare.js,
     frontend/webyBackground.js,
     weby/webyDocumentBackground.js,
     weby/webyColorBackground.js,

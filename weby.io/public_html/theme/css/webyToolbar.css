@@ -5,8 +5,7 @@
 /** WEBY TOOLBAR **/
 #weby-toolbar-wrapper {
 	position: fixed;
-	right: 0;
-	padding-right: 30px;
+	right: 30px;
 	z-index: 8020;
 	top: 130px;
 }

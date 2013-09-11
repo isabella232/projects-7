@@ -8,7 +8,7 @@ use App\Entities\Weby\WebyEntity;
 use App\Lib\DatabaseTrait;
 use App\Lib\AbstractHandler;
 use App\Lib\Screenshot\ScreenshotQueue;
-use App\Lib\Stats;
+use App\Lib\Stats\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Http\HttpTrait;
@@ -34,9 +34,9 @@ class EditorHandler extends AbstractHandler
 		$weby->setUser($this->user())->save();
 
 		// Update stats
-		$stats = Stats::getInstance();
-		$stats->updateWebiesStats($this->user());
+		Stats::getInstance()->updateWebiesStats($this->user());
 
+        // Redirect to newly created Weby
 		$this->request()->redirect($weby->getEditorUrl());
 	}
 
@@ -59,6 +59,12 @@ class EditorHandler extends AbstractHandler
 			$queue = new ScreenshotQueue();
 			$queue->add($id)->processQueue();
 		}
+
+        // If there were changes in widgets, then update widget counts stats
+        if ($this->request()->post('counter')) {
+            Stats::getInstance()->updateWidgetsCount($this->request()->post('counter'));
+        }
+
 		$this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
 	}
 

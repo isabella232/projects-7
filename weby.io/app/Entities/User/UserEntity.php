@@ -40,6 +40,10 @@ class UserEntity extends UserEntityCrud
 		return $user->populate($data);
 	}
 
+    public static function markIntroductionDone(UserEntity $user) {
+        self::_sqlMarkIntroductionDone($user->getId());
+    }
+
     /**
      * Used by Wordpress widget (when searching Webies by tags)
      * @param bool $json
@@ -61,7 +65,7 @@ class UserEntity extends UserEntityCrud
                     'modified_on' => date('F d, Y \a\t h:m a', strtotime($weby->getModifiedOn())),
                     'public_url' => $weby->getPublicUrl(),
                     'editor_url' => $weby->getEditorUrl(),
-                    'hits' => $weby->getHitCount(),
+                    'hits' => $weby->getTotalHits(),
                     'favorites' => $weby->getFavoriteCount(),
                 ];
             }
@@ -76,6 +80,11 @@ class UserEntity extends UserEntityCrud
         return $this->app()->getConfig()->app->web_path . $this->getUsername() . '/';
     }
 
+    /**
+     * Returns favorite Webies, default is array of objects, but can be set to JSON via parameter(true)
+     * @param bool $json
+     * @return array|null|string
+     */
     public function getFavoriteWebies($json = false)
     {
         // Check to see if we already have loaded all favorites
@@ -89,7 +98,6 @@ class UserEntity extends UserEntityCrud
                     $weby->setAddedToFavoritesTime($data['created_on']);
                     $this->_favoriteWebies[] = clone $weby;
                 }
-            } else {
             }
         }
 
@@ -104,7 +112,7 @@ class UserEntity extends UserEntityCrud
                     'title' => $weby->getTitle(),
                     'slug' => $weby->getSlug(),
                     'public_url' => $weby->getPublicUrl(),
-                    'hits' => $weby->getHitCount(),
+                    'hits' => $weby->getTotalHits(),
                     'favorites' => $weby->getFavoriteCount(),
                     'addedToFavoritesTime' => $weby->getAddedToFavoritesTime(),
                 ];

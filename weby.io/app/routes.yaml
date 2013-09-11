@@ -8,9 +8,9 @@ routes:
 
     # TOOLS
     - ['tools/webies', \App\Handlers\ToolsHandler, ajaxGetWebies]
-    - ['tools/webies/tags', \App\Handlers\ToolsHandler, ajaxGetWebiesByTags]
-    - ['tools/favorite', \App\Handlers\ToolsHandler, ajaxToggleFavorite]
+    - ['tools/webies/tags', \App\Handlers\ToolsHandler, ajaxGetWebiesByTags] # Gets Webies by tags (used also by WP widget)
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
+    - ['/^tools\/favorite\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, ajaxToggleFavorite]
     - ['tools/log', \App\Handlers\ToolsHandler, log]
     - ['tools/parse-link', \App\Handlers\LinksHandler, parse]
     - ['/^tools\/delete-weby\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, deleteWeby]
@@ -23,6 +23,7 @@ routes:
     - ['editor/dashboard', \App\Handlers\EditorHandler, dashboard]
     - ['editor/upload-image', \App\Handlers\EditorHandler, uploadImage]
     - ['editor/remove-image', \App\Handlers\EditorHandler, removeImage]
+    - ['user/intro-done', \App\Handlers\UsersHandler, markIntroductionDone]
 
     # EMBED
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
@@ -33,16 +34,16 @@ routes:
     # CRON ROUTES
     - ['cron/inactive-users', \App\Handlers\CronHandler, checkInactiveUsers]
 
-    # STATISTICS ROUTES
-    - ['statistics', \App\Handlers\StatisticsHandler, index]
-    - ['statistics/ajax_get_week_stats', \App\Handlers\StatisticsHandler, ajax_get_week_stats]
-    - ['statistics/ajax_get_month_stats', \App\Handlers\StatisticsHandler, ajax_get_month_stats]
-    - ['statistics/ajax_get_year_stats', \App\Handlers\StatisticsHandler, ajax_get_year_stats]
-    - ['statistics/ajax_get_stats', \App\Handlers\StatisticsHandler, ajax_get_stats]
-    - ['statistics/ajax_get_widget_usage_stats', \App\Handlers\StatisticsHandler, ajax_get_widget_usage_stats]
-    - ['statistics/ajax_get_top_users_stats', \App\Handlers\StatisticsHandler, ajax_get_top_users_stats]
-    - ['statistics/ajax_get_top_webies_stats', \App\Handlers\StatisticsHandler, ajax_get_top_webies_stats]
-    - ['statistics/ajax_get_active_users_stats', \App\Handlers\StatisticsHandler, ajax_get_active_users_stats]
+    # STATS ROUTES
+    - ['stats', \App\Handlers\StatsHandler, index]
+    - ['stats/ajax-get-week-stats', \App\Handlers\StatsHandler, ajaxGetWeekStats]
+    - ['stats/ajax-get-month-stats', \App\Handlers\StatsHandler, ajaxGetMonthStats]
+    - ['stats/ajax-get-year-stats', \App\Handlers\StatsHandler, ajaxGetYearStats]
+    - ['stats/ajax-get-stats', \App\Handlers\StatsHandler, ajaxGetStats]
+    - ['stats/ajax-get-widget-usage-stats', \App\Handlers\StatsHandler, ajaxGetWidgetUsageStats]
+    - ['stats/ajax-get-top-users-stats', \App\Handlers\StatsHandler, ajaxGetTopUsersStats]
+    - ['stats/ajax-get-top-webies-stats', \App\Handlers\StatsHandler, ajaxGetTopWebiesStats]
+    - ['stats/ajax-get-active-users-stats', \App\Handlers\StatsHandler, ajaxGetActiveUsersStats]
 
     # GLOBAL ROUTES
     - ['/^([a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby

@@ -16,8 +16,9 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     /**
      * Here we can store the time when this Weby was added to favorites (used by users favorites section, when
      * opening his favorites dialog, then he can see when he added something to his favorites list)
+     * This variable is always empty, except if Weby is request via \App\Entities\User\UserEntity->getFavoriteWebies();
      */
-    protected $_addedToFavoritesTime = null;
+    protected $_addedToFavoritesTime = '';
 
     /**
      * @return int
@@ -114,9 +115,25 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     /**
      * @return null
      */
-    public function getHitCount()
+    public function getHits()
     {
-        return $this->_hitCount;
+        return $this->_hits;
+    }
+
+    /**
+     * @return null
+     */
+    public function getHitsEmbedded()
+    {
+        return $this->_hitsEmbedded;
+    }
+
+    /**
+     * Gets total hits of Weby
+     * @return int
+     */
+    public function getTotalHits() {
+        return $this->_hits + $this->_hitsEmbedded;
     }
 
     /**

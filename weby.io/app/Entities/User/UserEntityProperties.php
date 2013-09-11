@@ -68,4 +68,8 @@ abstract class UserEntityProperties extends UserEntityStorage
         return $this->_username;
     }
 
+    public function completedOnboarding() {
+        return $this->_onboarding;
+    }
+
 }

@@ -14,6 +14,9 @@
         var weby = {$weby->toJson()};
         $(function () {
             App = new AppClass();
+            {if !$viewObject.user->completedOnboarding()}
+            App.addEventListener(new Intro());
+            {/if}
             App.init();
             $('#initScript').remove();
         });
@@ -98,4 +101,5 @@
         <button id="button-move-widgets">Yes, sure!</button>
         <button id="button-dont-move-widgets">No, leave them.</button>
     </div>
+    {include file="templates/common/favorites.tpl"}
 {/block}

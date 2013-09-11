@@ -6,7 +6,7 @@ use App\AppTrait;
 use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
-use App\Lib\Stats;
+use App\Lib\Stats\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Http\HttpTrait;
@@ -32,23 +32,24 @@ class UsersHandler extends AbstractHandler
             // If user doesn't exist, create him, send him an e-mail,
             // update registered users statistics, create new Weby and then redirect
 
+            $user = new UserEntity();
             $serviceData->username = UserEntity::generateUsername($serviceData->email);
             $user->populate($serviceData)->save();
 
             // Sending welcome e-mail to our newly created user
             $this->_sendEmail($user);
 
-            // Now update users stats
-            $stats = Stats::getInstance();
-            $stats->updateRegisteredUsersCount();
-
             // Create new Weby for our new user and redirect him to it
             $weby = new WebyEntity();
             $weby->setUser($this->user())->save();
 
-            $this->request()->redirect($weby->getEditorUrl());
+            // Now update users stats
+            Stats::getInstance()->updateRegisteredUsersCount();
+            Stats::getInstance()->updateWebiesStats($this->user());
 
+            $this->request()->redirect($weby->getEditorUrl());
         } else {
+
             // If user exists, then update it's data in Weby database,
             // Saving, so we can sync the data with our database data
             $user->populate($serviceData)->save();
@@ -56,6 +57,13 @@ class UsersHandler extends AbstractHandler
 
         // Redirect to editor
         $this->request()->redirect($this->user()->getProfileUrl());
+    }
+
+    /**
+     * Marks user that he completed introduction tour of Weby.io
+     */
+    public function markIntroductionDone() {
+        UserEntity::markIntroductionDone($this->user());
     }
 
     /**

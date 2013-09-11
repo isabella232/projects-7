@@ -56,7 +56,8 @@ class Database
 		'w_stat_by_ref',
 		'w_stat_period',
 		'w_log',
-		'w_screenshot_queue'
+		'w_screenshot_queue',
+		'w_email_queue'
 	);
 
 	/** Users table */
@@ -77,14 +78,17 @@ class Database
 	/** Stats periods table */
 	public $w_stat_period;
 
-	/** Stats periods by ref_type table */
+	/** Stats periods by ref table */
 	public $w_stat_by_ref;
 
-	/** Stats periods by ref_type table */
+	/** Log table */
 	public $w_log;
 
 	/** Screenshot queue table */
 	public $w_screenshot_queue;
+
+    /** Email queue table */
+    public $w_email_queue;
 
 	// ** Result Set types - used by fetchAll method **//
 	const RT_ARRAY = 'array';

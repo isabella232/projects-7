@@ -65,7 +65,7 @@
 }
 
 #toolbar-wrapper {
-	height: 100%;
+	height: auto;
 	width: 41px;
 	top: 130px;
 	left: 30px;

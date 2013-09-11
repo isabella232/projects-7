@@ -34,7 +34,7 @@
 {/block}
 
 {block name="content"}
-    <div id="content"
-         style="width:100%; height:100%; background: url('{$viewObject.themeWebPath}images/patterns/purty_wood.png') repeat"></div>
+    <div id="content" style="width:100%; height:100%; background: url('{$viewObject.themeWebPath}images/patterns/purty_wood.png') repeat"></div>
     {include file="templates/common/dashboard.tpl"}
+    {include file="templates/common/favorites.tpl"}
 {/block}

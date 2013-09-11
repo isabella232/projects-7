@@ -77,10 +77,10 @@
 
         $.ajax({
             type: "POST",
-            url: '/statistics/ajax_get_' + period + '_stats/?event=' + event,
+            url: '/stats/ajax-get-' + period + '-stats/?event=' + event,
             success: function (response) {
+                chartDiv.empty();
                 if (response.data.length == 0) {
-                    chartDiv.empty();
                     chartDiv.append('<div class="sys_msg no-products-selected">' +
                             '<p class="msg info">There is no data for selected period.</p></div>');
                 } else {

@@ -6,9 +6,7 @@ use App\AppTrait;
 use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
-use App\Lib\ShareCount;
-use App\Lib\Social;
-use App\Lib\Stats;
+use App\Lib\Stats\Stats;
 use App\Lib\UserTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
@@ -49,15 +47,12 @@ class PagesHandler extends AbstractHandler
 
         if ($this->request()->query('embed', false, true)) {
             $this->setTemplate('embedWeby');
-            // TODO: track embeded hits
+            // Update Weby's hits stats
+            Stats::getInstance()->updateWebyEmbeddedHits($weby);
             return;
         }
 
-        // Update Weby's hits stats
-        $stats = Stats::getInstance();
-        $stats->updateWebyHits($weby);
-
-
+        Stats::getInstance()->updateWebyHits($weby);
     }
 
     public function page404()

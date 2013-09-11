@@ -13,6 +13,8 @@ abstract class UserEntityStorage extends EntityAbstract
     protected $_firstName = '';
     protected $_lastName = '';
     protected $_avatarUrl = '';
+    protected $_shareCount = '';
+    protected $_onboarding = false;
     protected $_createdOn = '';
     protected $_lastLogin = '';
 
@@ -80,4 +82,10 @@ abstract class UserEntityStorage extends EntityAbstract
 		$bind = array($email);
 		return self::_getDb()->execute($query, $bind)->fetchArray();
 	}
+
+    protected static function _sqlMarkIntroductionDone($id){
+        $query = "UPDATE ".self::_getDb()->w_user." SET onboarding=1::bit WHERE id=?";
+        $bind = array($id);
+        return self::_getDb()->execute($query, $bind);
+    }
 }

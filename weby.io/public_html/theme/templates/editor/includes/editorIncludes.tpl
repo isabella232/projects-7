@@ -11,7 +11,8 @@
     widgets/twitterWidget.css,
     widgets/videoWidget.css,
     widgets/linkWidget.css,
-    jquery.fancybox.css
+    jquery.fancybox.css,
+    introjs.min.css
 {/minify}
 
 {minify type="js"}
@@ -25,6 +26,7 @@
     weby/webyToolbar.js,
     weby/webyDashboard.js,
     weby/webyFavorites.js,
+    weby/webySocialShare.js,
     weby/webyBackground.js,
     weby/webyDocumentBackground.js,
     weby/webyColorBackground.js,
@@ -38,6 +40,8 @@
     editor/baseWidget.js,
     editor/baseParser.js,
     editor/baseIframeWidget.js,
+    editor/intro.min.js,
+    editor/intro.js,
     editor/tools/textTool.js,
     editor/tools/mapTool.js,
     editor/tools/instagramTool.js,

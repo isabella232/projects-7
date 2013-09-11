@@ -18,7 +18,8 @@
         headerMiddle.css,
         weby.css,
         dialog/dialog.css,
-        dialog/myWebies.css
+        dialog/myWebies.css,
+        dialog/myFavorites.css
     {/minify}
 
     {minify type="js"}
@@ -54,7 +55,7 @@
     </div>
 </div>
 {block name="content"}{/block}
-<div class="footer">
+<div class="footer" >
     <ul>
         <li>
             <a href="">Help</a>
