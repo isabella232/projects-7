@@ -16,10 +16,3 @@
         Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
     </div>
 </div>
-
-<div id="outer-widgets" style="display:none">
-    <p>There are some widgets located outside of your new canvas.<br/> Would you like to move them inside your new
-        canvas?</p>
-    <button id="button-move-widgets">Yes, sure!</button>
-    <button id="button-dont-move-widgets">No, leave them.</button>
-</div>

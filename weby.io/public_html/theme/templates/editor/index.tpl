@@ -92,4 +92,10 @@
     </div>
     {include file="templates/editor/includes/templates.tpl"}
     {include file="templates/common/dashboard.tpl"}
+    <div id="outer-widgets" style="display:none">
+        <p>There are some widgets located outside of your new canvas.<br/> Would you like to move them inside your new
+            canvas?</p>
+        <button id="button-move-widgets">Yes, sure!</button>
+        <button id="button-dont-move-widgets">No, leave them.</button>
+    </div>
 {/block}

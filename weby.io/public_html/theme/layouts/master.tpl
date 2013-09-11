@@ -69,7 +69,9 @@
             <a href="">Keyboard Shortcuts</a>
         </li>
     </ul>
-    <span><a href="http://www.webiny.com"></a></span>
+            <span>
+                <a href=""></a>
+            </span>
 </div>
 </body>
 </html>

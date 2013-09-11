@@ -224,6 +224,8 @@ function WebyToolbar() {
 		}
 	});
 
+	$('#file-widget .k-upload-empty').removeClass('k-upload-empty').addClass('k-upload');
+
 	$('span.file-error').hide();
 
 	if(App.getWeby().getBackground().getImage() != null){
@@ -266,7 +268,7 @@ function WebyToolbar() {
 	$('#background-size-auto').click(function () {
 		$this.setCanvasSize(
 			App.getViewportWidth() - App.getWeby().getScrollBarOffset(),
-			App.getViewportHeight() - App.getTopOffset() - App.getWeby().getScrollBarOffset()
+			App.getViewportHeight() - App.getTopOffset() - App.getWeby().getScrollBarOffset() - App.getBottomOffset()
 		);
 		_canvasSizeChange();
 	});
@@ -281,10 +283,10 @@ function WebyToolbar() {
 			return;
 		}
 		if (_canvasWidth.value() == null) {
-			_canvasWidth.value(600);
+			_canvasWidth.value(App.getViewportWidth() - App.getWeby().getScrollBarOffset());
 		}
 		if (_canvasHeight.value() == null) {
-			_canvasHeight.value(600);
+			_canvasHeight.value(App.getViewportHeight() - App.getTopOffset() - App.getWeby().getScrollBarOffset() - App.getBottomOffset());
 		}
 		App.getWeby().getBackground().applyCanvasSize(_canvasWidth.value(), _canvasHeight.value(), type);
 

@@ -271,59 +271,66 @@ body.unselectable * {
 	color: #f25b2b;
 }
 
-.footer {
+.header-right li.dropdown:hover > span.dropdown-arrow, .header-right li.dropdown:hover > ul{
+	-moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+	-webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+}
+
+.footer{
+	font-size: 16px;
 	background: #202020; /* Old browsers */
 	background: -moz-linear-gradient(top, #202020 0%, #1d1d1d 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #202020), color-stop(100%, #1d1d1d)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #202020 0%, #1d1d1d 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #202020 0%, #1d1d1d 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #202020 0%, #1d1d1d 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #202020 0%, #1d1d1d 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#202020', endColorstr='#1d1d1d', GradientType=0); /* IE6-9 */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#202020), color-stop(100%,#1d1d1d)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #202020 0%,#1d1d1d 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #202020 0%,#1d1d1d 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #202020 0%,#1d1d1d 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #202020 0%,#1d1d1d 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#202020', endColorstr='#1d1d1d',GradientType=0 ); /* IE6-9 */
 	border-top: 3px solid #2c2c2c;
 	position: fixed;
 	bottom: 0;
 	width: 100%;
 	z-index: 1000000;
-	min-width: 1210px;
-	overflow: hidden;
 }
 
-.footer ul {
+.footer ul{
 	list-style: none;
 	margin: 0 0;
 	padding: 0 0 0 30px;
 	float: left;
+	line-height: 0.4;
 }
 
-.footer ul li {
+.footer ul li{
 	display: inline-block;
 	padding: 5px 5px 5px 0;
 }
 
-.footer ul li:before {
-	content: "/";
+.footer ul li:before{
+	content:"/";
 	padding-right: 5px;
 }
 
-.footer ul li:first-child:before {
-	content: none;
+.footer ul li:first-child:before{
+	content:none;
 }
 
-.footer ul li a {
+.footer ul li a{
 	text-decoration: none;
 	font-size: 11px;
-	color: #cccccc;
+	color:#cccccc;
 	font-weight: 600;
 }
 
-.footer span {
-	float: right;
+.footer span{
+	float:right;
 	padding-right: 30px;
-	padding-top: 9px;
+	padding-top: 1px;
+	padding-bottom: 3px;
 }
 
-.footer span a {
+.footer span a{
 	background-image: url("../images/webiny-logo-footer.png");
 	background-repeat: no-repeat;
 	display: block;

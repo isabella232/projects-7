@@ -22,7 +22,9 @@
     <div id="cnv-pattern" class="tab">
         <div id="patternsList" class="patternsList"></div>
         <div class="k-pager-wrap patternsPager"></div>
-        Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
+        <span class="credits">
+            Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
+        </span>
     </div>
     <div id="cnv-image" class="tab">
         <span class="file-error"></span>
@@ -31,7 +33,8 @@
             <input name="background-image" id="file" type="file"/>
         </div>
         <div class="button-wrapper">
-            <a id="background-image-remove" href="javascript:void(0)" class="button" style="display: block; text-align: center;">Remove background image</a>
+            <a id="background-image-remove" href="javascript:void(0)"
+               style="display: block; text-align: center;">Remove background image</a>
         </div>
         <a id="background-settings-aligned" href="javascript:void(0)" class="button">Aligned</a>
         <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
@@ -77,13 +80,11 @@
     </div>
     <div id="cnv-youtube" class="tab">
         <input type="text" id="background-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
-               placeholder="Paste a Youtube video for the background and press Enter"/>
+               placeholder="Paste a Youtube video URL"/>
     </div>
     <div id="cnv-size" class="tab">
-        <span>Canvas width and height in pixels (Leave blank for auto-size):</span><br/>
-        <input type="text" id="canvas-width" placeholder="Width" value="800"/><br/>
-        <input type="text" id="canvas-height" placeholder="Height" value="750"/>
-        <br/>
-        <a id="background-size-auto" href="javascript:void(0)" class="button">Fill my screen</a>
+        <label>Width:<input type="text" id="canvas-width" placeholder="Width" value="800"/></label>
+        <label>Height:<input type="text" id="canvas-height" placeholder="Height" value="750"/></label>
+        <span class="label">(Leave blank for auto-size)</span>
     </div>
 </div>
