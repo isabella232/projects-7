@@ -22,15 +22,15 @@
 }
 
 .mouse-icon.link:before {
-	background-position: 50% -40px;
+	background-position: 47px -40px;
 }
 
 .mouse-icon.map:before {
-	background-position: 50% -79px;
+	background-position: 47px -79px;
 }
 
 .mouse-icon.video:before {
-	background-position: 0 -48px;
+	background-position: 47px -353px;
 }
 
 .mouse-icon.prezi:before {
@@ -38,53 +38,51 @@
 }
 
 .mouse-icon.slideshare:before {
-	background-position: 0 -80px;
+	background-position: 47px -390px;
 }
 
 .mouse-icon.googledrive:before {
-	background-position: 0 -96px;
+	background-position: 47px -429px;
 }
 
 .mouse-icon.skydrive:before {
-	background-position: 0 -112px;
+	background-position: 47px -468px;
 }
 
 .mouse-icon.soundcloud:before {
-	background-position: 0 -128px;
+	background-position: 47px -507px;
 }
 
 .mouse-icon.linkedin:before {
-	background-position: 50% -274px;
+	background-position: 47px -274px;
 }
 
 .mouse-icon.twitter:before {
-	background-position: 50% -236px;
+	background-position: 47px -236px;
 }
 
-.mouse-icon.gplus:before {
-	background-position: 50% -312px;
+.mouse-icon.googleplus:before {
+	background-position: 47px -312px;
 }
 
 .mouse-icon.instagram:before {
-	background-position: 50% -118px;
+	background-position: 47px -118px;
 }
 
 .mouse-icon.pinterest:before {
-	background-position: 50% -156px;
+	background-position: 47px -156px;
 }
 
 .mouse-icon.facebook:before {
-	background-position: 50% -195px;
+	background-position: 47px -195px;
 }
 
 .mouse-icon.vine:before {
-	background-position: 0 -224px;
+	background-position: 47px -546px;
 }
 
-.mouse-icon img {
-	display: block;
-	float: left;
-	margin-right: 2px;
+.mouse-icon.flicker {
+	background-position: 47px -585px;
 }
 
 .mouse-icon span.action {
@@ -106,7 +104,7 @@
 	font-family: SourceSansPro;
 	box-shadow: 0px 3px 12px #888888;
 	padding: 10px;
-	display:block;
+	display: block;
 }
 
 .widget:hover {
@@ -120,10 +118,10 @@
 	float: left;
 }
 
-.widget-loading-overlay{
+.widget-loading-overlay {
 	background-color: #eaeaea;
 	width: 237px;
-	height:197px;
+	height: 197px;
 	text-align: center;
 	vertical-align: middle;
 	display: block;
@@ -131,7 +129,7 @@
 	margin-left: 130px;
 }
 
-.widget-loading-overlay p span{
+.widget-loading-overlay p span {
 	color: #666;
 	font-size: 17px;
 	font-weight: 400;
@@ -139,18 +137,18 @@
 	display: block;
 }
 
-.widget-loading-overlay p{
+.widget-loading-overlay p {
 	color: #666;
 	font-size: 12px;
 	font-weight: 400;
 	margin: 0 0;
 }
 
-.widget-disabled-overlay{
-	float:left;
+.widget-disabled-overlay {
+	float: left;
 	margin-left: 30px;
 	position: absolute;
-	z-index:8000;
+	z-index: 8000;
 	width: 100%;
 	height: 100%;
 }
@@ -159,7 +157,7 @@
 	display: none;
 }
 
-.widget.active .widget-disabled-overlay span{
+.widget.active .widget-disabled-overlay span {
 	text-transform: uppercase;
 	color: #fff;
 	font-size: 13px;
@@ -167,13 +165,12 @@
 	padding: 10px 20px;
 	text-align: center;
 	vertical-align: middle;
-	display:inline;
+	display: inline;
 }
 
 .widget.active .widget-disabled-overlay {
 	background: url('../images/white-transparent-background.png') repeat;
 }
-
 
 .widget-body input {
 	float: left;
@@ -211,7 +208,7 @@
 	position: absolute;
 }
 
-.widget span.control{
+.widget span.control {
 	width: 40px;
 	height: 40px;
 	display: block;
@@ -221,26 +218,26 @@
 	background-repeat: no-repeat;
 }
 
-.widget span.drag-handle{
+.widget span.drag-handle {
 	background-position: 0px 0px;
 	top: 0;
-	left:0;
+	left: 0;
 }
 
-.widget span.remove-handle{
+.widget span.remove-handle {
 	background-position: 0px -70px;
 	top: 0;
-	right:0;
+	right: 0;
 }
 
-.widget span.rotate-handle{
+.widget span.rotate-handle {
 	background-position: 0px -138px;
 	bottom: 0;
-	left:0;
+	left: 0;
 }
 
-.widget span.resize-handle{
+.widget span.resize-handle {
 	background-position: 0px -204px;
 	bottom: 0;
-	right:0;
+	right: 0;
 }

@@ -74,12 +74,12 @@ function WebyToolbar() {
 
 	var patternsDataSource = new kendo.data.DataSource({
 		data: WebyPatterns.PATTERNS,
-		pageSize: 6
+		pageSize: 5
 	});
 
 	$(".patternsPager").kendoPager({
 		dataSource: patternsDataSource,
-		buttonCount: 5
+		buttonCount: 1
 	});
 
 	$("#patternsList").kendoListView({

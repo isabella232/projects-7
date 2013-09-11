@@ -1,179 +1,298 @@
-#toolbar ul{
+#toolbar ul {
 	list-style: none;
 	margin: 0 0;
 	padding: 0 0;
+	border-bottom: 1px solid #cacaca;
 }
 
-#toolbar ul li.tools-drop-arrow{
+#toolbar ul li.tools-drop-arrow {
 	position: relative;
 }
 
-#toolbar ul li.tools-drop-arrow ul{
+#toolbar ul li.tools-drop-arrow ul {
 	position: absolute;
-	top: -130px;
+	top: -179px;
 	left: 40px;
 	padding: 10px 10px 0 0px;
 	background-color: #fff;
-	border: 1px solid #dddcda;
-	display:none;
+	border-top: 1px solid #dddcda;
+	border-right: 1px solid #dddcda;
+	border-bottom: 1px solid #dddcda;
+	display: none;
 	width: 284px;
 }
 
-#toolbar ul li.tools-drop-arrow:hover ul{
+#toolbar ul li.tools-drop-arrow:hover ul {
 	display: block;
 }
 
-#toolbar ul li.tools-drop-arrow ul li{
+#toolbar ul li.tools-drop-arrow ul li {
 	width: 130px;
 	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top,  #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #ffffff 0%,#f4f4f4 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f4f4f4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #ffffff 0%, #f4f4f4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0); /* IE6-9 */
 	margin-bottom: 10px;
-	float:left;
+	float: left;
 	margin-left: 10px;
 	border-bottom: 1px solid #cacaca;
 	border-right: 1px solid #cacaca;
 }
 
-#toolbar ul li.tools-drop-arrow:hover{
+#toolbar ul li.tools-drop-arrow:hover {
 	background: #ffffff;
 }
 
-#toolbar ul li.tools-drop-arrow ul li a{
-	text-indent: 0px !important;
-	line-height: 43px !important;
-	padding-left: 50px !important;
-	background-repeat: no-repeat;
-	height: 41px !important;
-}
-
-#toolbar ul li.tools-drop-arrow ul li a.pinterest{
-	background-position: 0% -157px !important;
-}
-
-#toolbar ul li.tools-drop-arrow ul li a.facebook{
-	background-position: 0% -196px !important;
-}
-
-#toolbar ul li.tools-drop-arrow ul li a.twitter{
-	background-position: 0% -235px !important;
+#toolbar ul li.tools-drop-arrow ul li a {
+	float: left;
+	text-decoration: none;
+	color: #666;
 }
 
 #toolbar-wrapper {
-	height: auto;
+	height: 100%;
 	width: 41px;
-	top: 130px;
-	left: 30px;
 	z-index: 999999;
 	position: fixed;
+	padding-left: 30px;
 	float: left;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
+	top: 130px;
+	left: 50px;
+}
+
+#toolbar ul li.tools-drop-arrow ul li a.tool-icon {
+	float: left;
+
 }
 
 #toolbar .tool-icon {
 	width: 41px;
-	background-image: url(../images/sprite1.png);
-	padding: 0;
-	text-indent: -9999px;
-	height: 40px;
+	padding: 0 !important;
+	text-indent: -9999px !important;
+	height: 40px !important;
 	display: block;
 	position: relative;
-	margin: 0 0;
-	padding: 0 0;
+	margin: 0;
 	line-height: 23px;
 	cursor: pointer;
+	background: url(../images/sprite1.png) -5px 0px;
 }
 
-#toolbar ul{
-	border-bottom: 1px solid #cacaca;
+#toolbar .tool-icon:hover, #toolbar li.tools-drop-arrow ul li:hover .tool-icon {
+	background-position: 47px 0px;
 }
 
-#toolbar ul li{
+#toolbar ul li {
 	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top,  #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #ffffff 0%,#f4f4f4 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #ffffff 0%,#f4f4f4 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 ); /* IE6-9 */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f4f4f4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #ffffff 0%, #f4f4f4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0); /* IE6-9 */
 	border-top: 1px solid #cacaca;
 	border-left: 1px solid #cacaca;
+	border-right: 1px solid #cacaca;
 	position: relative;
-	font-size: 16px;
 }
 
-#toolbar ul li a.toolbar-icon-hover{
+#toolbar ul li:hover {
+	border-right: none;
+}
+
+#toolbar ul li a.toolbar-icon-hover {
 	position: absolute;
 	top: -1px;
-	left: 41px;
+	left: 40px;
 	text-indent: 0px;
-	line-height: 40px;
+	line-height: 41px;
+	font-size: 15px;
 	padding-left: 10px;
 	padding-right: 10px;
 	background-repeat: no-repeat;
 	height: 40px;
 	background: #ffffff;
 	background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f4f4f4));
-	background: -webkit-linear-gradient(top, #ffffff 0%,#f4f4f4 100%);
-	background: -o-linear-gradient(top, #ffffff 0%,#f4f4f4 100%);
-	background: -ms-linear-gradient(top, #ffffff 0%,#f4f4f4 100%);
-	background: linear-gradient(to bottom, #ffffff 0%,#f4f4f4 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f4f4f4',GradientType=0 );
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f4f4f4));
+	background: -webkit-linear-gradient(top, #ffffff 0%, #f4f4f4 100%);
+	background: -o-linear-gradient(top, #ffffff 0%, #f4f4f4 100%);
+	background: -ms-linear-gradient(top, #ffffff 0%, #f4f4f4 100%);
+	background: linear-gradient(to bottom, #ffffff 0%, #f4f4f4 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0);
 	border-top: 1px solid #cacaca;
 	border-right: 1px solid #cacaca;
 	border-bottom: 1px solid #cacaca;
-	width: 81px;
+	width: 89px;
 	text-decoration: none;
 	color: #666;
 	display: none;
 }
 
-#toolbar ul li:hover a.toolbar-icon-hover{
+#toolbar ul li.tools-drop-arrow ul li a.toolbar-icon-hover {
+	border: none;
+	padding: 0px;
+	top: 0;
+	text-indent: 5px !important;
+	border-left: 1px solid #cacaca;
+}
+
+#toolbar ul li:hover a.toolbar-icon-hover {
 	display: block;
 }
 
-#toolbar .link{
-	background-position: 50% -40px;
+#toolbar .text {
+	background-position: -5px 0px;
 }
 
-#toolbar .map{
-	background-position: 50% -79px;
+#toolbar li:hover .text, #toolbar li.tools-drop-arrow ul li:hover .text {
+	background-position: 47px 0px;
 }
 
-#toolbar .instagram{
-	background-position: 50% -118px;
+#toolbar .link {
+	background-position: -5px -40px;
 }
 
-#toolbar .pinterest{
-	background-position: 50% -156px;
+#toolbar li:hover .link, #toolbar li.tools-drop-arrow ul li:hover .link {
+	background-position: 47px -40px;
 }
 
-#toolbar .facebook{
-	background-position: 50% -195px;
+#toolbar .map {
+	background-position: -5px -79px;
 }
 
-#toolbar .twitter{
-	background-position: 50% -236px;
+#toolbar li:hover .map, #toolbar li.tools-drop-arrow ul li:hover .map {
+	background-position: 47px -79px;
 }
 
-#toolbar .linkedin{
-	background-position: 50% -274px;
+#toolbar .instagram {
+	background-position: -5px -118px;
 }
 
-#toolbar .googleplus{
-	background-position: 50% -312px;
+#toolbar li:hover .instagram, #toolbar li.tools-drop-arrow ul li:hover .instagram {
+	background-position: 47px -118px;
 }
 
-#toolbar .tools-drop{
-	background-position: 50% -351px;
+#toolbar .pinterest {
+	background-position: -5px -156px;
+}
+
+#toolbar li:hover .pinterest, #toolbar li.tools-drop-arrow ul li:hover .pinterest {
+	background-position: 47px -156px;
+}
+
+#toolbar .facebook {
+	background-position: -5px -195px;
+}
+
+#toolbar li:hover .facebook, #toolbar li.tools-drop-arrow ul li:hover .facebook {
+	background-position: 47px -195px;
+}
+
+#toolbar .twitter {
+	background-position: -5px -236px;
+}
+
+#toolbar li:hover .twitter, #toolbar li.tools-drop-arrow ul li:hover .twitter {
+	background-position: 47px -236px;
+}
+
+#toolbar .linkedin {
+	background-position: -5px -274px;
+}
+
+#toolbar li:hover .linkedin, #toolbar li.tools-drop-arrow ul li:hover .linkedin {
+	background-position: 47px -274px;
+}
+
+#toolbar .googleplus {
+	background-position: -5px -312px;
+}
+
+#toolbar li:hover .googleplus, #toolbar li.tools-drop-arrow ul li:hover .googleplus {
+	background-position: 47px -312px;
+}
+
+#toolbar .tools-drop {
+	background-position: -5px -312px;
+}
+
+#toolbar li:hover .tools-drop, #toolbar li.tools-drop-arrow ul li:hover .tools-drop {
+	background-position: 47px -663px;
+}
+
+#toolbar li .video, #toolbar ul li.tools-drop-arrow .video {
+	background-position: -5px -353px;
+}
+
+#toolbar li:hover .video, #toolbar li.tools-drop-arrow ul li:hover .video {
+	background-position: 47px -353px;
+}
+
+#toolbar li .slideshare, #toolbar ul li.tools-drop-arrow .slideshare {
+	background-position: -5px -390px;
+}
+
+#toolbar li:hover .slideshare, #toolbar li.tools-drop-arrow ul li:hover .slideshare {
+	background-position: 47px -390px;
+}
+
+#toolbar li .googledrive, #toolbar ul li.tools-drop-arrow .googledrive {
+	background-position: -5px -429px;
+}
+
+#toolbar li:hover .googledrive, #toolbar li.tools-drop-arrow ul li:hover .googledrive {
+	background-position: 47px -429px;
+}
+
+#toolbar li .skydrive, #toolbar ul li.tools-drop-arrow .skydrive {
+	background-position: -5px -468px;
+}
+
+#toolbar li:hover .skydrive, #toolbar li.tools-drop-arrow ul li:hover .skydrive {
+	background-position: 47px -468px;
+}
+
+#toolbar li .soundcloud, #toolbar ul li.tools-drop-arrow .soundcloud {
+	background-position: -5px -507px;
+}
+
+#toolbar li:hover .soundcloud, #toolbar li.tools-drop-arrow ul li:hover .soundcloud {
+	background-position: 47px -507px;
+}
+
+#toolbar li .vine, #toolbar ul li.tools-drop-arrow .vine {
+	background-position: -5px -546px;
+}
+
+#toolbar li:hover .vine, #toolbar li.tools-drop-arrow ul li:hover .vine {
+	background-position: 47px -546px;
+}
+
+#toolbar li .flicker, #toolbar ul li.tools-drop-arrow .flicker {
+	background-position: -5px -585px;
+}
+
+#toolbar li:hover .flicker, #toolbar li.tools-drop-arrow ul li:hover .flicker {
+	background-position: 47px -585px;
+}
+
+#toolbar li .webyy, #toolbar ul li.tools-drop-arrow .weby {
+	background-position: -5px -624px;
+}
+
+#toolbar li:hover .weby, #toolbar li.tools-drop-arrow ul li:hover .weby {
+	background-position: 47px -624px;
+}
+
+#toolbar .tools-drop {
+	background-position: -5px -663px;
 }

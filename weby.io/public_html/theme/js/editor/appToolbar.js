@@ -24,7 +24,7 @@ var AppToolbar = function () {
 			vine: new VineTool(self),
 			flicker: new FlickerTool(self)
 		}
-		_mainTools = ['text', 'link', 'map', 'instagram', 'pinterest', 'facebook', 'twitter', 'linkedin', 'gplus'];
+		_mainTools = ['text', 'link', 'map', 'instagram', 'pinterest', 'facebook', 'twitter', 'linkedin'];
 		_otherTools = ['video', 'slideshare', 'googledrive', 'skydrive', 'soundcloud', 'vine', 'flicker'];
 
 		if (_FF) {
@@ -32,12 +32,24 @@ var AppToolbar = function () {
 		}
 
 		/**
-		 * Build toolbar
+		 * Build main toolbar
 		 */
-		$.each(_tools, function (index, object) {
+		for(var key in _mainTools) {
+			var object = _tools[_mainTools[key]];
 			object.init();
 			_toolBar.find('ul').append(object.getToolbarIcon());
-		});
+		}
+
+		_toolBar.find('ul').append('<li class="tools-drop-arrow"><a data-tool="tools-drop" class="tool-icon tools-drop ui-draggable" title="Other">OtherTools</a><ul></ul></li>');
+
+		/**
+		 * Build secondary toolbar
+		 */
+		for(var key in _otherTools) {
+			object = _tools[_otherTools[key]];
+			object.init();
+			_toolBar.find('ul li ul').append(object.getToolbarIcon());
+		}
 
 		_toolbarWrapper.append(_toolBar);
 

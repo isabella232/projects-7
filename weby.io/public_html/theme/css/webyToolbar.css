@@ -3,6 +3,7 @@
 }
 
 /** WEBY TOOLBAR **/
+
 #weby-toolbar-wrapper {
 	position: fixed;
 	right: 30px;
@@ -70,7 +71,8 @@
 	position: relative;
 }
 
-#weby-toolbar-wrapper ul li.dropdown ul:not(.ui-tabs-nav) {
+#weby-toolbar-wrapper ul li.dropdown div.menu {
+	text-decoration: none;
 	position: absolute;
 	top: 65px;
 	right: 0;
@@ -83,34 +85,34 @@
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
 }
 
-#weby-toolbar-wrapper ul li.dropdown.frame ul {
+#weby-toolbar-wrapper ul li.dropdown.frame div.menu {
 	border-top: 4px solid #f25b2b;
 	padding: 0;
 	right: 20px;
 }
 
-#weby-toolbar-wrapper ul li.dropdown ul li:not(.ui-tabs-panel) {
+#weby-toolbar-wrapper ul li.dropdown div.menu ul.tabs > li {
 	display: inline-block;
 	padding: 10px;
 	font-size: 15px;
 }
 
-#weby-toolbar-wrapper ul li.dropdown ul li.ui-tabs-active {
+#weby-toolbar-wrapper ul li.dropdown div.menu li.ui-tabs-active {
 	border-top: 1px solid #c5c5c5;
 	border-left: 1px solid #c5c5c5;
 	border-right: 1px solid #c5c5c5;
 	border-bottom: none !important;
 }
 
-#weby-toolbar-wrapper ul li.dropdown ul li.ui-state-default {
+#weby-toolbar-wrapper ul li.dropdown div.menu li.ui-state-default {
 	border-bottom: 1px solid #c5c5c5;
 }
 
-#weby-toolbar-wrapper ul li.dropdown ul li.ui-tabs-active a {
+#weby-toolbar-wrapper ul li.dropdown div.menu li.ui-tabs-active a {
 	color: #27b6ac;
 }
 
-#weby-toolbar-wrapper ul li.dropdown ul li a {
+#weby-toolbar-wrapper ul li.dropdown div.menu li a {
 	text-decoration: none;
 	color: #666;
 }
@@ -121,6 +123,68 @@
 }
 
 /** BACKGROUND/CANVAS SETTINGS **/
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background{
+	display: block;
+	margin: 0 auto 15px;
+	position: relative;
+	width: 250px;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background a{
+	background-color: #27b6ac;
+	color: #fff;
+	text-transform: uppercase;
+	font-size: 15px;
+	text-decoration: none;
+	padding: 10px 30px 10px 10px;
+	display:block;
+	background-image: url("../images/sprite2.png");
+	background-repeat: no-repeat;
+	background-position: 61px -538px;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul{
+	list-style: none;
+	display: none;
+	border-bottom: 1px solid #c5c5c5;
+	border-left: 1px solid #c5c5c5;
+	border-right: 1px solid #c5c5c5;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	background-color: #fff;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	width: 248px;
+	z-index: 1000000;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li{
+	display: block;
+	float: none;
+	padding: 0 0;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li a{
+	padding: 5px 10px;
+	display: block;
+	background-color: #fff;
+	background-image: none;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li a:hover{
+	background-color: #27b6ac;
+	color: #fff;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li a{
+	color: #666;
+}
+
+#weby-toolbar-wrapper ul li.dropdown div.menu .select-background:hover ul{
+	display: block;
+}
 
 #canvas-settings-dropdown > li {
 	padding: 0;
@@ -208,7 +272,8 @@
 	border: 1px solid #27b6ac;
 	text-transform: uppercase;
 	font-size: 14px;
-	font-weight: bold
+	font-weight: bold;
+	text-decoration: none;
 }
 
 #file-widget {
@@ -236,6 +301,10 @@
 
 .patternsPager .k-pager-info {
 	font-size: 13px;
+}
+
+.patternsPager .k-pager-numbers{
+	display:none;
 }
 
 #cnv-size span.label {

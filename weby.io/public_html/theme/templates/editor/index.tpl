@@ -57,21 +57,18 @@
             </li>
             <li class="dropdown frame">
                 <a href="javascript:void(0);" class="disabled tool-icon frame">Frame</a>
-                <ul id="widget-settings-dropdown">
-                    <li>
-                        {include file="templates/editor/includes/widgetSettings.tpl"}
-                    </li>
-                </ul>
+
+                <div id="widget-settings-dropdown" class="menu">
+                    {include file="templates/editor/includes/widgetSettings.tpl"}
+                </div>
             </li>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
-                <ul id="canvas-settings-dropdown">
-                    <li>
-                        {include file="templates/editor/includes/backgroundSettings.tpl"}
-                    </li>
-                </ul>
+                <div id="canvas-settings-dropdown" class="menu">
+                    {include file="templates/editor/includes/backgroundSettings.tpl"}
+                </div>
             </li>
-            <li class="dropdown">
+            {*<li class="dropdown">
                 <a href="javascript:void(0)" class="tool-icon document">Document</a>
                 <ul>
                     <li class="selected-tab">
@@ -81,7 +78,7 @@
                         <a href="">Pattern</a>
                     </li>
                 </ul>
-            </li>
+            </li>*}
         </ul>
     </div>
     <div id="workspace">

@@ -1,5 +1,5 @@
 <div id="background-settings">
-    <ul>
+    <ul class="tabs">
         <li>
             <a href="#cnv-color">Color</a>
         </li>
@@ -36,47 +36,57 @@
             <a id="background-image-remove" href="javascript:void(0)"
                style="display: block; text-align: center;">Remove background image</a>
         </div>
-        <a id="background-settings-aligned" href="javascript:void(0)" class="button">Aligned</a>
-        <a id="background-settings-repeat" href="javascript:void(0)" class="button">Repeat</a>
-        <a id="background-settings-fixed" href="javascript:void(0)" class="button">Fixed</a>
-        <a id="background-settings-scale" href="javascript:void(0)" class="button">Scale</a>
-        <table id="background-settings-align">
-            <tbody>
-            <tr>
-                <td>
-                    <button data-align="left top">TL</button>
-                </td>
-                <td>
-                    <button data-align="center top">TC</button>
-                </td>
-                <td>
-                    <button data-align="right top">TR</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button data-align="left center">L</button>
-                </td>
-                <td>
-                    <button data-align="center center">C</button>
-                </td>
-                <td>
-                    <button data-align="right center">R</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button data-align="left bottom">BL</button>
-                </td>
-                <td>
-                    <button data-align="center bottom">BC</button>
-                </td>
-                <td>
-                    <button data-align="right bottom">BR</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div class="select-background">
+            <a href="">Select background position</a>
+            <ul>
+                <li>
+                    <a id="background-settings-aligned" href="">Aligned</a>
+                </li>
+                <li>
+                    <a id="background-settings-repeat" href="">Repeat</a>
+                </li>
+                <li>
+                    <a id="background-settings-fixed" href="">Fixed</a>
+                </li>
+                <li>
+                    <a id="background-settings-scale" href="">Scale</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="select-background">
+            <a href="">Select image alignment</a>
+            <ul>
+                <li>
+                    <a href="javascript:void(0)" data-align="left top">Top left</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="center top">Top center</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="right top">Top right</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="left center">Left</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="center center">Center</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="right center">Right</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="left bottom">Bottom left</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="center bottom">Bottom</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" data-align="right bottom">Bottom right</a>
+                </li>
+            </ul>
+        </div>
     </div>
     <div id="cnv-youtube" class="tab">
         <input type="text" id="background-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
