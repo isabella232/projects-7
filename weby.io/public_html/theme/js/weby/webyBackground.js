@@ -56,9 +56,17 @@ function WebyBackground(settings) {
 		return this;
 	}
 
+	this.getImageMode = function(){
+		return _backgrounds.image.getMode();
+	}
+
 	this.setImageAlign = function (align) {
 		_backgrounds.image.setAlign(align);
 		return this;
+	}
+
+	this.getImageAlign = function () {
+		return _backgrounds.image.getAlign();
 	}
 
 	this.setColor = function (color) {

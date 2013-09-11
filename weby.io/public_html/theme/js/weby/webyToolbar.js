@@ -5,7 +5,7 @@ function WebyToolbar() {
 	var _activeWidget;
 	var _widgetSettings = $('#widget-settings-dropdown');
 	var _canvasSettings = $('#canvas-settings-dropdown');
-	var _documentBackgroundSettings = $('#document-background-settings');
+	var _documentBackgroundSettings = $('#document-settings');
 	var _webyColorPicker;
 	var _documentColorPicker;
 	var _colorPicker;
@@ -19,6 +19,7 @@ function WebyToolbar() {
 	var _canvasHeight;
 	var _fileWidget = $('#file-widget');
 	var _removeImageBtn = $('#background-image-remove');
+	var _imageMode;
 
 	$('.send-backward').click(function () {
 		_activeWidget.sendBackward();
@@ -45,7 +46,7 @@ function WebyToolbar() {
 		}
 	});
 
-	$('#background-settings-youtube').keydown(function (e) {
+	$('#canvas-settings-youtube').keydown(function (e) {
 		var input = $(this);
 		var val = $.trim(input.val());
 		if (e.keyCode == 13 && val != '') {
@@ -60,7 +61,7 @@ function WebyToolbar() {
 		}
 	});
 
-	$('#background-settings').tabs();
+	$('#canvas-settings').tabs();
 
 	var currentColor = App.getWeby().getBackground().getColor();
 
@@ -77,12 +78,12 @@ function WebyToolbar() {
 		pageSize: 5
 	});
 
-	$(".patternsPager").kendoPager({
+	$(".patterns-pager").kendoPager({
 		dataSource: patternsDataSource,
 		buttonCount: 1
 	});
 
-	$("#patternsList").kendoListView({
+	$("#patterns-list").kendoListView({
 		dataSource: patternsDataSource,
 		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') repeat"></div>'),
 		selectable: "single",
@@ -90,11 +91,6 @@ function WebyToolbar() {
 			App.getWeby().getBackground().setPattern(this.select().attr("data-pattern")).render();
 		}
 	});
-
-	var _applyBackgroundMode = function (mode) {
-		App.getWeby().getBackground().setImageMode(mode).render();
-		App.getWeby().getBackground().widgetDrag();
-	};
 
 	/**
 	 * WIDGET SETTINGS
@@ -185,7 +181,8 @@ function WebyToolbar() {
 	_removeImageBtn.click(function () {
 		App.getWeby().getBackground().setImage(null).render();
 		_fileWidget.show();
-		_removeImageBtn.parent().hide();
+		_removeImageBtn.hide();
+		_imageMode.hide();
 	});
 
 	$("#file").kendoUpload({
@@ -208,10 +205,11 @@ function WebyToolbar() {
 					$('span.file-error').html(e.response.msg).show();
 				}
 			} else {
-				App.getWeby().getBackground().setImageMode('aligned').setImage(e.response.url).setImageAlign("top left").render();
+				App.getWeby().getBackground().setImageMode('aligned').setImage(e.response.url).setImageAlign('left top').render();
 				App.getWeby().getBackground().widgetDrag();
+				_imageMode.setMode('aligned').setAlignment('left top').show();
 				_fileWidget.hide();
-				_removeImageBtn.parent().show();
+				_removeImageBtn.show();
 			}
 			_fileWidget.find('.k-upload-status').remove();
 		},
@@ -230,48 +228,12 @@ function WebyToolbar() {
 
 	if(App.getWeby().getBackground().getImage() != null){
 		_fileWidget.hide();
-		_removeImageBtn.parent().show();
+		_removeImageBtn.show();
 	}
-
-	/**
-	 * IMAGE MODES
-	 */
-	$('#background-settings-limit').click(function () {
-		_applyBackgroundMode('limit');
-	});
-
-	$('#background-settings-aligned').click(function () {
-		_applyBackgroundMode('aligned');
-	});
-
-	$('#background-settings-repeat').click(function () {
-		_applyBackgroundMode('repeat');
-	});
-
-	$('#background-settings-scale').click(function () {
-		_applyBackgroundMode('scale');
-	});
-
-	$('#background-settings-fixed').click(function () {
-		_applyBackgroundMode('fixed');
-	});
-
-	$('#background-settings table button').click(function () {
-		App.getWeby().getBackground().setImageAlign($(this).attr("data-align")).render();
-	});
 
 	/**
 	 * CANVAS SIZE
 	 */
-
-	var $this = this;
-	$('#background-size-auto').click(function () {
-		$this.setCanvasSize(
-			App.getViewportWidth() - App.getWeby().getScrollBarOffset(),
-			App.getViewportHeight() - App.getTopOffset() - App.getWeby().getScrollBarOffset() - App.getBottomOffset()
-		);
-		_canvasSizeChange();
-	});
 
 	var _previousWidth = 0;
 	var _previousHeight = 0;
@@ -341,7 +303,7 @@ function WebyToolbar() {
 	 * DOCUMENT SETTINGS
 	 */
 
-	$("#document-background-settings").kendoTabStrip({
+	$("#document-settings").kendoTabStrip({
 		animation: {
 			open: {
 				effects: "fadeIn"
@@ -359,7 +321,7 @@ function WebyToolbar() {
 		}
 	}).data("kendoFlatColorPicker");
 
-	$("#documentPatternsList").kendoListView({
+	$("#document-patterns-list").kendoListView({
 		dataSource: patternsDataSource,
 		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') repeat"></div>'),
 		selectable: "single",
@@ -386,6 +348,10 @@ function WebyToolbar() {
 	/**
 	 * EVENTS
 	 */
+
+	this.webyLoaded = function(){
+		_imageMode = new WebyImageMode();
+	}
 
 	this.contentClick = function (e) {
 		_canvasSettings.hide();

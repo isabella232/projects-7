@@ -28,6 +28,10 @@ function WebyImageBackground() {
 		return this;
 	}
 
+	this.getAlign = function() {
+		return _align;
+	}
+
 	this.populate = function (data) {
 		_image = data.image == "" ? null : data.image;
 		_align = data.align;

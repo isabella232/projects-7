@@ -1,4 +1,4 @@
-<div id="background-settings">
+<div id="canvas-settings">
     <ul class="tabs">
         <li>
             <a href="#cnv-color">Color</a>
@@ -20,8 +20,8 @@
         <div id="color-picker" style="width: 264px; border: none;"></div>
     </div>
     <div id="cnv-pattern" class="tab">
-        <div id="patternsList" class="patternsList"></div>
-        <div class="k-pager-wrap patternsPager"></div>
+        <div id="patterns-list" class="patterns-list"></div>
+        <div class="k-pager-wrap patterns-pager"></div>
         <span class="credits">
             Powered by <a target="_blank" href="http://subtlepatterns.com">SubtlePatterns.com</a>
         </span>
@@ -32,31 +32,28 @@
         <div id="file-widget">
             <input name="background-image" id="file" type="file"/>
         </div>
-        <div class="button-wrapper">
-            <a id="background-image-remove" href="javascript:void(0)"
-               style="display: block; text-align: center;">Remove background image</a>
-        </div>
+        <a id="background-image-remove" href="javascript:void(0)" style="display: none;">Remove background image</a>
 
-        <div class="select-background">
-            <a href="">Select background position</a>
+        <div id="canvas-image-mode" class="combo-box">
+            <a href="javascript:void(0)" data-role="selected-item">Select background position</a>
             <ul>
                 <li>
-                    <a id="background-settings-aligned" href="">Aligned</a>
+                    <a id="canvas-settings-aligned" data-mode="aligned" href="javascript:void(0)">Aligned</a>
                 </li>
                 <li>
-                    <a id="background-settings-repeat" href="">Repeat</a>
+                    <a id="canvas-settings-repeat" data-mode="repeat" href="javascript:void(0)">Repeat</a>
                 </li>
                 <li>
-                    <a id="background-settings-fixed" href="">Fixed</a>
+                    <a id="canvas-settings-fixed" data-mode="fixed" href="javascript:void(0)">Fixed</a>
                 </li>
                 <li>
-                    <a id="background-settings-scale" href="">Scale</a>
+                    <a id="canvas-settings-scale" data-mode="scale" href="javascript:void(0)">Scale</a>
                 </li>
             </ul>
         </div>
 
-        <div class="select-background">
-            <a href="">Select image alignment</a>
+        <div id="canvas-image-align" class="combo-box">
+            <a href="javascript:void(0)" data-role="selected-item">Select image alignment</a>
             <ul>
                 <li>
                     <a href="javascript:void(0)" data-align="left top">Top left</a>
@@ -89,7 +86,7 @@
         </div>
     </div>
     <div id="cnv-youtube" class="tab">
-        <input type="text" id="background-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
+        <input type="text" id="canvas-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
                placeholder="Paste a Youtube video URL"/>
     </div>
     <div id="cnv-size" class="tab">

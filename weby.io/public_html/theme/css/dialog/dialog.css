@@ -93,15 +93,11 @@ span.dialog-button:hover, .dialog p button:hover {
 }
 
 span.dialog-button.delete {
-	background-image: url(../images/sprite2.png);
-	background-repeat: no-repeat;
-	background-position:-156px -969px;
+	background: url(../images/sprite2.png) no-repeat -156px -969px;
 }
 
 span.dialog-button.edit {
-	background-image: url(../images/sprite2.png);
-	background-repeat: no-repeat;
-	background-position:-156px -1089px;
+	background: url(../images/sprite2.png) no-repeat -156px -1089px;
 }
 
 span.dialog-button.view {

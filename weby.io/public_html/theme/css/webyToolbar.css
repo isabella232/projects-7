@@ -77,7 +77,7 @@
 	top: 65px;
 	right: 0;
 	border-top: 4px solid #27b6ac;
-	padding: 5px;
+	padding: 5px 3px 5px 5px;
 	background-color: #fff;
 	display: none;
 	-moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
@@ -91,28 +91,28 @@
 	right: 20px;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu ul.tabs > li {
+#weby-toolbar-wrapper div.menu ul.tabs > li {
 	display: inline-block;
 	padding: 10px;
 	font-size: 15px;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu li.ui-tabs-active {
+#weby-toolbar-wrapper div.menu li.ui-tabs-active {
 	border-top: 1px solid #c5c5c5;
 	border-left: 1px solid #c5c5c5;
 	border-right: 1px solid #c5c5c5;
 	border-bottom: none !important;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu li.ui-state-default {
+#weby-toolbar-wrapper div.menu li.ui-state-default {
 	border-bottom: 1px solid #c5c5c5;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu li.ui-tabs-active a {
+#weby-toolbar-wrapper div.menu li.ui-tabs-active a {
 	color: #27b6ac;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu li a {
+#weby-toolbar-wrapper div.menu li a {
 	text-decoration: none;
 	color: #666;
 }
@@ -124,27 +124,29 @@
 
 /** BACKGROUND/CANVAS SETTINGS **/
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background{
+#weby-toolbar-wrapper div.menu ul.tabs{
+	float: left;
+	width: 300px;
+}
+
+#weby-toolbar-wrapper div.menu .combo-box{
 	display: block;
-	margin: 0 auto 15px;
+	margin: 15px auto 15px;
 	position: relative;
 	width: 250px;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background a{
-	background-color: #27b6ac;
+#weby-toolbar-wrapper div.menu .combo-box a{
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 15px;
 	text-decoration: none;
 	padding: 10px 30px 10px 10px;
 	display:block;
-	background-image: url("../images/sprite2.png");
-	background-repeat: no-repeat;
-	background-position: 61px -538px;
+	background: #27b6ac url("../images/sprite2.png") no-repeat 61px -538px;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul{
+#weby-toolbar-wrapper div.menu .combo-box ul{
 	list-style: none;
 	display: none;
 	border-bottom: 1px solid #c5c5c5;
@@ -160,57 +162,54 @@
 	z-index: 1000000;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li{
+#weby-toolbar-wrapper div.menu .combo-box ul li{
 	display: block;
 	float: none;
 	padding: 0 0;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li a{
+#weby-toolbar-wrapper div.menu .combo-box ul li a{
 	padding: 5px 10px;
 	display: block;
 	background-color: #fff;
 	background-image: none;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li a:hover{
+#weby-toolbar-wrapper div.menu .combo-box ul li a:hover{
 	background-color: #27b6ac;
 	color: #fff;
 }
 
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background ul li a{
+#weby-toolbar-wrapper div.menu .combo-box ul li a{
 	color: #666;
-}
-
-#weby-toolbar-wrapper ul li.dropdown div.menu .select-background:hover ul{
-	display: block;
 }
 
 #canvas-settings-dropdown > li {
 	padding: 0;
 }
 
-#background-settings {
+#canvas-settings {
 	position: relative;
 	padding: 3px;
 	border: none !important;
 	background: none !important;
+	float: left;
 }
 
 #cnv-image *, #cnv-size * {
 	border-radius: 0;
 }
 
-#background-settings-align {
+#canvas-settings-align {
 	display: none;
 }
 
-#background-settings table button {
+#canvas-settings table button {
 	width: 35px;
 	height: 35px;
 }
 
-#background-settings .tab {
+#canvas-settings .tab {
 	padding: 5px;
 	float: left;
 	border: 1px solid #c5c5c5;
@@ -218,11 +217,11 @@
 	min-width: 286px;
 }
 
-#background-settings #cnv-color {
+#canvas-settings #cnv-color {
 	text-align: center;
 }
 
-#background-settings .file-error {
+#canvas-settings .file-error {
 	background-color: rgb(255, 124, 124);
 	border: 1px solid red;
 	border-radius: 4px;
@@ -232,55 +231,43 @@
 	margin: 0 0 5px 0;
 }
 
-#background-settings #cnv-pattern .credits {
+#canvas-settings #cnv-pattern .credits {
 	float: right;
 	font-size: 12px;
 	padding-top: 3px;
 }
 
-#background-settings #cnv-pattern .credits a {
+#canvas-settings #cnv-pattern .credits a {
 	color: #27b6ac;
 }
 
-#background-settings .k-upload-button {
+#canvas-settings .k-upload-button {
 	width: 96px;
 	font-size: 13px;
 }
 
-#background-settings .k-button:active {
+#canvas-settings .k-button:active {
 	color: #fff;
 	background-color: #27b6ac;
 	border-color: #27b6ac;
 }
 
-#background-settings .button-wrapper {
-	margin: 0 0 5px 0;
-	padding: 10px;
-	border: 1px solid #c5c5c5;
-	background-color: #e3e3e3;
-	background-image: none, -webkit-linear-gradient(top, #f6f6f6 0, #eaeaea 100%);
-	background-image: none, -moz-linear-gradient(top, #f6f6f6 0, #eaeaea 100%);
-	background-image: none, -o-linear-gradient(top, #f6f6f6 0, #eaeaea 100%);
-	background-image: none, linear-gradient(to bottom, #f6f6f6 0, #eaeaea 100%);
-	display: none;
-}
-
-#background-settings .button-wrapper #background-image-remove {
-	padding: 10px;
-	background: #27b6ac none;
+#canvas-settings #background-image-remove {
+	padding: 10px 10px 10px 20px;
 	color: #fff;
 	border: 1px solid #27b6ac;
 	text-transform: uppercase;
 	font-size: 14px;
 	font-weight: bold;
 	text-decoration: none;
+	display: block;
+	text-align: center;
+	width: 220px;
+	margin: 10px auto 0;
+	background: #27b6ac url(../images/sprite2.png) no-repeat -156px -969px;
 }
 
-#file-widget {
-	margin: 0 0 5px 0;
-}
-
-#background-settings-youtube {
+#canvas-settings-youtube {
 	width: 271px;
 	padding: 10px 0 10px 10px;
 	margin: 10px 0;
@@ -290,20 +277,20 @@
 	font-style: italic;
 }
 
-#cnv-pattern .patternsList {
+#cnv-pattern .patterns-list {
 	border-bottom: none;
 }
 
-.patternsList .pattern {
+.patterns-list .pattern {
 	height: 50px;
 	cursor: pointer;
 }
 
-.patternsPager .k-pager-info {
+.patterns-pager .k-pager-info {
 	font-size: 13px;
 }
 
-.patternsPager .k-pager-numbers{
+.patterns-pager .k-pager-numbers{
 	display:none;
 }
 
@@ -313,11 +300,13 @@
 	text-align: center;
 	width: 100%;
 	margin-top: 5px;
+	clear: both;
 }
 
 #cnv-size label{
 	float:left;
 	margin-top:6px;
+	font-size: 15px;
 }
 
 #cnv-size label .k-numerictextbox{
@@ -341,11 +330,16 @@
 	width: 130px;
 	float: left;
 	clear: left;
+	font-size: 14px;
+}
+
+#weby-toolbar-wrapper #widget-settings-dropdown{
+	padding: 10px;
 }
 
 /** DOCUMENT BACKGROUND SETTINGS **/
 
-#document-background-settings {
+#document-settings {
 	display: none;
 	position: fixed;
 	background-color: #fff;
@@ -359,7 +353,7 @@
 	border-radius: 4px;
 }
 
-#document-background-settings .tab {
+#document-settings .tab {
 	padding: 5px;
 }
 
@@ -384,10 +378,10 @@
 	width: 150px !important;
 }
 
-#background-settings .k-flatcolorpicker .k-slider-horizontal {
+#canvas-settings .k-flatcolorpicker .k-slider-horizontal {
 	width: 240px;
 }
 
-#document-background-settings .k-flatcolorpicker .k-slider-horizontal {
+#document-settings .k-flatcolorpicker .k-slider-horizontal {
 	width: 240px;
 }

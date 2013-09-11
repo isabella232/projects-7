@@ -1,8 +1,58 @@
+#toolbar {
+	height: 100%;
+	width: 41px;
+	z-index: 999999;
+	position: fixed;
+	float: left;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	top: 130px;
+	left: 30px;
+}
+
 #toolbar ul {
 	list-style: none;
 	margin: 0 0;
 	padding: 0 0;
 	border-bottom: 1px solid #cacaca;
+}
+
+#toolbar ul li {
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f4f4f4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #ffffff 0%, #f4f4f4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0); /* IE6-9 */
+	border-top: 1px solid #cacaca;
+	border-left: 1px solid #cacaca;
+	border-right: 1px solid #cacaca;
+	position: relative;
+}
+
+#toolbar ul li:hover {
+	border-right: none;
+}
+
+#toolbar .tool-icon {
+	width: 41px;
+	padding: 0 !important;
+	text-indent: -9999px !important;
+	height: 40px !important;
+	display: block;
+	position: relative;
+	margin: 0;
+	line-height: 23px;
+	cursor: pointer;
+	background: url(../images/sprite1.png) -5px 0px;
+}
+
+#toolbar .tool-icon:hover, #toolbar li.tools-drop-arrow ul li:hover .tool-icon {
+	background-position: 47px 0px;
 }
 
 #toolbar ul li.tools-drop-arrow {
@@ -53,60 +103,9 @@
 	color: #666;
 }
 
-#toolbar-wrapper {
-	height: 100%;
-	width: 41px;
-	z-index: 999999;
-	position: fixed;
-	padding-left: 30px;
-	float: left;
-	-moz-user-select: -moz-none;
-	-khtml-user-select: none;
-	-webkit-user-select: none;
-	-ms-user-select: none;
-	top: 130px;
-	left: 50px;
-}
-
 #toolbar ul li.tools-drop-arrow ul li a.tool-icon {
 	float: left;
 
-}
-
-#toolbar .tool-icon {
-	width: 41px;
-	padding: 0 !important;
-	text-indent: -9999px !important;
-	height: 40px !important;
-	display: block;
-	position: relative;
-	margin: 0;
-	line-height: 23px;
-	cursor: pointer;
-	background: url(../images/sprite1.png) -5px 0px;
-}
-
-#toolbar .tool-icon:hover, #toolbar li.tools-drop-arrow ul li:hover .tool-icon {
-	background-position: 47px 0px;
-}
-
-#toolbar ul li {
-	background: #ffffff; /* Old browsers */
-	background: -moz-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f4f4f4)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, #ffffff 0%, #f4f4f4 100%); /* IE10+ */
-	background: linear-gradient(to bottom, #ffffff 0%, #f4f4f4 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f4f4f4', GradientType=0); /* IE6-9 */
-	border-top: 1px solid #cacaca;
-	border-left: 1px solid #cacaca;
-	border-right: 1px solid #cacaca;
-	position: relative;
-}
-
-#toolbar ul li:hover {
-	border-right: none;
 }
 
 #toolbar ul li a.toolbar-icon-hover {

@@ -2,8 +2,7 @@ var AppToolbar = function () {
 	var _FF = !(window.mozInnerScreenX == null);
 	var self = this;
 	var _activeTool = null;
-	var _toolBar = $('<div id="toolbar"><ul></ul></div>')
-	var _toolbarWrapper = $("#toolbar-wrapper");
+	var _toolBar = $('#toolbar');
 	var _tools = {};
 
 	this.init = function () {
@@ -50,8 +49,6 @@ var AppToolbar = function () {
 			object.init();
 			_toolBar.find('ul li ul').append(object.getToolbarIcon());
 		}
-
-		_toolbarWrapper.append(_toolBar);
 
 		_makeToolsDraggable();
 

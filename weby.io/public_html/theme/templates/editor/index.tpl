@@ -40,7 +40,7 @@
 {/block}
 
 {block name="content"}
-    <div id="toolbar-wrapper"></div>
+    <div id="toolbar"><ul></ul></div>
     <div id="weby-toolbar-wrapper">
         <ul>
             <li>
@@ -65,7 +65,7 @@
             <li class="dropdown">
                 <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
                 <div id="canvas-settings-dropdown" class="menu">
-                    {include file="templates/editor/includes/backgroundSettings.tpl"}
+                    {include file="templates/editor/includes/canvasSettings.tpl"}
                 </div>
             </li>
             {*<li class="dropdown">
