@@ -14,7 +14,7 @@ function WebyImageMode(){
 	 */
 	this.setMode = function(mode){
 		if(_currentMode == mode){
-			return;
+			return this;
 		}
 		_currentMode = mode;
 		var el = _mode.find('[data-mode="'+mode+'"]');
@@ -34,7 +34,7 @@ function WebyImageMode(){
 	 */
 	this.setAlignment = function(alignment){
 		if(_currentAlignment == alignment){
-			return;
+			return this;
 		}
 		_currentAlignment = alignment;
 		var el = _align.find('[data-align="'+alignment+'"]');

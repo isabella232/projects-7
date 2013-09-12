@@ -167,6 +167,7 @@ abstract class WebyEntityProperties extends WebyEntityStorage
 
         // If that didn't succeed for some reason, return database data
         return $data ? $data : unserialize($this->_shareCount);
+
     }
 
     /**
@@ -198,4 +199,5 @@ abstract class WebyEntityProperties extends WebyEntityStorage
         $this->_addedToFavoritesTime = $time;
         return $this;
     }
+
 }

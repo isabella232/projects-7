@@ -26,7 +26,8 @@
         jquery-2.0.3.min.js,
         jquery-ui-1.9.2.webyio.js,
         jQueryFix.js,
-        jquery.fancybox.pack.js
+        jquery.fancybox.pack.js,
+        time.js
     {/minify}
 
     <script type="text/javascript">

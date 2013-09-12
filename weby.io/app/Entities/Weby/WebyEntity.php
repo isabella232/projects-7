@@ -47,15 +47,13 @@ class WebyEntity extends WebyEntityCrud
         return self::_sqlGetWebiesByTags($tags);
     }
 
-    public function isInFavorites()
+    /**
+     * Check if this Weby it in current user's favorites list
+     * @return bool
+     */
+    public function inUsersFavorites()
     {
-        if (!$this->user()) {
-            return false;
-        }
-
-        // Check if our user has added this Weby to his favorites list
-        $favorite = new FavoriteEntity();
-        return $favorite->loadByWebyAndUser($this, $this->user());
+        return $this->user()->inFavorites($this);
     }
 
 	/**

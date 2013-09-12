@@ -84,7 +84,7 @@ class SocialData
         $content = self::_parse("http://cdn.api.twitter.com/1/urls/count.json?url=" . $url);
         $json = json_decode($content, true);
         $result['count'] = $json['count'];
-        return isset($result['count']) ? self::_format_count($result['count']) : false;
+        return isset($result['count']) ? $result['count'] : false;
     }
 
     /**
@@ -96,23 +96,7 @@ class SocialData
     {
         $content = self::_parse("http://graph.facebook.com/?id=" . $url);
         $json = json_decode($content, true);
-        return isset($json['shares']) ? self::_format_count($json['shares']) : false;
-    }
-
-    /**
-     * Formats our number in a more human-readable format
-     * @param $count
-     * @return string
-     */
-    private function _format_count($count)
-    {
-        if ($count > 1000000)
-            return '' . number_format(($count / 1000000), 1, '.', '') . 'M';
-        if ($count > 1000)
-            return '' . number_format(($count / 1000), 1, '.', '') . 'K';
-        else
-            return '' . $count;
-
+        return isset($json['shares']) ? $json['shares'] : false;
     }
 
     /**

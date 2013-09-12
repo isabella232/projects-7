@@ -34,6 +34,7 @@ class View
 
         // Registering custom plugins for use in tpl's
         $this->_smarty->registerPlugin("modifier", "render", "\\App\\Lib\\View::renderTemplate");
+        $this->_smarty->registerPlugin("modifier", "formattedNumber", "\\App\\Lib\\View::formattedNumber");
         $this->_smarty->registerPlugin("block", "minify", "\\App\\Lib\\View::minify");
 
     }
@@ -107,4 +108,20 @@ class View
 
         return $m->htmlTagOutput();
     }
+
+    /**
+     * Formats our number in a more human-readable format
+     * @param $count
+     * @return string
+     */
+    public static function formattedNumber($count)
+    {
+        if ($count > 1000000)
+            return '' . number_format(($count / 1000000), 1, '.', '') . 'M';
+        if ($count > 1000)
+            return '' . number_format(($count / 1000), 1, '.', '') . 'K';
+        else
+            return '' . $count;
+    }
+
 }

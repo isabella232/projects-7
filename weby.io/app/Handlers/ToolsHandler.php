@@ -56,7 +56,7 @@ class ToolsHandler extends AbstractHandler
     }
 
     /**
-     * Toggle Weby favorite
+     * Toggle given Weby (loaded by passed id) from user's favorites list
      */
     public function ajaxToggleFavorite($id)
     {
@@ -65,21 +65,14 @@ class ToolsHandler extends AbstractHandler
             $this->ajaxResponse(true, 'Could not find Weby!');
         }
 
-        $favorite = new FavoriteEntity();
-        $favorite->loadByWebyAndUser($id, $this->user()->getId());
-
         // If we got a valid favorite, that means we are deleting it
-        if ($favorite->getCreatedOn()) {
-            $favorite->delete();
+        if($this->user()->inFavorites($weby)) {
+            $this->user()->deleteFromFavorites($weby);
             $this->ajaxResponse(false);
         }
+
         // In other case, we are creating a new favorite
-        $data = [
-            'weby' => $id,
-            'user' => $this->user()->getId(),
-            'ownerId' => $weby->getUser()->getId()
-        ];
-        $favorite->populate($data)->save();
+        $this->user()->addToFavorites($weby);
         $this->ajaxResponse(false);
     }
 

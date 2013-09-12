@@ -3,6 +3,7 @@ function SocialShare() {
     var facebookBtn = $('[data-role="facebook-share"]');
     var googleBtn = $('[data-role="gplus-share"]');
     var twitterBtn = $('[data-role="twitter-share"]');
+    var favoriteBtn = $('[data-role="add-to-favorite"]');
 
     /**
      * Event handler - Facebook share button
@@ -42,12 +43,30 @@ function SocialShare() {
         });
     }
 
+
+    /**
+     * Event handler - Google share button
+     * @private
+     */
+    var _bindAddToFavorite = function () {
+        favoriteBtn.click(function () {
+            $.ajax({
+                url: WEB + 'tools/favorite/52307e3559480/',
+                success: function(){
+                    // TODO: toggle class
+                    favoriteBtn.toggleClass('in-favorites');
+                }
+            })
+        });
+    }
+
     /**
      * Bind event handlers
      */
     _bindFacebookShare();
     _bindTwitterShare();
     _bindGoogleShare();
+    _bindAddToFavorite();
 }
 
 $(function () {

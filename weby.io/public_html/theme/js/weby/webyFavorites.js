@@ -117,6 +117,7 @@ function WebyFavorites() {
 
     // Opens dialog
 	this.open = function (modal) {
+        $("time.timeago").timeago();
 		if (typeof modal == "undefined") {
 			modal = false;
 		}

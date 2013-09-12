@@ -28,6 +28,7 @@ class UsersHandler extends AbstractHandler
         // Load user by email
         $user = UserEntity::getByEmail($serviceData->email);
 
+
         if (!$user) {
             // If user doesn't exist, create him, send him an e-mail,
             // update registered users statistics, create new Weby and then redirect
@@ -62,8 +63,8 @@ class UsersHandler extends AbstractHandler
     /**
      * Marks user that he completed introduction tour of Weby.io
      */
-    public function markIntroductionDone() {
-        UserEntity::markIntroductionDone($this->user());
+    public function markOnboardingDone() {
+        $this->user()->markOnboardingDone();
     }
 
     /**

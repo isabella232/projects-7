@@ -6,7 +6,6 @@ use App\AppTrait;
 use App\Entities\Weby\WebyEntity;
 use Webiny\Component\Security\SecurityTrait;
 use Webiny\Component\StdLib\StdLibTrait;
-use Webiny\Component\StdLib\StdObject\StringObject\StringObject;
 
 class UserEntity extends UserEntityCrud
 {
@@ -25,23 +24,27 @@ class UserEntity extends UserEntityCrud
         return $parts->first()->replace('.', '')->val();
     }
 
-	/**
-	 * Gets user from database based on his profile email
-	 * @param String $email             E-mail which was registered on service
-	 * @return UserEntityCrud $this     Instance of User
-	 */
-	public static function getByEmail($email)
-	{
-		$user = new static;
-		$data = self::_sqlLoadByEmail($email);
-		if(!$data){
-			return false;
-		}
-		return $user->populate($data);
-	}
+    /**
+     * Gets user from database based on his profile email
+     * @param String $email             E-mail which was registered on service
+     * @return UserEntityCrud $this     Instance of User
+     */
+    public static function getByEmail($email)
+    {
+        $user = new static;
+        $data = self::_sqlLoadByEmail($email);
+        if (!$data) {
+            return false;
+        }
+        return $user->populate($data);
+    }
 
-    public static function markIntroductionDone(UserEntity $user) {
-        self::_sqlMarkIntroductionDone($user->getId());
+    /**
+     * Marks user - completed onboarding
+     */
+    public function markOnboardingDone()
+    {
+        $this->_sqlMarkOnboardingDone();
     }
 
     /**
@@ -55,7 +58,7 @@ class UserEntity extends UserEntityCrud
 
         if ($json) {
             $tmp = [];
-            foreach($webies as $weby){
+            foreach ($webies as $weby) {
                 /**@var $weby \App\Entities\Weby\WebyEntity */
                 $tmp[] = [
                     'id' => $weby->getId(),
@@ -89,14 +92,14 @@ class UserEntity extends UserEntityCrud
     {
         // Check to see if we already have loaded all favorites
         if (is_null($this->_favoriteWebies)) {
-            $this->_favoriteWebies = [];
+            $this->_favoriteWebies = $this->arr();
             $favorites = $this->_sqlGetFavoriteWebies();
             if ($favorites) {
                 $weby = new WebyEntity();
                 foreach ($favorites as $data) {
                     $weby->load($data['weby']);
                     $weby->setAddedToFavoritesTime($data['created_on']);
-                    $this->_favoriteWebies[] = clone $weby;
+                    $this->_favoriteWebies[$data['weby']] = clone $weby;
                 }
             }
         }
@@ -121,6 +124,37 @@ class UserEntity extends UserEntityCrud
         }
 
         return $this->_favoriteWebies;
+    }
+
+    /**
+     * Check if given Weby is in user's favorites list
+     * @param WebyEntity $weby
+     * @return bool
+     */
+    public function inFavorites(WebyEntity $weby)
+    {
+        return $this->getFavoriteWebies()->keyExists($weby->getId());
+    }
+
+    /**
+     * Delete given Weby from user's favorites list
+     * @param WebyEntity $weby
+     */
+    public function deleteFromFavorites(WebyEntity $weby)
+    {
+        if (isset($this->_favoriteWebies[$weby->getId()])) {
+            $this->_sqlDeleteFromFavorites($weby->getId());
+            unset($this->_favoriteWebies[$weby->getId()]);
+        }
+    }
+
+    /**
+     * Adds given Weby to user's favorites list
+     * @param WebyEntity $weby
+     */
+    public function addToFavorites(WebyEntity $weby)
+    {
+        $this->_sqlAddToFavorites($weby->getId(), $weby->getUser()->getId());
     }
 
 }

@@ -84,13 +84,19 @@ function WebyDashboard() {
 	$(".modal-dialog .webies-pager").kendoPager({
 		dataSource: webiesDataSource,
 		buttonCount: 10,
-		info: false
+		info: false,
+        change: function() {
+            transformTime();
+        }
 	});
 
 
 	$(".modal-dialog .webies-list").kendoListView({
 		dataSource: webiesDataSource,
-		template: _template
+		template: _template,
+        change: function() {
+            transformTime();
+        }
 	});
 
 	_deleteDialog.find('[data-role="btn-cancel"]').click(function(){

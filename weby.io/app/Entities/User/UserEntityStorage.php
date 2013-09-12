@@ -2,6 +2,7 @@
 namespace App\Entities\User;
 
 use App\Entities\EntityAbstract;
+use App\Lib\DatabaseResult;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class UserEntityStorage extends EntityAbstract
@@ -20,7 +21,7 @@ abstract class UserEntityStorage extends EntityAbstract
 
     /**
      * Saves user into the database with it's service type
-     * @return \App\Lib\DatabaseResult
+     * @return DatabaseResult
      */
     protected function _sqlSave()
     {
@@ -51,7 +52,7 @@ abstract class UserEntityStorage extends EntityAbstract
 
     /**
      * Deletes user
-     * @return \App\Lib\DatabaseResult
+     * @return DatabaseResult
      */
     protected function _sqlDelete()
     {
@@ -70,6 +71,32 @@ abstract class UserEntityStorage extends EntityAbstract
         return $this->_getDb()->execute($query, $bind)->fetchAll();
     }
 
+    /**
+     * Saves Weby to user's favorite list
+     * @param $weby
+     * @param $user
+     * @internal param $webyId
+     * @return DatabaseResult
+     */
+    protected function _sqlAddToFavorites($weby, $user)
+    {
+        $query = "INSERT INTO {$this->_getDb()->w_favorite} (\"user\", weby, owner_id, created_on)
+                        VALUES (?, ?, ?, NOW())";
+        $bind = [$this->_id, $weby, $user];
+        return $this->_getDb()->execute($query, $bind);
+    }
+
+    /**
+     * Deletes favorite Weby from database
+     * @param $webyId
+     * @return bool|ArrayObject
+     */
+    protected function _sqlDeleteFromFavorites($webyId) {
+        $query = "DELETE FROM {$this->_getDb()->w_favorite} WHERE \"user\"=? AND weby=?";
+        $bind = array($this->_id, $webyId);
+        return $this->_getDb()->execute($query, $bind);
+    }
+
 	/**
 	 * Queries the database for user based on his service type (fb, g+ etc.) and service registered email
 	 *
@@ -83,9 +110,10 @@ abstract class UserEntityStorage extends EntityAbstract
 		return self::_getDb()->execute($query, $bind)->fetchArray();
 	}
 
-    protected static function _sqlMarkIntroductionDone($id){
+    protected function _sqlMarkOnboardingDone(){
         $query = "UPDATE ".self::_getDb()->w_user." SET onboarding=1::bit WHERE id=?";
-        $bind = array($id);
+        $bind = array($this->_id);
         return self::_getDb()->execute($query, $bind);
     }
+
 }

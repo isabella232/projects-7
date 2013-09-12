@@ -4,8 +4,10 @@
 {block name="head"}
     <meta property="og:site_name" content="Weby.io"/>
     <meta property="og:title" content="{$weby.title}"/>
-    <meta property="og:image" content="{$viewObject.themeWebPath}images/webiny.png"/>
+    <!-- TODO: when images are done, insert their paths here -->
+    <meta property="og:image" content="{$weby->getImage('public_square')}"/>
     <meta property="og:description" content="Created with Weby.io"/>
+    <link data-page-subject="true" href="{$weby->getImage('public_square')}" rel="image_src"/>
     {include file="templates/pages/includes/appIncludes.tpl"}
     {include file="templates/pages/includes/appRemoteIncludes.tpl"}
     {include file="templates/common/linkWidgetTemplates.tpl"}
