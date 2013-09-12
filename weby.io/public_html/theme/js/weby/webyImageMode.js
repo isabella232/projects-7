@@ -46,7 +46,7 @@ function WebyImageMode(){
 	}
 
 	this.render = function(){
-		App.getWeby().getBackground().setImageMode(_currentMode).setAlign(_currentAlignment).render();
+		App.getWeby().getBackground().getImageBackground().setMode(_currentMode).setAlign(_currentAlignment).render();
 	}
 
 	this.show = function(){
@@ -86,12 +86,8 @@ function WebyImageMode(){
 		$this.setAlignment($(this).attr("data-align")).render();
 	});
 
-	this.setMode(App.getWeby().getBackground().getImageMode(), false);
-	this.setAlignment(App.getWeby().getBackground().getImageAlign(), false);
-	if(App.getWeby().getBackground().getImage() == null){
-		this.hide();
-	}
-
+	this.setMode(App.getWeby().getBackground().getImageBackground().getMode());
+	this.setAlignment(App.getWeby().getBackground().getImageBackground().getAlign());
 
 	/**
 	 * EVENTS

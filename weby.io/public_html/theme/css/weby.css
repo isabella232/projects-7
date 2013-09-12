@@ -1,11 +1,3 @@
-#weby-background-color{
-	position:absolute;
-	width:100%;
-	height: 100%;
-	top:0;
-	left:0;
-}
-
 #workspace {
 	width: 100%;
 	height: 100%;
@@ -30,12 +22,25 @@
 	cursor: -webkit-grab;
 }
 
-#content-background {
+#weby-background-color{
+	position:absolute;
+	width:100%;
+	height: 100%;
+	top:0;
+	left:0;
+	z-index:1;
+}
+
+#weby-background-image{
+	z-index: 2;
+}
+
+#weby-background-video{
 	position: absolute;
 	overflow: hidden;
-	top: 94px;
+	top: 98px;
 	left: 0;
-	z-index: -1;
+	z-index: 0;
 }
 
 #content.grabbing, #content.grabbing .widget {

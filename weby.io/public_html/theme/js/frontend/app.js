@@ -84,7 +84,7 @@ var AppClass = function (topOffset) {
 		_contentWrapper.width(_viewportWidth);
 		_contentWrapper.height(_viewportHeight - _topOffset);
 		_contentBackground.width(_viewportWidth);
-		_contentBackground.height(_viewportHeight - _topOffset);
+		_contentBackground.height(_viewportHeight - _topOffset - _bottomOffset);
 
 		// Setup dragging and Weby
 		_webyDrag = new WebyDrag(_content);

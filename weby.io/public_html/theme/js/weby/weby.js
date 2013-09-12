@@ -52,10 +52,10 @@ function Weby() {
 			_webyToolbar = new WebyToolbar();
 
 			_progress.startLoading();
-			if (_background.getImage() != null) {
+			if (_background.getImageBackground().getImage() != null) {
 				items++;
 				_progress.setMessage('Loading background...');
-				var img = $('<img src="' + _background.getImage() + '" width="1" height="1" style="visibility:hidden"/>')
+				var img = $('<img src="' + _background.getImageBackground().getImage() + '" width="1" height="1" style="visibility:hidden"/>');
 				img.load(function () {
 					$(this).remove();
 					_progress.next();
@@ -272,13 +272,6 @@ function Weby() {
 		_webyToolbar.widgetActivated(widget);
 	}
 
-	this.toolbarMaximized = this.toolbarMinimized = function (toolbarWrapper) {
-		for (var i in _widgets) {
-			_widgets[i].setContainment([App.getToolbarWrapper().outerWidth(), App.getHeader().outerHeight()]);
-		}
-		_background.viewportResize();
-	};
-
 	this.widgetActivated = function (widget) {
 		_webyToolbar.widgetActivated(widget);
 	}
@@ -298,8 +291,4 @@ function Weby() {
 		}
 		_counter[type]--;
 	};
-
-	this.widgetDragStop = function (data) {
-		_background.widgetDragStop(data);
-	}
 };

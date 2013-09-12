@@ -28,4 +28,11 @@ function WebyColorBackground(el) {
 			color: _color
 		}
 	}
+
+	this.viewportResize = function(){
+		_el.css({
+			width: App.getContent().width()+'px',
+			height: App.getContent().height()+'px'
+		});
+	}
 }

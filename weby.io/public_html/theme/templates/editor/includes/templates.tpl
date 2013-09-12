@@ -1,1 +1,0 @@
-{include file="templates/common/linkWidgetTemplates.tpl"}

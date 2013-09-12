@@ -741,11 +741,13 @@ BaseWidget.prototype = {
 
 	showTools: function () {
 		this.controls().show();
+		this.html('.widget-disabled-overlay').css("opacity", 1);
 		return this;
 	},
 
 	hideTools: function () {
 		this.controls().hide();
+		this.html('.widget-disabled-overlay').css("opacity", 0);
 		return this;
 	},
 

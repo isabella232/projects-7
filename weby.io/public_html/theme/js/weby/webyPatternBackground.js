@@ -34,4 +34,8 @@ function WebyPatternBackground(el, defaultPattern) {
 			pattern: _pattern
 		}
 	}
+
+	this.viewportResize = function () {
+		// Need to have at least an empty method
+	};
 }

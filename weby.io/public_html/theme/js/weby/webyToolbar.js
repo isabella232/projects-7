@@ -5,7 +5,7 @@ function WebyToolbar() {
 	var _activeWidget;
 	var _widgetSettings = $('#widget-settings-dropdown');
 	var _canvasSettings = $('#canvas-settings-dropdown');
-	var _documentBackgroundSettings = $('#document-settings');
+	var _documentBackgroundSettings = $('#document-settings-dropdown');
 	var _webyColorPicker;
 	var _documentColorPicker;
 	var _colorPicker;
@@ -19,25 +19,35 @@ function WebyToolbar() {
 	var _canvasHeight;
 	var _fileWidget = $('#file-widget');
 	var _removeImageBtn = $('#background-image-remove');
-	var _imageMode;
+	var $this = this;
 
 	$('.send-backward').click(function () {
+		_documentBackgroundSettings.hide();
+		_canvasSettings.hide();
 		_activeWidget.sendBackward();
 	});
 
 	$('.bring-forward').click(function () {
+		_documentBackgroundSettings.hide();
+		_canvasSettings.hide();
 		_activeWidget.bringForward();
 	});
 
 	$('.send-to-back').click(function () {
+		_documentBackgroundSettings.hide();
+		_canvasSettings.hide();
 		_activeWidget.sendToBack();
 	});
 
 	$('.bring-to-front').click(function () {
+		_documentBackgroundSettings.hide();
+		_canvasSettings.hide();
 		_activeWidget.bringToFront();
 	});
 
 	$('.background').click(function () {
+		$this.deactivateWidget();
+		_documentBackgroundSettings.hide();
 		if (_canvasSettings.css('display') == 'none') {
 			_canvasSettings.show();
 			_webyColorPicker.value(_webyColorPicker.value());
@@ -54,7 +64,7 @@ function WebyToolbar() {
 			var videoId = parser.parse(val);
 			if (videoId && parser.getVideoType() == 'youtube') {
 				// @TODO: Check if video exists
-				App.getWeby().getBackground().setVideo(videoId).render();
+				App.getWeby().getBackground().getVideoBackground().setVideo(videoId).render();
 			} else {
 				// Show error
 			}
@@ -63,14 +73,14 @@ function WebyToolbar() {
 
 	$('#canvas-settings').tabs();
 
-	var currentColor = App.getWeby().getBackground().getColor();
+	var currentColor = App.getWeby().getBackground().getColorBackground().getColor();
 
 	_webyColorPicker = $("#color-picker").kendoFlatColorPicker({
 		preview: true,
 		opacity: true,
 		value: currentColor == null ? '#ffffff' : currentColor,
 		change: function (e) {
-			App.getWeby().getBackground().setColor(e.value).render();
+			App.getWeby().getBackground().getColorBackground().setColor(e.value).render();
 		}
 	}).data("kendoFlatColorPicker");
 
@@ -89,7 +99,7 @@ function WebyToolbar() {
 		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') ${repeat}"></div>'),
 		selectable: "single",
 		change: function () {
-			App.getWeby().getBackground().setPattern(this.select().attr("data-pattern")).render();
+			App.getWeby().getBackground().getPatternBackground().setPattern(this.select().attr("data-pattern")).render();
 		}
 	});
 
@@ -98,16 +108,18 @@ function WebyToolbar() {
 	 */
 
 	$('#weby-toolbar-wrapper .tool-icon.frame').click(function () {
+		_canvasSettings.hide();
+		_documentBackgroundSettings.hide();
 		if (_activeWidget == null) {
 			return;
 		}
 		if (_widgetSettings.css('display') == 'none') {
 			_widgetSettings.show();
-			_activeWidget.hideTools().html('.widget-disabled-overlay').hide();
+			_activeWidget.hideTools();
 			_colorPicker.value(_colorPicker.value());
 		} else {
 			_widgetSettings.hide();
-			_activeWidget.showTools().html('.widget-disabled-overlay').show();
+			_activeWidget.showTools();
 		}
 	});
 
@@ -180,10 +192,9 @@ function WebyToolbar() {
 	}).data("kendoColorPicker");
 
 	_removeImageBtn.click(function () {
-		App.getWeby().getBackground().setImage(null).render();
+		App.getWeby().getBackground().getImageBackground().setImage(null).render();
 		_fileWidget.show();
 		_removeImageBtn.hide();
-		_imageMode.hide();
 	});
 
 	$("#file").kendoUpload({
@@ -206,9 +217,7 @@ function WebyToolbar() {
 					$('span.file-error').html(e.response.msg).show();
 				}
 			} else {
-				App.getWeby().getBackground().setImageMode('aligned').setImage(e.response.url).setAlign('left top').render();
-				App.getWeby().getBackground().widgetDrag();
-				_imageMode.setMode('aligned').setAlignment('left top').show();
+				App.getWeby().getBackground().getImageBackground().setMode('aligned').setImage(e.response.url).setAlign('left top').render();
 				_fileWidget.hide();
 				_removeImageBtn.show();
 			}
@@ -227,7 +236,7 @@ function WebyToolbar() {
 
 	$('span.file-error').hide();
 
-	if (App.getWeby().getBackground().getImage() != null) {
+	if (App.getWeby().getBackground().getImageBackground().getImage() != null) {
 		_fileWidget.hide();
 		_removeImageBtn.show();
 	}
@@ -304,17 +313,11 @@ function WebyToolbar() {
 	 * DOCUMENT SETTINGS
 	 */
 
-	$("#document-settings").kendoTabStrip({
-		animation: {
-			open: {
-				effects: "fadeIn"
-			}
-		}
-	});
+	$("#document-settings").tabs();
 
 	var currentColor = App.getWeby().getDocumentBackground().getColor();
 
-	_documentColorPicker = $("#document-color-picker").kendoFlatColorPicker({
+	_documentColorPicker = $("#doc-color-picker").kendoFlatColorPicker({
 		preview: true,
 		value: currentColor == null ? '#ffffff' : currentColor,
 		change: function (e) {
@@ -322,7 +325,7 @@ function WebyToolbar() {
 		}
 	}).data("kendoFlatColorPicker");
 
-	$("#document-patterns-list").kendoListView({
+	$("#doc-patterns-list").kendoListView({
 		dataSource: patternsDataSource,
 		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') repeat"></div>'),
 		selectable: "single",
@@ -332,39 +335,41 @@ function WebyToolbar() {
 	});
 
 	$('#weby-toolbar-wrapper .document').click(function () {
-		var $this = $(this);
-		var css = {
-			top: $this.offset().top + $this.height() + 10 + 'px',
-			left: $this.offset().left + 'px'
-		};
+		$this.deactivateWidget();
+		_canvasSettings.hide();
 
 		if (_documentBackgroundSettings.css('display') == 'none') {
-			_documentBackgroundSettings.css(css).show();
+			_documentBackgroundSettings.show();
 			_documentColorPicker.value(_documentColorPicker.value());
 		} else {
 			_documentBackgroundSettings.hide();
 		}
 	});
 
+	this.deactivateWidget = function(){
+		_widgetSettings.hide();
+		var aw = App.getActiveWidget();
+		if(aw != null){
+			aw.deactivate();
+			App.setActiveWidget(null);
+		}
+	}
+
 	/**
 	 * EVENTS
 	 */
 
-	this.webyLoaded = function () {
-		_imageMode = new WebyImageMode();
-	}
-
 	this.contentClick = function (e) {
+		_widgetSettings.hide();
 		_canvasSettings.hide();
+		_documentBackgroundSettings.hide();
 	};
 
 	this.widgetClick = function () {
 		_widgetSettings.hide();
+		_canvasSettings.hide();
+		_documentBackgroundSettings.hide();
 		_activeWidget.showTools().html('.widget-disabled-overlay').show();
-	}
-
-	this.widgetDrag = function (data) {
-		App.getWeby().getBackground().widgetDrag(data);
 	}
 
 	this.widgetActivated = function (widget) {
