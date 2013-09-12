@@ -24,7 +24,8 @@ function WebyImageBackground() {
 
 	this.setAlign = function (align) {
 		_align = align;
-		$('#weby-background').css("background-position", _align);
+
+		//$('#weby-background').css("background-position", _align);
 		return this;
 	}
 
@@ -56,9 +57,6 @@ function WebyImageBackground() {
 			$('#background-settings-align').hide();
 		} else if (_mode == 'scale') {
 			_renderScale();
-			$('#background-settings-align').hide();
-		} else if (_mode == 'limit') {
-			_renderLimit();
 			$('#background-settings-align').hide();
 		}
 	}
@@ -101,11 +99,18 @@ function WebyImageBackground() {
 
 	var _renderFixed = function () {
 		$('#weby-background').remove();
-		App.getContent().css({
+		/*App.getContent().css({
+			'background-image': 'url(' + _image + ')',
+			'background-size': 'cover',
+			'background-attachment': 'fixed'
+		});*/
+		var img = $('<div id="weby-background"></div>');
+		img.css({
 			'background-image': 'url(' + _image + ')',
 			'background-size': 'cover',
 			'background-attachment': 'fixed'
 		});
+		App.getContent().prepend(img);
 	}
 	var _renderScale = function () {
 		$('#weby-background').remove();

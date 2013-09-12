@@ -283,10 +283,6 @@ function Weby() {
 		_webyToolbar.widgetActivated(widget);
 	}
 
-	this.widgetDeactivated = function (widget) {
-		_webyToolbar.widgetDeactivated(widget);
-	}
-
 	this.widgetCreated = function (widget) {
 		var type = widget.constructor.name.replace('Widget', '').toLowerCase();
 		if (!_counter.hasOwnProperty(type)) {

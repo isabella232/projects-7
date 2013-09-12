@@ -82,11 +82,13 @@
         </ul>
     </div>
     <div id="workspace">
-        <div id="content-background">
-            <div id="player"></div>
-        </div>
         <div id="wrapper">
-            <div id="content"></div>
+            <div id="content-background">
+                <div id="player"></div>
+            </div>
+            <div id="content">
+                <div id="weby-background-color"></div>
+            </div>
             <div class="clearfix"></div>
         </div>
     </div>

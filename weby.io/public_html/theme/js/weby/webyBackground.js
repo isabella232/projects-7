@@ -4,10 +4,10 @@ function WebyBackground(settings) {
 	var _canvasHeight = App.getAvailableContentHeight();
 
 	var _backgrounds = {
-		color: new WebyColorBackground(App.getContent()),
+		color: new WebyColorBackground($('#weby-background-color')),
 		pattern: new WebyPatternBackground(App.getContent(), 'purty_wood.png'),
 		image: new WebyImageBackground(),
-		//video: new WebyVideoBackground()
+		video: new WebyVideoBackground()
 	};
 
 	if (typeof settings != "undefined") {
@@ -40,20 +40,11 @@ function WebyBackground(settings) {
 
 
 	this.setImage = function (image) {
-		_backgrounds.image.setImage(image);
-		if (_backgrounds.image.getMode() != 'aligned') {
-			_backgrounds.pattern.setPattern(null);
-		}
-		//_backgrounds.video.setVideo(null);
-		return this;
+		return _backgrounds.image.setImage(image);
 	}
 
 	this.setImageMode = function (mode) {
-		if (mode != 'aligned') {
-			_backgrounds.pattern.setPattern(null);
-		}
-		_backgrounds.image.setMode(mode);
-		return this;
+		return _backgrounds.image.setMode(mode);
 	}
 
 	this.getImageMode = function(){
@@ -61,8 +52,7 @@ function WebyBackground(settings) {
 	}
 
 	this.setImageAlign = function (align) {
-		_backgrounds.image.setAlign(align);
-		return this;
+		return _backgrounds.image.setAlign(align);
 	}
 
 	this.getImageAlign = function () {
@@ -70,10 +60,7 @@ function WebyBackground(settings) {
 	}
 
 	this.setColor = function (color) {
-		_backgrounds.color.setColor(color);
-		_backgrounds.pattern.setPattern(null);
-		//_backgrounds.video.setVideo(null);
-		return this;
+		return _backgrounds.color.setColor(color);
 	}
 
 	this.getColor = function () {
@@ -85,18 +72,11 @@ function WebyBackground(settings) {
 	}
 
 	this.setPattern = function (pattern) {
-		_backgrounds.pattern.setPattern(pattern);
-		_backgrounds.color.setColor(null);
-		//_backgrounds.video.setVideo(null);
-		return this;
+		return _backgrounds.pattern.setPattern(pattern);
 	}
 
 	this.setVideo = function (video) {
-		//_backgrounds.video.setVideo(video);
-		_backgrounds.image.setImage(null);
-		_backgrounds.pattern.setPattern(null);
-		_backgrounds.color.setColor(null);
-		return this;
+		return _backgrounds.video.setVideo(video);
 	}
 
 	this.render = function () {

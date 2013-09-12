@@ -5,6 +5,7 @@ function WebyPatternBackground(el, defaultPattern) {
 
 	this.setPattern = function (pattern) {
 		_pattern = pattern;
+		return this;
 	}
 
 	this.populate = function (data) {
@@ -13,7 +14,7 @@ function WebyPatternBackground(el, defaultPattern) {
 	}
 
 	this.render = function () {
-		if (_pattern == null) {
+		if (_pattern == null || _pattern == 'no-pattern.png') {
 			return _el.css({
 				'background-image': 'none'
 			});

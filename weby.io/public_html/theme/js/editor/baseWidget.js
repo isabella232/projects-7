@@ -601,15 +601,10 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	contentLoaded: function () {
-		if (App.getContent().hasClass('hide-content')) {
-			// Calculate height by selecting widget-body content
-			this._width = this.html('.widget-body *').width();
-			this._height = this.html('.widget-body *').height();
-		} else {
-			this._width = this.html().width();
-			this._height = this.html().height();
-		}
 
+		this._width = this.html('.widget-body')[0].scrollWidth;
+		this._height = this.html('.widget-body')[0].scrollHeight;
+		
 		this.html().css({
 			width: this._width + 'px',
 			height: this._height + 'px'
@@ -620,6 +615,8 @@ BaseWidget.prototype = {
 		if (this._isContentLoaded && this._isActive) {
 			this.addInteractionOverlay();
 		}
+
+		this.showTools();
 
 		this._resize();
 		return this;

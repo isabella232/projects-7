@@ -14,7 +14,8 @@ function WebyImageMode(){
 	 */
 	this.setMode = function(mode){
 		if(_currentMode == mode){
-			return;
+			_mode.find('ul').hide();
+			return this;
 		}
 		_currentMode = mode;
 		var el = _mode.find('[data-mode="'+mode+'"]');
@@ -34,7 +35,8 @@ function WebyImageMode(){
 	 */
 	this.setAlignment = function(alignment){
 		if(_currentAlignment == alignment){
-			return;
+			_align.find('ul').hide();
+			return this;
 		}
 		_currentAlignment = alignment;
 		var el = _align.find('[data-align="'+alignment+'"]');
@@ -44,7 +46,7 @@ function WebyImageMode(){
 	}
 
 	this.render = function(){
-		App.getWeby().getBackground().setImageMode(_currentMode).setImageAlign(_currentAlignment).render();
+		App.getWeby().getBackground().setImageMode(_currentMode).setAlign(_currentAlignment).render();
 	}
 
 	this.show = function(){
@@ -64,6 +66,15 @@ function WebyImageMode(){
 
 	_mode.find('ul a').click(function(){
 		$this.setMode($(this).attr("data-mode")).render();
+	});
+
+	_mode.closest('.menu').click(function(e){
+		if($(e.target).closest('.combo-box').length > 0){
+			return;
+		}
+		e.stopPropagation();
+		_mode.find('ul').hide();
+		_align.find('ul').hide();
 	});
 
 	_align.find('a').first().click(function(){

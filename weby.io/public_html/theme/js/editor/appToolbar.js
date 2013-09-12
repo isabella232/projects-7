@@ -133,12 +133,12 @@ var AppToolbar = function () {
 	 */
 	var _makeToolsDraggable = function () {
 		// Draggable tools
-		var drag = _toolBar.find('a.tool-icon').draggable({
+		var drag = _toolBar.find('a.tool-icon').closest('li').draggable({
 			helper: "clone",
 			containment: [117, 72],
 			start: function (event, ui) {
 				ui.helper.hide();
-				var tool = $(this).attr('data-tool');
+				var tool = $(this).find('a.tool-icon').attr('data-tool');
 				$(this).data('tool', tool);
 				drag.draggable('option', 'revert', false);
 				_activateTool(tool, 'drag');

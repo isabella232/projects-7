@@ -67,6 +67,7 @@ function WebyToolbar() {
 
 	_webyColorPicker = $("#color-picker").kendoFlatColorPicker({
 		preview: true,
+		opacity: true,
 		value: currentColor == null ? '#ffffff' : currentColor,
 		change: function (e) {
 			App.getWeby().getBackground().setColor(e.value).render();
@@ -85,7 +86,7 @@ function WebyToolbar() {
 
 	$("#patterns-list").kendoListView({
 		dataSource: patternsDataSource,
-		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') repeat"></div>'),
+		template: kendo.template('<div class="pattern" data-pattern="${name}" style="background: url(\'' + THEME + 'images/patterns/${name}\') ${repeat}"></div>'),
 		selectable: "single",
 		change: function () {
 			App.getWeby().getBackground().setPattern(this.select().attr("data-pattern")).render();
@@ -205,7 +206,7 @@ function WebyToolbar() {
 					$('span.file-error').html(e.response.msg).show();
 				}
 			} else {
-				App.getWeby().getBackground().setImageMode('aligned').setImage(e.response.url).setImageAlign('left top').render();
+				App.getWeby().getBackground().setImageMode('aligned').setImage(e.response.url).setAlign('left top').render();
 				App.getWeby().getBackground().widgetDrag();
 				_imageMode.setMode('aligned').setAlignment('left top').show();
 				_fileWidget.hide();
@@ -226,7 +227,7 @@ function WebyToolbar() {
 
 	$('span.file-error').hide();
 
-	if(App.getWeby().getBackground().getImage() != null){
+	if (App.getWeby().getBackground().getImage() != null) {
 		_fileWidget.hide();
 		_removeImageBtn.show();
 	}
@@ -349,7 +350,7 @@ function WebyToolbar() {
 	 * EVENTS
 	 */
 
-	this.webyLoaded = function(){
+	this.webyLoaded = function () {
 		_imageMode = new WebyImageMode();
 	}
 

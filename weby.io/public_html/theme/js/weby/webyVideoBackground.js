@@ -5,6 +5,7 @@ function WebyVideoBackground() {
 
 	this.setVideo = function (video) {
 		_video = video;
+		return this;
 	}
 
 	this.render = function () {
@@ -20,6 +21,9 @@ function WebyVideoBackground() {
 	}
 
 	this.populate = function (data) {
+		if(!data){
+			return;
+		}
 		_video = data.video == "" ? null : data.video;
 	}
 

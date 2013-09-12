@@ -21,7 +21,7 @@ var AppClass = function () {
      */
     $(document).keydown(function (e) {
 
-        if (!(e.ctrlKey && e.keyCode == 86)) {
+        if (!((e.metaKey || e.ctrlKey) && e.keyCode == 86)) {
             return;
         }
 
@@ -43,7 +43,7 @@ var AppClass = function () {
      */
     $(document).keydown(function (e) {
 
-        if (!(e.ctrlKey && e.keyCode == 83)) {
+        if (!((e.metaKey || e.ctrlKey) && e.keyCode == 83)) {
             return;
         }
         e.preventDefault();
@@ -58,12 +58,13 @@ var AppClass = function () {
             return;
         }
 
+		var key = e.keyCode;
         var distance = 1;
         if (e.shiftKey) {
             distance = 10;
         }
 
-        switch (e.keyCode) {
+        switch (key) {
             case 37:
                 _activeWidget.moveLeft(distance);
                 break;
@@ -78,9 +79,9 @@ var AppClass = function () {
                 break;
         }
 
-        if ($.inArray(e.keyCode, [37, 38, 39, 40])) {
-            e.stopPropagation();
+        if ($.inArray(key, [37, 38, 39, 40]) > -1) {
             e.preventDefault();
+			return false;
         }
     });
 
