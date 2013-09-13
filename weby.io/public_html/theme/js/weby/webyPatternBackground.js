@@ -8,6 +8,10 @@ function WebyPatternBackground(el, defaultPattern) {
 		return this;
 	}
 
+	this.getPattern = function () {
+		return _pattern;
+	}
+
 	this.populate = function (data) {
 		_pattern = data.pattern == "" ? null : data.pattern;
 		return this;
@@ -35,7 +39,7 @@ function WebyPatternBackground(el, defaultPattern) {
 		}
 	}
 
-	this.viewportResize = function () {
+	this.webyBackgroundResized = function () {
 		// Need to have at least an empty method
 	};
 }

@@ -55,6 +55,19 @@
 	background-position: 47px 0px;
 }
 
+#toolbar .tools-drop{
+	width: 41px;
+	padding: 0 !important;
+	text-indent: -9999px !important;
+	height: 40px !important;
+	display: block;
+	position: relative;
+	margin: 0;
+	line-height: 23px;
+	cursor: pointer;
+	background: url(../images/sprite1.png) -5px 0px;
+}
+
 #toolbar ul li.tools-drop-arrow {
 	position: relative;
 }

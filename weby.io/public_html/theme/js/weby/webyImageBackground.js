@@ -14,6 +14,7 @@ function WebyImageBackground(el) {
 
 	this.setImage = function (image) {
 		if (image == null) {
+			_el.attr("style", "").find('img').remove();
 			_imageMode.hide();
 		} else {
 			_imageMode.show();
@@ -102,25 +103,37 @@ function WebyImageBackground(el) {
 			backgroundSize: 'initial',
 			backgroundAttachment: 'inherit',
 			width: App.getContent()[0].scrollWidth + 'px',
-			height: App.getContent()[0].scrollHeight + 'px'
+			height: App.getContent()[0].scrollHeight + 'px',
+			top: 0,
+			left: 0,
+			position: 'absolute'
 		});
 	}
 
 	var _renderFixed = function () {
+		var wp = App.getContentWrapper().offset();
 		_el.find('img').remove();
 		_el.css({
 			backgroundImage: 'url(' + _image + ')',
 			backgroundSize: 'cover',
-			backgroundAttachment: 'fixed',
+			backgroundAttachment: 'initial',
 			backgroundPosition: "left top",
-			width: App.getContentWrapper().width() + 'px',
-			height: App.getContentWrapper().height() + 'px'
+			width: (App.getContentWrapper().width() - App.getWeby().getScrollBarOffset()) + 'px',
+			height: (App.getContentWrapper().height() - App.getWeby().getScrollBarOffset()) + 'px',
+			top: wp.top + 'px',
+			left: wp.left + 'px',
+			position: 'fixed'
 		});
 	}
 	var _renderScale = function () {
 		_el.find('img').remove();
 		var img = $('<img src="' + _image + '"/>');
-		_el.css({background: 'none'});
+		_el.css({
+			background: 'none',
+			top: 0,
+			left: 0,
+			position: 'absolute'
+		});
 		img.css({
 			width: App.getContent()[0].scrollWidth + 'px',
 			height: App.getContent()[0].scrollHeight + 'px'
@@ -134,13 +147,25 @@ function WebyImageBackground(el) {
 
 	this.webyLoaded = function () {
 		_imageMode = new WebyImageMode();
+		if (_image == null) {
+			_imageMode.hide();
+		}
 	}
 
-	this.viewportResize = function () {
-		var css = {
-			width: App.getContent()[0].scrollWidth + 'px',
-			height: App.getContent()[0].scrollHeight + 'px'
-		};
-		_el.css(css).find('img').css(css);
+	this.webyBackgroundBeforeResize = function(){
+		_el.hide();
+	}
+
+	this.webyBackgroundResized = function () {
+		_el.show();
+		if (_mode == 'fixed') {
+			_renderFixed();
+		} else {
+			var css = {
+				width: App.getContent()[0].scrollWidth + 'px',
+				height: App.getContent()[0].scrollHeight + 'px'
+			};
+			_el.css(css).find('img').css(css);
+		}
 	}
 }

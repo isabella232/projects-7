@@ -29,7 +29,12 @@ function WebyColorBackground(el) {
 		}
 	}
 
-	this.viewportResize = function(){
+	this.webyBackgroundBeforeResize = function(){
+		_el.hide();
+	}
+
+	this.webyBackgroundResized = function () {
+		_el.show();
 		_el.css({
 			width: App.getContent().width()+'px',
 			height: App.getContent().height()+'px'

@@ -26,10 +26,6 @@ var AppToolbar = function () {
 		_mainTools = ['text', 'link', 'map', 'instagram', 'pinterest', 'facebook', 'twitter', 'linkedin'];
 		_otherTools = ['video', 'slideshare', 'googledrive', 'skydrive', 'soundcloud', 'vine', 'flicker'];
 
-		if (_FF) {
-			delete _tools.prezi;
-		}
-
 		/**
 		 * Build main toolbar
 		 */
@@ -39,7 +35,7 @@ var AppToolbar = function () {
 			_toolBar.find('ul').append(object.getToolbarIcon());
 		}
 
-		_toolBar.find('ul').append('<li class="tools-drop-arrow"><a data-tool="tools-drop" class="tool-icon tools-drop ui-draggable" title="Other">OtherTools</a><ul></ul></li>');
+		_toolBar.find('ul').append('<li class="tools-drop-arrow"><a data-tool="tools-drop" class="tools-drop ui-draggable" title="Other">OtherTools</a><ul></ul></li>');
 
 		/**
 		 * Build secondary toolbar
@@ -135,7 +131,6 @@ var AppToolbar = function () {
 		// Draggable tools
 		var drag = _toolBar.find('a.tool-icon').closest('li').draggable({
 			helper: "clone",
-			containment: [117, 72],
 			start: function (event, ui) {
 				ui.helper.hide();
 				var tool = $(this).find('a.tool-icon').attr('data-tool');
@@ -151,13 +146,17 @@ var AppToolbar = function () {
 				}
 				var activeTool = _tools[tool];
 
+				var box = App.getContentWrapper()[0].getBoundingClientRect();
+				var validX = event.clientX > box.left && event.clientX < box.right;
+				var validY = event.clientY > box.top && event.clientY < box.bottom;
+
 				// Make sure the drop was made inside the workspace
-				if ((event.clientX - _toolBar.outerWidth()) < 1 || event.clientY - $('#header').outerHeight() < 1) {
+				if (!validX || !validY) {
 					return;
 				}
-
-				var x = event.clientX - App.getLeftOffset() + App.getContentWrapper()[0].scrollLeft;
-				var y = event.clientY - App.getTopOffset() + App.getContentWrapper()[0].scrollTop;
+				
+				var x = event.clientX - box.left + App.getContentWrapper()[0].scrollLeft;
+				var y = event.clientY - box.top + App.getContentWrapper()[0].scrollTop;
 				activeTool.createWidgetAt(x, y);
 			}
 		});
