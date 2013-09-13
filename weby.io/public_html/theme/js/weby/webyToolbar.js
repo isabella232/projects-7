@@ -56,22 +56,13 @@ function WebyToolbar() {
 		}
 	});
 
-	$('#canvas-settings-youtube').keydown(function (e) {
-		var input = $(this);
-		var val = $.trim(input.val());
-		if (e.keyCode == 13 && val != '') {
-			var parser = new VideoParser();
-			var videoId = parser.parse(val);
-			if (videoId && parser.getVideoType() == 'youtube') {
-				// @TODO: Check if video exists
-				App.getWeby().getBackground().getVideoBackground().setVideo(videoId).render();
-			} else {
-				// Show error
+	$('#canvas-settings').tabs({
+		activate: function( event, ui ) {
+			if(ui.newTab[0].hasAttribute('data-tab') && ui.newTab.attr('data-tab') == 'video'){
+				App.getWeby().getBackground().getVideoBackground().hideErrorMessage();
 			}
 		}
 	});
-
-	$('#canvas-settings').tabs();
 
 	var currentColor = App.getWeby().getBackground().getColorBackground().getColor();
 
@@ -214,7 +205,7 @@ function WebyToolbar() {
 
 			if (e.response.error) {
 				if (e.operation == "upload") {
-					$('span.file-error').html(e.response.msg).show();
+					$('span.error-message').html(e.response.msg).show();
 				}
 			} else {
 				App.getWeby().getBackground().getImageBackground().setMode('aligned').setImage(e.response.url).setAlign('left top').render();
@@ -224,9 +215,9 @@ function WebyToolbar() {
 			_fileWidget.find('.k-upload-status').remove();
 		},
 		select: function (e) {
-			$('span.file-error').html('').hide();
+			$('span.error-message').html('').hide();
 			if (e.files[0].size > 2097152) {
-				$('span.file-error').html('Please select a file smaller than 2MB.').show();
+				$('span.error-message').html('Please select a file smaller than 2MB.').show();
 				e.preventDefault();
 			}
 		}
@@ -234,7 +225,7 @@ function WebyToolbar() {
 
 	$('#file-widget .k-upload-empty').removeClass('k-upload-empty').addClass('k-upload');
 
-	$('span.file-error').hide();
+	$('span.error-message').hide();
 
 	if (App.getWeby().getBackground().getImageBackground().getImage() != null) {
 		_fileWidget.hide();
@@ -369,10 +360,15 @@ function WebyToolbar() {
 		_widgetSettings.hide();
 		_canvasSettings.hide();
 		_documentBackgroundSettings.hide();
-		_activeWidget.showTools().html('.widget-disabled-overlay').show();
+		if(_activeWidget != null){
+			_activeWidget.showTools().html('.widget-disabled-overlay').show();
+		}
 	}
 
 	this.widgetActivated = function (widget) {
+		if(!widget._isContentLoaded){
+			return;
+		}
 		_activeWidget = widget;
 		$('#weby-toolbar-wrapper a.tool-icon').removeClass('disabled');
 		// Get widget settings

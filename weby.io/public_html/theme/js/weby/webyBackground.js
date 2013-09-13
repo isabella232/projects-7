@@ -57,10 +57,10 @@ function WebyBackground(settings) {
 	}
 
 	this.render = function () {
+		this.applyCanvasSize(_canvasWidth, _canvasHeight, 'spin');
 		for (var i in _backgrounds) {
 			_backgrounds[i].render();
 		}
-		this.applyCanvasSize(_canvasWidth, _canvasHeight);
 	}
 
 	/**
@@ -167,8 +167,10 @@ function WebyBackground(settings) {
 			var data = {};
 			data[dimension] = size;
 			if (el == App.getContentWrapper()) {
+				App.fireEvent("weby.background.before.resize");
 				el.animate(data, {duration: duration, queue: false, complete: function () {
-					App.getWeby().getBackground().setContainment(width, height)
+					App.getWeby().getBackground().setContainment(width, height);
+					App.fireEvent("weby.background.resized");
 				}});
 			} else {
 				el.animate(data, {duration: duration, queue: false});
@@ -213,7 +215,7 @@ function WebyBackground(settings) {
 
 		BaseWidget.CONTAINMENT = containment;
 		// Trigger viewportResize to recalculate all background related elements
-		App.getWeby().setContainment(containment).getBackground().viewportResize();
+		App.getWeby().setContainment(containment).getBackground().webyBackgroundResized();
 		return this;
 	}
 
@@ -225,9 +227,19 @@ function WebyBackground(settings) {
 		_backgrounds.image.webyLoaded();
 	}
 
-	this.viewportResize = function () {
+	this.webyBackgroundBeforeResize = function () {
 		for (var i in _backgrounds) {
-			_backgrounds[i].viewportResize();
+			if("webyBackgroundBeforeResize" in _backgrounds[i]){
+				_backgrounds[i].webyBackgroundBeforeResize();
+			}
+		}
+	};
+
+	this.webyBackgroundResized = function () {
+		for (var i in _backgrounds) {
+			if("webyBackgroundResized" in _backgrounds[i]){
+				_backgrounds[i].webyBackgroundResized();
+			}
 		}
 	};
 }

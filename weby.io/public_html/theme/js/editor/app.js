@@ -484,8 +484,9 @@ var AppClass = function () {
         window.focus();
         // Deactivate active widget
         if (_activeWidget != null) {
-            _activeWidget.deactivate();
-            _activeWidget = null;
+            if(_activeWidget.deactivate()){
+				_activeWidget = null;
+			}
         }
     }
 

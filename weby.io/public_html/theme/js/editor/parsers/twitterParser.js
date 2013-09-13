@@ -5,7 +5,7 @@ var TwitterParser = function () {
 
 	this._parse = function (data) {
 
-		var regex = /https:\/\/twitter\.com\/(\S+)\/status\/(\d+)/;
+		var regex = /https:\/\/twitter\.com\/(\S+)\/status(?:es)?\/(\d+)/;
 		if(data.match(regex)){
 			this._tweetId = RegExp.$2;
 			this._tweetUser = RegExp.$1;

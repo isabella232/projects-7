@@ -92,7 +92,7 @@ BaseTool.prototype = {
 			action = "click";
 		}
 		this.createMouseIcon(action);
-		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
+		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]');
 		App.addContentOverlay();
 	},
 
@@ -103,7 +103,7 @@ BaseTool.prototype = {
 	deactivate: function () {
 		// Called each time a tool is deactivated in the toolbar
 		this._mouseIconObject.remove();
-		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]').toggleClass('k-state-active');
+		this._parent.getElement().find('[data-tool="' + this._toolTag + '"]');
 		App.removeContentOverlay();
 	},
 

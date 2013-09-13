@@ -143,6 +143,11 @@ var BaseWidget = function () {
 	this._isContentLoaded = false;
 
 	/**
+	 * Flag telling if the content of a widget is currently being loaded
+	 */
+	this._loadingContent = false;
+
+	/**
 	 * Input element of the widget
 	 * Base class binds events to this selector inside widget html
 	 */
@@ -171,6 +176,8 @@ var BaseWidget = function () {
 	this._jWidgetBody = false;
 
 	this._jWidgetControls = false;
+
+	this._parseError = false;
 
 	/**
 	 * NOTE!!!!
@@ -519,7 +526,7 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	activate: function (e) {
-		if (this._isActive) {
+		if (this._isActive && e) {
 			var textEditable = false;
 			if ($(e.target).hasClass('text-editable') || $(e.target).closest('.text-editable').length !== 0) {
 				textEditable = true;
@@ -532,12 +539,13 @@ BaseWidget.prototype = {
 		}
 		this._isActive = true;
 		this.html().draggable("enable");
-		this.controls().css("visibility", "visible");
 		this.html().addClass('active');
 		if (!this._isContentLoaded) {
 			this.hideResizeHandle();
 			this.makeEditable();
 			this.input().focus();
+		} else {
+			this.controls().css("visibility", "visible");
 		}
 
 		App.fireEvent("widget.activated", this);
@@ -578,6 +586,15 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	deactivate: function () {
+		if (!this._isContentLoaded && !this._loadingContent) {
+			if (this._parseError) {
+				this._parseError = false;
+				return false;
+			} else {
+				return this.remove();
+			}
+		}
+
 		this.showTools(); // in case we were in widget settings
 		this._isActive = this._isEditable = false;
 		this.controls().css("visibility", "hidden");
@@ -604,7 +621,7 @@ BaseWidget.prototype = {
 
 		this._width = this.html('.widget-body')[0].scrollWidth;
 		this._height = this.html('.widget-body')[0].scrollHeight;
-		
+
 		this.html().css({
 			width: this._width + 'px',
 			height: this._height + 'px'
@@ -612,11 +629,11 @@ BaseWidget.prototype = {
 
 		this._isContentLoaded = true;
 
-		if (this._isContentLoaded && this._isActive) {
+		if (this._isActive) {
 			this.addInteractionOverlay();
+			this.showTools();
+			App.getWeby().getToolbar().widgetActivated(this);
 		}
-
-		this.showTools();
 
 		this._resize();
 		return this;
@@ -713,6 +730,7 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	showLoading: function (mainText, secondaryText) {
+		this._loadingContent = true;
 		if (typeof mainText == "undefined" || mainText == '') {
 			mainText = this._loadingMessage;
 		}
@@ -740,7 +758,7 @@ BaseWidget.prototype = {
 	},
 
 	showTools: function () {
-		this.controls().show();
+		this.controls().css("visibility", "visible").show();
 		this.html('.widget-disabled-overlay').css("opacity", 1);
 		return this;
 	},
@@ -756,6 +774,7 @@ BaseWidget.prototype = {
 	 * @returns this
 	 */
 	hideLoading: function () {
+		this._loadingContent = false;
 		this.body('.loading').remove();
 		return this;
 	},

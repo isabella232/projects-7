@@ -68,13 +68,12 @@ var BaseIframeWidget = function () {
 			var targetUrl = $this.getTargetUrl($this.input().val());
 			// If no targetUrl was returned - show parse error message
 			if (!targetUrl) {
+				$this._parseError = true;
 				$this.message().html($this._parseErrorMessage);
 				$this.input().val('').bind('blur keydown', function (e) {
 					$this._inputReceived($this, e);
 				});
-				if ($this._isActive) {
-					$this.input().focus();
-				}
+				$this.input().focus();
 				return false;
 			}
 			// If targetUrl was received - check if it really exists
@@ -94,10 +93,12 @@ var BaseIframeWidget = function () {
 					$this.input().val('').bind('blur keydown', function (e) {
 						$this._inputReceived($this, e);
 					});
-					if ($this._isActive) {
+					if(!$this._isActive){
+						App.setActiveWidget($this);
+						$this.activate();
+					} else {
 						$this.input().focus();
 					}
-					$this.controls().show();
 					return false;
 				}
 			});
