@@ -36,7 +36,6 @@ function Weby() {
     this.init = function () {
 
         if (typeof weby != "undefined") {
-            console.log(weby)
             var items = weby.content.length;
             _webyId = weby.id;
             _title = weby.title;
@@ -85,7 +84,6 @@ function Weby() {
             _background.render();
             _documentBackground.render();
         }
-        weby = undefined;
     };
 
     /**
@@ -262,7 +260,6 @@ function Weby() {
     var _load = function (widgets) {
 
         if (widgets == '') {
-            _progress.hideProgress();
             App.fireEvent("weby.loaded");
             return;
         }
@@ -275,7 +272,6 @@ function Weby() {
             if (loaded == widgets.length) {
                 _progress.setMessage("Done!");
                 App.fireEvent("weby.loaded");
-                _progress.hideProgress();
             }
         }
 
@@ -305,6 +301,11 @@ function Weby() {
     var _save = function () {
         App.getWeby().save();
     };
+
+	this.webyLoaded = function(){
+		_progress.hideProgress();
+		weby = undefined;
+	}
 
     // EVENTS
     this.widgetActivated = function (widget) {
