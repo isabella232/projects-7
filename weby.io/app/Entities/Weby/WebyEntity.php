@@ -12,22 +12,14 @@ class WebyEntity extends WebyEntityCrud
 
     use AppTrait, UserTrait;
 
-    public static function addToFavorites($webyId, $userId) {
-
-    }
-
-    public static function removeFromFavorites($webyId, $userId) {
-
-    }
-
-	/**
+    /**
      * Gets all Webies for given user
      *
      * @param UserEntity $user
      *
      * @return array
      */
-	public static function getAllByUser(UserEntity $user)
+    public static function getAllByUser(UserEntity $user)
     {
         $webies = self::_sqlLoadByUser($user);
         $tmp = [];
@@ -39,14 +31,44 @@ class WebyEntity extends WebyEntityCrud
         return $tmp;
     }
 
-	/**
+    /**
      * Searches database for Webies with given tags attached
      */
-	public static function getWebiesByTags($tags)
+    public static function getWebiesByTags($tags)
     {
         return self::_sqlGetWebiesByTags($tags);
     }
 
+    /**
+     * Searches for tags
+     * @param $search
+     * @param bool $json
+     * @return bool|\Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject
+     */
+    public static function searchTags($search, $json = false)
+    {
+        $data = self::_sqlSearchTags($search);
+        if ($data->count()) {
+            if ($json) {
+                $tmp = [];
+                foreach ($data as $tag) {
+                    $tmp[] = ['id' => $tag['id'], 'tag' => $tag['tag']];
+                }
+                return json_encode($tmp);
+            }
+            return $data;
+        }
+        return false;
+    }
+
+    /**
+     * Inserts new tag into table, this DOES NOT bind given tag to Weby
+     * @param $tag
+     * @return bool|Mixed
+     */
+    public static function insertTag($tag) {
+        return self::_sqlInsertTag($tag);
+    }
     /**
      * Check if this Weby it in current user's favorites list
      * @return bool
@@ -56,42 +78,42 @@ class WebyEntity extends WebyEntityCrud
         return $this->user()->inFavorites($this);
     }
 
-	/**
+    /**
      * Generates full editor URL for this Weby
      * @return string
      */
-	public function getEditorUrl()
+    public function getEditorUrl()
     {
         return $this->app()->getConfig()->app->web_path . $this->getUser()->getUsername() . '/' . $this->getId() . '/';
     }
 
-	/**
+    /**
      * Generates full public URL for this Weby
      * @return string
      */
-	public function getPublicUrl()
+    public function getPublicUrl()
     {
         return $this->app()->getConfig()->app->web_path . $this->getUser()
             ->getUsername() . '/' . $this->getSlug() . '/' . $this->getId() . '/';
     }
 
-	/**
+    /**
      * Returns WebyEntity object to JSON
      * @return string
      */
-	public function toJson()
+    public function toJson()
     {
         return json_encode($this->toArray());
 
     }
 
-	/**
+    /**
      * @param $tag
      *
      * @return WebyImage
      * @throws \Exception
      */
-	public function getImage($tag)
+    public function getImage($tag)
     {
         if ($this->_images->keyExists($tag)) {
             return $this->_images->key($tag);
@@ -99,11 +121,11 @@ class WebyEntity extends WebyEntityCrud
         return new WebyImage($this->_id, $tag);
     }
 
-	/**
+    /**
      * Returns WebyEntity object to array
      * @return array
      */
-	public function toArray()
+    public function toArray()
     {
         return [
             'id' => $this->_id,
@@ -114,7 +136,7 @@ class WebyEntity extends WebyEntityCrud
         ];
     }
 
-	/**
+    /**
      * Create a web friendly URL slug from a string.
      *
      * Although supported, transliteration is discouraged because
@@ -130,7 +152,7 @@ class WebyEntity extends WebyEntityCrud
      * @internal  param array $options
      * @return string
      */
-	protected function _toSlug($str)
+    protected function _toSlug($str)
     {
         // Make sure string is in UTF-8 and strip invalid UTF-8 characters
         $str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());

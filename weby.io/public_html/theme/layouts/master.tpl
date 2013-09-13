@@ -27,7 +27,8 @@
         jquery-ui-1.9.2.webyio.js,
         jQueryFix.js,
         jquery.fancybox.pack.js,
-        time.js
+        time.js,
+        timeTransform.js
     {/minify}
 
     <script type="text/javascript">
@@ -47,6 +48,8 @@
     </div>
     <div class="logo">
         <a href="/"><img src="{$viewObject.themeWebPath}images/weby-logo.png"></a>
+        <time class="passed" datetime="2008-07-17T09:24:17Z">July 17, 2008</time>
+
     </div>
     {block name="headerMiddle"}{/block}
     <div class="header-right">

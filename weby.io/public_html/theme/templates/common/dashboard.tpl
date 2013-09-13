@@ -1,4 +1,5 @@
-<div class="modal-dialog" id="my-webies-dialog" style="display:none; width: 100%; height:100%">
+<div class="dialog" id="my-webies-dialog">
+
     <div class="dialog-loading">
         <div class="overlay"></div>
         <div class="text">
@@ -11,8 +12,8 @@
             Nooo, you really want to remove your Weby?
         </div>
         <div class="actions">
-            <a href="javascript:void(0)" data-role="btn-cancel"><span class="dialog-button edit">Cancel</span></a>
-            <a href="javascript:void(0)" data-role="btn-delete"><span class="dialog-button view">Yes, remove it!</span></a>
+            <a href="javascript:void(0)" data-role="btn-cancel"><span class="button">Cancel</span></a>
+            <a href="javascript:void(0)" data-role="btn-delete"><span class="button">Yes, remove it!</span></a>
         </div>
     </div>
     <h1>My Webies</h1>
@@ -22,31 +23,53 @@
     <div class="webies-list"></div>
     <div class="webies-footer">
         <div class="webies-pager"></div>
-        <a href="{$viewObject.webPath}editor/create/" style="float:right;"><span
-                    class="dialog-button create">Create new Weby</span></a>
+        <a href="{$viewObject.webPath}editor/create/" style="float:right;"><span class="button">Create new Weby</span></a>
     </div>
 </div>
 
 {literal}
 <script type="weby/tpl" id="webies-list-item-tpl">
-    <div class="webies-list-item" style="position: relative;" data-id="${id}">
+    <ul class="webies-list">
+        <li class="webies-list-item">
+            <img class="weby-thumbnail" src="${thumbnail}"/>
+            <ul class="weby-data left">
+                <li>
+                    <h2>Your Pagename</h2>
+                </li>
+                <li>
+                    <h3>Tags</h3>
+                            <span class="weby-tag">
+                                pets
+                            </span>
+                            <span class="weby-tag">
+                                orange
+                            </span>
+                            <span class="weby-tag">
+                                cute
+                            </span>
+                </li>
+            </ul>
+            <ul class="weby-actions right">
+                <li>
+                    <p>
+                        Edited: 29/May/2013
+                    </p>
+                </li>
+                <li>
+                    <a href="${public_url}"><span class="button view">Delete</span></a>
+                    <a href="${editor_url}"><span class="button">Edit</span></a>
+                    <a href="${public_url}"><span class="button main">View</span></a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+   <!-- <div class="webies-list-item" style="position: relative;" data-id="${id}">
         <img class="weby-thumbnail" src="${thumbnail}"/>
         <div class="weby-data left">
             <h2>${title}</h2>
             <p><h3>Tags</h3>
             <div class="weby-tags-list">
-                <span class="weby-tag">Metal</span>
-                <span class="weby-tag">Metal</span>
-                <span class="weby-tag">Progressive</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
-                <span class="weby-tag">Math</span>
 
                 <a href="javascript:void(0);">
                     </a>
@@ -62,11 +85,11 @@
             </div>
         <div class="weby-actions buttons right">
             <p style="">
-                <a href="javascript:void(0);"><span class="dialog-button delete">Delete</span></a>
-                <a href="${editor_url}"><span class="dialog-button edit">Edit</span></a>
-                <a href="${public_url}"><span class="dialog-button view">View</span></a>
+                <a href="javascript:void(0);"><span class="button">Delete</span></a>
+                <a href="${editor_url}"><span class="button">Edit</span></a>
+                <a href="${public_url}"><span class="button">View</span></a>
                 </p>
             </div>
-        </div>
+        </div> -->
 </script>
 {/literal}

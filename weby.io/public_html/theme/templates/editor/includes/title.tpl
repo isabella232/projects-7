@@ -21,3 +21,5 @@
         </form>
     </div>
 </div>
+
+{include file="templates/editor/includes/webyDialog.tpl"}

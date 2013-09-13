@@ -90,6 +90,23 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     {
         return $this->_title;
     }
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->_description;
+    }
+
+    /**
+     * Returns tags in array or JSON form
+     * @param bool $json
+     * @return string
+     */
+    public function getTags($json = false)
+    {
+        return $json ? json_encode(($this->_tags)) : $this->_tags;
+    }
 
 	/**
 	 * @return string

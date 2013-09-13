@@ -65,6 +65,7 @@ class UsersHandler extends AbstractHandler
      */
     public function markOnboardingDone() {
         $this->user()->markOnboardingDone();
+        die();
     }
 
     /**

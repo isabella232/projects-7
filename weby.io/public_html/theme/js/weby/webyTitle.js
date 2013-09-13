@@ -32,6 +32,11 @@ function WebyTitle() {
 	 */
 	var _headerRight = $('.header-right');
 
+    /**
+     * Weby title, tags and description dialog
+     */
+    var _dialog = new WebyTitleDialog();
+
 	_share.find('span').click(function(){
 		$(this).parent().toggleClass('active').find('form').toggle();
 	});
@@ -57,6 +62,10 @@ function WebyTitle() {
 			_url.css('width', (width - 35) + 'px');
 		}
 	}
+
+    this.getDialog = function() {
+        return _dialog;
+    }
 
 	this.viewportResize();
 }

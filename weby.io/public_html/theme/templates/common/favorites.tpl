@@ -1,4 +1,4 @@
-<div class="modal-dialog" id="my-favorites-dialog" style="display:none; width: 100%; height:100%">
+<div class="dialog" id="my-favorites-dialog" style="display:none;">
     <div class="dialog-loading">
         <div class="overlay"></div>
         <div class="text">
@@ -50,8 +50,8 @@
             </div>
             <div class="weby-actions buttons right">
                 <p style="">
-                    <a href="${public_url}"><span class="dialog-button view">View</span></a>
-                    <a href="javascript:void(0);"><span class="dialog-button delete">Delete</span></a>
+                    <a href="${public_url}"><span class="button">View</span></a>
+                    <a href="javascript:void(0);"><span class="button">Delete</span></a>
 
                 </p>
             </div>

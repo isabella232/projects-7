@@ -1,4 +1,3 @@
-
 {minify type="css"}
     kendo.common.min.css,
     kendo.default.min.css,
@@ -6,6 +5,7 @@
     toolbar.css,
     webyToolbar.css,
     widget.css,
+    dialog/webyDialog.css,
     widgets/textWidget.css,
     widgets/mapWidget.css,
     widgets/twitterWidget.css,
@@ -43,6 +43,7 @@
     editor/baseIframeWidget.js,
     editor/intro.min.js,
     editor/intro.js,
+    editor/webyDialog.js,
     editor/tools/textTool.js,
     editor/tools/mapTool.js,
     editor/tools/instagramTool.js,

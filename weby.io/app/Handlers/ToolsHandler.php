@@ -66,7 +66,7 @@ class ToolsHandler extends AbstractHandler
         }
 
         // If we got a valid favorite, that means we are deleting it
-        if($this->user()->inFavorites($weby)) {
+        if ($this->user()->inFavorites($weby)) {
             $this->user()->deleteFromFavorites($weby);
             $this->ajaxResponse(false);
         }
@@ -130,7 +130,18 @@ class ToolsHandler extends AbstractHandler
         $this->ajaxResponse(false);
     }
 
-    // TODO: this isn't finished as some parts are still needed to complete this
+    public function ajaxSearchTags()
+    {
+        $search = $this->request()->query('search');
+        $result = WebyEntity::searchTags($search, true);
+        if (!$result) {
+            $result = json_encode([['id' => 0, 'tag' => $search]], true);
+        }
+        header('Content-type: application/json; charset=utf-8;');
+        die($result);
+    }
+
+    // TODO: this isn't finished as some parts are still needed to complete this (image and tags)
     /**
      * Gets Webies from given tags
      * Also used by Wordpress Webies widget

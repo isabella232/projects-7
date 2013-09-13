@@ -10,6 +10,7 @@ routes:
     - ['tools/webies', \App\Handlers\ToolsHandler, ajaxGetWebies]
     - ['tools/webies/tags', \App\Handlers\ToolsHandler, ajaxGetWebiesByTags] # Gets Webies by tags (used also by WP widget)
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
+    - ['tools/tags', \App\Handlers\ToolsHandler, ajaxSearchTags]
     - ['/^tools\/favorite\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, ajaxToggleFavorite]
     - ['tools/log', \App\Handlers\ToolsHandler, log]
     - ['tools/parse-link', \App\Handlers\LinksHandler, parse]
@@ -23,7 +24,7 @@ routes:
     - ['editor/dashboard', \App\Handlers\EditorHandler, dashboard]
     - ['editor/upload-image', \App\Handlers\EditorHandler, uploadImage]
     - ['editor/remove-image', \App\Handlers\EditorHandler, removeImage]
-    - ['user/intro-done', \App\Handlers\UsersHandler, markIntroductionDone]
+    - ['user/intro-done', \App\Handlers\UsersHandler, markOnboardingDone]
 
     # EMBED
     - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]

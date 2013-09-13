@@ -22,121 +22,147 @@ use Webiny\Component\Storage\StorageTrait;
 
 class EditorHandler extends AbstractHandler
 {
-	use AppTrait, StdLibTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, StorageTrait, LoggerTrait;
+    use AppTrait, StdLibTrait, DatabaseTrait, SecurityTrait, HttpTrait, UserTrait, StorageTrait, LoggerTrait;
 
-	/**
-	 * @var WebyEntity
-	 */
-	private $_weby = null;
+    /**
+     * @var WebyEntity
+     */
+    private $_weby = null;
 
-	public function create() {
-		$weby = new WebyEntity();
-		$weby->setUser($this->user())->save();
+    public function create()
+    {
+        $weby = new WebyEntity();
+        $weby->setUser($this->user())->save();
 
-		// Update stats
-		Stats::getInstance()->updateWebiesStats($this->user());
+        // Update stats
+        Stats::getInstance()->updateWebiesStats($this->user());
 
         // Redirect to newly created Weby
-		$this->request()->redirect($weby->getEditorUrl());
-	}
+        $this->request()->redirect($weby->getEditorUrl());
+    }
 
-	public function save() {
-		// Create new Weby entity, populate it and save into database
-		$weby = new WebyEntity();
+    public function save()
+    {
 
-		// Get ID of existing Weby and load
-		$id = $this->request()->post('id');
-		if($id) {
-			$weby->load($id);
-			// TODO: check if weby belongs to this user
-		}
+        $requestData = $this->request()->post();
+        // Create new Weby entity, populate it and save into database
+        $weby = new WebyEntity();
 
-		$weby->populate($this->request()->post());
-		$weby->setUser($this->user())->save();
-
-		// Add to screenshot queue if requested
-		if($this->request()->post('takeScreenshot', false)){
-			$queue = new ScreenshotQueue();
-			$queue->add($id)->processQueue();
-		}
-
-        // If there were changes in widgets, then update widget counts stats
-        if ($this->request()->post('counter')) {
-            Stats::getInstance()->updateWidgetsCount($this->request()->post('counter'));
+        // Get ID of existing Weby and load
+        $id = $requestData['id'];
+        if ($id) {
+            $weby->load($id);
+            // TODO: check if weby belongs to this user
         }
 
-		$this->ajaxResponse(false, 'Weby saved!', ['time' => date('H:i:s')]);
-	}
+        // Before populating, insert necessary new tags into database
+        if (isset($requestData['tags'])) {
+            foreach ($requestData['tags'] as &$tag) {
+                // If tag wasn't in database, insert it
+                if ($tag['id'] == 0) {
+                    $tag['id'] = WebyEntity::insertTag($tag['tag']);
+                }
+            }
+        }
 
-	public function route($userName, $webyId = null) {
-		if(!$this->user()){
-			$this->request()->redirect($this->app()->getConfig()->app->web_path);
-		}
-		// If username doesn't match - redirect to correct user area
-		if($userName != $this->user()->getUsername()) {
-			if($this->user()->getId()) {
-				$this->request()->redirect($this->user()->getProfileUrl());
-			}
-			$this->request()->redirect($this->app()->getConfig()->app->web_path);
-		}
+        // Now proceed with saving Weby
+        $weby->populate($requestData);
+        $weby->setUser($this->user())->save();
 
-		// Check if weby exists
-		if($webyId != null) {
-			$this->_weby = new WebyEntity();
-			$this->_weby->load($webyId);
+        // Add to screenshot queue if requested
+        if ($this->request()->post('takeScreenshot', false)) {
+            $queue = new ScreenshotQueue();
+            $queue->add($id)->processQueue();
+        }
 
-			if(!$this->_weby->getId()) {
-				$this->request()->redirect($this->user()->getProfileUrl());
-			}
+        // If there were changes in widgets, then update widget counts stats
+        if (isset($requestData['counter'])) {
+            Stats::getInstance()->updateWidgetsCount($requestData['counter']);
+        }
 
-			if($this->_weby->getUser()->getId() != $this->user()->getId()) {
-				$this->request()->redirect($this->user()->getProfileUrl());
-			}
-		}
+        $weby->getTags();
+        $data = [
+            'time' => date('H:i:s'),
+            'title' => $weby->getTitle(),
+            'description' => $weby->getDescription(),
+            'tags' => $weby->getTags()
+        ];
+        $this->ajaxResponse(false, 'Weby saved!', $data);
+    }
 
-		// Load Weby in editor
-		$this->_editor();
-	}
+    public function route($userName, $webyId = null)
+    {
+        if (!$this->user()) {
+            $this->request()->redirect($this->app()->getConfig()->app->web_path);
+        }
+        // If username doesn't match - redirect to correct user area
+        if ($userName != $this->user()->getUsername()) {
+            if ($this->user()->getId()) {
+                $this->request()->redirect($this->user()->getProfileUrl());
+            }
+            $this->request()->redirect($this->app()->getConfig()->app->web_path);
+        }
 
-	public function uploadImage() {
-		$webyId = $this->request()->query('weby');
-		$file = $this->request()->files('background-image');
+        // Check if weby exists
+        if ($webyId != null) {
+            $this->_weby = new WebyEntity();
+            $this->_weby->load($webyId);
 
-		if(!$file->asFileObject()->isImage()) {
-			$this->ajaxResponse(true, 'Given file type is not allowed!');
-		}
+            if (!$this->_weby->getId()) {
+                $this->request()->redirect($this->user()->getProfileUrl());
+            }
 
-		$weby = new WebyEntity();
-		$weby->load($webyId);
+            if ($this->_weby->getUser()->getId() != $this->user()->getId()) {
+                $this->request()->redirect($this->user()->getProfileUrl());
+            }
+        }
 
-		$ext = $this->str($file->getName())->explode('.')->last();
-		$key = $weby->getStorageFolder() . '/background-' . time() . '.' . $ext;
-		$webyFile = new LocalFile($key, $this->storage('local'));
-		if($webyFile->setContents($file->asFileObject()->getFileContent()) !== false){
-			$weby->getImage('background')->setKey($key)->save();
-		}
-		die(json_encode(['url' => $webyFile->getUrl()]));
-	}
+        // Load Weby in editor
+        $this->_editor();
+    }
 
-	private function _removeImage($webyId) {
-		$userDir = new LocalDirectory($this->user()->getUsername(), $this->storage('local'));
-		foreach ($userDir->filter($webyId . '-background*') as $file) {
-			$file->delete();
-		}
-	}
+    public function uploadImage()
+    {
+        $webyId = $this->request()->query('weby');
+        $file = $this->request()->files('background-image');
 
-	/**
-	 * Shows Weby editor
-	 */
-	private function _editor() {
-		if($this->_weby == null) {
-			$this->setTemplate('dashboard');
-			return;
-		}
-		$this->weby = $this->_weby;
-		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);
-		$vIndex = rand(0, $validators->count() - 1);
-		$this->contentValidator = $validators[$vIndex];
-		$this->setTemplate('index');
-	}
+        if (!$file->asFileObject()->isImage()) {
+            $this->ajaxResponse(true, 'Given file type is not allowed!');
+        }
+
+        $weby = new WebyEntity();
+        $weby->load($webyId);
+
+        $ext = $this->str($file->getName())->explode('.')->last();
+        $key = $weby->getStorageFolder() . '/background-' . time() . '.' . $ext;
+        $webyFile = new LocalFile($key, $this->storage('local'));
+        if ($webyFile->setContents($file->asFileObject()->getFileContent()) !== false) {
+            $weby->getImage('background')->setKey($key)->save();
+        }
+        die(json_encode(['url' => $webyFile->getUrl()]));
+    }
+
+    private function _removeImage($webyId)
+    {
+        $userDir = new LocalDirectory($this->user()->getUsername(), $this->storage('local'));
+        foreach ($userDir->filter($webyId . '-background*') as $file) {
+            $file->delete();
+        }
+    }
+
+    /**
+     * Shows Weby editor
+     */
+    private function _editor()
+    {
+        if ($this->_weby == null) {
+            $this->setTemplate('dashboard');
+            return;
+        }
+        $this->weby = $this->_weby;
+        $validators = $this->app()->getConfig()->app->content_validators->toArray(true);
+        $vIndex = rand(0, $validators->count() - 1);
+        $this->contentValidator = $validators[$vIndex];
+        $this->setTemplate('index');
+    }
 }

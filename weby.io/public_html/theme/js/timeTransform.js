@@ -4,13 +4,17 @@
  */
 function TimePassed() {
 
-    transform = function () {
+    parse = function () {
         $("time.passed").timeago();
     };
 
-    init = function () {
-        transform();
+    var init = function () {
+        parse();
     };
 
     init();
 }
+
+$(function() {
+    new TimePassed();
+});

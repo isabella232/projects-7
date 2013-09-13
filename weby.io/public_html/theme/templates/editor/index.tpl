@@ -1,8 +1,7 @@
-
 {extends file="layouts/master.tpl"}
 
-{block name="title"}Weby editor{/block}
-{block name="body-class"}editor{/block}
+{block name="title"}editor{/block}
+{block name="body-class"}editor {/block}
 {block name="head"}
     {include file="templates/editor/includes/editorIncludes.tpl"}
     {include file="templates/editor/includes/editorRemoteIncludes.tpl"}
@@ -33,7 +32,7 @@
     {assign var="editor" value="true"}
     {if $viewObject.user}
         <li class="my-webies">
-            <a class="refresh-time" href="javascript:void(0)" data-role="my-webies"></a>
+            <a href="javascript:void(0)" data-role="my-webies"></a>
         </li>
         {include file="templates/common/socialShare.tpl"}
         {include file="templates/common/userOptions.tpl"}
@@ -42,9 +41,13 @@
 {/block}
 
 {block name="content"}
-    <div id="toolbar"><ul></ul></div>
+    <div id="toolbar">
+        <ul></ul>
+    </div>
     <div id="workspace">
-        <div id="weby-background-video"><div id="player"></div></div>
+        <div id="weby-background-video">
+            <div id="player"></div>
+        </div>
         <div id="wrapper">
             <div id="content">
                 <div id="weby-background-image"></div>

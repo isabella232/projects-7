@@ -57,7 +57,9 @@ class Database
 		'w_stat_period',
 		'w_log',
 		'w_screenshot_queue',
-		'w_email_queue'
+		'w_email_queue',
+		'w_tags',
+		'w_weby2tag'
 	);
 
 	/** Users table */
@@ -74,6 +76,12 @@ class Database
 
 	/** Favorites of users */
 	public $w_favorite;
+
+    /** Tags table */
+    public $w_tags;
+
+    /** Webies and tags binding table */
+    public $w_weby2tag;
 
 	/** Stats periods table */
 	public $w_stat_period;
