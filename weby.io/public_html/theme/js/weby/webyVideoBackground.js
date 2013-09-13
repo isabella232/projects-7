@@ -1,41 +1,45 @@
-function WebyVideoBackground() {
+function WebyVideoBackground(el) {
 
+	var _el = el;
 	var _video = null;
 	var _player = null;
 
 	this.setVideo = function (video) {
 		_video = video;
+		return this;
 	}
 
 	this.render = function () {
 		if (_video == null) {
-			App.getContentBackground().html('<div id="player"></div>');
 			return;
 		}
-		App.getContent().css({
-			'background-image': 'none',
-			'background-color': 'transparent'
-		});
 		_loadYoutubeBackground();
 	}
 
 	this.populate = function (data) {
+		if (!data) {
+			return;
+		}
 		_video = data.video == "" ? null : data.video;
 	}
 
-	this.save = function(){
+	this.save = function () {
 		return {
 			video: _video
 		}
 	}
 
-	this.resize = function(){
-		// Resize player
-		if (_player != null) {
-			$('#player').css({
-				width: App.getContent().width(),
-				height: App.getContent().height()
-			});
+	this.viewportResize = function () {
+		var wp = App.getContentWrapper().offset();
+		var css = {
+			width: (App.getContentWrapper().width() - App.getWeby().getScrollBarOffset()) + 'px',
+			height: (App.getContentWrapper().height() - App.getWeby().getScrollBarOffset()) + 'px',
+			top: wp.top+'px',
+			left: wp.left+'px'
+		};
+		_el.css(css);
+		if(_player){
+			$('#player').css(css);
 		}
 	}
 
@@ -46,6 +50,7 @@ function WebyVideoBackground() {
 				height: App.getContent().height(),
 				videoId: _video,
 				playerVars: {
+					loop: 1,
 					controls: 0,
 					showinfo: 0,
 					modestbranding: 1,

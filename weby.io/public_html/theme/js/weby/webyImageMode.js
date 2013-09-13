@@ -14,6 +14,7 @@ function WebyImageMode(){
 	 */
 	this.setMode = function(mode){
 		if(_currentMode == mode){
+			_mode.find('ul').hide();
 			return this;
 		}
 		_currentMode = mode;
@@ -34,6 +35,7 @@ function WebyImageMode(){
 	 */
 	this.setAlignment = function(alignment){
 		if(_currentAlignment == alignment){
+			_align.find('ul').hide();
 			return this;
 		}
 		_currentAlignment = alignment;
@@ -44,7 +46,7 @@ function WebyImageMode(){
 	}
 
 	this.render = function(){
-		App.getWeby().getBackground().setImageMode(_currentMode).setImageAlign(_currentAlignment).render();
+		App.getWeby().getBackground().getImageBackground().setMode(_currentMode).setAlign(_currentAlignment).render();
 	}
 
 	this.show = function(){
@@ -66,6 +68,15 @@ function WebyImageMode(){
 		$this.setMode($(this).attr("data-mode")).render();
 	});
 
+	_mode.closest('.menu').click(function(e){
+		if($(e.target).closest('.combo-box').length > 0){
+			return;
+		}
+		e.stopPropagation();
+		_mode.find('ul').hide();
+		_align.find('ul').hide();
+	});
+
 	_align.find('a').first().click(function(){
 		_align.find('ul').toggle();
 		_mode.find('ul').hide();
@@ -75,12 +86,8 @@ function WebyImageMode(){
 		$this.setAlignment($(this).attr("data-align")).render();
 	});
 
-	this.setMode(App.getWeby().getBackground().getImageMode(), false);
-	this.setAlignment(App.getWeby().getBackground().getImageAlign(), false);
-	if(App.getWeby().getBackground().getImage() == null){
-		this.hide();
-	}
-
+	this.setMode(App.getWeby().getBackground().getImageBackground().getMode());
+	this.setAlignment(App.getWeby().getBackground().getImageBackground().getAlign());
 
 	/**
 	 * EVENTS

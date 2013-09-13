@@ -9,7 +9,7 @@ function WebyBackground(settings) {
 		color: new WebyColorBackground(App.getContent()),
 		pattern: new WebyPatternBackground(App.getContent(), 'purty_wood.png'),
 		image: new WebyImageBackground(),
-		//video: new WebyVideoBackground()
+		video: new WebyVideoBackground()
 	};
 
 	for (var i in _backgrounds) {
@@ -86,7 +86,7 @@ function WebyBackground(settings) {
 			App.getContentBackground().height(height);
 		} else {
 			_resize(App.getContent(), "height", height + 'px');
-			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() + 'px');
+			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset() + 'px');
 		}
 
 		return this;

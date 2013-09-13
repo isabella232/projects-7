@@ -43,56 +43,17 @@
 
 {block name="content"}
     <div id="toolbar"><ul></ul></div>
-    <div id="weby-toolbar-wrapper">
-        <ul>
-            <li>
-                <a href="javascript:void(0);" class="disabled tool-icon bring-to-front">To Front</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" class="disabled tool-icon bring-forward">Forward</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" class="disabled tool-icon send-backward">Backward</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" class="disabled tool-icon send-to-back">To Back</a>
-            </li>
-            <li class="dropdown frame">
-                <a href="javascript:void(0);" class="disabled tool-icon frame">Frame</a>
-
-                <div id="widget-settings-dropdown" class="menu">
-                    {include file="templates/editor/includes/widgetSettings.tpl"}
-                </div>
-            </li>
-            <li class="dropdown">
-                <a href="javascript:void(0)" class="tool-icon background">Canvas</a>
-                <div id="canvas-settings-dropdown" class="menu">
-                    {include file="templates/editor/includes/canvasSettings.tpl"}
-                </div>
-            </li>
-            {*<li class="dropdown">
-                <a href="javascript:void(0)" class="tool-icon document">Document</a>
-                <ul>
-                    <li class="selected-tab">
-                        <a href="">Color</a>
-                    </li>
-                    <li>
-                        <a href="">Pattern</a>
-                    </li>
-                </ul>
-            </li>*}
-        </ul>
-    </div>
     <div id="workspace">
-        <div id="content-background">
-            <div id="player"></div>
-        </div>
+        <div id="weby-background-video"><div id="player"></div></div>
         <div id="wrapper">
-            <div id="content"></div>
-            <div class="clearfix"></div>
+            <div id="content">
+                <div id="weby-background-image"></div>
+                <div id="weby-background-color"></div>
+            </div>
         </div>
     </div>
-    {include file="templates/editor/includes/templates.tpl"}
+    {include file="templates/common/linkWidgetTemplates.tpl"}
+    {include file="templates/editor/includes/webyToolbar.tpl"}
     {include file="templates/common/dashboard.tpl"}
     <div id="outer-widgets" style="display:none">
         <p>There are some widgets located outside of your new canvas.<br/> Would you like to move them inside your new

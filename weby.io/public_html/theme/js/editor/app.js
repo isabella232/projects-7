@@ -1,7 +1,6 @@
 var AppClass = function () {
     var _content = $('#content');
     var _contentWrapper = $('#wrapper');
-    var _contentBackground = $('#content-background');
     var _header = $('#header');
     var _appToolbar;
     var _dashboard = null;
@@ -21,7 +20,7 @@ var AppClass = function () {
      */
     $(document).keydown(function (e) {
 
-        if (!(e.ctrlKey && e.keyCode == 86)) {
+        if (!((e.metaKey || e.ctrlKey) && e.keyCode == 86)) {
             return;
         }
 
@@ -43,7 +42,7 @@ var AppClass = function () {
      */
     $(document).keydown(function (e) {
 
-        if (!(e.ctrlKey && e.keyCode == 83)) {
+        if (!((e.metaKey || e.ctrlKey) && e.keyCode == 83)) {
             return;
         }
         e.preventDefault();
@@ -58,12 +57,13 @@ var AppClass = function () {
             return;
         }
 
+		var key = e.keyCode;
         var distance = 1;
         if (e.shiftKey) {
             distance = 10;
         }
 
-        switch (e.keyCode) {
+        switch (key) {
             case 37:
                 _activeWidget.moveLeft(distance);
                 break;
@@ -78,9 +78,9 @@ var AppClass = function () {
                 break;
         }
 
-        if ($.inArray(e.keyCode, [37, 38, 39, 40])) {
-            e.stopPropagation();
+        if ($.inArray(key, [37, 38, 39, 40]) > -1) {
             e.preventDefault();
+			return false;
         }
     });
 
@@ -223,8 +223,6 @@ var AppClass = function () {
         _viewportHeight = $(window).height();
         _contentWrapper.width(_viewportWidth);
         _contentWrapper.height(_viewportHeight - _topOffset - _bottomOffset);
-        _contentBackground.width(_viewportWidth);
-        _contentBackground.height(_viewportHeight - _topOffset - _bottomOffset);
 
         // Setup dragging and Weby
         _webyDrag = new WebyDrag(_content);
@@ -336,13 +334,6 @@ var AppClass = function () {
     }
 
     /**
-     * Get jQuery content background element
-     */
-    this.getContentBackground = function () {
-        return _contentBackground;
-    }
-
-    /**
      * Get header jQuery object
      */
     this.getHeader = function () {
@@ -409,6 +400,10 @@ var AppClass = function () {
     this.getActiveTool = function () {
         return _appToolbar.getActiveTool();
     }
+
+	this.getActiveWidget = function(){
+		return _activeWidget;
+	}
 
     this.setActiveWidget = function (widget) {
         if (_activeWidget != null) {

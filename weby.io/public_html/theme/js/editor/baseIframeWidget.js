@@ -61,6 +61,7 @@ var BaseIframeWidget = function () {
 		}
 
 		e.preventDefault();
+		e.stopPropagation();
 
 		if ($.trim($this.input().val()) != '') {
 			$this.input().unbind('blur keydown');
@@ -74,9 +75,10 @@ var BaseIframeWidget = function () {
 				if ($this._isActive) {
 					$this.input().focus();
 				}
-				return;
+				return false;
 			}
 			// If targetUrl was received - check if it really exists
+			$this.hideTools();
 			$this.showLoading('Let\'s see what we have here...', 'Validating your URLs may take a few moments, please be patient.');
 			$this.body().children(':not(".loading")').hide();
 
@@ -95,10 +97,12 @@ var BaseIframeWidget = function () {
 					if ($this._isActive) {
 						$this.input().focus();
 					}
-					return;
+					$this.controls().show();
+					return false;
 				}
 			});
 		}
+		return false;
 	}
 
 	/**

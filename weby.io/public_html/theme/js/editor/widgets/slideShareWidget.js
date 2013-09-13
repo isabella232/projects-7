@@ -26,7 +26,7 @@ function SlideShareWidget() {
 		} else {
 			// Validate link
 			var parser = new SlideShareParser();
-			if (!(this._slideShareId = parser.parse(inputValue))){
+			if (!(this._slideShareId = parser.parse(inputValue))) {
 				return false;
 			}
 		}
@@ -36,7 +36,7 @@ function SlideShareWidget() {
 	/**
 	 * EDIT methods
 	 */
-	this.getSaveData = function(){
+	this.getSaveData = function () {
 		return {
 			slideShareId: this._slideShareId
 		}

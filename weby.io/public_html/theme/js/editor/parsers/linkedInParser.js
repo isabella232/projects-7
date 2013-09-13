@@ -4,7 +4,7 @@ var LinkedInParser = function () {
 		if(data.match(/^[a-z0-9-]*$/)){
 			return data;
 		}
-		var regex = /(?:https?:\/\/)?(?:www\.)?linkedin\.com\/in\/(\S+)/;
+		var regex = /linkedin\.com\/in\/(\S+)/;
 		return data.match(regex) ? RegExp.$1 : false;
 	}
 }

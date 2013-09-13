@@ -5,6 +5,7 @@ function WebyColorBackground(el) {
 
 	this.setColor = function (color) {
 		_color = color;
+		return this;
 	}
 
 	this.getColor = function () {
@@ -18,10 +19,7 @@ function WebyColorBackground(el) {
 
 	this.render = function () {
 		if (_color != null) {
-			_el.css({
-				'background-color': _color,
-				'background-image': 'none'
-			});
+			_el.css({backgroundColor: _color});
 		}
 	}
 
@@ -29,5 +27,12 @@ function WebyColorBackground(el) {
 		return {
 			color: _color
 		}
+	}
+
+	this.viewportResize = function(){
+		_el.css({
+			width: App.getContent().width()+'px',
+			height: App.getContent().height()+'px'
+		});
 	}
 }

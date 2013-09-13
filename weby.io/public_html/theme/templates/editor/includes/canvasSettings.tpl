@@ -32,7 +32,7 @@
         <div id="file-widget">
             <input name="background-image" id="file" type="file"/>
         </div>
-        <a id="background-image-remove" href="javascript:void(0)" style="display: none;">Remove background image</a>
+        <a id="background-image-remove" href="javascript:void(0)" style="display: none;" class="green-button icon delete">Remove background image</a>
 
         <div id="canvas-image-mode" class="combo-box">
             <a href="javascript:void(0)" data-role="selected-item">Select background position</a>
@@ -88,6 +88,7 @@
     <div id="cnv-youtube" class="tab">
         <input type="text" id="canvas-settings-youtube" value="https://www.youtube.com/watch?v=kr_gROZmTtA"
                placeholder="Paste a Youtube video URL"/>
+        <a id="background-youtube-apply" href="javascript:void(0)" class="green-button">Apply Youtube video</a>
     </div>
     <div id="cnv-size" class="tab">
         <label>Width:<input type="text" id="canvas-width" placeholder="Width" value="800"/></label>

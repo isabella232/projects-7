@@ -2,6 +2,32 @@
 	outline: none;
 }
 
+#background-image-remove {
+	width: 220px;
+}
+
+.green-button {
+	padding: 10px 10px 10px 10px;
+	color: #fff;
+	border: 1px solid #27b6ac;
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	text-align: center;
+	margin: 10px auto 0;
+	background-color: #27b6ac;
+}
+
+.green-button.icon {
+	padding: 10px 10px 10px 20px;
+}
+
+.green-button.delete {
+	background: #27b6ac url(../images/sprite2.png) no-repeat -156px -969px;
+}
+
 /** WEBY TOOLBAR **/
 
 #weby-toolbar-wrapper {
@@ -104,6 +130,13 @@
 	border-bottom: none !important;
 }
 
+#weby-toolbar-wrapper div.menu li.dummy {
+	border-bottom: 1px solid #c5c5c5;
+	display: inline-block;
+	height: 19px;
+	width: 155px;
+}
+
 #weby-toolbar-wrapper div.menu li.ui-state-default {
 	border-bottom: 1px solid #c5c5c5;
 }
@@ -124,29 +157,29 @@
 
 /** BACKGROUND/CANVAS SETTINGS **/
 
-#weby-toolbar-wrapper div.menu ul.tabs{
+#weby-toolbar-wrapper div.menu ul.tabs {
 	float: left;
 	width: 300px;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box{
+#weby-toolbar-wrapper div.menu .combo-box {
 	display: block;
 	margin: 15px auto 15px;
 	position: relative;
 	width: 250px;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box a{
+#weby-toolbar-wrapper div.menu .combo-box a {
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 15px;
 	text-decoration: none;
 	padding: 10px 30px 10px 10px;
-	display:block;
-	background: #27b6ac url("../images/sprite2.png") no-repeat 61px -538px;
+	display: block;
+	background: #27b6ac url("../images/sprite2.png") no-repeat 61px -1348px;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box ul{
+#weby-toolbar-wrapper div.menu .combo-box ul {
 	list-style: none;
 	display: none;
 	border-bottom: 1px solid #c5c5c5;
@@ -162,33 +195,33 @@
 	z-index: 1000000;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box ul li{
+#weby-toolbar-wrapper div.menu .combo-box ul li {
 	display: block;
 	float: none;
 	padding: 0 0;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box ul li a{
+#weby-toolbar-wrapper div.menu .combo-box ul li a {
 	padding: 5px 10px;
 	display: block;
 	background-color: #fff;
 	background-image: none;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box ul li a:hover{
+#weby-toolbar-wrapper div.menu .combo-box ul li a:hover {
 	background-color: #27b6ac;
 	color: #fff;
 }
 
-#weby-toolbar-wrapper div.menu .combo-box ul li a{
+#weby-toolbar-wrapper div.menu .combo-box ul li a {
 	color: #666;
 }
 
-#canvas-settings-dropdown > li {
+#canvas-settings-dropdown > li, #document-settings-dropdown > li {
 	padding: 0;
 }
 
-#canvas-settings {
+#canvas-settings, #document-settings {
 	position: relative;
 	padding: 3px;
 	border: none !important;
@@ -209,7 +242,7 @@
 	height: 35px;
 }
 
-#canvas-settings .tab {
+#canvas-settings .tab, #document-settings .tab {
 	padding: 5px;
 	float: left;
 	border: 1px solid #c5c5c5;
@@ -231,7 +264,7 @@
 	margin: 0 0 5px 0;
 }
 
-#canvas-settings #cnv-pattern .credits {
+.menu .credits {
 	float: right;
 	font-size: 12px;
 	padding-top: 3px;
@@ -250,21 +283,6 @@
 	color: #fff;
 	background-color: #27b6ac;
 	border-color: #27b6ac;
-}
-
-#canvas-settings #background-image-remove {
-	padding: 10px 10px 10px 20px;
-	color: #fff;
-	border: 1px solid #27b6ac;
-	text-transform: uppercase;
-	font-size: 14px;
-	font-weight: bold;
-	text-decoration: none;
-	display: block;
-	text-align: center;
-	width: 220px;
-	margin: 10px auto 0;
-	background: #27b6ac url(../images/sprite2.png) no-repeat -156px -969px;
 }
 
 #canvas-settings-youtube {
@@ -290,8 +308,8 @@
 	font-size: 13px;
 }
 
-.patterns-pager .k-pager-numbers{
-	display:none;
+.patterns-pager .k-pager-numbers {
+	display: none;
 }
 
 #cnv-size span.label {
@@ -303,18 +321,18 @@
 	clear: both;
 }
 
-#cnv-size label{
-	float:left;
-	margin-top:6px;
+#cnv-size label {
+	float: left;
+	margin-top: 6px;
 	font-size: 15px;
 }
 
-#cnv-size label .k-numerictextbox{
+#cnv-size label .k-numerictextbox {
 	width: 80px;
 	padding-left: 6px;
 }
 
-#cnv-size label:first-child{
+#cnv-size label:first-child {
 	margin: 6px 15px 0 4px;
 }
 
@@ -333,28 +351,8 @@
 	font-size: 14px;
 }
 
-#weby-toolbar-wrapper #widget-settings-dropdown{
+#weby-toolbar-wrapper #widget-settings-dropdown {
 	padding: 10px;
-}
-
-/** DOCUMENT BACKGROUND SETTINGS **/
-
-#document-settings {
-	display: none;
-	position: fixed;
-	background-color: #fff;
-	font-family: SourceSansPro;
-	-moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-	-webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-	box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-	padding: 3px;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-}
-
-#document-settings .tab {
-	padding: 5px;
 }
 
 /** KENDO OVERRIDES **/

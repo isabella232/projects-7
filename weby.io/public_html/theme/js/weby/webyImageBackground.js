@@ -1,10 +1,23 @@
-function WebyImageBackground() {
+/**
+ * Aligned, Repeat and Fixed renders into given element
+ * Scale renders an <img> tag
+ */
 
+function WebyImageBackground(el) {
+
+	var _el = el;
 	var _image = null;
 	var _mode = 'aligned';
 	var _align = 'top left';
+	var _imageMode = null;
+
 
 	this.setImage = function (image) {
+		if (image == null) {
+			_imageMode.hide();
+		} else {
+			_imageMode.show();
+		}
 		_image = image;
 		return this;
 	}
@@ -15,6 +28,7 @@ function WebyImageBackground() {
 
 	this.setMode = function (mode) {
 		_mode = mode;
+		_imageMode.setMode(mode);
 		return this;
 	}
 
@@ -24,11 +38,11 @@ function WebyImageBackground() {
 
 	this.setAlign = function (align) {
 		_align = align;
-		$('#weby-background').css("background-position", _align);
+		_imageMode.setAlignment(align);
 		return this;
 	}
 
-	this.getAlign = function() {
+	this.getAlign = function () {
 		return _align;
 	}
 
@@ -41,25 +55,18 @@ function WebyImageBackground() {
 
 	this.render = function () {
 		if (_image == null) {
-			$('#weby-background').remove();
+			_el.css("background", "none").find("img").remove();
 			return;
 		}
 
 		if (_mode == 'aligned') {
 			_renderAligned();
-			$('#background-settings-align').show();
 		} else if (_mode == 'repeat') {
 			_renderRepeat();
-			$('#background-settings-align').hide();
 		} else if (_mode == 'fixed') {
 			_renderFixed();
-			$('#background-settings-align').hide();
 		} else if (_mode == 'scale') {
 			_renderScale();
-			$('#background-settings-align').hide();
-		} else if (_mode == 'limit') {
-			_renderLimit();
-			$('#background-settings-align').hide();
 		}
 	}
 
@@ -72,65 +79,68 @@ function WebyImageBackground() {
 	}
 
 	var _renderAligned = function () {
-		$('#weby-background').remove();
-		var img = $('<div id="weby-background"></div>');
-		img.css({
-			'background-image': 'url(' + _image + ')',
-			'background-position': _align == null ? 'left top' : _align,
-			'background-repeat': 'no-repeat',
+		_el.find('img').remove();
+		_el.css({
+			backgroundImage: 'url(' + _image + ')',
+			backgroundPosition: _align == null ? 'left top' : _align,
+			backgroundRepeat: 'no-repeat',
+			backgroundSize: 'initial',
+			backgroundAttachment: 'inherit',
 			width: App.getContent()[0].scrollWidth + 'px',
 			height: App.getContent()[0].scrollHeight + 'px',
 			top: 0,
 			left: 0,
 			position: 'absolute'
 		});
-		App.getContent().prepend(img);
 	}
 
 	var _renderRepeat = function () {
-		$('#weby-background').remove();
-		var img = $('<div id="weby-background"></div>');
-		img.css({
-			'background-image': 'url(' + _image + ')',
-			'background-repeat': 'repeat',
-			width: App.getContent().width() + 20 + 'px',
-			height: App.getContent().height() + 20 + 'px'
+		_el.find('img').remove();
+		_el.css({
+			backgroundImage: 'url(' + _image + ')',
+			backgroundRepeat: 'repeat',
+			backgroundSize: 'initial',
+			backgroundAttachment: 'inherit',
+			width: App.getContent()[0].scrollWidth + 'px',
+			height: App.getContent()[0].scrollHeight + 'px'
 		});
-		App.getContent().prepend(img);
 	}
 
 	var _renderFixed = function () {
-		$('#weby-background').remove();
-		App.getContent().css({
-			'background-image': 'url(' + _image + ')',
-			'background-size': 'cover',
-			'background-attachment': 'fixed'
+		_el.find('img').remove();
+		_el.css({
+			backgroundImage: 'url(' + _image + ')',
+			backgroundSize: 'cover',
+			backgroundAttachment: 'fixed',
+			backgroundPosition: "left top",
+			width: App.getContentWrapper().width() + 'px',
+			height: App.getContentWrapper().height() + 'px'
 		});
 	}
 	var _renderScale = function () {
-		$('#weby-background').remove();
-		var img = $('<img id="weby-background" src="' + _image + '"/>');
+		_el.find('img').remove();
+		var img = $('<img src="' + _image + '"/>');
+		_el.css({background: 'none'});
 		img.css({
-			width: App.getContent().width() + 18 + 'px',
-			height: App.getContent().height() + 18 + 'px'
+			width: App.getContent()[0].scrollWidth + 'px',
+			height: App.getContent()[0].scrollHeight + 'px'
 		});
-		App.getContent().prepend(img);
+		_el.append(img);
 	}
 
 	/**
 	 * EVENTS
 	 */
-	this.widgetDrag = function () {
-		if (_mode != 'fixed' && _mode != 'limit') {
-			var content = App.getContent()[0];
-			$('#weby-background').height(0).width(0).css({
-				height: content.scrollHeight + 'px',
-				width: content.scrollWidth + 'px'
-			});
-		}
+
+	this.webyLoaded = function () {
+		_imageMode = new WebyImageMode();
 	}
 
-	this.widgetDragStop = function (data) {
-		// Nothing...
+	this.viewportResize = function () {
+		var css = {
+			width: App.getContent()[0].scrollWidth + 'px',
+			height: App.getContent()[0].scrollHeight + 'px'
+		};
+		_el.css(css).find('img').css(css);
 	}
 }

@@ -1,6 +1,7 @@
 WebyPatterns = {};
 
 WebyPatterns.PATTERNS = [
+	{"name": "no-pattern.png"},
 	{"name": "45degreee_fabric.png"},
 	{"name": "60degree_gray.png"},
 	{"name": "absurdidad.png"},
@@ -358,3 +359,10 @@ WebyPatterns.PATTERNS = [
 	{"name": "zigzag.png"},
 	{"name": "wood_1.jpg"}
 ];
+
+for(var i in WebyPatterns.PATTERNS){
+	if(WebyPatterns.PATTERNS[i] == 'no-pattern.png'){
+		WebyPatterns.PATTERNS[i]['repeat'] = 'no-repeat';
+	}
+	WebyPatterns.PATTERNS[i]['repeat'] = 'repeat';
+}
