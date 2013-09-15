@@ -15,16 +15,18 @@ var AppToolbar = function () {
 			facebook: new FacebookTool(self),
 			twitter: new TwitterTool(self),
 			linkedin: new LinkedInTool(self),
+			googleplus: new GooglePlusTool(self),
 			video: new VideoTool(self),
 			slideshare: new SlideShareTool(self),
 			googledrive: new GoogleDriveTool(self),
 			skydrive: new SkyDriveTool(self),
 			soundcloud: new SoundCloudTool(self),
 			vine: new VineTool(self),
-			flicker: new FlickerTool(self)
+			flicker: new FlickerTool(self),
+			weby: new WebyTool(self)
 		}
-		_mainTools = ['text', 'link', 'map', 'instagram', 'pinterest', 'facebook', 'twitter', 'linkedin'];
-		_otherTools = ['video', 'slideshare', 'googledrive', 'skydrive', 'soundcloud', 'vine', 'flicker'];
+		_mainTools = ['text', 'link', 'map', 'instagram', 'pinterest', 'facebook', 'twitter', 'linkedin', 'googleplus'];
+		_otherTools = ['video', 'slideshare', 'googledrive', 'skydrive', 'soundcloud', 'vine', 'flicker', 'weby'];
 
 		/**
 		 * Build main toolbar

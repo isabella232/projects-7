@@ -9,7 +9,7 @@ class EmbedHandler extends AbstractHandler
 {
 	use HttpTrait;
 
-	public function linkedin() {
+	public function linkedIn() {
 		$this->id = $this->request()->query('id');
 		$this->name = $this->request()->query('name');
 	}
@@ -31,6 +31,11 @@ class EmbedHandler extends AbstractHandler
 	public function fbPost(){
 		$this->fbUrl = $this->request()->query('fbUrl');
 		$this->parentId = $this->request()->query('parent');
+	}
+
+	public function googlePlus(){
+		$this->userId = $this->request()->query('userId');
+		$this->postId = $this->request()->query('postId');
 	}
 }
 

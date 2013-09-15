@@ -19,7 +19,7 @@
     margin: 0;
 }
 
-.dialog input, textarea {
+.dialog input, .dialog textarea {
     width: 460px;
     padding: 10px 0 10px 10px;
     margin: 10px 0;

@@ -60,6 +60,8 @@
     editor/tools/vineTool.js,
     editor/tools/pinterestTool.js,
     editor/tools/flickerTool.js,
+    editor/tools/googlePlusTool.js,
+    editor/tools/webyTool.js,
     editor/widgets/textWidget.js,
     editor/widgets/mapWidget.js,
     editor/widgets/facebookWidget.js,
@@ -76,6 +78,7 @@
     editor/widgets/vineWidget.js,
     editor/widgets/pinterestWidget.js,
     editor/widgets/flickerWidget.js,
+    editor/widgets/googlePlusWidget.js,
     editor/parsers/videoParser.js,
     editor/parsers/linkedInParser.js,
     editor/parsers/preziParser.js,
@@ -89,6 +92,7 @@
     editor/parsers/vineParser.js,
     editor/parsers/linkParser.js,
     editor/parsers/pinterestParser.js,
-    editor/parsers/flickerParser.js
+    editor/parsers/flickerParser.js,
+    editor/parsers/googlePlusParser.js
 {/minify}
 <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

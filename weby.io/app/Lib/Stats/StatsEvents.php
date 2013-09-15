@@ -46,6 +46,8 @@ class StatsEvents
     public static $W_TWITTER_ADDED = 114;
     public static $W_VINE_ADDED = 115;
     public static $W_FLICKER_ADDED = 116;
+    public static $W_GOOGLEPLUS_ADDED = 117;
+    public static $W_WEBY_ADDED = 118;
 
     /**
      * Gets tool name from given ID

@@ -16,6 +16,7 @@
     mouseEvent.js,
     frontend/weby.js,
     weby/webyLogger.js,
+    weby/webyTitle.js,
     weby/webyDrag.js,
     weby/webyDashboard.js,
     weby/webyFavorites.js,

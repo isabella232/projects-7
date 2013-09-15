@@ -1,26 +1,21 @@
 (function (d) {
-	if(typeof Weby == "undefined"){
-		Weby = true;
-	} else {
-		return;
-	}
-
 	var webies = document.getElementsByClassName("weby-embed");
-
+	
 	if (!webies) {
 		return;
 	}
 
 	for (var i = 0; i < webies.length; i++) {
 		var wi = i;
-		if (webies[wi].nodeName == "DIV" && 'data-weby' in webies[wi].attributes) {
+		if (webies[wi].nodeName == "DIV" && 'data-weby' in webies[wi].attributes && webies[wi].innerHTML.trim() == '') {
 			// Get weby parameters
 			var webyAttributes = webies[wi].attributes;
 			var attrs = {
 				src: webyAttributes["data-weby"].nodeValue,
 				width: webyAttributes["data-width"] ? webyAttributes["data-width"].nodeValue : 700,
 				height: webyAttributes["data-height"] ? webyAttributes["data-height"].nodeValue : 400,
-				branding: webyAttributes["data-branding"] ? webyAttributes["data-branding"].nodeValue : true
+				branding: webyAttributes["data-branding"] ? webyAttributes["data-branding"].nodeValue : true,
+				callback: webyAttributes["data-callback"] ? webyAttributes["data-callback"].nodeValue : false
 			};
 
 			if(attrs.branding !== true){
@@ -44,6 +39,13 @@
 			iframe.frameBorder = 0;
 			iframe.style.float = "left";
 			iframe.style.border = "1px solid #000";
+			if(attrs.callback){
+				if (iframe.attachEvent){
+					iframe.attachEvent("onload", window[attrs.callback]);
+				} else {
+					iframe.onload = window[attrs.callback];
+				}
+			}
 			weby.appendChild(iframe);
 
 			// Create brand line

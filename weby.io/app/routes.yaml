@@ -27,10 +27,11 @@ routes:
     - ['user/intro-done', \App\Handlers\UsersHandler, markOnboardingDone]
 
     # EMBED
-    - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedin]
+    - ['embed/linkedin', \App\Handlers\EmbedHandler, linkedIn]
     - ['embed/vine', \App\Handlers\EmbedHandler, vine]
     - ['embed/pinterest', \App\Handlers\EmbedHandler, pinterest]
     - ['embed/fb-post', \App\Handlers\EmbedHandler, fbPost]
+    - ['embed/google-plus', \App\Handlers\EmbedHandler, googlePlus]
 
     # CRON ROUTES
     - ['cron/inactive-users', \App\Handlers\CronHandler, checkInactiveUsers]

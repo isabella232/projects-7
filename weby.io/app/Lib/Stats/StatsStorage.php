@@ -253,7 +253,7 @@ class StatsStorage
      * @internal param \App\Lib\Used $event for creating zero valued statistics
      * @return bool
      */
-    private function _sqlGetPeriodIds()
+    protected function _sqlGetPeriodIds()
     {
         if (!empty($this->_periodIds)) {
             return;

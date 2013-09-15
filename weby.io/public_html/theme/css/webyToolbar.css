@@ -380,8 +380,9 @@
 /** KENDO OVERRIDES **/
 
 .volume-control .k-slider{
+	margin-right:7px;
 	float: right;
-	width: 225px;
+	width: 215px;
 }
 
 .volume-control .k-slider-selection{

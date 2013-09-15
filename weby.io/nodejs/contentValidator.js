@@ -33,7 +33,7 @@ function getMethod(host) {
 
 function parseHttpHeaders(data) {
 
-	// In case hthe response contains <html> - remove it
+	// In case the response contains <html> - remove it
 
 	data = data.split("\n\r").filter(function (element, index, array) {
 		// Remove elements that contain <html> tags (when using GET)
@@ -44,12 +44,20 @@ function parseHttpHeaders(data) {
 	});
 
 	// Split requests
-	var str = data.pop();
+	var lastUrl = data.pop();
+	var header = data.pop();
 	var res = {};
-	res.httpVersion = str.match(/(http\/\S+)/i) ? RegExp.$1 : false;
-	res.statusCode = str.match(/http\/\S+\s(\d+)/i) ? RegExp.$1 : false;
-	res.contentType = str.match(/content-type:\s?([a-zA-Z\/_\.-]*)/i) ? RegExp.$1 : false;
-	res.contentLength = str.match(/content-length:\s?(\d+)/i) ? RegExp.$1 : false;
+	res.httpVersion = header.match(/(http\/\S+)/i) ? RegExp.$1 : false;
+	res.statusCode = header.match(/http\/\S+\s(\d+)/i) ? RegExp.$1 : false;
+	res.contentType = header.match(/content-type:\s?([a-zA-Z\/_\.-]*)/i) ? RegExp.$1 : false;
+	res.contentLength = header.match(/content-length:\s?(\d+)/i) ? RegExp.$1 : false;
+	res.lastUrl = lastUrl.match(/LastURL\[(.*?)\]/) ? RegExp.$1 : false;
+
+	// Handle google edge-case
+	if(res.lastUrl.indexOf('accounts.google.com') > -1){
+		res.statusCode = 404;
+	}
+
 	return res;
 }
 
@@ -63,21 +71,21 @@ function checkURL(targetUrl, response) {
 		return sendResponse({urlExists: false}, response);
 	}
 
-	process.stdout.write('[INFO][' + processLabel + ']: Received:  ' + targetUrl);
+	//process.stdout.write('[INFO][' + processLabel + ']: Received:  ' + targetUrl);
 
 	var parts = url.parse(targetUrl);
 
 	if (getMethod(parts.host) == 'HEAD') {
-		var command = 'curl -i -I -L --max-redirs 10 "' + targetUrl + '"';
+		var command = 'curl  -w "LastURL[%{url_effective}]" -i -I -L --max-redirs 10 "' + targetUrl + '"';
 	} else {
-		var command = 'curl -i -L -X GET --max-redirs 10 "' + targetUrl + '"';
+		var command = 'curl -w "LastURL[%{url_effective}]" -i -L -X GET --max-redirs 10 "' + targetUrl + '"';
 	}
 
-	process.stdout.write(command)
+	//process.stdout.write(command)
 
 	child = exec(command, function (error, stdout, stderr) {
 		var res = parseHttpHeaders(stdout);
-		process.stdout.write('[INFO][' + processLabel + ']: Checking ' + targetUrl + ' | Response: ' + res.statusCode);
+		//process.stdout.write('[INFO][' + processLabel + ']: Checking ' + targetUrl + ' | Response: ' + res.statusCode);
 
 		if (error != null) {
 			return sendResponse({urlExists: false}, response);

@@ -13,10 +13,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
 
-   {minify type="css"}
+    {minify type="css"}
         embed.css,
-        weby.css,
-        user.css
+        headerMiddle.css,
+        weby.css
     {/minify}
 
     {minify type="js"}
@@ -35,16 +35,16 @@
 
 </head>
 <body class="embed">
-    <div id="header">
-        <div id="header-content">
-            <div class="content-left">
-                <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
-            </div>
-            <div class="content-right">
-                {block name="headerRightTools"}{/block}
-            </div>
+<div id="header">
+    <div id="header-content">
+        <div class="content-left">
+            <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
+        </div>
+        <div class="content-right">
+            {block name="headerRightTools"}{/block}
         </div>
     </div>
-    {block name="content"}{/block}
+</div>
+{block name="content"}{/block}
 </body>
 </html>
