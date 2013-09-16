@@ -1,21 +1,29 @@
 <html>
 <head>
-    <script type="text/javascript" src="http://pavel910.homeftp.net/theme/js/jquery-2.0.3.min.js?lm=1377189921"></script>
+    <script type="text/javascript"
+            src="http://pavel910.homeftp.net/theme/js/jquery-2.0.3.min.js?lm=1377189921"></script>
     <script type="text/javascript">
 
-        function insertEmbed(){
+        function insertEmbed() {
             $('#target').append('<div class="weby-embed" data-weby="http://pavel910.homeftp.net/pavel910/lady-gaga/5221baf022fa6/" data-width="800" data-height="500"></div>');
             var sc = document.createElement('script');
             sc.type = "text/javascript";
             sc.src = "http://pavel910.homeftp.net/embed.js";
             $('#target').append(sc);
-        };
+        }
+        ;
+
+        function meReady(p1, p2) {
+            console.log(p1 + ' ' + p2)
+        }
+
 
     </script>
 </head>
 <body>
 
-<div class="weby-embed" data-weby="http://pavel910.homeftp.net/pavel910/lady-gaga/5221baf022fa6/" data-width="800" data-height="500" data-callback="meReady"></div>
+<div class="weby-embed" data-weby="http://pavel910.homeftp.net/pavel910/lady-gaga/5221baf022fa6/" data-width="800"
+     data-height="500" data-callback="meReady"></div>
 <script async src="http://pavel910.homeftp.net/embed.js" charset="utf-8"></script>
 
 <div id="target">

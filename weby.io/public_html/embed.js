@@ -15,8 +15,15 @@
 				width: webyAttributes["data-width"] ? webyAttributes["data-width"].nodeValue : 700,
 				height: webyAttributes["data-height"] ? webyAttributes["data-height"].nodeValue : 400,
 				branding: webyAttributes["data-branding"] ? webyAttributes["data-branding"].nodeValue : true,
-				callback: webyAttributes["data-callback"] ? webyAttributes["data-callback"].nodeValue : false
+				callback: webyAttributes["data-callback"] ? webyAttributes["data-callback"].nodeValue : false,
+				callbackParams: webyAttributes["data-callback-params"] ? webyAttributes["data-callback-params"].nodeValue : false
 			};
+
+			if(!attrs.callbackParams){
+				attrs.callbackParams = [attrs.src];
+			} else {
+				attrs.callbackParams = attrs.callbackParams.split(',');
+			}
 
 			if(attrs.branding !== true){
 				if(isNaN(parseInt(attrs.branding))){
@@ -43,7 +50,16 @@
 				if (iframe.attachEvent){
 					iframe.attachEvent("onload", window[attrs.callback]);
 				} else {
-					iframe.onload = window[attrs.callback];
+					iframe.onload = function(){
+						var context = window;
+						//var args = Array.prototype.slice.call(args).splice(2);
+						var namespaces = attrs.callback.split(".");
+						var func = namespaces.pop();
+						for(var i = 0; i < namespaces.length; i++) {
+							context = context[namespaces[i]];
+						}
+						return context[func].apply(this, attrs.callbackParams);
+					};
 				}
 			}
 			weby.appendChild(iframe);

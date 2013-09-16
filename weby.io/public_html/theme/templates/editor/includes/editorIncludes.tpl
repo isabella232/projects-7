@@ -78,6 +78,7 @@
     editor/widgets/pinterestWidget.js,
     editor/widgets/flickerWidget.js,
     editor/widgets/googlePlusWidget.js,
+    editor/widgets/webyWidget.js,
     editor/parsers/videoParser.js,
     editor/parsers/linkedInParser.js,
     editor/parsers/preziParser.js,
@@ -92,6 +93,7 @@
     editor/parsers/linkParser.js,
     editor/parsers/pinterestParser.js,
     editor/parsers/flickerParser.js,
-    editor/parsers/googlePlusParser.js
+    editor/parsers/googlePlusParser.js,
+    editor/parsers/webyParser.js
 {/minify}
 <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

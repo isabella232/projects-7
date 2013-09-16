@@ -595,8 +595,6 @@ BaseWidget.prototype = {
 			}
 		}
 
-		console.log("proper deactivate")
-
 		this.showTools(); // in case we were in widget settings
 		this._isActive = this._isEditable = false;
 		this.controls().css("visibility", "hidden");
