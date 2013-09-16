@@ -388,7 +388,7 @@ BaseWidget.prototype = {
 			_widget.append('<span class="control resize-handle ui-resizable-handle"></span>');
 		}
 		if (this._isRotatable) {
-			_widget.append('<span class="control rotate-handle"></span>');
+			_widget.append('<span class="control rotate-handle" title="Drag left and right to rotate.\nDoubleclick to reset rotation."></span>');
 		}
 
 		_widget.find('.widget-body').append(this._html);
@@ -595,6 +595,8 @@ BaseWidget.prototype = {
 			}
 		}
 
+		console.log("proper deactivate")
+
 		this.showTools(); // in case we were in widget settings
 		this._isActive = this._isEditable = false;
 		this.controls().css("visibility", "hidden");
@@ -674,7 +676,7 @@ BaseWidget.prototype = {
 			color: this._color,
 			shadowY: this._shadowY,
 			shadowSpread: this._shadowSpread,
-			shadowColor: this._shadowColor,
+			shadowColor: this._shadowColor
 		};
 		var widgetData = this.getSaveData();
 
@@ -729,7 +731,12 @@ BaseWidget.prototype = {
 	 * @param secondaryText
 	 * @returns this
 	 */
-	showLoading: function (mainText, secondaryText) {
+	showLoading: function (mainText, secondaryText, fillContent) {
+
+		if (!fillContent) {
+			fillContent = false;
+		}
+
 		this._loadingContent = true;
 		if (typeof mainText == "undefined" || mainText == '') {
 			mainText = this._loadingMessage;
@@ -739,16 +746,25 @@ BaseWidget.prototype = {
 			secondaryText = 'This may take a few moments, please be patient.';
 		}
 
-		var widgetHeight = this.body().height();
-		var widgetWidth = this.body().width();
+		if (fillContent) {
+			var paddingTop = (this.body()[0].scrollHeight - 10) / 2 - 18;
+			var style = {
+				width: (this.body().width() - 20) + 'px',
+				height: (this.body().height() - paddingTop) +'px',
+				paddingTop: paddingTop + 'px'
+			};
+		} else {
+			var style = {
+				width: '360px',
+				height: '70px',
+				paddingTop: '20px'
+			};
+		}
 
-		var style = {
-			width: widgetWidth + 'px',
-			height: widgetHeight - (widgetHeight / 2) - 4 + 'px',
-			'padding-top': (widgetHeight / 2) - 20 + 'px'
-		};
 
-		var loading = $('<div class="loading"><div class="loading-message">' + mainText + '<br /><span>' + secondaryText + '</span></div></div>').css(style);
+		var loading = $('<div class="loading"><p><span class="main-text">' + mainText + '</span><span class="secondary-text">' + secondaryText + '</span></p></div>');
+		loading.css(style);
+
 		if (this.body('.loading').length > 0) {
 			this.body('.loading').replaceWith(loading);
 		} else {
@@ -1021,6 +1037,9 @@ BaseWidget.prototype = {
 	 * @private
 	 */
 	addInteractionOverlay: function () {
+		if (this.html('.widget-disabled-overlay').length > 0) {
+			return;
+		}
 		var text = this._isInteractive ? 'Doubleclick to interact' : '';
 		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">' + text + '</span></div>');
 		this._resize();

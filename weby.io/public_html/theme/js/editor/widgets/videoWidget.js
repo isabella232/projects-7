@@ -181,9 +181,8 @@ function VideoWidget() {
 		$this._html.find('.widget-body').append(iframe);
 
 		// Append LOADING screen (move to BaseWidget)
-		this.showLoading(this._loadingMessage);
+		this.showLoading(this._loadingMessage, '', true);
 		this.body().find('#video-preview-' + $this._id + ', .play-overlay').remove();
-
 		var jIframe = $('#' + $(iframe).attr('id'));
 
 		jIframe.bind('load', function () {

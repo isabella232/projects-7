@@ -15,11 +15,11 @@ function MapWidget() {
 	this._resizableOptions['minHeight'] = 150;
 	this._resizableOptions['minWidth'] = 300;
 
-	this.widgetResize = function(data){
+	this.widgetResize = function (data) {
 		// data contains: element, event, ui
 		var _widget = this._html;
 		var input = _widget.find('input');
-		if(input){
+		if (input) {
 			input.width(_widget.width() - 12);
 		}
 		_widget.find('.map').width(_widget.width()).height(_widget.height()); // -28 input height
@@ -27,16 +27,39 @@ function MapWidget() {
 		google.maps.event.trigger(this._map, "resize");
 	}
 
-	this.widgetResizeStop = function(data){
+	this.widgetClick = function () {
+		if (this.body('input').length > 0) {
+			this.hideTools();
+		}
+	}
+
+	this.widgetSettingsActivate = function () {
+		var map = this._html.find('.map');
+		map.width(this.body().outerWidth())
+		map.height(this.body().outerHeight())
+		this.input().remove();
+		this.addInteractionOverlay();
 		_centerMarker();
 	}
 
-	this.onMakeEditable = function(){
+	this.widgetResizeStop = function (data) {
+		_centerMarker();
+	}
+
+	this.onMakeEditable = function () {
 		this._html.find('input').focus();
 	}
 
-	this.onDeactivate = function(){
-		if(this._isContentLoaded){
+	this.deactivate = function () {
+		if (this.input().length > 0 && this.input().val() != '') {
+			var e = jQuery.Event('keydown', { which: $.ui.keyCode.ENTER });
+			this.input().trigger(e);
+		}
+		BaseWidget.prototype.deactivate.call(this);
+	}
+
+	this.onDeactivate = function () {
+		if (this._isContentLoaded) {
 			var map = this._html.find('.map');
 			map.width(this.body().outerWidth())
 			map.height(this.body().outerHeight())
@@ -60,10 +83,11 @@ function MapWidget() {
 		this.hideResizeHandle();
 		this.input().bind("blur keydown", function (e) {
 			// If key was pressed and it is not ENTER
-			if(e.type == "keydown" && e.keyCode != 13){
+			if (e.type == "keydown" && e.keyCode != 13) {
 				return;
 			}
-			if ($.trim($this.input().val()) != ''){
+			if ($.trim($this.input().val()) != '') {
+				$this._loadingContent = true;
 				_initializeMap();
 				_codeAddress($.trim($this.input().val()));
 			}
@@ -74,7 +98,7 @@ function MapWidget() {
 	 * EDIT methods
 	 */
 
-	this.getSaveData = function(){
+	this.getSaveData = function () {
 		return {
 			gmapLat: this._gmapLat,
 			gmapLng: this._gmapLng,
@@ -89,7 +113,8 @@ function MapWidget() {
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
-	this.onEditWidgetInserted = function(){
+	this.onEditWidgetInserted = function () {
+		this._firstLoad = false;
 		_initializeMap();
 		this.body().find('.map').height(this._height).width(this._width);
 		_centerMarker();
@@ -119,7 +144,7 @@ function MapWidget() {
 
 		var panorama = $this._map.getStreetView();
 
-		if($this._mapView == 'streetView'){
+		if ($this._mapView == 'streetView') {
 			var panoramaOptions = {
 				position: latlng,
 				pov: {
@@ -159,7 +184,7 @@ function MapWidget() {
 			};
 		});
 
-		google.maps.event.addListener($this._map, 'zoom_changed', function() {
+		google.maps.event.addListener($this._map, 'zoom_changed', function () {
 			$this._gmapZoom = $this._map.getZoom();
 		});
 
@@ -194,14 +219,14 @@ function MapWidget() {
 				if ($this._firstLoad) {
 					$this._firstLoad = false;
 					mapHeight = 300;
-					if($this._isActive && $this._isEditable){
+					if ($this._isActive && $this._isEditable) {
 						$this.showResizeHandle();
 					}
 				}
 				$this._html.find('.map').height(mapHeight - 28);
 				_centerMarker();
 				$this.contentLoaded();
-				if(!$this._isActive){
+				if (!$this._isActive) {
 					$this.onDeactivate();
 				} else {
 					$this.makeEditable();
@@ -210,6 +235,7 @@ function MapWidget() {
 				$this._html.find('.message').html("We couldn't locate your address! Please try a different one!").show();
 				delete $this._map;
 			}
+			$this._loadingContent = false;
 		});
 	}
 

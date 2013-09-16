@@ -503,10 +503,6 @@ var AppClass = function () {
             $(':focus').blur();
             _activeWidget.deactivate();
         }
-
-		if (_activeWidget != null && _activeWidget.getId() == id) {
-			return;
-		}
         _activeWidget = _weby.getWidgets()[id];
         _activeWidget.activate(e);
     }

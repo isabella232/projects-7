@@ -5,7 +5,7 @@
 	overflow: hidden;
 }
 
-.text-editable {
+.text-editable, .text-editable.k-state-active:hover {
 	font-family: SourceSansPro;
 	position: relative;
 	min-height: 36px;

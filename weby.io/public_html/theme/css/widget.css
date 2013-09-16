@@ -117,7 +117,7 @@
 	float: left;
 }
 
-.widget-loading-overlay {
+.loading {
 	background-color: #eaeaea;
 	width: 237px;
 	height: 197px;
@@ -125,22 +125,22 @@
 	vertical-align: middle;
 	display: block;
 	float: left;
-	margin-left: 130px;
+	padding: 0 10px;
 }
 
-.widget-loading-overlay p span {
+.loading p {
+	color: #666;
+	font-size: 12px;
+	font-weight: 400;
+	margin: 0 0;
+}
+
+.loading p span.main-text {
 	color: #666;
 	font-size: 17px;
 	font-weight: 400;
 	margin: 0 0;
 	display: block;
-}
-
-.widget-loading-overlay p {
-	color: #666;
-	font-size: 12px;
-	font-weight: 400;
-	margin: 0 0;
 }
 
 .widget-disabled-overlay {

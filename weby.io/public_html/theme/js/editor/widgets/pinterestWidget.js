@@ -23,7 +23,7 @@ function PinterestWidget() {
 	this._loadingMessage = 'Loading your Pin...';
 
 	this.getHTML = function () {
-		this._html = '<textarea type="text" placeholder="Paste a URL of a Pinterest profile, board or a pin">http://pinterest.com/pin/181269953723991195/</textarea>' +
+		this._html = '<textarea placeholder="Paste a URL of a Pinterest profile, board or a pin">http://pinterest.com/pin/181269953723991195/</textarea>' +
 			'<span class="message"></span>';
 		return BaseIframeWidget.prototype.getHTML.call(this);
 	};

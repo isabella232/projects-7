@@ -105,10 +105,12 @@ function WebyToolbar() {
 			return;
 		}
 		if (_widgetSettings.css('display') == 'none') {
+			App.fireEvent("widget.settings.activate");
 			_widgetSettings.show();
 			_activeWidget.hideTools();
 			_colorPicker.value(_colorPicker.value());
 		} else {
+			App.fireEvent("widget.settings.deactivate");
 			_widgetSettings.hide();
 			_activeWidget.showTools();
 		}
@@ -360,7 +362,7 @@ function WebyToolbar() {
 		_widgetSettings.hide();
 		_canvasSettings.hide();
 		_documentBackgroundSettings.hide();
-		if(_activeWidget != null){
+		if(_activeWidget != null && !App.isInputFocused(e)){
 			_activeWidget.showTools().html('.widget-disabled-overlay').show();
 		}
 	}

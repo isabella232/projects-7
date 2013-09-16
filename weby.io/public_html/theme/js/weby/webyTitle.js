@@ -57,9 +57,12 @@ function WebyTitle() {
 	});
 
 	this.viewportResize = function (data) {
+		_title.css('width', 0);
+		_url.css('width', 0);
 		var width = _headerRight.position().left - _titlePosition;
 		var titleWidth = _title[0].scrollWidth;
 		var urlWidth = _url[0].scrollWidth;
+
 
 		if (width > titleWidth + 40) {
 			_title.css('width', titleWidth + 'px');
@@ -80,14 +83,18 @@ function WebyTitle() {
 
     this.setTitle = function(value) {
         _title.text(value);
+		return this;
     }
 
     this.setUrl = function(value) {
         _url.text(value);
+		return this;
     }
 
     this.setFullUrl = function(value) {
         _fullUrl.val(value);
+		this.viewportResize();
+		return this;
     }
 
     this.setEmbedCode = function(value) {

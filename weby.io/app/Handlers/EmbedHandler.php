@@ -12,6 +12,7 @@ class EmbedHandler extends AbstractHandler
 	public function linkedIn() {
 		$this->id = $this->request()->query('id');
 		$this->name = $this->request()->query('name');
+		$this->setTemplate('linkedin');
 	}
 
 	public function vine(){
