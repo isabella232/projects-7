@@ -100,17 +100,17 @@ abstract class WebyEntityProperties extends WebyEntityStorage
 
     /**
      * Returns tags in array or JSON form
-     * @param bool $json
+     * @param bool $rawArray
      * @return string
      */
-    public function getTags($json = false)
+    public function getTags($rawArray = false)
     {
-        if ($json) {
+        if ($rawArray) {
             $tmp = [];
             foreach($this->_tags as $tag) {
                 $tmp[] = ['id' => $tag['id'], 'tag' => $tag['tag']];
             }
-            return json_encode($tmp, true);
+            return $tmp;
         }
         return $this->_tags;
     }
