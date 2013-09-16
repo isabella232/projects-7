@@ -38,7 +38,9 @@ function WebyVideoBackground(el) {
 			_applyBtn.hide();
 			_removeBtn.show();
 			_volumeControl.show();
-			_kVolumeSlider.value(_volume);
+			if(_kVolumeSlider){
+				_kVolumeSlider.value(_volume);
+			}
 			if(App.getWeby().getBackground().getPatternBackground().getPattern() != null){
 				_infoMessage.show().html("If you don't see the video, check your color, pattern and image settings, they may be covering your video.");
 			} else {

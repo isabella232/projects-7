@@ -75,7 +75,10 @@ class WebyEntity extends WebyEntityCrud
      */
     public function inUsersFavorites()
     {
-        return $this->user()->inFavorites($this);
+		if($this->user()){
+			return $this->user()->inFavorites($this);
+		}
+        return false;
     }
 
     /**

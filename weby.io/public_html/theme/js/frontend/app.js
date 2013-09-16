@@ -2,20 +2,20 @@ var AppClass = function (topOffset) {
 
 	var _content = $('#content');
 	var _contentWrapper = $('#wrapper');
-	var _contentBackground = $('#content-background');
 	var _header = $('#header');
 	var _dashboard = null;
+	var _favorites = null;
 	var _weby = false;
 	var _webyDrag;
 	var _viewportHeight;
 	var _viewportWidth;
-	var _topOffset = 60;
-	var _bottomOffset = 0;
+	var _topOffset = 95;
+	var _bottomOffset = 30;
+	var _eventListeners = [];
 
 	if (typeof topOffset != "undefined") {
 		_topOffset = topOffset;
 	}
-
 
 	/**
 	 * Application bootstrap
@@ -83,13 +83,16 @@ var AppClass = function (topOffset) {
 		_viewportHeight = $(window).height();
 		_contentWrapper.width(_viewportWidth);
 		_contentWrapper.height(_viewportHeight - _topOffset);
-		_contentBackground.width(_viewportWidth);
-		_contentBackground.height(_viewportHeight - _topOffset - _bottomOffset);
 
 		// Setup dragging and Weby
 		_webyDrag = new WebyDrag(_content);
 		_weby = new Weby();
 		_weby.init();
+	}
+
+	this.addEventListener = function (obj) {
+		_eventListeners.push(obj);
+		return this;
 	}
 
 	/**
@@ -171,21 +174,10 @@ var AppClass = function (topOffset) {
 	}
 
 	/**
-	 * Get jQuery content background element
-	 */
-	this.getContentBackground = function () {
-		return _contentBackground;
-	}
-
-	/**
 	 * Get header jQuery object
 	 */
 	this.getHeader = function () {
 		return _header;
-	}
-
-	this.getDashboard = function () {
-		return _dashboard;
 	}
 
 	/**
@@ -212,17 +204,12 @@ var AppClass = function (topOffset) {
 			}
 		}
 
-		// Propagate event to App class
-		if (event in this) {
-			this[event](data);
-		}
-
-		// Propagate event to Weby
-		if (_weby && event in _weby) {
-			_weby[event](data);
+		for (var i in _eventListeners) {
+			if (event in _eventListeners[i]) {
+				_eventListeners[i][event](data);
+			}
 		}
 	}
-
 	/**
 	 * Format file size
 	 * @param number Number in bytes

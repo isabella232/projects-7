@@ -1,4 +1,3 @@
-
 {minify type="css"}
     kendo.common.min.css,
     kendo.default.min.css,
@@ -16,6 +15,7 @@
     frontend/weby.js,
     weby/webyLogger.js,
     weby/webyDrag.js,
+    weby/webyTitle.js,
     weby/webyDashboard.js,
     weby/webyFavorites.js,
     weby/webySocialShare.js,
@@ -44,6 +44,8 @@
     frontend/widgets/vineWidget.js,
     frontend/widgets/pinterestWidget.js,
     frontend/widgets/flickerWidget.js,
+    frontend/widgets/googlePlusWidget.js,
+    frontend/widgets/webyWidget.js,
     editor/baseTool.js,
     editor/tools/linkTool.js
 {/minify}

@@ -125,8 +125,8 @@ BaseWidget.prototype = {
 		return this._html = _widget;
 	},
 
-	createFromData: function (data) {
-		this._id++;
+	createFromData: function (data, id) {
+		this._id = id;
 		this._populate(data.common);
 		this._populate(data.specific);
 

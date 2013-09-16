@@ -146,9 +146,11 @@ function WebyImageBackground(el) {
 	 */
 
 	this.webyLoaded = function () {
-		_imageMode = new WebyImageMode();
-		if (_image == null) {
-			_imageMode.hide();
+		if("WebyImageMode" in window){
+			_imageMode = new WebyImageMode();
+			if (_image == null) {
+				_imageMode.hide();
+			}
 		}
 	}
 

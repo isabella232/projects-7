@@ -12,7 +12,6 @@
     <script type="text/javascript" id="initScript">
         BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
-console.log(weby)
         $(function () {
             App = new AppClass();
             {if !$viewObject.user->completedOnboarding()}

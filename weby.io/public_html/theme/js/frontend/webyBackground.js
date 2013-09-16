@@ -2,14 +2,16 @@ WebyBackground.ANIMATE = true;
 
 function WebyBackground(settings) {
 
+	App.addEventListener(this);
+
 	var _canvasHeight = parseInt(settings.canvasHeight);
 	var _canvasWidth = parseInt(settings.canvasWidth);
 
 	var _backgrounds = {
-		color: new WebyColorBackground(App.getContent()),
+		color: new WebyColorBackground($('#weby-background-color')),
 		pattern: new WebyPatternBackground(App.getContent(), 'purty_wood.png'),
-		image: new WebyImageBackground(),
-		video: new WebyVideoBackground()
+		image: new WebyImageBackground($('#weby-background-image')),
+		video: new WebyVideoBackground($('#weby-background-video'))
 	};
 
 	for (var i in _backgrounds) {
@@ -26,15 +28,31 @@ function WebyBackground(settings) {
 		});
 	}
 
-	this.getImage = function () {
-		return _backgrounds.image.getImage();
+	this.getColorBackground = function () {
+		return _backgrounds.color;
+	}
+
+	this.getPatternBackground = function () {
+		return _backgrounds.pattern;
+	}
+
+	this.getImageBackground = function () {
+		return _backgrounds.image;
+	}
+
+	this.getVideoBackground = function () {
+		return _backgrounds.video;
 	}
 
 	this.render = function () {
+		this.applyCanvasSize(_canvasWidth, _canvasHeight, 'spin');
 		for (var i in _backgrounds) {
-			_backgrounds[i].render();
+			if(i == 'video'){
+				continue;
+			} else {
+				_backgrounds[i].render();
+			}
 		}
-		this.applyCanvasSize(_canvasWidth, _canvasHeight);
 	}
 
 	/**
@@ -64,9 +82,13 @@ function WebyBackground(settings) {
 			var data = {};
 			data[dimension] = size;
 			if(WebyBackground.ANIMATE){
-				el.animate(data, {duration: duration, queue: false});
+				App.fireEvent("weby.background.before.resize");
+				el.animate(data, {duration: duration, queue: false, complete: function () {
+					App.fireEvent("weby.background.resized");
+				}});
 			} else {
 				el.css(data);
+				App.fireEvent("weby.background.resized");
 			}
 
 		}
@@ -74,7 +96,6 @@ function WebyBackground(settings) {
 		if (width <= App.getViewportWidth() - App.getWeby().getScrollBarOffset()) {
 			_resize(App.getContent(), "width", width + 'px');
 			_resize(App.getContentWrapper(), "width", width + App.getWeby().getScrollBarOffset() + 'px');
-			App.getContentBackground().width(width);
 		} else {
 			_resize(App.getContent(), "width", width + 'px');
 			_resize(App.getContentWrapper(), "width", App.getViewportWidth() + 'px');
@@ -83,7 +104,6 @@ function WebyBackground(settings) {
 		if (height <= App.getViewportHeight() - App.getHeader().height()) {
 			_resize(App.getContent(), "height", height + 'px');
 			_resize(App.getContentWrapper(), "height", height + App.getWeby().getScrollBarOffset() + 'px');
-			App.getContentBackground().height(height);
 		} else {
 			_resize(App.getContent(), "height", height + 'px');
 			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset() + 'px');
@@ -96,7 +116,16 @@ function WebyBackground(settings) {
 		this.setContentSize(_canvasWidth, _canvasHeight, 'change');
 	}
 
-	this.viewportResize = function () {
-		_backgrounds.video.resize();
-	};
+	this.webyLoaded = function(){
+		_backgrounds.image.webyLoaded();
+		_backgrounds.video.render();
+	}
+
+	this.webyBackgroundResized = function () {
+		for (var i in _backgrounds) {
+			if("webyBackgroundResized" in _backgrounds[i]){
+				_backgrounds[i].webyBackgroundResized();
+			}
+		}
+	}
 }

@@ -24,10 +24,10 @@ function Weby() {
 		_documentBackground = new WebyDocumentBackground(weby.settings.document);
 
 		_progress.startLoading();
-		if(_background.getImage() != null){
+		if(_background.getImageBackground().getImage() != null){
 			items++;
 			_progress.setMessage('Loading background...');
-			var img = $('<img src="'+_background.getImage()+'" width="1" height="1" style="visibility:hidden"/>')
+			var img = $('<img src="'+_background.getImageBackground().getImage()+'" width="1" height="1" style="visibility:hidden"/>')
 			img.load(function(){
 				$(this).remove();
 				_progress.next();
@@ -64,6 +64,7 @@ function Weby() {
 	var _load = function (widgets) {
 
 		if (widgets == '') {
+			App.fireEvent("weby.loaded");
 			_progress.hideProgress();
 			return;
 		}
@@ -84,7 +85,7 @@ function Weby() {
 		for (var i in widgets) {
 			var widgetData = widgets[i];
 			var widget = new window[widgetData.common["class"]]();
-			var html = widget.createFromData(widgetData);
+			var html = widget.createFromData(widgetData, parseInt(i)+1);
 
 			// Bind load events
 			if (html.find('.widget-body iframe').length > 0) {

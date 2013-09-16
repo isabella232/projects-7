@@ -21,14 +21,19 @@
         });
     </script>
 {/block}
+{block name="headerMiddle"}
+    {include file="templates/pages/includes/title.tpl"}
+{/block}
 {block name="content"}
     <div id="workspace">
-        <div id="content-background">
+        <div id="weby-background-video">
             <div id="player"></div>
         </div>
         <div id="wrapper">
-            <div id="content"></div>
-            <div class="clearfix"></div>
+            <div id="content">
+                <div id="weby-background-image"></div>
+                <div id="weby-background-color"></div>
+            </div>
         </div>
     </div>
     {include file="templates/common/dashboard.tpl"}

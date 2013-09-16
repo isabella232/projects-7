@@ -7,7 +7,6 @@ var AppClass = function () {
     var _favorites = null;
     var _weby = false;
     var _webyDrag;
-    var _toolbarWrapper = $('#toolbar-wrapper');
     var _viewportHeight;
     var _viewportWidth;
     var _activeWidget = null
@@ -341,17 +340,6 @@ var AppClass = function () {
      */
     this.getHeader = function () {
         return _header;
-    }
-
-    /**
-     * Get toolbar wrapper jQuery object
-     */
-    this.getToolbarWrapper = function () {
-        return _toolbarWrapper;
-    }
-
-    this.getDashboard = function () {
-        return _dashboard;
     }
 
     /**
