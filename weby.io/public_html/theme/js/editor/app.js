@@ -100,6 +100,9 @@ var AppClass = function () {
         if ($(e.target).hasClass('text-editable') || $(e.target).closest('.text-editable').length !== 0) {
             textEditable = true;
         }
+        if ($(e.target).hasClass('tags-editable')) {
+            textEditable = true;
+        }
 
         var element = e.target.nodeName.toLowerCase();
         if (element != 'input' && element != 'textarea' && !textEditable) {

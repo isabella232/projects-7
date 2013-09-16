@@ -10,15 +10,6 @@
 
 /*  =========================== */
 
-.fancybox-close {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: url("../../images/sprite2.png") no-repeat 50% -803px;
-    width: 15px;
-    height: 15px;
-}
-
 #my-webies-dialog a.close-dialog, .register-dialog a.close-dialog {
     position: absolute;
     top: 20px;

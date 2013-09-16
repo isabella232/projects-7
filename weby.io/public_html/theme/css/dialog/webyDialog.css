@@ -2,24 +2,31 @@
     background: #27b6ac url("../../images/tag-left-border.png") no-repeat left;
     border: none;
     color: white;
-    height: 20px;
+    height: 19px;
     font-style: normal;
-    -webkit-border-radius: 0px;
-    border-radius: 0px;
-    padding: 0 5px 0 15px;
+    padding: 1px 5px 0 15px;
     font-size: 13px;
     text-transform: uppercase;
     margin-top: 3px;
     margin-left: 4px;
     float: left;
-}
-
-.weby-tag:hover {
-    cursor: pointer;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    -moz-border-radius-bottomright: 2px;
 }
 
 .weby-tag:hover {
     opacity: 0.9;
+    cursor: pointer;
+}
+
+.weby-tag .remove-tag {
+    display: inline-block;
+    height: 9px;
+    width: 9px;
+    background-image: url('../../images/delete-tag.png');
+    margin: 2px 0 0 3px;
 }
 
 #weby-tags-wrapper {
@@ -32,40 +39,42 @@
     font-style: italic;
     resize: none;
     display: inline-block;
-    height: 30px;
     background-color: white;
     height: auto;
     position: relative;
 }
 
-#weby-tags-wrapper input {
+#weby-tag-input {
     display: inline-block;
-    margin: 0;
-    border: none;
     padding: 0 4px 0;
     width: auto;
     float: left;
+    margin: 3px 0 0;
 }
 
 #weby-tags-dropdown {
     display: none;
-    width: 400px;
+    width: 468px;
     height: auto;
     position: absolute;
-    top: 42px;
     left: 0;
     background-color: white;
-    border: 1px solid lightgray;
+    border: 1px solid #f0f0f0;
+    top: 0;
+    font-style: normal;
+/*    -moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);*/
 }
 
 #tags-list {
     list-style: none;
     display: block;
     margin: 0;
-    padding: 2px;
+    padding: 4px;
 }
 
 #tags-list li:hover {
-    background-color: lightgray;
     cursor: pointer;
+    color: #f57e2b;
 }

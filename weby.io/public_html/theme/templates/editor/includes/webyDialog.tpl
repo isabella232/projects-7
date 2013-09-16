@@ -5,12 +5,15 @@
     <fieldset>
         <input type="text" id="weby-title-field" placeholder="Your page name" value="{$weby.title}">
         <span id="weby-tags-wrapper">
-            <span class="weby-tags"></span>
-            <input type="text" >
-            <div id="weby-tags-dropdown">
-                <ul id="tags-list">
-                </ul>
-            </div>
+            <span class="weby-tags">
+                {foreach from=$weby.tags item=tag}
+                    <span data-tag="{$tag.tag}" data-id="{$tag.id}" class="weby-tag">{$tag.tag}
+                        <span class="remove-tag"></span>
+                    </span>
+                {/foreach}
+            </span>
+            <div id="weby-tag-input" class="tags-editable" contenteditable="true"></div>
+            <div id="weby-tags-dropdown"><ul id="tags-list"></ul></div>
         </span>
         <textarea class="description" id="weby-description-field" placeholder="Enter short description (160 chars notice dodat)">{$weby.description}</textarea>
 

@@ -2,7 +2,6 @@
 {minify type="css"}
     kendo.common.min.css,
     kendo.default.min.css,
-    font-awesome.min.css,
     widget.css,
     widgets/textWidget.css,
     widgets/mapWidget.css,

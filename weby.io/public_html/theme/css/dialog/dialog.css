@@ -44,8 +44,13 @@ textarea.description {
     cursor: pointer;
     background-color: #dc420e;
     display: inline-block;
-
 }
+
+.dialog .button:hover {
+    opacity: 0.85;
+}
+
+
 
 .dialog p.buttons {
     text-align: right;
@@ -57,4 +62,11 @@ textarea.description {
     background-color: #a8320b;
 }
 
+.fancybox-close {
+    top: 20px !important;
+    right: 20px !important;
+    width: 15px !important;
+    height: 15px !important;
+    background: url('../../images/sprite2.png') -166px -804px !important
+}
 /* ----------------------------- End of dialog CSS ----------------------------- */

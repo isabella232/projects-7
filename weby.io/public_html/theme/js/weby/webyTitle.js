@@ -17,6 +17,17 @@ function WebyTitle() {
 	 */
 	var _url = $('[data-role="weby-url"]');
 
+    /**
+     * Full URL
+     */
+    var _fullUrl = $('[data-role="weby-full-url"]');
+
+    /**
+     * Embed code
+     */
+    var _embedCode = $('[data-role="weby-embed-code"]');
+
+
 	/**
 	 * Share button
 	 */
@@ -65,6 +76,22 @@ function WebyTitle() {
 
     this.getDialog = function() {
         return _dialog;
+    }
+
+    this.setTitle = function(value) {
+        _title.text(value);
+    }
+
+    this.setUrl = function(value) {
+        _url.text(value);
+    }
+
+    this.setFullUrl = function(value) {
+        _fullUrl.val(value);
+    }
+
+    this.setEmbedCode = function(value) {
+        _embedCode.val('<iframe src="' + value + '?embed=true"></iframe>');
     }
 
 	this.viewportResize();

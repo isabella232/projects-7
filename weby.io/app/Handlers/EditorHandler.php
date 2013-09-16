@@ -4,6 +4,7 @@ namespace App\Handlers;
 
 use App\AppTrait;
 use App\Entities\Favorite\FavoriteEntity;
+use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\DatabaseTrait;
 use App\Lib\AbstractHandler;
@@ -43,7 +44,6 @@ class EditorHandler extends AbstractHandler
 
     public function save()
     {
-
         $requestData = $this->request()->post();
         // Create new Weby entity, populate it and save into database
         $weby = new WebyEntity();
@@ -57,13 +57,22 @@ class EditorHandler extends AbstractHandler
 
         // Before populating, insert necessary new tags into database
         if (isset($requestData['tags'])) {
+            // TODO: check this if we could skip by fixing passing data to the App Class
+            if (!is_array($requestData['tags'])) {
+                $requestData['tags'] = json_decode($requestData['tags'], true);
+            }
             foreach ($requestData['tags'] as &$tag) {
                 // If tag wasn't in database, insert it
                 if ($tag['id'] == 0) {
+                    $this->_sanitizeInput($tag['tag']);
                     $tag['id'] = WebyEntity::insertTag($tag['tag']);
                 }
             }
         }
+
+        // Sanitize title and description
+        $this->_sanitizeInput($requestData['title']);
+        $this->_sanitizeInput($requestData['description']);
 
         // Now proceed with saving Weby
         $weby->populate($requestData);
@@ -80,16 +89,21 @@ class EditorHandler extends AbstractHandler
             Stats::getInstance()->updateWidgetsCount($requestData['counter']);
         }
 
-        $weby->getTags();
         $data = [
             'time' => date('H:i:s'),
             'title' => $weby->getTitle(),
             'description' => $weby->getDescription(),
+            'publicUrl' => $weby->getPublicUrl(),
             'tags' => $weby->getTags()
         ];
         $this->ajaxResponse(false, 'Weby saved!', $data);
     }
 
+    /**
+     * Routes user to appropriate handler (loading Weby, redirecting to correct URL...)
+     * @param $userName
+     * @param null $webyId
+     */
     public function route($userName, $webyId = null)
     {
         if (!$this->user()) {
@@ -148,6 +162,14 @@ class EditorHandler extends AbstractHandler
         foreach ($userDir->filter($webyId . '-background*') as $file) {
             $file->delete();
         }
+    }
+
+    /**
+     * Sanitizing input (strip slashes, trim, replace spaces
+     */
+    private function _sanitizeInput(&$input) {
+        $input = $this->str($input)->trim()->stripTags()->val();
+        $input = preg_replace('/[ ]+/', ' ', $input);
     }
 
     /**

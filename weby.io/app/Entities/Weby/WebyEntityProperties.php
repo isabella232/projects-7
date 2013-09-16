@@ -105,7 +105,14 @@ abstract class WebyEntityProperties extends WebyEntityStorage
      */
     public function getTags($json = false)
     {
-        return $json ? json_encode(($this->_tags)) : $this->_tags;
+        if ($json) {
+            $tmp = [];
+            foreach($this->_tags as $tag) {
+                $tmp[] = ['id' => $tag['id'], 'tag' => $tag['tag']];
+            }
+            return json_encode($tmp, true);
+        }
+        return $this->_tags;
     }
 
 	/**

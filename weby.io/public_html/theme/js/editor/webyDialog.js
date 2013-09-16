@@ -10,17 +10,20 @@ function WebyTitleDialog() {
     var _dialogOpener = $('[data-role="weby-title"]');
     var _webyDialog = $('#weby-dialog');
     var _titleInput = $('#weby-title-field');
-    var _tagsInput = $('#weby-tags-wrapper input');
+    var _tagsWrapper = $('#weby-tags-wrapper');
+    var _tagsInput = $('#weby-tag-input');
     var _tagsData = $('.weby-tags');
     var _descriptionInput = $('#weby-description-field');
     var _tagsDropdown = $('#weby-tags-dropdown');
     var _tagsList = $('#tags-list');
     var _editing = false;
+    var _timer = false;
 
     var init = function () {
         _bindDialogGeneralActions();
+        _bindTagsFocus();
         _bindTagSearching();
-
+        _bindRemoveTag();
         _checkTitle();
     }
 
@@ -28,7 +31,7 @@ function WebyTitleDialog() {
      * If title is empty, then automatically show dialog to fill this information
      * @private
      */
-    var _checkTitle = function() {
+    var _checkTitle = function () {
         if (App.getWeby().getTitle() == '') {
             _dialogOpener.click();
         }
@@ -43,11 +46,15 @@ function WebyTitleDialog() {
         _dialogOpener.click(function () {
             _editing = true;
             $.fancybox(_webyDialog, {
-                modal: true,
+                modal: false,
                 type: 'inline',
                 width: 500,
                 height: 'auto',
-                autoSize: false
+                autoSize: false,
+                afterClose: function() {
+                    _clearTagsInput();
+                    _cancelAllChanges();
+                }
             });
         });
 
@@ -55,19 +62,19 @@ function WebyTitleDialog() {
         $('[data-role="weby-dialog-close"]').click(function () {
             $.fancybox.close();
             _editing = false;
-            clearTagsInput();
+            _clearTagsInput();
             _cancelAllChanges();
         });
 
         // Save button
         $('[data-role="weby-dialog-save"]').click(function () {
+            _editing = false;
             App.getWeby().setTitle(_titleInput.val());
             App.getWeby().setTags(generateTagsJson());
             App.getWeby().setDescription(_descriptionInput.val());
-
             App.getWeby().save();
             $.fancybox.close();
-            clearTagsInput();
+            _clearTagsInput();
         });
 
     }
@@ -78,25 +85,69 @@ function WebyTitleDialog() {
      */
     var _bindTagSearching = function () {
         _tagsInput.on('input', function () {
-            var search = $(this).val();
-            if (search.length > 0) {
-                $.ajax({
-                    url: WEB + 'tools/tags/?search=' + search,
-                    success: function (response) {
-                        if (response) {
-                            _tagsList.empty();
-                            for (var i in response) {
-                                _tagsList.append('<li data-tag="' + response[i].tag + '" data-id="' + response[i].id + '">' + response[i].tag + '</li>')
-                            }
-                            _tagsDropdown.show();
-                        }
-                    }
-                });
-            } else {
-                _tagsDropdown.hide();
-
+            var search = $(this).text();
+            if (_timer) {
+                clearTimeout(_timer);
             }
+            _timer = setTimeout(function () {
+                _requestTags(search)
+            }, 600)
         });
+    }
+
+    /**
+     * Sends request to search tags and shows results
+     * @param search
+     * @private
+     */
+    var _requestTags = function (search) {
+        if (search.length > 0) {
+            var duplicateTag, maxTags = 5, totalTags = 0;
+            $.ajax({
+                url: WEB + 'tools/tags/?search=' + search,
+                success: function (response) {
+                    if (response) {
+                        _tagsList.empty();
+                        for (var i in response) {
+                            duplicateTag = false;
+                            var currentTags = _tagsData.find('.weby-tag');
+                            if (currentTags.length > 0) {
+                                currentTags.each(function () {
+                                    if ($(this).text() == response[i].tag) {
+                                        duplicateTag = true;
+                                        return false;
+                                    }
+                                });
+                            }
+                            if (!duplicateTag) {
+                                _tagsList.append('<li data-tag="' + response[i].tag + '" data-id="' + response[i].id + '">' + response[i].tag + '</li>')
+                                totalTags++;
+                            }
+                            if (totalTags == maxTags) {
+                                break;
+                            }
+                        }
+                        _tagsDropdown.css('top', _tagsWrapper.height() + 20);
+                        _tagsDropdown.show();
+                    } else {
+                        _tagsDropdown.hide();
+                    }
+                    _timer = false;
+                }
+            });
+        } else {
+            _clearTagsInput();
+        }
+    }
+
+    /**
+     * Focus on input (contentEditable div) when clicking anywhere on field
+     * @private
+     */
+    var _bindTagsFocus = function () {
+        _tagsWrapper.click(function () {
+            _tagsInput.focus();
+        })
     }
 
     /**
@@ -113,12 +164,12 @@ function WebyTitleDialog() {
     }
 
     /**
-     * Refreshes span tags with (because of inserting data-id for newly created tags)
+     * Refreshes span tags (because of inserting data-id for newly created tags)
      */
     var _refreshTagData = function (data) {
         _tagsData.empty();
         for (var i in data) {
-            _tagsData.append('<span data-tag="' + data[i].tag + '" data-id="' + data[i].id + '"class="weby-tag">' + data[i].tag + '</span>');
+            _tagsData.append('<span data-tag="' + data[i].tag + '" data-id="' + data[i].id + '"class="weby-tag">' + data[i].tag + '<span class="remove-tag"></span>');
         }
     }
 
@@ -128,14 +179,24 @@ function WebyTitleDialog() {
      * @param tag
      */
     var addToList = function (id, tag) {
-        _tagsData.append('<span data-tag="' + tag + '" data-id="' + id + '"class="weby-tag">' + tag + '</span>');
-        clearTagsInput();
+        _tagsData.append('<span data-tag="' + tag + '" data-id="' + id + '"class="weby-tag">' + tag + '<span class="remove-tag"></span></span>');
     }
 
-    var clearTagsInput = function () {
-        _tagsInput.val('');
+    /**
+     * Clears input, tag list and hides tags dropdown div
+     * @private
+     */
+    var _clearTagsInput = function () {
+        _tagsInput.text('');
         _tagsList.empty();
         _tagsDropdown.hide();
+        clearTimeout(_timer);
+    }
+
+    var _bindRemoveTag = function () {
+        _tagsData.on('click', 'span.remove-tag', function () {
+            $(this).closest('span.weby-tag').remove();
+        })
     }
     /**
      * When user presses "Enter" on tags input, insert new tag into added list
@@ -143,8 +204,22 @@ function WebyTitleDialog() {
     _tagsInput.keypress(function (e) {
         var event = e || window.event;
         var charCode = event.which || event.keyCode;
-        if (charCode == '13') {
-            addToList(0, $(this).val());
+        switch (charCode) {
+            case 13:
+                if (_tagsInput.text() != '') {
+                    addToList(_tagsList.find('li:first').data('id'), _tagsList.find('li:first').data('tag'));
+                    _clearTagsInput();
+                }
+                break;
+            case 8:
+                if (_tagsInput.text() == '') {
+                    _tagsData.find('.weby-tag:last').remove();
+                    _clearTagsInput();
+                }
+                break;
+            case 40:
+                _tagsList.find('li:first').focus();
+                break;
         }
     });
 
@@ -153,11 +228,10 @@ function WebyTitleDialog() {
      */
     _tagsList.on('click', 'li', function () {
         addToList($(this).data('id'), $(this).data('tag'));
-        _tagsList.empty();
-        _tagsDropdown.hide();
+        _clearTagsInput();
     });
 
-    _cancelAllChanges = function() {
+    var _cancelAllChanges = function () {
         _titleInput.val(App.getWeby().getTitle());
         _descriptionInput.val(App.getWeby().getDescription());
         _refreshTagData(App.getWeby().getTags());
@@ -167,12 +241,21 @@ function WebyTitleDialog() {
         init();
     }
 
+    /**
+     * Callback after Weby has been saved
+     * If editing, don't refresh span tags here
+     * @param data
+     */
     this.webySaved = function (data) {
-        if(_editing) {
+        if (_editing) {
             return;
         }
+        // Refresh interface
+        App.getWeby().getWebyTitle().setTitle(data.title);
+        App.getWeby().getWebyTitle().setUrl(data.publicUrl);
+        App.getWeby().getWebyTitle().setFullUrl(data.publicUrl);
+        App.getWeby().getWebyTitle().setEmbedCode(data.publicUrl);
         _refreshTagData(data.tags);
-
         _editing = false;
     }
 }

@@ -12,6 +12,7 @@
     <title>{block name="title"}{/block} | Weby.io</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,400italic' rel='stylesheet' type='text/css'>
 
     {minify type="css"}
         main.css,
@@ -48,8 +49,6 @@
     </div>
     <div class="logo">
         <a href="/"><img src="{$viewObject.themeWebPath}images/weby-logo.png"></a>
-        <time class="passed" datetime="2008-07-17T09:24:17Z">July 17, 2008</time>
-
     </div>
     {block name="headerMiddle"}{/block}
     <div class="header-right">
@@ -72,11 +71,9 @@
         </li>
         <li>
             <a href="">Keyboard Shortcuts</a>
+
         </li>
     </ul>
-            <span>
-                <a href=""></a>
-            </span>
 </div>
 </body>
 </html>

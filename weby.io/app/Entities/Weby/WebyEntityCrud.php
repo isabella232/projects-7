@@ -12,6 +12,7 @@ abstract class WebyEntityCrud extends WebyEntityProperties
     use StdLibTrait, StorageTrait;
 
     private $_createStorageFolder = false;
+    protected $_removedTags;
 
     protected function _onAfterLoad()
     {
@@ -53,6 +54,7 @@ abstract class WebyEntityCrud extends WebyEntityProperties
         if (!$this->arr($data)->keyExists('content')) {
             $this->_content = [];
         }
+
         if (!$this->arr($data)->keyExists('tags')) {
             $this->_tags = [];
         }
@@ -71,6 +73,7 @@ abstract class WebyEntityCrud extends WebyEntityProperties
             $this->_storage = $this->str($file->getKey())->replace('/weby.tmp', '');
             $this->_sqlSetStorage();
         }
+
 
         // Update Weby tags
         $this->_sqlUpdateTags();

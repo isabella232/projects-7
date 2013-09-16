@@ -98,6 +98,16 @@ class WebyEntity extends WebyEntityCrud
     }
 
     /**
+     * Generates embed-code
+     * @return string
+     */
+    public function getEmbedCode()
+    {
+        return '<iframe src="' .$this->app()->getConfig()->app->web_path . $this->getUser()
+            ->getUsername() . '/' . $this->getSlug() . '/' . $this->getId() . '/?embed=true"></iframe>';
+    }
+
+    /**
      * Returns WebyEntity object to JSON
      * @return string
      */
@@ -131,8 +141,12 @@ class WebyEntity extends WebyEntityCrud
             'id' => $this->_id,
             'username' => $this->getUser()->getUsername(),
             'title' => $this->_title,
+            'description' => $this->_description,
+            'slug' => $this->_slug,
+            'publicUrl' => $this->getPublicUrl(),
+            'tags' => $this->getTags(true),
             'content' => $this->_content,
-            'settings' => $this->_settings
+            'settings' => $this->_settings,
         ];
     }
 

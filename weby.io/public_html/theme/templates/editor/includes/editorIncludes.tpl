@@ -1,7 +1,6 @@
 {minify type="css"}
     kendo.common.min.css,
     kendo.default.min.css,
-    font-awesome.min.css,
     toolbar.css,
     webyToolbar.css,
     widget.css,

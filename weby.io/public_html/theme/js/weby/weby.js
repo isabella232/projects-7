@@ -16,7 +16,9 @@ function Weby() {
     var _webyToolbar = null;
     var _title = '';
     var _description = '';
+    var _publicUrl = '';
     var _tags = [];
+
     var _webySave = new WebySave();
     var _labelTimeout = null;
     var _webyTitle = new WebyTitle();
@@ -39,6 +41,11 @@ function Weby() {
             var items = weby.content.length;
             _webyId = weby.id;
             _title = weby.title;
+            _slug = weby.slug;
+            _tags = weby.tags;
+            _description = weby.description;
+            _publicUrl = weby.publicUrl;
+
             if ('color' in weby.settings) {
                 _background = new WebyBackground(weby.settings);
             } else {
@@ -119,6 +126,14 @@ function Weby() {
         return false;
     };
 
+    /**
+     * Gets WebyTitle class
+     * @returns {WebyTitle}
+     */
+    this.getWebyTitle = function () {
+        return _webyTitle;
+    };
+
     this.addWidget = function (widget) {
         _widgets[widget.getId()] = widget;
         return this;
@@ -153,6 +168,7 @@ function Weby() {
         _widgets[newWidget.getId()] = newWidget;
     };
 
+    // Getters & setters
     this.getId = function () {
         return _webyId;
     };
@@ -161,9 +177,12 @@ function Weby() {
         return _title;
     };
 
-    this.setTitle = function (title) {
-        _title = title;
-        return this;
+    this.getPublicUrl = function () {
+        return _publicUrl;
+    };
+
+    this.getSlug = function () {
+        return _slug;
     };
 
     this.getDescription = function () {
@@ -176,6 +195,11 @@ function Weby() {
 
     this.setTags = function (tags) {
         _tags = tags;
+        return this;
+    };
+
+    this.setTitle = function (title) {
+        _title = title;
         return this;
     };
 
@@ -228,6 +252,8 @@ function Weby() {
                     // Update Weby data
                     _title = data.data.title;
                     _description = data.data.description;
+                    _slug = data.data.slug;
+                    _publicUrl = data.data.publicUrl;
                     _tags = data.data.tags;
 
                     // Reset logs
