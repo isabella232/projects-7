@@ -295,6 +295,7 @@ body.unselectable * {
 	border-top: 3px solid #2c2c2c;
 	position: fixed;
 	bottom: 0;
+	height: 24px;
 	width: 100%;
 	z-index: 1000000;
 }
@@ -304,7 +305,7 @@ body.unselectable * {
 	margin: 0 0;
 	padding: 0 0 0 30px;
 	float: left;
-	line-height: 0.4;
+	line-height: 0.5;
 }
 
 .footer ul li{

@@ -208,7 +208,7 @@ function Weby() {
         return this;
     };
 
-    this.save = function (takeScreenshot) {
+    this.save = function (takeScreenshot, options) {
         if (!_webyId) {
             return;
         }
@@ -228,6 +228,10 @@ function Weby() {
             unknownFileTypes: _unknownFileTypes,
             invalidUrls: _invalidUrls
         };
+
+		if(options){
+			data = $.extend(data, options);
+		}
 
         if (takeScreenshot != undefined) {
             //data['takeScreenshot'] = true;

@@ -356,7 +356,7 @@ function WebyToolbar() {
 		_documentBackgroundSettings.hide();
 	};
 
-	this.widgetClick = function () {
+	this.widgetClick = function (e) {
 		_widgetSettings.hide();
 		_canvasSettings.hide();
 		_documentBackgroundSettings.hide();

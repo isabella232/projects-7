@@ -203,6 +203,8 @@ function MapWidget() {
 				$this.contentLoaded();
 				if(!$this._isActive){
 					$this.onDeactivate();
+				} else {
+					$this.makeEditable();
 				}
 			} else {
 				$this._html.find('.message').html("We couldn't locate your address! Please try a different one!").show();
@@ -218,7 +220,6 @@ function MapWidget() {
 		latlngbounds.extend(latlng);
 		$this._map.setZoom(parseInt($this._gmapZoom));
 		$this._map.setCenter(latlngbounds.getCenter());
-		//$this._map.fitBounds(latlngbounds);
 	}
 }
 
