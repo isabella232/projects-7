@@ -19,6 +19,7 @@
         headerMiddle.css,
         weby.css,
         dialog/dialog.css,
+        dialog/webiesDialog.css,
         dialog/myWebies.css,
         dialog/myFavorites.css
     {/minify}

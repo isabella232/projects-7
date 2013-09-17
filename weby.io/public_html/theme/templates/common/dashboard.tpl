@@ -1,4 +1,4 @@
-<div class="dialog" id="my-webies-dialog" style="display: none">
+<div class="dialog webies-dialog" id="my-webies-dialog" style="display: none">
 
     <div class="dialog-loading">
         <div class="overlay"></div>
