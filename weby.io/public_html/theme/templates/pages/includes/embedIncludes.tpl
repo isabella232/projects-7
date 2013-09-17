@@ -18,8 +18,7 @@
     weby/webyTitle.js,
     weby/webyDrag.js,
     weby/webyDashboard.js,
-    weby/webyFavorites.js,
-    weby/webySocialShare.js,
+    embed/webySocialShare.js,
     frontend/webyBackground.js,
     weby/webyDocumentBackground.js,
     weby/webyColorBackground.js,
@@ -45,6 +44,8 @@
     frontend/widgets/vineWidget.js,
     frontend/widgets/pinterestWidget.js,
     frontend/widgets/flickerWidget.js,
-    embedInit.js
+    frontend/widgets/googlePlusWidget.js,
+    frontend/widgets/webyWidget.js,
+    embed/initContent.js
 {/minify}
 <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

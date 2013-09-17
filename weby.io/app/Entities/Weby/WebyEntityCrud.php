@@ -27,7 +27,6 @@ abstract class WebyEntityCrud extends WebyEntityProperties
             $this->_settings = json_decode($this->_settings, true);
         }
 
-        $this->_content = $this->_content;
         if ($this->_content == null) {
             $this->_content = [];
         } else {

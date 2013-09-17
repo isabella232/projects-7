@@ -1,39 +1,53 @@
 function WebyProgress() {
 
+	App.addEventListener(this);
+
 	var _el = null;
+	var _progress = null;
 	var _steps = 0;
 	var _curStep = 0;
 	var _stepWidth = 0;
 
 	this.startLoading = function () {
-		var margin = $(window).height() / 2 - 50;
-		$('body').append('<div id="app-loading"><div class="color"></div><span style="top: ' + margin + 'px">' +
-			'<span id="progress-message">Loading your Weby...</span><br/>' +
-			'<span class="progressbar"><span id="progress"></span>' +
-			'</div>');
-		_el = $('#progress');
+		_el = $('.loading-overlay');
+		_progress =  _el.find('.percentage');
+		_el.find('.progressbar').show();
 	}
 
 	this.setMessage = function (message) {
-		$('#progress-message').html(message);
+		_el.find('.progress-message').html(message);
 	}
 
 	this.setSteps = function (steps) {
 		_steps = steps;
-		_stepWidth = Math.round(280 * 1000 / _steps) / 1000;
+		_stepWidth = Math.round(_el.find('.progressbar').width() * 1000 / _steps) / 1000;
 	}
 
 	this.next = function () {
 		_curStep++;
-		_el.css({width: _curStep * _stepWidth + 'px'});
+		_progress.css({width: _curStep * _stepWidth + 'px'});
 	}
 
 	this.hideProgress = function () {
 		setTimeout(function(){
-			$('#app-loading').fadeOut('slow', function () {
+			_el.fadeOut('slow', function () {
 				$(this).remove();
 			});
 		}, 500);
 	}
 
+	this.viewportResize = function(){
+		_stepWidth = Math.round(_el.find('.progressbar').width() * 1000 / _steps) / 1000;
+	}
+
+	var viewportWidth = $(window).width();
+	var viewportHeight = $(window).height();
+	$('.loading-overlay').css({
+		height: viewportHeight - 125,
+		width: viewportWidth
+	});
+	$('.loading-title').css({
+		top: ($('.loading-overlay').height() / 2 - $('.loading-title').outerHeight(true) / 2) - 10 + 'px',
+		left: ($('.loading-overlay').width() / 2 - $('.loading-title').outerWidth(true) / 2) + 'px'
+	});
 }

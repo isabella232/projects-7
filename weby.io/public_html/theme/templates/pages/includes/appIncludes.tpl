@@ -2,12 +2,14 @@
     kendo.common.min.css,
     kendo.default.min.css,
     widget.css,
+    loading.css,
     widgets/textWidget.css,
     widgets/mapWidget.css,
     widgets/twitterWidget.css,
     widgets/videoWidget.css,
     widgets/linkWidget.css,
-    jquery.fancybox.css
+    jquery.fancybox.css,
+    loading.css
 {/minify}
 
 {minify type="js"}

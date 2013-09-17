@@ -9,9 +9,10 @@ var AppClass = function (topOffset) {
 	var _webyDrag;
 	var _viewportHeight;
 	var _viewportWidth;
-	var _topOffset = 95;
+	var _topOffset = 98;
 	var _bottomOffset = 30;
 	var _eventListeners = [];
+	var _noHeader = false;
 
 	if (typeof topOffset != "undefined") {
 		_topOffset = topOffset;
@@ -21,7 +22,7 @@ var AppClass = function (topOffset) {
 	 * Application bootstrap
 	 */
 	this.init = function () {
-
+		
 		$('body').mousemove(function (e) {
 			App.fireEvent("document.mouse.move", e);
 		});
@@ -92,6 +93,14 @@ var AppClass = function (topOffset) {
 
 	this.addEventListener = function (obj) {
 		_eventListeners.push(obj);
+		return this;
+	}
+
+	this.noHeader = function(flag){
+		if(flag == undefined){
+			return _noHeader;
+		}
+		_noHeader = flag;
 		return this;
 	}
 

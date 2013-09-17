@@ -4,12 +4,13 @@ namespace App\Entities\Weby;
 
 use App\AppTrait;
 use App\Lib\DatabaseTrait;
+use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\File\LocalFile;
 use Webiny\Component\Storage\StorageTrait;
 
 class WebyImage
 {
-	use AppTrait, StorageTrait, DatabaseTrait;
+	use AppTrait, StorageTrait, DatabaseTrait, StdLibTrait;
 
 	private $_webyId;
 	private $_tag;
@@ -49,7 +50,8 @@ class WebyImage
 	 */
 	public function getUrl(){
 		if(!$this->_key){
-			return $this->app()->getConfig()->images->{$this->_tag};
+			$tag = $this->str($this->_tag)->replace('-', '_')->val();
+			return $this->app()->getConfig()->images->{$tag};
 		}
 
 		if($this->_file == null && $this->_key){
@@ -57,6 +59,13 @@ class WebyImage
 		}
 
 		return $this->_file->getUrl();
+	}
+
+	public function getFile(){
+		if($this->_file == null && $this->_key){
+			$this->_file = new LocalFile($this->_key, $this->storage('webies'));
+		}
+		return $this->_file;
 	}
 
 	public function save() {

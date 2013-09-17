@@ -10,20 +10,11 @@
         $(function(){
             App = new AppClass(0);
             WebyBackground.ANIMATE = false;
-            App.init();
+            App.noHeader(true).init();
             $('#initScript').remove();
         });
     </script>
 {/block}
 {block name="content"}
-    <div id="workspace">
-        <div id="content-background">
-            <div id="player"></div>
-        </div>
-        <div id="wrapper">
-            <div id="content"></div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-    {include file="templates/common/dashboard.tpl"}
+    {include file="templates/common/webyContent.tpl"}
 {/block}

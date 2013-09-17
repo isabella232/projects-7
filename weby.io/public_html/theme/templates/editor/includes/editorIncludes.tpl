@@ -2,6 +2,7 @@
     kendo.common.min.css,
     kendo.default.min.css,
     toolbar.css,
+    loading.css,
     webyToolbar.css,
     widget.css,
     dialog/webyDialog.css,

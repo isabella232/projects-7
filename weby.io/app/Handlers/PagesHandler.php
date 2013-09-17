@@ -44,14 +44,15 @@ class PagesHandler extends AbstractHandler
 
         // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
+		$this->shareCount = $weby->getShareCount();
 
         if ($this->request()->query('embed', false, true)) {
-            $this->setTemplate('embedWeby');
+            $this->setTemplate('embed');
             // Update Weby's hits stats
             Stats::getInstance()->updateWebyEmbeddedHits($weby);
             return;
         }
-
+		$this->setTemplate('weby');
         Stats::getInstance()->updateWebyHits($weby);
     }
 

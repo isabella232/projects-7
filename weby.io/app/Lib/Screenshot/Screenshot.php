@@ -15,7 +15,7 @@ class Screenshot
 
 	private $_toolPath;
 	private $_settings = [
-		'--quality'          => 100,
+		'--quality'          => 85,
 		'--width'            => 1920,
 		'--height'           => 1080,
 		'--crop-x'           => 0,

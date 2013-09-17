@@ -43,17 +43,8 @@
     <div id="toolbar">
         <ul></ul>
     </div>
-    <div id="workspace">
-        <div id="weby-background-video">
-            <div id="player"></div>
-        </div>
-        <div id="wrapper">
-            <div id="content">
-                <div id="weby-background-image"></div>
-                <div id="weby-background-color"></div>
-            </div>
-        </div>
-    </div>
+    {include file="templates/editor/includes/loading.tpl"}
+    {include file="templates/common/webyContent.tpl"}
     {include file="templates/common/linkWidgetTemplates.tpl"}
     {include file="templates/editor/includes/webyToolbar.tpl"}
     {include file="templates/common/dashboard.tpl"}

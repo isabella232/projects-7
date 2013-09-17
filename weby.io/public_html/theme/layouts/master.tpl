@@ -16,6 +16,7 @@
 
     {minify type="css"}
         main.css,
+        socialShare.css,
         headerMiddle.css,
         weby.css,
         dialog/dialog.css,

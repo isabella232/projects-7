@@ -181,20 +181,6 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     }
 
     /**
-     * Gets share counts for every social service (Facebook, Google, Twitter)
-     * @return Array Array with keys [facebook], [google] & [twitter], and counts as values
-     */
-    public function getShareCount() {
-        // First, try to get data from cache or social service
-        $social = SocialData::getInstance();
-        $data = $social->getAllShareCount($this);
-
-        // If that didn't succeed for some reason, return database data
-        return $data ? $data : unserialize($this->_shareCount);
-
-    }
-
-    /**
      * @param \App\Entities\User\UserEntity $user
      * @return $this
      */

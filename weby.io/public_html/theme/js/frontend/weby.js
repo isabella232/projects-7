@@ -8,8 +8,10 @@ function Weby() {
 	 */
 	var _background = null;
 
-	var _webyTitle = new WebyTitle();
-
+	if(!App.noHeader()){
+		var _webyTitle = new WebyTitle();
+	}
+	
 	/**
 	 * Document background
 	 */

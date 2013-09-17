@@ -120,6 +120,20 @@ class WebyEntity extends WebyEntityCrud
 
     }
 
+	/**
+	 * Gets share counts for every social service (Facebook, Google, Twitter)
+	 * @return Array Array with keys [facebook], [google] & [twitter], and counts as values
+	 */
+	public function getShareCount() {
+		// First, try to get data from cache or social service
+		$social = SocialData::getInstance();
+		$data = $social->getAllShareCount($this);
+		
+		// If that didn't succeed for some reason, return database data
+		return $data ? $data : unserialize($this->_shareCount);
+
+	}
+
     /**
      * @param $tag
      *
@@ -143,6 +157,7 @@ class WebyEntity extends WebyEntityCrud
         return [
             'id' => $this->_id,
             'username' => $this->getUser()->getUsername(),
+			'avatar' => $this->getUser()->getAvatarUrl(),
             'title' => $this->_title,
             'description' => $this->_description,
             'slug' => $this->_slug,
@@ -150,6 +165,7 @@ class WebyEntity extends WebyEntityCrud
             'tags' => $this->getTags(true),
             'content' => $this->_content,
             'settings' => $this->_settings,
+			'share' => $this->getShareCount()
         ];
     }
 

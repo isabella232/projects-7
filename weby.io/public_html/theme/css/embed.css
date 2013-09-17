@@ -20,72 +20,146 @@ html, body {
 }
 
 body {
+	margin: 0 0;
+	padding: 0 0;
 	position: relative;
 	overflow: hidden;
-	font: 12px "SourceSansPro", "Calibri", "Arial", sans-serif;
-}
-
-body.unselectable * {
-	-moz-user-select: -moz-none !important;
-	-khtml-user-select: none !important;
-	-webkit-user-select: none !important;
-	-ms-user-select: none !important;
-}
-
-#header {
-	position: relative;
-	background-color: #fff;
-	font-family: SourceSansPro;
-	width: 100%;
-	box-shadow: 0px 1px 0 rgba(0, 0, 0, 0.1);
-	padding-left: 5px;
-	z-index: 1000000;
+	font: 12px 'Source Sans Pro', sans-serif;
+	color: #666666;
 	overflow: hidden;
 }
 
-#header-content {
-	height: 32px;
-	padding-top: 10px;
-}
-
-#header-content h2 {
-	color: #808184;
-	margin: -4px 30px 5px 10px;
-	font-size: 21px;
-	font-weight: normal;
-	width: 86px;
-	float: left;
-}
-
-#header-content h2 img {
-	height: 6px;
-	float: right;
-	margin: 8px 0 0 3px;
-}
-
-#header h4 {
-	margin: -6px 0 0 10px;
-	color: #808184;
-	font-size: 12px;
-	font-weight: normal;
-	float: left;
-	clear: left;
-	width: 450px;
-}
-
-#playWeby {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	background-color: #ffffff;
-	z-index: 1000000;
-	font-family: SourceSansPro;
+.header {
 	margin: 0 auto;
+	padding: 25px 30px 5px 30px;
+	background-color: #fff;
+	height: 68px;
+	-moz-box-shadow: 0px -2px 6px 4px #a6a5a5;
+	-webkit-box-shadow: 0px -2px 6px 4px #a6a5a5;
+	box-shadow: 0px -2px 6px 4px #a6a5a5;
+	position: relative;
+	z-index: 10000;
+}
+
+.header ul {
+	list-style: none;
+	margin: 0 0;
+	padding: 0 0;
 	text-align: center;
 }
 
-#playWeby h3{
-	color: #808184;
+.header ul li {
+	display: inline-block;
+}
+
+.header span.user-photo {
+	width: 34px;
+	height: 34px;
+	background: url("../images/sprite2.png") no-repeat 50% -432px;
+	display: inline-block;
+	float: left;
+	margin-top: -2px;
+}
+
+.header p.user-name {
+	float: left;
+	display: inline-block;
+	padding-left: 10px;
+	margin: 0 0;
+	color: #666;
+	font-size: 15px;
+	line-height: 2;
+	font-weight: 600;
+}
+
+.header .embed-header-right {
+	float: right;
+}
+
+.header .embed-header-right span.counter {
+	float: left;
+	padding-left: 30px;
+	background: url("../images/sprite2.png") no-repeat -163px -2026px;
+	font-weight: 600;
+	font-size: 22px;
+	padding-right: 20px;
+}
+
+.header .embed-header-right .social-menu {
+	float: right;
+	width: 47px;
+	height: 47px;
+	background: #27b6ac url("../images/sprite2.png") no-repeat -150px -2117px;
+	position: relative;
+	margin-top: -10px;
+}
+
+.header .embed-header-right .social-menu ul {
+	background-color: #fff;
+	padding: 10px;
+	border-top: 4px solid #27b6ac;
+	position: absolute;
+	top: 47px;
+	width: 130px;
+	left: -103px;
+	-moz-box-shadow: 0 3px 3px #d7d7d7;
+	-webkit-box-shadow: 0 3px 3px #d7d7d7;
+	box-shadow: 0 3px 3px #d7d7d7;
+	display: none;
+}
+
+.header .embed-header-right:hover .social-menu ul {
+	display: block;
+}
+
+.header .embed-header-right .social-menu ul li {
+	line-height: 0px;
+	float: left;
+	display: inline-block;
+}
+
+.embed-header {
+	height: 58px;
+	padding-top: 35px;
+}
+
+
+.embed-background{
+	width: 100%;
+	height: 100%;
+	position:absolute;
+	z-index:1;
+}
+
+.embed-footer {
+	text-align: center;
+}
+
+.embed-footer a {
+	text-decoration: none;
+	color: #fff;
+	font-size: 11px;
+	line-height: 0;
+}
+
+.footer{
+	font-size: 16px;
+	background: #202020; /* Old browsers */
+	background: -moz-linear-gradient(top, #202020 0%, #1d1d1d 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#202020), color-stop(100%,#1d1d1d)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #202020 0%,#1d1d1d 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #202020 0%,#1d1d1d 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #202020 0%,#1d1d1d 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #202020 0%,#1d1d1d 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#202020', endColorstr='#1d1d1d',GradientType=0 ); /* IE6-9 */
+	border-top: 3px solid #2c2c2c;
+	position: fixed;
+	bottom: 0;
+	height: 24px;
+	width: 100%;
+	z-index: 1000000;
+}
+
+.embed .loading-overlay{
+	top: 98px;
 }

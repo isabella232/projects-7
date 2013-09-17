@@ -5,7 +5,7 @@
     <meta property="og:site_name" content="Weby.io"/>
     <meta property="og:title" content="{$weby.title}"/>
     <!-- TODO: when images are done, insert their paths here -->
-    <meta property="og:image" content="{$weby->getImage('public_square')}"/>
+    <meta property="og:image" content="{$weby->getImage('original-screenshot')}"/>
     <meta property="og:description" content="Created with Weby.io"/>
     <link data-page-subject="true" href="{$weby->getImage('public_square')}" rel="image_src"/>
     {include file="templates/pages/includes/appIncludes.tpl"}
@@ -36,6 +36,7 @@
             </div>
         </div>
     </div>
+    {include file="templates/common/loading.tpl"}
     {include file="templates/common/dashboard.tpl"}
 {/block}
 {block name="headerRightTools"}

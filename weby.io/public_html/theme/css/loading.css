@@ -1,0 +1,41 @@
+
+.loading-overlay {
+	background: url(../images/black-transparent-background.png) repeat;
+	z-index:100;
+	position: absolute;
+	top: 98px;
+}
+
+.loading-title {
+	position:absolute;
+	z-index:1000;
+	-webkit-box-shadow: 0 1px 7px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.5);
+}
+
+.loading-title p {
+	display: block;
+	font-size: 12px;
+	text-align: center;
+	background-color: #27b6ac;
+	color: #fff;
+	margin: 0 0;
+	padding: 10px 20px;
+}
+
+.loading-title p span {
+	font-size: 31px;
+	display: block;
+	line-height: 1;
+}
+
+.loading-title p.click-to-see {
+	font-size: 16px;
+	background-color: #20938a;
+}
+
+.loading-title p.click-to-see a {
+	text-decoration: none;
+	color: #fff;
+}

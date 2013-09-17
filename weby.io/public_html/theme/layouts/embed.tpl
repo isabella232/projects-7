@@ -15,15 +15,18 @@
 
     {minify type="css"}
         embed.css,
-        headerMiddle.css,
-        weby.css
+        socialShare.css,
+        weby.css,
+        loading.css
     {/minify}
 
     {minify type="js"}
         jquery-2.0.3.min.js,
         jquery-ui-1.9.2.webyio.js,
         jQueryFix.js,
-        jquery.fancybox.pack.js
+        jquery.fancybox.pack.js,
+        embed/webySocialShare.js,
+        embed/init.js
     {/minify}
 
     <script type="text/javascript">
@@ -35,13 +38,31 @@
 
 </head>
 <body class="embed">
-<div id="header">
-    <div id="header-content">
-        <div class="content-left">
-            <h2>Weby.io<img src="{$viewObject.themeWebPath}images/webiny.png"/></h2>
-        </div>
-        <div class="content-right">
-            {block name="headerRightTools"}{/block}
+<div class="header embed-header">
+    <span class="user-photo"><img width="34" height="34" src="{$weby->getUser()->getAvatarUrl()} title="{$weby->getUser()->getUsername()}" /></span>
+
+    <p class="user-name">{$weby->getUser()->getUsername()}</p>
+
+    <div class="embed-header-right">
+                <span class="counter">
+                    {$weby->getFavoriteCount()}
+                </span>
+
+        <div class="social-menu">
+            <ul>
+                <li class="facebook" data-role="facebook-share">
+                    <a href="javascript: void(0);"></a>
+                    <span class="social-counter">{$shareCount.facebook}</span>
+                </li>
+                <li class="twitter" data-role="twitter-share">
+                    <a href="javascript: void(0);"></a>
+                    <span class="social-counter">{$shareCount.twitter}</span>
+                </li>
+                <li class="gplus" data-role="gplus-share">
+                    <a href="javascript: void(0);"></a>
+                    <span class="social-counter">{$shareCount.google}</span>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

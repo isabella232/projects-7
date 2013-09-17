@@ -28,7 +28,7 @@ class User
 	public function getUser() {
 		// Check if user is not instantiated
 		if(is_null($this->_user)) {
-			if(!$this->security()->getUser()->isAuthenticated()) {
+			if(!$this->security()->getUser() || !$this->security()->getUser()->isAuthenticated()) {
 				return false;
 			}
 			$this->_user = UserEntity::getByEmail($this->security()->getUser()->getUsername());
