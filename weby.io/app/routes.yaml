@@ -35,6 +35,7 @@ routes:
 
     # CRON ROUTES
     - ['cron/inactive-users', \App\Handlers\CronHandler, checkInactiveUsers]
+    - ['cron/remove-unused-tags', \App\Handlers\CronHandler, removeUnusedTags]
 
     # STATS ROUTES
     - ['stats', \App\Handlers\StatsHandler, index]

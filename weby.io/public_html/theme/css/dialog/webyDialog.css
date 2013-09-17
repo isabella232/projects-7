@@ -16,6 +16,10 @@
     -moz-border-radius-bottomright: 2px;
 }
 
+.dialog .tags-editable {
+    color: black;
+}
+
 .weby-tag:hover {
     opacity: 0.9;
     cursor: pointer;
@@ -62,9 +66,9 @@
     border: 1px solid #f0f0f0;
     top: 0;
     font-style: normal;
-/*    -moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-    -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);*/
+    /*    -moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+        -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);*/
 }
 
 #tags-list {
@@ -74,7 +78,60 @@
     padding: 4px;
 }
 
+#tags-list li {
+    color: black;
+}
+
 #tags-list li:hover {
     cursor: pointer;
     color: #f57e2b;
+}
+
+.dialog h2 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+
+.dialog h3 {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+    margin: 0 3px 0;
+    padding: 0;
+    float: left;
+    line-height: 0.8;
+}
+
+.dialog .tag-info {
+    color: #f25b2b;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 1px 2px 0 2px;
+    padding: 0 4px 0 2px;
+    display: inline-block;
+    height: 16px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    background-color: white;
+    line-height: normal;
+}
+
+.dialog .dialog-loading {
+    position: absolute;
+    width: 200px;
+    height: 40px;
+    left: 320px;
+    top: 20px;
+}
+
+.dialog .dialog-loading .text {
+    display: inline-block;
+}
+
+.dialog ul.k-pager-numbers li {
+
 }

@@ -16,6 +16,7 @@ function WebyTitleDialog() {
     var _descriptionInput = $('#weby-description-field');
     var _tagsDropdown = $('#weby-tags-dropdown');
     var _tagsList = $('#tags-list');
+    var _tagsLog = {};
     var _editing = false;
     var _timer = false;
 
@@ -51,7 +52,7 @@ function WebyTitleDialog() {
                 width: 500,
                 height: 'auto',
                 autoSize: false,
-                afterClose: function() {
+                afterClose: function () {
                     _clearTagsInput();
                     _cancelAllChanges();
                 }
@@ -60,21 +61,28 @@ function WebyTitleDialog() {
 
         // Closing dialog
         $('[data-role="weby-dialog-close"]').click(function () {
-            $.fancybox.close();
-            _editing = false;
-            _clearTagsInput();
-            _cancelAllChanges();
+            if (_titleInput.val() != '') {
+                $.fancybox.close();
+                _editing = false;
+                _clearTagsInput();
+                _cancelAllChanges();
+            }
         });
 
         // Save button
         $('[data-role="weby-dialog-save"]').click(function () {
-            _editing = false;
-            App.getWeby().setTitle(_titleInput.val());
-            App.getWeby().setTags(generateTagsJson());
-            App.getWeby().setDescription(_descriptionInput.val());
-            App.getWeby().save();
-            $.fancybox.close();
-            _clearTagsInput();
+            if (_titleInput.val() != '') {
+                _editing = false;
+                App.getWeby().setTitle(_titleInput.val());
+                App.getWeby().setTags(generateTagsJson());
+                App.getWeby().setDescription(_descriptionInput.val());
+
+                App.getWeby().save(false, {tagLog: _tagsLog});
+                $.fancybox.close();
+                _clearTagsInput();
+            } else {
+                console.log('save first!!')
+            }
         });
 
     }
@@ -89,6 +97,7 @@ function WebyTitleDialog() {
             if (_timer) {
                 clearTimeout(_timer);
             }
+
             _timer = setTimeout(function () {
                 _requestTags(search)
             }, 600)
@@ -96,47 +105,55 @@ function WebyTitleDialog() {
     }
 
     /**
-     * Sends request to search tags and shows results
+     * Sends request to search tags and shows results (duplicate values won't be shown)
      * @param search
      * @private
      */
     var _requestTags = function (search) {
-        if (search.length > 0) {
-            var duplicateTag, maxTags = 5, totalTags = 0;
-            $.ajax({
-                url: WEB + 'tools/tags/?search=' + search,
-                success: function (response) {
-                    if (response) {
-                        _tagsList.empty();
-                        for (var i in response) {
-                            duplicateTag = false;
-                            var currentTags = _tagsData.find('.weby-tag');
-                            if (currentTags.length > 0) {
-                                currentTags.each(function () {
-                                    if ($(this).text() == response[i].tag) {
-                                        duplicateTag = true;
-                                        return false;
-                                    }
-                                });
+        if (search.length > 2) {
+            if (_tagsData.find('span.weby-tag').length < 10) {
+                var duplicateTag, maxTags = 5, totalTags = 0;
+                $.ajax({
+                    url: WEB + 'tools/tags/?search=' + search,
+                    success: function (response) {
+                        if (response) {
+                            _tagsList.empty();
+                            for (var i in response) {
+                                duplicateTag = false;
+                                var currentTags = _tagsData.find('.weby-tag');
+                                if (currentTags.length > 0) {
+                                    currentTags.each(function () {
+                                        if ($(this).attr('data-tag') == response[i].tag) {
+                                            duplicateTag = true;
+                                            return false;
+                                        }
+                                    });
+                                }
+                                if (!duplicateTag) {
+                                    _tagsList.append('<li data-tag="' + response[i].tag + '" data-id="' + response[i].id + '">' + response[i].tag + '</li>')
+                                    totalTags++;
+                                }
+                                if (totalTags == maxTags) {
+                                    break;
+                                }
                             }
-                            if (!duplicateTag) {
-                                _tagsList.append('<li data-tag="' + response[i].tag + '" data-id="' + response[i].id + '">' + response[i].tag + '</li>')
-                                totalTags++;
+                            if (totalTags > 0) {
+                                _tagsDropdown.css('top', _tagsWrapper.height() + 20);
+                                _tagsDropdown.show();
                             }
-                            if (totalTags == maxTags) {
-                                break;
-                            }
+                        } else {
+                            _tagsDropdown.hide();
                         }
-                        _tagsDropdown.css('top', _tagsWrapper.height() + 20);
-                        _tagsDropdown.show();
-                    } else {
-                        _tagsDropdown.hide();
+                        _timer = false;
                     }
-                    _timer = false;
-                }
-            });
+                });
+            } else {
+                console.log('Over 10')
+            }
         } else {
-            _clearTagsInput();
+            if (search.length == 0) {
+                _clearTagsInput();
+            }
         }
     }
 
@@ -180,6 +197,7 @@ function WebyTitleDialog() {
      */
     var addToList = function (id, tag) {
         _tagsData.append('<span data-tag="' + tag + '" data-id="' + id + '"class="weby-tag">' + tag + '<span class="remove-tag"></span></span>');
+        _incrementTag(tag)
     }
 
     /**
@@ -195,9 +213,42 @@ function WebyTitleDialog() {
 
     var _bindRemoveTag = function () {
         _tagsData.on('click', 'span.remove-tag', function () {
-            $(this).closest('span.weby-tag').remove();
+            var tag = $(this).closest('span.weby-tag');
+            _decrementTag(tag.attr('data-tag'));
+            tag.remove();
         })
     }
+
+    /**
+     * Increments count for given tag
+     * @param tag
+     */
+    var _incrementTag = function (tag) {
+        _checkTag(tag);
+        ++_tagsLog[tag];
+        _checkTag(tag);
+    }
+
+    /**
+     * Decrement count
+     * @param tag
+     */
+    var _decrementTag = function (tag) {
+        _checkTag(tag);
+        --_tagsLog[tag];
+        _checkTag(tag);
+    }
+
+    var _checkTag = function (tag) {
+        if (typeof _tagsLog[tag] == 'undefined') {
+            _tagsLog[tag] = 0;
+            return;
+        }
+        if (_tagsLog[tag] == 0) {
+            delete _tagsLog[tag];
+        }
+    }
+
     /**
      * When user presses "Enter" on tags input, insert new tag into added list
      */
@@ -206,19 +257,12 @@ function WebyTitleDialog() {
         var charCode = event.which || event.keyCode;
         switch (charCode) {
             case 13:
-                if (_tagsInput.text() != '') {
+                if (_timer == false && _tagsList.find('li').length > 0) {
                     addToList(_tagsList.find('li:first').data('id'), _tagsList.find('li:first').data('tag'));
                     _clearTagsInput();
+                } else {
+                    e.preventDefault();
                 }
-                break;
-            case 8:
-                if (_tagsInput.text() == '') {
-                    _tagsData.find('.weby-tag:last').remove();
-                    _clearTagsInput();
-                }
-                break;
-            case 40:
-                _tagsList.find('li:first').focus();
                 break;
         }
     });
@@ -235,6 +279,7 @@ function WebyTitleDialog() {
         _titleInput.val(App.getWeby().getTitle());
         _descriptionInput.val(App.getWeby().getDescription());
         _refreshTagData(App.getWeby().getTags());
+        _tagsLog = {};
     }
 
     this.webyLoaded = function () {
@@ -257,5 +302,6 @@ function WebyTitleDialog() {
         App.getWeby().getWebyTitle().setEmbedCode(data.publicUrl);
         _refreshTagData(data.tags);
         _editing = false;
+        _tagsLog = {};
     }
 }

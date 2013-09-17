@@ -47,7 +47,7 @@ class WebyEntity extends WebyEntityCrud
      */
     public static function searchTags($search, $json = false)
     {
-        $data = self::_sqlSearchTags($search);
+        $data = self::_sqlSearchTags(strtolower($search));
         if ($data->count()) {
             if ($json) {
                 $tmp = [];

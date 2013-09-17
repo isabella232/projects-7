@@ -212,7 +212,7 @@ function Weby() {
         if (!_webyId) {
             return;
         }
-
+        console.log(options)
         clearTimeout(_labelTimeout);
         var settings = _background.save();
         settings['document'] = _documentBackground.save();

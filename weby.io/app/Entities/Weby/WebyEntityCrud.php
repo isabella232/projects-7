@@ -12,7 +12,12 @@ abstract class WebyEntityCrud extends WebyEntityProperties
     use StdLibTrait, StorageTrait;
 
     private $_createStorageFolder = false;
-    protected $_removedTags;
+
+    /**
+     * If changes in tags were made, counts will be sent by log
+     * @var
+     */
+    protected $_tagLog = [];
 
     protected function _onAfterLoad()
     {
@@ -58,7 +63,6 @@ abstract class WebyEntityCrud extends WebyEntityProperties
         if (!$this->arr($data)->keyExists('tags')) {
             $this->_tags = [];
         }
-
     }
 
     protected function _onAfterSave()
@@ -74,8 +78,12 @@ abstract class WebyEntityCrud extends WebyEntityProperties
             $this->_sqlSetStorage();
         }
 
-
-        // Update Weby tags
+        // Update Weby tags, counts and at the end clear all unnecessary tags (where total count equals zero)
         $this->_sqlUpdateTags();
+        if (!empty($this->_tagLog)) {
+            foreach ($this->_tagLog as $tag => $increment) {
+                $this->_sqlUpdateTagCount($tag, $increment);
+            }
+        }
     }
 }

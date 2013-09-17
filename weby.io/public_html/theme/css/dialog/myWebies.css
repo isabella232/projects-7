@@ -1,117 +1,36 @@
-.dialog .webies-pager {
+.dialog, .dialog p {
+    color: white;
+    font-size: 15px;
+    background-color: #f25b2b;
+}
+
+.dialog .webies-list {
     background: none;
     border: none;
 }
 
-.dialog .webies-list-item {
-    background: none;
-    border: none;
-}
-
-/*  =========================== */
-
-#my-webies-dialog a.close-dialog, .register-dialog a.close-dialog {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-image: url("../images/sprite2.png");
-    background-repeat: no-repeat;
-    background-position: 50% -803px;
-    width: 15px;
-    height: 15px;
-}
-
-.dialog fieldset h1, .my-webies-dialog h1, .register-dialog h1 {
-    color: #fff;
-    font-weight: 400;
-    font-size: 26px;
-    margin: 0 0;
-}
-
-.dialog fieldset input {
-    width: 460px;
-    padding: 10px 0 10px 10px;
-    margin: 10px 0;
-    border-style: none;
-    border-bottom: 3px solid #dc420e;
-    font-size: 16px;
-    font-style: italic;
-}
-
-.dialog p {
-    text-align: right;
-    margin: 0 0;
-}
-
-.dialog p button {
-    color: #fff;
-    padding: 7px 11px 10px 11px;
-    margin: 0 0 0 4px;
-    font-size: 18px;
-    border: none;
-    font-weight: 400;
-    font-family: 'Source Sans Pro', sans-serif;
-    cursor: pointer;
-}
-
-.dialog p button.dialog-cancel {
-    background-color: #dc420e;
-}
-
-.dialog p button.dialog-save-changes {
-    background-color: #a8320b;
-}
-
-#my-webies-dialog ul {
+.dialog ul.webies-list {
     list-style: none;
     margin: 0 0;
     padding: 0 0;
     overflow: hidden;
+    background-color: #f25b2b;
 }
 
-#my-webies-dialog ul li {
-    display: inline-block;
-    float: left;
+.dialog .webies-list-item {
+    border-bottom: 1px solid #dc420e;
+    overflow: hidden;
+    list-style: none;
+    padding-top: 13px;
+    padding-bottom: 9px;
+    background-color: #f25b2b;
 }
 
-#my-webies-dialog ul li img {
-    float: left;
-}
-
-#my-webies-dialog ul li ul.weby-data {
-    width: 314px;
-    padding-left: 20px;
-    float: left;
-}
-
-#my-webies-dialog ul li ul.weby-data h2, #my-webies-dialog ul li ul.weby-data h3 {
-    margin: 0 0;
-    color: #fff;
-}
-
-#my-webies-dialog ul li ul.weby-data li {
-    display: block;
-    float: none;
-
-}
-
-#my-webies-dialog ul li ul.weby-data h2 {
-    font-size: 24px;
-    font-weight: 400;
-}
-
-#my-webies-dialog ul li ul.weby-data h3 {
-    display: inline-block;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 0.5;
-}
-
-#my-webies-dialog ul li ul.weby-data span.weby-tag {
+.dialog .weby-tag.white {
     color: #f25b2b;
     font-size: 12px;
     font-weight: bold;
-    text-transform: capitalize;
+    text-transform: uppercase;
     margin: 1px 2px 0 2px;
     padding: 0 4px 0 2px;
     display: inline-block;
@@ -121,108 +40,66 @@
     border-bottom-right-radius: 2px;
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;
-    background: white url(../images/sprite2.png) no-repeat -170px -871px;
+    background: white url(../../images/sprite2.png) no-repeat -170px -871px;
+    line-height: normal;
 }
 
-#my-webies-dialog ul li ul.weby-actions {
-    float: right;
-    width: 291px;
+.dialog .weby-thumbnail {
+    float: left;
+}
+
+.dialog .weby-data.left {
+    float: left;
+    width: 375px;
+    padding: 5px 0 0 20px;
+}
+
+.dialog .weby-actions.right {
+     float: right;
+ }
+
+.dialog .weby-actions.right p {
+    margin: 0;
+    padding: 0;
     text-align: right;
 }
 
-#my-webies-dialog ul li ul.weby-actions li {
-    display: block;
-    float: none;
-    color: #fff;
-    font-weight: 400
-
+.dialog .weby-actions.right p.buttons {
+    margin-top: 5px;
 }
 
-#my-webies-dialog ul li ul.weby-actions li p {
-    margin: 0 0;
-    font-size: 15px;
+.dialog .button.delete {
+    background: #dc420e url(../../images/sprite2.png) no-repeat -156px -969px;
+    text-indent: 20px;
 }
 
-#my-webies-dialog a {
-    text-decoration: none;
+.dialog .button.edit {
+    background: #dc420e url(../../images/sprite2.png) no-repeat -156px -1089px;
+    text-indent: 20px;
 }
 
-span.dialog-button {
-    background-color: #dc420e;
-    display: inline-block;
-    height: 23px;
-    color: #fff;
-    padding: 7px 11px 10px 34px;
-    margin: 30px 0 0 4px;
-    font-size: 18px;
+.dialog ul {
+    list-style: none;
 }
 
-span.dialog-button:hover, .dialog p button:hover {
-    opacity: 0.85;
+.dialog ul.tags-list {
+    overflow: auto;
+    padding: 0;
+    margin:0;
 }
 
-span.dialog-button.delete {
-    background-image: url(../images/sprite2.png);
-    background-repeat: no-repeat;
-    background-position: -156px -969px;
+.dialog .webies-footer {
+    padding-top: 8px;
 }
 
-span.dialog-button.edit {
-    background-image: url(../images/sprite2.png);
-    background-repeat: no-repeat;
-    background-position: -156px -1089px;
-}
-
-span.dialog-button.view {
-    padding-left: 11px;
-    background-color: #a8320b;
-}
-
-ul.webies-list li.webies-list-item {
-    border-top: 1px solid #dc420e;
-    padding-bottom: 15px;
-    padding-top: 15px;
-}
-
-ul.webies-list li.webies-list-item:first-child {
-    border-top: none;
-}
-
-.widget-loading-overlay {
-    background-color: #eaeaea;
-    width: 237px;
-    height: 197px;
-    text-align: center;
-    vertical-align: middle;
-    display: block;
+.dialog .webies-pager {
+    width: 500px;
     float: left;
-    margin-left: 130px;
+    background: #f25b2b none;
+    border: none;
 }
 
-.widget-loading-overlay p span {
-    color: #666;
-    font-size: 17px;
-    font-weight: 400;
-    margin: 0 0;
-    display: block;
-}
-
-.widget-loading-overlay p {
-    color: #666;
-    font-size: 12px;
-    font-weight: 400;
-    margin: 0 0;
-}
-
-.widget-disabled-overlay {
-    float: left;
-    margin-left: 30px;
-}
-
-.widget-disabled-overlay span {
-    text-transform: uppercase;
-    color: #fff;
-    font-size: 13px;
-    background-color: #27b6ac;
-    padding: 10px 20px;
+.dialog .k-loading-mask {
+    opacity: 0;
+    background: #f25b2b none;
 }

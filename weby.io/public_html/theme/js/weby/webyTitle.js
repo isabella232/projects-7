@@ -58,6 +58,10 @@ function WebyTitle() {
 		$(this).closest('[data-role="weby-title-share"]').toggleClass('active').find('form').toggle();
 	});
 
+    _share.find('.embed-code').click(function(){
+        $(this).select();
+    });
+
 	this.viewportResize = function (data) {
 		_title.css('width', 0);
 		_url.css('width', 0);

@@ -193,7 +193,7 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected static function _sqlInsertTag($tag)
     {
-        $query = "INSERT INTO " . self::_getDb()->w_tags . " (tag, count) VALUES (?, 1) RETURNING id";
+        $query = "INSERT INTO " . self::_getDb()->w_tags . " (tag) VALUES (?) RETURNING id";
         $bind = [$tag];
         return self::_getDb()->execute($query, $bind)->fetchValue();
     }
@@ -229,6 +229,19 @@ abstract class WebyEntityStorage extends EntityAbstract
                     LEFT JOIN {$this->_getDb()->w_tags} t ON t.id = w2t.tag WHERE weby =?";
         $bind = [$this->_id];
         return $this->_getDb()->execute($query, $bind)->fetchAll();
+    }
+
+    /**
+     * Update tag counts
+     * @param $tag
+     * @param $increment
+     * @return bool
+     */
+    protected function _sqlUpdateTagCount($tag, $increment)
+    {
+        $query = "UPDATE {$this->_getDb()->w_tags} SET count=count+? WHERE tag = ?";
+        $bind = [$increment, $tag];
+        return $this->_getDb()->execute($query, $bind);
     }
 
     /**

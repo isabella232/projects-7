@@ -57,14 +57,10 @@ class EditorHandler extends AbstractHandler
 
         // Before populating, insert necessary new tags into database
         if (isset($requestData['tags'])) {
-            // TODO: check this if we could skip by fixing passing data to the App Class
-            if (!is_array($requestData['tags'])) {
-                $requestData['tags'] = json_decode($requestData['tags'], true);
-            }
             foreach ($requestData['tags'] as &$tag) {
                 // If tag wasn't in database, insert it
                 if ($tag['id'] == 0) {
-                    $this->_sanitizeInput($tag['tag']);
+                    $this->_sanitizeInput($tag['tag'], true);
                     $tag['id'] = WebyEntity::insertTag($tag['tag']);
                 }
             }
@@ -167,9 +163,12 @@ class EditorHandler extends AbstractHandler
     /**
      * Sanitizing input (strip slashes, trim, replace spaces
      */
-    private function _sanitizeInput(&$input) {
+    private function _sanitizeInput(&$input, $toLower = false) {
         $input = $this->str($input)->trim()->stripTags()->val();
         $input = preg_replace('/[ ]+/', ' ', $input);
+        if($toLower) {
+            $input = strtolower($input);
+        }
     }
 
     /**

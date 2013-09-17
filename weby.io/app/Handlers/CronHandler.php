@@ -35,7 +35,19 @@ class CronHandler extends AbstractHandler
         $this->_sendInactivityEmail();
 
         // End of CRON
-        die('Cron finished successfully.');
+        $this->_endCron();
+    }
+
+    /**
+     * Deletes tags that aren't used (count equals zero) - removing junk from database is useful :)
+     */
+    public function removeUnusedTags()
+    {
+        $query = "DELETE FROM {$this->db()->w_tags} WHERE count = 0";
+        $this->db()->execute($query, []);
+
+        // End of CRON
+        $this->_endCron();
     }
 
     /**
@@ -52,10 +64,17 @@ class CronHandler extends AbstractHandler
 
         // First, check if there are any users that need to get our e-mail
         if ($users->count()) {
-           // TODO: Send mail using other mail service
+            // TODO: Send mail using other mail service
         }
 
         // TODO: update queue
+    }
+
+    /**
+     * Ends CRON script
+     */
+    private function _endCron() {
+        die('Cron finished successfully.');
     }
 
 }

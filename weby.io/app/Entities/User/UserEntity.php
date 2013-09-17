@@ -70,6 +70,7 @@ class UserEntity extends UserEntityCrud
                     'editor_url' => $weby->getEditorUrl(),
                     'hits' => $weby->getTotalHits(),
                     'favorites' => $weby->getFavoriteCount(),
+                    'tags' => $weby->getTags(true),
                 ];
             }
             $webies = json_encode($tmp);

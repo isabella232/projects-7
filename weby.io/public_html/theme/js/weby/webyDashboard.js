@@ -1,5 +1,5 @@
 function DashboardLoading() {
-    var _el = $('#my-webies-dialog');
+    var _el = $('#my-webies-dialog .dialog-loading');
     var _initialMessage = 'Loading Webies...';
 
     this.show = function () {
@@ -26,6 +26,7 @@ function WebyDashboard() {
     var _currentWebyId = '';
     var _dialog = $("#my-webies-dialog");
     var _deleteDialog = $('.delete-confirmation');
+    var _currentTagsLists = _dialog.find('.tags-list');
     var _loading = new DashboardLoading();
     var _template = kendo.template($('#webies-list-item-tpl').html());
 
@@ -63,7 +64,9 @@ function WebyDashboard() {
             _loading.show();
         },
         requestEnd: function (e) {
+
             _loading.hide().setMessage("Loading Webies...");
+
             if (e.type == "destroy") {
                 if (this.data().length == 0) {
                     var curPage = this.page();
@@ -91,7 +94,7 @@ function WebyDashboard() {
     });
 
 
-    _dialog.find('.webies-pager').kendoListView({
+    _dialog.find('.webies-list').kendoListView({
         dataSource: webiesDataSource,
         template: _template,
         change: function () {
