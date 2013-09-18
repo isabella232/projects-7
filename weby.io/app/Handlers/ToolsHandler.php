@@ -36,6 +36,9 @@ class ToolsHandler extends AbstractHandler
 	}
 
 	public function takeScreenshot($webyId) {
+		if($this->request()->getClientIp() != '127.0.0.1' && $this->request()->getClientIp() != '192.168.249.128'){
+			$this->request()->redirect($this->app()->getConfig()->app->web_path);
+		}
 		$weby = new WebyEntity();
 		$weby->load($webyId);
 

@@ -98,6 +98,7 @@ function LinkWidget() {
 			// If requested file is a html page
 			if ($this._contentType == 'text/html') {
 				$this._linkType = 'web';
+				
 				$this.showLoading();
 				$.get(WEB + 'tools/parse-link/?url=' + encodeURIComponent(url), function (data) {
 					if (!data.error) {
@@ -107,6 +108,7 @@ function LinkWidget() {
 						$this._imageUrl = data.data.imageUrl;
 						$this.body().html($this.generateLinkEmbed());
 						$this.contentLoaded();
+						$this.html('.resize-handle').remove();
 					} else {
 						$this.showError();
 					}
@@ -123,11 +125,11 @@ function LinkWidget() {
 				var tpl = LinkTool.ALLOWED_TYPES[$this._contentType].tpl;
 
 				if (tpl != 'Image') {
-					$this._isResizable = false;
 					// Render file widget
 					var content = $this['generate' + tpl]();
 					$this.body().html(content);
-					$this.contentLoaded();
+					$this.contentLoaded().html('.resize-handle').remove();
+					$this._isResizable = false;
 				} else {
 					$this._linkType = 'image';
 					var img = $($this.generateImage());
@@ -177,6 +179,9 @@ function LinkWidget() {
 
 						var content = $this.generateFileInfo();
 						$this.body().html(content);
+						$this.contentLoaded().html('.resize-handle').remove();
+						$this._isResizable = false;
+						$this._linkType = 'file';
 					}
 				}
 			).build();
@@ -201,6 +206,9 @@ function LinkWidget() {
 
 					var content = $this.generateFileInfo();
 					$this.body().html(content);
+					$this.contentLoaded().html('.resize-handle').remove();
+					$this._isResizable = false;
+					$this._linkType = 'file';
 				},
 				// Gives us direct links to uploaded files
 				linkType: "direct"
@@ -237,6 +245,7 @@ function LinkWidget() {
 		this._verifyUrl();
 		var tpl = $('script#link-widget-link-tpl').html();
 		tpl = tpl.replace(/{url}/g, this._linkUrl);
+		tpl = tpl.replace('{id}', this._id);
 		tpl = tpl.replace('{title}', this.truncate(this._title, 35, '...'));
 		tpl = tpl.replace('{description}', this.truncate(this._description, 140, '...'));
 		tpl = $(tpl.replace('{imageUrl}', this._imageUrl));

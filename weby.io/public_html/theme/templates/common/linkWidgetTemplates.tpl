@@ -14,7 +14,7 @@
 
     <!-- Link template - used for web links that includes image, title and short content of site -->
     <script type="weby/linkWidgetTemplate" id="link-widget-link-tpl">
-        <div class="link">
+        <div id="link-{id}" class="link">
             <a href="{url}" target="_blank"><img src="{imageUrl}" height="80"/></a>
             <div class="website">
                 <a href="{url}" target="_blank" class="title">{title}</a>

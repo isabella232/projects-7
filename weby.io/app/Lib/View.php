@@ -27,8 +27,11 @@ class View
         $this->_smarty->setCompileDir($this->_config->public_html . 'cache/smarty/compile/');
         $this->_smarty->setCacheDir($this->_config->public_html . 'cache/smarty/cache/');
         $this->_smarty->setConfigDir($this->_config->abs_path . 'Lib/Smarty/smarty/configs/');
-        $this->_smarty->force_compile = true;
-
+		if($this->_config->mode == 'development'){
+			$this->_smarty->force_compile = true;
+		} else {
+			$this->_smarty->force_compile = false;
+		}
         // Get site's configurations for use in templates (everything is packed in ViewContainer object)
         $this->_smarty->assign('viewObject', ViewContainer::getInstance());
 

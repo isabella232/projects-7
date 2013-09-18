@@ -444,6 +444,11 @@ BaseWidget.prototype = {
 			var data = {urlExists: true};
 			callback(data);
 		} else {
+			// Make sure it's a valid URL
+			var regex = /^[http:\/\/|ftp:\/\/|https:\/\/]*?[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?$/;
+			if(!url.match(regex)){
+				callback({urlExists: false});
+			}
 			$.get(BaseWidget.CONTENT_VALIDATOR + '/?url=' + encodeURIComponent($.trim(url)) + '&t=' + new Date().getTime(), function (data) {
 				callback(data);
 			});
@@ -772,6 +777,7 @@ BaseWidget.prototype = {
 	},
 
 	showTools: function () {
+
 		this.controls().css("visibility", "visible").show();
 		this.html('.widget-disabled-overlay').css("opacity", 1);
 		return this;
@@ -1038,8 +1044,8 @@ BaseWidget.prototype = {
 		if (this.html('.widget-disabled-overlay').length > 0) {
 			return;
 		}
-		var text = this._isInteractive ? 'Doubleclick to interact' : '';
-		this._html.prepend('<div class="widget-disabled-overlay"><span class="text">' + text + '</span></div>');
+		var visible = this._isInteractive ? 'visibility:visible' : 'visibility:hidden';
+		this._html.prepend('<div class="widget-disabled-overlay"><span class="text" style="'+visible+'">Doubleclick to interact</span></div>');
 		this._resize();
 	},
 

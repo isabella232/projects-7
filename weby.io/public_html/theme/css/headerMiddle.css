@@ -19,7 +19,7 @@
 }
 
 .header .header-middle-wrap h2 {
-	min-width: 186px;
+	/*min-width: 186px;*/
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;
@@ -68,6 +68,11 @@
 	display: block;
 	clear: left;
 	min-width: 186px;
+}
+
+.header .header-middle-wrap .weby-url a{
+	text-decoration: none;
+	color:inherit;
 }
 
 .header .share-drop {

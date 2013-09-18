@@ -212,7 +212,6 @@ function Weby() {
         if (!_webyId) {
             return;
         }
-        console.log(options)
         clearTimeout(_labelTimeout);
         var settings = _background.save();
         settings['document'] = _documentBackground.save();
@@ -234,7 +233,7 @@ function Weby() {
 		}
 
         if (takeScreenshot != undefined) {
-            //data['takeScreenshot'] = true;
+            data['takeScreenshot'] = true;
         }
 
         // When saving widgets make sure all of them have width and height property set

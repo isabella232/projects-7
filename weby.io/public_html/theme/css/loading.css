@@ -1,7 +1,7 @@
 
 .loading-overlay {
 	background: url(../images/black-transparent-background.png) repeat;
-	z-index:100;
+	z-index:1000000;
 	position: absolute;
 	top: 98px;
 }
