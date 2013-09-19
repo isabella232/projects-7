@@ -292,8 +292,8 @@ body.unselectable * {
 }
 
 .fancybox-lock .fancybox-overlay {
-	overflow:hidden;
-	overflow-y: hidden;
+	overflow:hidden !important;
+	overflow-y: hidden !important;
 }
 
 .fancybox-inner {
