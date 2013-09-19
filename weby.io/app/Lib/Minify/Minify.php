@@ -426,7 +426,7 @@ class Minify
     {
 
         if ($processType == 'css') {
-            preg_match('|themes/(.*)\/(.*)|', $this->cssRoot, $matches);
+            preg_match('|theme/(.*)\/(.*)|', $this->cssRoot, $matches);
 			$rootPath = $this->themeWebPath.'/../'.$matches[1];
 
 			//set web root
