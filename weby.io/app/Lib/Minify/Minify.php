@@ -108,7 +108,7 @@ class Minify
      */
     function setCssPath($folder)
     {
-
+        $this->cssRoot = $folder;
         $folder = $this->str($folder);
         $this->cssPath = trim($folder);
         $folder = str_replace('\\', '/', $folder->stripTrailingSlash());
@@ -426,16 +426,19 @@ class Minify
     {
 
         if ($processType == 'css') {
-            //set web root
-            $str = str_replace('src="../', 'src="' . $this->themeWebPath, $str);
-            $str = str_replace("src='../", "src='" . $this->themeWebPath, $str);
-            $str = str_replace('url("../', 'url("' . $this->themeWebPath, $str);
-            $str = str_replace("url('../", "url('" . $this->themeWebPath, $str);
-            $str = str_replace("url(../", "url(" . $this->themeWebPath, $str);
+            preg_match('|themes/(.*)\/(.*)|', $this->cssRoot, $matches);
+			$rootPath = $this->themeWebPath.'/../'.$matches[1];
 
-            if ($this->minify) {
-                $str = self::_minCSSString($str);
-            }
+			//set web root
+	        $str = str_replace('src="../', 'src="'.$rootPath.'/../', $str);
+	        $str = str_replace("src='../", "src='".$rootPath.'/../', $str);
+	        $str = str_replace('url("../', 'url("'.$rootPath.'/../', $str);
+	        $str = str_replace("url('../", "url('".$rootPath.'/../', $str);
+	        $str = str_replace("url(../", "url(".$rootPath.'/../', $str);
+			
+			if($this->minify){
+				$str = self::_minCSSString($str);
+    		}
 
         } else {
             if ($processType == 'js' && $this->minify) {
