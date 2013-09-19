@@ -362,7 +362,7 @@ function WebyToolbar() {
 		_widgetSettings.hide();
 		_canvasSettings.hide();
 		_documentBackgroundSettings.hide();
-		if(_activeWidget != null && !App.isInputFocused(e)){
+		if(_activeWidget != null && !App.isInputFocused(e) && !_activeWidget._isEditable){
 			_activeWidget.showTools().html('.widget-disabled-overlay').show();
 		}
 	}

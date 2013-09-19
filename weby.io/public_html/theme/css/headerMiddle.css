@@ -19,7 +19,7 @@
 }
 
 .header .header-middle-wrap h2 {
-	/*min-width: 186px;*/
+	min-width: 0px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-o-text-overflow: ellipsis;

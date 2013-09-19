@@ -97,6 +97,7 @@ function Weby() {
      * Returns a scrollbar width depending on browser
      */
     this.getScrollBarOffset = function () {
+		return 18;
         if (_FF) {
             return 18;
         }

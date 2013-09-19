@@ -236,6 +236,11 @@ function WebyBackground(settings) {
 	};
 
 	this.webyBackgroundResized = function () {
+		/*if(App.getViewportWidth() < 1200 && App.getContentWrapper().width() > App.getViewportWidth()){
+			App.getContentWrapper().css("margin", "0");
+		} else {
+			App.getContentWrapper().css("margin", "0 auto");
+		}*/
 		for (var i in _backgrounds) {
 			if("webyBackgroundResized" in _backgrounds[i]){
 				_backgrounds[i].webyBackgroundResized();

@@ -69,6 +69,8 @@ function WebyTitle() {
 		var titleWidth = _title[0].scrollWidth;
 		var urlWidth = _url[0].scrollWidth;
 
+		console.log(width)
+		
 		if (width > titleWidth + 40) {
 			_title.css('width', titleWidth + 'px');
 		} else {
