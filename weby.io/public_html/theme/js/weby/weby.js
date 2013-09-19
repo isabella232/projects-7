@@ -16,6 +16,7 @@ function Weby() {
     var _webyToolbar = null;
     var _title = '';
     var _description = '';
+    var _slug = '';
     var _publicUrl = '';
     var _tags = [];
 

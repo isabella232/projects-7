@@ -1,0 +1,164 @@
+#favorites-dialog .delete-confirmation{
+    position: absolute;
+    width: 755px;
+    height: 441px;
+}
+
+
+#favorites-dialog .delete-confirmation .overlay{
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    position: absolute;
+    background-color: #f25b2b;
+    opacity: 0.95;
+}
+
+#favorites-dialog .delete-confirmation .message{
+    text-align: center;
+    font-size: 24px;
+    margin-top: 170px;
+    z-index: 1001;
+    color: #fff;
+    position: relative;
+}
+
+#favorites-dialog .delete-confirmation .actions{
+    text-align: center;
+    margin-top: 20px;
+    z-index: 1001;
+    position: relative;
+}
+
+#favorites-dialog .favorites-pager {
+    position: absolute;
+    bottom: 0;
+}
+
+/* ----------------- */
+
+#favorites-dialog .weby-thumbnail {
+    float: left;
+    width: 90px;
+    height: 81px;
+}
+
+#favorites-dialog .favorites-list {
+    background: none;
+    border: none;
+}
+
+#favorites-dialog ul.favorites-list {
+    list-style: none;
+    margin: 0 0;
+    padding: 0 0;
+    overflow: hidden;
+    background-color: #f25b2b;
+}
+
+#favorites-dialog .favorites-list-item {
+    border-bottom: 1px solid #dc420e;
+    overflow: hidden;
+    list-style: none;
+    padding-top: 13px;
+    padding-bottom: 9px;
+    background-color: #f25b2b;
+}
+
+#favorites-dialog .weby-tag.white {
+    color: #f25b2b;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 1px 2px 0 2px;
+    padding: 0 4px 0 2px;
+    display: inline-block;
+    height: 16px;
+    text-indent: 10px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    -moz-border-radius-bottomright: 2px;
+    background: white url(../../images/sprite2.png) no-repeat -170px -871px;
+    line-height: normal;
+}
+
+#favorites-dialog .weby-thumbnail {
+    float: left;
+}
+
+#favorites-dialog .weby-data.left {
+    float: left;
+    width: 375px;
+    padding: 5px 0 0 20px;
+}
+
+#favorites-dialog .weby-actions.right {
+    float: right;
+}
+
+#favorites-dialog .weby-actions.right p {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+#favorites-dialog .weby-actions.right p.buttons {
+    margin-top: 5px;
+}
+
+#favorites-dialog .button.delete {
+    background: #dc420e url(../../images/sprite2.png) no-repeat -156px -969px;
+    text-indent: 20px;
+}
+
+#favorites-dialog .button.edit {
+    background: #dc420e url(../../images/sprite2.png) no-repeat -156px -1089px;
+    text-indent: 20px;
+}
+
+#favorites-dialog ul {
+    list-style: none;
+}
+
+#favorites-dialog ul.tags-list {
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+}
+
+#favorites-dialog .favorites-footer {
+    padding-top: 8px;
+    bottom: 0;
+    position: absolute;
+    width: 743px;
+}
+
+#favorites-dialog .favorites-pager {
+    width: 500px;
+    float: left;
+    background: #f25b2b none;
+    border: none;
+    margin-top: 5px;
+}
+
+#favorites-dialog .favorites-pager .k-pager-numbers .k-state-selected,
+#favorites-dialog .favorites-pager .k-pager-numbers .k-link {
+    color: #fff;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -o-border-radius: 0;
+}
+#favorites-dialog .favorites-pager.k-pager-wrap>.k-link {
+    border:none;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -o-border-radius: 0;
+}
+
+#favorites-dialog .k-loading-mask {
+    opacity: 0;
+    background: #f25b2b none;
+}

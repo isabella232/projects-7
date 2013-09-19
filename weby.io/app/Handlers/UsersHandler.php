@@ -54,6 +54,7 @@ class UsersHandler extends AbstractHandler
             // If user exists, then update it's data in Weby database,
             // Saving, so we can sync the data with our database data
             $user->populate($serviceData)->save();
+            Stats::getInstance()->updateUsersLoginCount($user);
         }
 
         // Redirect to editor
@@ -61,7 +62,7 @@ class UsersHandler extends AbstractHandler
     }
 
     /**
-     * Marks user that he completed introduction tour of Weby.io
+     * Marks user - has completed introduction tour of Weby.io
      */
     public function markOnboardingDone() {
         $this->user()->markOnboardingDone();

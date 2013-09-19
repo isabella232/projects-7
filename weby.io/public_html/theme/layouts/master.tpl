@@ -20,9 +20,9 @@
         headerMiddle.css,
         weby.css,
         dialog/dialog.css,
-        dialog/webiesDialog.css,
-        dialog/myWebies.css,
-        dialog/myFavorites.css
+        dialog/dashboardDialog.css,
+        dialog/favoritesDialog.css,
+        dialog/feedbackDialog.css
     {/minify}
 
     {minify type="js"}
@@ -31,7 +31,8 @@
         jQueryFix.js,
         jquery.fancybox.pack.js,
         time.js,
-        timeTransform.js
+        timePassed.js,
+        weby/feedback.js
     {/minify}
 
     <script type="text/javascript">
@@ -73,10 +74,13 @@
         </li>
         <li>
             <a href="">Keyboard Shortcuts</a>
-
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-role="feedback-open">Feedback</a>
         </li>
     </ul>
     <span><a href="http://www.webiny.com" target="_blank"></a></span>
+    {include file="templates/common/feedback.tpl"}
 </div>
 </body>
 </html>

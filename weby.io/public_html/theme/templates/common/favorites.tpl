@@ -1,6 +1,8 @@
-<div class="dialog" id="my-favorites-dialog" style="display:none;">
+<div class="dialog favorites-dialog" id="favorites-dialog" style="display: none">
+
     <div class="dialog-loading">
         <div class="overlay"></div>
+        <span class="load-icon"></span>
         <div class="text">
             Loading...
         </div>
@@ -8,19 +10,19 @@
     <div class="delete-confirmation" style="display:none">
         <div class="overlay"></div>
         <div class="message">
-            Nooo, you really want to remove your Weby?
+            Delete Weby from favorites?
         </div>
         <div class="actions">
-            <a href="javascript:void(0)" data-role="fav-btn-cancel"><span class="dialog-button edit">Cancel</span></a>
-            <a href="javascript:void(0)" data-role="fav-btn-delete"><span class="dialog-button view">Yes, remove it!</span></a>
+            <a href="javascript:void(0)" data-role="fav-btn-cancel"><span class="button">Cancel</span></a>
+            <a href="javascript:void(0)" data-role="fav-btn-delete"><span class="button">Yes, remove it!</span></a>
         </div>
     </div>
     <h1>My Favorites</h1>
 
     <div class="empty-list" style="display:none; margin: 100px 0 0 50px;">
-        <img src="{$viewObject.themeWebPath}images/empty.png"/>
+        <img src="{$viewObject.themeWebPath}images/empty-favorites.png"/>
     </div>
-    <div class="favorites-list"></div>
+    <ul class="favorites-list"></ul>
     <div class="favorites-footer">
         <div class="favorites-pager"></div>
     </div>
@@ -28,33 +30,32 @@
 
 {literal}
     <script type="weby/tpl" id="favorites-list-item-tpl">
-        <div class="favorites-list-item" style="position: relative;" data-id="${id}">
+        <li class="favorites-list-item" data-id="${id}">
             <img class="weby-thumbnail" src="${thumbnail}"/>
 
             <div class="weby-data left">
                 <h2>${title}</h2>
-                <p>
-                    <h3>Tags</h3>
-                    <div class="weby-tags-list">
-                        <span class="weby-tag">Tag</span>
-                        <a href="javascript:void(0);"></a>
-                    </div>
-                </p>
+
+                <h3>Tags</h3>
+                <ul class="tags-list">
+                    #for(var x=0; x < tags.length; x++){#
+                    <li class="weby-tag white">#= tags[x].tag #</li>
+                    #}#
+                </ul>
             </div>
             <div class="weby-actions right">
-                <p>${addedToFavoritesTime}</p>
+                <p>Added <time class="passed" datetime="${addedToFavoritesTime}">${addedToFavoritesTime}</time></p>
                 <p>
-                    <span class="weby-quick-data">${hits} hits</span>
-                    <span class="weby-quick-data">${favorites} favorites</span>
-                </p>
-            </div>
-            <div class="weby-actions buttons right">
-                <p style="">
-                    <a href="${public_url}"><span class="button">View</span></a>
-                    <a href="javascript:void(0);"><span class="button">Delete</span></a>
+                    <span class="tag-info">${hits} hits</span>
+                    <span class="tag-info">${favorites} favorites</span></p>
 
+                <p class="buttons">
+                    <a href="javascript: void(0);"><span class="button delete">Delete</span></a>
+                    <a href="${public_url}"><span class="button main view">View</span></a>
                 </p>
             </div>
-        </div>
+        </li>
+
     </script>
 {/literal}
+

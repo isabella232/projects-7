@@ -11,6 +11,7 @@ routes:
     - ['tools/webies/tags', \App\Handlers\ToolsHandler, ajaxGetWebiesByTags] # Gets Webies by tags (used also by WP widget)
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
     - ['tools/tags', \App\Handlers\ToolsHandler, ajaxSearchTags]
+    - ['tools/feedback', \App\Handlers\ToolsHandler, ajaxSendFeedback]
     - ['/^tools\/favorite\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, ajaxToggleFavorite]
     - ['tools/log', \App\Handlers\ToolsHandler, log]
     - ['tools/parse-link', \App\Handlers\LinksHandler, parse]
@@ -37,16 +38,16 @@ routes:
     - ['cron/inactive-users', \App\Handlers\CronHandler, checkInactiveUsers]
     - ['cron/remove-unused-tags', \App\Handlers\CronHandler, removeUnusedTags]
 
-    # STATS ROUTES
-    - ['stats', \App\Handlers\StatsHandler, index]
-    - ['stats/ajax-get-week-stats', \App\Handlers\StatsHandler, ajaxGetWeekStats]
-    - ['stats/ajax-get-month-stats', \App\Handlers\StatsHandler, ajaxGetMonthStats]
-    - ['stats/ajax-get-year-stats', \App\Handlers\StatsHandler, ajaxGetYearStats]
-    - ['stats/ajax-get-stats', \App\Handlers\StatsHandler, ajaxGetStats]
-    - ['stats/ajax-get-widget-usage-stats', \App\Handlers\StatsHandler, ajaxGetWidgetUsageStats]
-    - ['stats/ajax-get-top-users-stats', \App\Handlers\StatsHandler, ajaxGetTopUsersStats]
-    - ['stats/ajax-get-top-webies-stats', \App\Handlers\StatsHandler, ajaxGetTopWebiesStats]
-    - ['stats/ajax-get-active-users-stats', \App\Handlers\StatsHandler, ajaxGetActiveUsersStats]
+    # BACKEND ROUTES
+    - ['backend/main', \App\Handlers\StatsHandler, index]
+    - ['backend/stats/ajax-get-week-stats', \App\Handlers\StatsHandler, ajaxGetWeekStats]
+    - ['backend/stats/ajax-get-month-stats', \App\Handlers\StatsHandler, ajaxGetMonthStats]
+    - ['backend/stats/ajax-get-year-stats', \App\Handlers\StatsHandler, ajaxGetYearStats]
+    - ['backend/stats/ajax-get-stats', \App\Handlers\StatsHandler, ajaxGetStats]
+    - ['backend/stats/ajax-get-widget-usage-stats', \App\Handlers\StatsHandler, ajaxGetWidgetUsageStats]
+    - ['backend/stats/ajax-get-top-users-stats', \App\Handlers\StatsHandler, ajaxGetTopUsersStats]
+    - ['backend/stats/ajax-get-top-webies-stats', \App\Handlers\StatsHandler, ajaxGetTopWebiesStats]
+    - ['backend/stats/ajax-get-active-users-stats', \App\Handlers\StatsHandler, ajaxGetActiveUsersStats]
 
     # GLOBAL ROUTES
     - ['/^([a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]*)$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby

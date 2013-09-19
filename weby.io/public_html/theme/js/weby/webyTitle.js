@@ -46,9 +46,9 @@ function WebyTitle() {
     /**
      * Weby title, tags and description dialog
      */
-	if("WebyTitleDialog" in window){
-		var _dialog = new WebyTitleDialog();
-	}
+    if ("WebyTitleDialog" in window) {
+        var _dialog = new WebyTitleDialog();
+    }
 
 	_share.find('span').click(function(){
 		$(this).parent().toggleClass('active').find('form').toggle();
@@ -69,8 +69,6 @@ function WebyTitle() {
 		var titleWidth = _title[0].scrollWidth;
 		var urlWidth = _url[0].scrollWidth;
 
-		console.log(width)
-		
 		if (width > titleWidth + 40) {
 			_title.css('width', titleWidth + 'px');
 		} else {

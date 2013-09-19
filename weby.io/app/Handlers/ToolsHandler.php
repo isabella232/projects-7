@@ -2,6 +2,7 @@
 
 namespace App\Handlers;
 
+use App\Entities\Favorite\FavoriteEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Screenshot;
@@ -18,26 +19,27 @@ class ToolsHandler extends AbstractHandler
 {
 	use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait;
 
-	/**
-	 * Log JS exception
-	 */
-	public function log() {
-		$errors = json_decode($this->request()->post('errors'), true);
-		$browser = $this->request()->post('browser');
-		foreach ($errors as $e) {
-			$this->logger('webiny_logger')
-			->warning($e['message'], [
-									 urlencode($e['url']),
-									 $e['line'],
-									 $browser
-									 ]);
-		}
-		$this->ajaxResponse(false, 'Got it :)');
-	}
+    /**
+     * Log JS exception
+     */
+    public function log()
+    {
+        $errors = json_decode($this->request()->post('errors'), true);
+        $browser = $this->request()->post('browser');
+        foreach ($errors as $e) {
+            $this->logger('webiny_logger')
+                ->warning($e['message'], [
+                    urlencode($e['url']),
+                    $e['line'],
+                    $browser
+                ]);
+        }
+        $this->ajaxResponse(false, 'Got it :)');
+    }
 
 	public function takeScreenshot($webyId) {
-		if($this->request()->getClientIp() != '127.0.0.1' && $this->request()->getClientIp() != '192.168.249.128'){
-			$this->request()->redirect($this->app()->getConfig()->app->web_path);
+		if($this->request()->getClientIp() != '127.0.0.1' && $this->request()->getClientIp() != '192.168.249.129'){
+			//$this->request()->redirect($this->app()->getConfig()->app->web_path);
 		}
 		$weby = new WebyEntity();
 		$weby->load($webyId);
@@ -74,129 +76,146 @@ class ToolsHandler extends AbstractHandler
 			$weby->getImage($tag)->setKey($key)->save();
 		}
 	}
+    /**
+     * Sends general feedback to email (addresses are in config.yaml)
+     */
+    public function ajaxSendFeedback()
+    {
+        $data = [];
+        $data['name'] = $this->user() ? $this->user()->getFirstName() . ' ' . $this->user()->getLastName() : $this->request('name');
+        $data['email'] = $this->user() ? $this->user()->getEmail() : $this->request('email');
+        $data['message'] =  $this->request()->post('message');
 
-	/**
-	 * Toggle given Weby (loaded by passed id) from user's favorites list
-	 */
-	public function ajaxToggleFavorite($id) {
-		$weby = new WebyEntity();
-		if(!$weby->load($id)) {
-			$this->ajaxResponse(true, 'Could not find Weby!');
-		}
+        $config = $this->app()->getConfig();
+        $absPath = $config->app->theme_abs_path;
+        $feedbackReceivers = $config->feedback_receivers->get('general')->toArray();
+        // Send feedback by email
+        $mailer = $this->mailer();
 
-		// If we got a valid favorite, that means we are deleting it
-		if($this->user()->inFavorites($weby)) {
-			$this->user()->deleteFromFavorites($weby);
-			$this->ajaxResponse(false);
-		}
+        $mailData = [];
+        foreach ($feedbackReceivers as $receiver) {
+            $mailData[$receiver] = [
+                '{name}' => $data['name'],
+                '{email}' => $data['email'],
+                '{message}' => $data['message']
+            ];
+        }
+        // Let's build our message
+        $msg = $mailer->getMessage();
+        $msg->setSubject('Weby.io - User feedback')
+            ->setBodyFromTemplate($absPath . 'templates/emails/feedback.tpl')
+            ->setContentType('text/html')
+            ->setTo($feedbackReceivers);
 
-		// In other case, we are creating a new favorite
-		$this->user()->addToFavorites($weby);
-		$this->ajaxResponse(false);
-	}
+        // Send it
+        $mailer->setDecorators($mailData);
+        $mailer->send($msg);
 
-	/**
-	 * Get user's favorite Webies
-	 */
-	public function ajaxGetFavorites() {
-		$favorites = $this->user()->getFavoriteWebies(true);
-		$data = [
-			'favorites' => $this->_truncateWebyTitle(json_decode($favorites, true)),
-			'count'     => WebyEntity::getTotalRows()
-		];
-		die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
-	}
+        $this->ajaxResponse(false);
+    }
 
-	/**
-	 * Get user's Webies
-	 */
-	public function ajaxGetWebies() {
-		$webies = $this->user()->getWebies(true);
-		$data = [
-			'webies' => $this->_truncateWebyTitle(json_decode($webies, true)),
-			'count'  => WebyEntity::getTotalRows()
-		];
-		die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
-	}
+    /**
+     * Get user's favorite Webies
+     */
+    public function ajaxGetFavorites()
+    {
+        $favorites = $this->user()->getFavoriteWebies(true);
+        $data = [
+            'favorites' => $this->_truncateWebyTitle(json_decode($favorites, true)),
+            'count' => UserEntity::getTotalRows()
+        ];
+        die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
+    }
 
-	/**
-	 * View Weby for screnshot
-	 *
-	 * @param $id
-	 */
-	public function viewWeby($id) {
-		$weby = new WebyEntity();
-		$this->weby = $weby->load($id);
-		$this->setTemplatePath('templates/pages')->setTemplate('screenshot');
-	}
+    /**
+     * Get user's Webies
+     */
+    public function ajaxGetWebies()
+    {
+        $webies = $this->user()->getWebies(true);
+        $data = [
+            'webies' => $this->_truncateWebyTitle(json_decode($webies, true)),
+            'count' => WebyEntity::getTotalRows()
+        ];
+        die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
+    }
 
-	/**
-	 * Mark Weby deleted
-	 *
-	 * @param $webyId
-	 */
-	public function deleteWeby($webyId) {
-		$weby = new WebyEntity();
-		$weby->load($webyId);
+    /**
+     * View Weby for screnshot
+     * @param $id
+     */
+    public function viewWeby($id)
+    {
+        $weby = new WebyEntity();
+        $this->weby = $weby->load($id);
+        $this->setTemplatePath('templates/pages')->setTemplate('screenshot');
+    }
 
-		if($weby->getUser()->getId() != $this->user()->getId()) {
-			$this->ajaxResponse(true, 'You can not delete a Weby that does not belong to you!');
-		}
+    /**
+     * Mark Weby deleted
+     * @param $webyId
+     */
+    public function deleteWeby($webyId)
+    {
+        $weby = new WebyEntity();
+        $weby->load($webyId);
 
-		$weby->delete();
-		$this->ajaxResponse(false);
-	}
+        if ($weby->getUser()->getId() != $this->user()->getId()) {
+            $this->ajaxResponse(true, 'You can not delete a Weby that does not belong to you!');
+        }
 
-	public function ajaxSearchTags() {
-		$search = $this->request()->query('search');
-		$result = WebyEntity::searchTags($search, true);
-		if(!$result) {
-			$result = json_encode([
-								  [
-									  'id'  => 0,
-									  'tag' => $search
-								  ]
-								  ], true);
-		}
-		header('Content-type: application/json; charset=utf-8;');
-		die($result);
-	}
+        $weby->delete();
+        $this->ajaxResponse(false);
+    }
 
-	// TODO: this isn't finished as some parts are still needed to complete this (image and tags)
-	/**
-	 * Gets Webies from given tags
-	 * Also used by Wordpress Webies widget
-	 */
-	public function ajaxGetWebiesByTags() {
-		$tags = $this->request()->query('q');
-		$webiesIds = WebyEntity::getWebiesByTags($tags);
-		$json = [];
-		$weby = new WebyEntity();
-		foreach ($webiesIds as $id) {
-			$weby->load($id);
-			$temp['id'] = $weby->getId();
-			$temp['title'] = $weby->getTitle();
-			$temp['thumbnail'] = 'http://www.hdwallpaperstop.com/wp-content/uploads/2013/02/Cute-Puppy-Black-Eyes-Wallpaper.jpg';
-			$temp['author'] = $weby->getUser()->getFirstName() . ' ' . $weby->getUser()->getLastName();
-			$temp['hits'] = $weby->getTotalHits();
-			$temp['favorites'] = $weby->getFavoriteCount();
-			$temp['url'] = $weby->getPublicUrl();
-			$json[] = $temp;
-		}
+    public function ajaxSearchTags()
+    {
+        $search = $this->request()->query('search');
+        $result = WebyEntity::searchTags($search, true);
+        if (!$result) {
+            $result = json_encode([['id' => 0, 'tag' => $search]], true);
+        }
+        header('Content-type: application/json; charset=utf-8;');
+        die($result);
+    }
 
-		header('Content-type: application/json; charset=utf-8;');
-		die("showWebies(" . json_encode($json) . ");");
-	}
+    // TODO: this isn't finished as some parts are still needed to complete this (image and tags)
+    /**
+     * Gets Webies from given tags
+     * Also used by Wordpress Webies widget
+     */
+    public function ajaxGetWebiesByTags()
+    {
+        $tags = $this->request()->query('q');
+        $webiesIds = WebyEntity::getWebiesByTags($tags);
+        $json = [];
+        $weby = new WebyEntity();
+        foreach ($webiesIds as $id) {
+            $weby->load($id);
+            $temp['id'] = $weby->getId();
+            $temp['title'] = $weby->getTitle();
+            $temp['thumbnail'] = 'http://www.hdwallpaperstop.com/wp-content/uploads/2013/02/Cute-Puppy-Black-Eyes-Wallpaper.jpg';
+            $temp['author'] = $weby->getUser()->getFirstName() . ' ' . $weby->getUser()->getLastName();
+            $temp['hits'] = $weby->getTotalHits();
+            $temp['favorites'] = $weby->getFavoriteCount();
+            $temp['url'] = $weby->getPublicUrl();
+            $json[] = $temp;
+        }
 
-	private function _truncateWebyTitle($webies) {
-		foreach ($webies as &$w) {
-			$title = $this->str($w['title']);
-			if($title->length() > 35) {
-				$w['title'] = $title->truncate(32, '...')->val();
-			}
-		}
+        header('Content-type: application/json; charset=utf-8;');
+        die("showWebies(" . json_encode($json) . ");");
+    }
 
-		return $webies;
-	}
+    private function _truncateWebyTitle($webies)
+    {
+        foreach ($webies as &$w) {
+            $title = $this->str($w['title']);
+            if ($title->length() > 35) {
+                $w['title'] = $title->truncate(32, '...')->val();
+            }
+        }
+
+        return $webies;
+    }
 
 }

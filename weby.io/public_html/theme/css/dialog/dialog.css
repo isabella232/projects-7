@@ -5,9 +5,9 @@
 }
 
 .dialog, .dialog p {
-	color: white;
-	font-size: 15px;
-	background-color: #f25b2b;
+    color: white;
+    font-size: 15px;
+    background-color: #f25b2b;
 }
 
 .dialog fieldset {
@@ -26,18 +26,14 @@
 }
 
 .dialog input, .dialog textarea {
-    width: 460px;
-    padding: 10px 0 10px 10px;
-    margin: 10px 0;
+    width: 450px;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 0 10px 0;
     border-style: none;
     border-bottom: 3px solid #dc420e;
     font-size: 16px;
     font-style: italic;
     resize: none;
-}
-
-textarea.description {
-    height: 70px;
 }
 
 .dialog .button {
@@ -66,6 +62,35 @@ textarea.description {
     background-color: #a8320b;
 }
 
+.dialog h3 {
+    display: inline-block;
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+    margin: 0 3px 0;
+    padding: 0;
+    float: left;
+    line-height: 0.8;
+}
+
+.k-tooltip-content {
+    color: white;
+}
+
+.k-widget.k-tooltip {
+    background: #27b6ac none !important;
+    border: 1px solid #27b6ac !important;
+    font-weight: bold !important;
+}
+
+.k-callout-s {
+    border-top-color: #27b6ac !important;
+}
+
+.k-popup {
+    -webkit-box-shadow: 0 0 1px none !important;
+}
+
 .fancybox-close {
     top: 20px !important;
     right: 20px !important;
@@ -73,4 +98,5 @@ textarea.description {
     height: 15px !important;
     background: url('../../images/sprite2.png') -166px -804px !important
 }
+
 /* ----------------------------- End of dialog CSS ----------------------------- */

@@ -1,133 +1,163 @@
-function FavoritesLoading(){
-	var _el = $('#my-favorites-dialog .dialog-loading');
-	var _initialMessage = 'Loading favorites...';
+function FavoritesLoading() {
+    var _el = $('#favorites-dialog .dialog-loading');
+    var _initialMessage = 'Loading Favorites...';
 
-	this.show = function(){
-		_el.css("display", "block");
-		return this;
-	}
+    this.show = function () {
+        _el.css("display", "block");
+        return this;
+    }
 
-	this.hide = function(){
-		_el.hide();
-		return this;
-	}
+    this.hide = function () {
+        _el.hide();
+        return this;
+    }
 
-	this.setMessage = function(message){
-		_el.find('.text').html(message);
-		return this;
-	}
+    this.setMessage = function (message) {
+        _el.find('.text').html(message);
+        return this;
+    }
 
-	this.setMessage(_initialMessage);
+    this.setMessage(_initialMessage);
 }
 
 function WebyFavorites() {
 
-	var $this = this;
-	var _currentWebyId = '';
-	var _dialog = $("#my-favorites-dialog");
-	var _deleteDialog = $('.delete-confirmation');
-	var _loading = new FavoritesLoading();
-	var _template = kendo.template($('#favorites-list-item-tpl').html());
+    var $this = this;
+    var _currentWebyId = '';
+    var _dialog = $("#favorites-dialog");
+    var _deleteDialog = $('.delete-confirmation');
+    var _loading = new FavoritesLoading();
+    var _template = kendo.template($('#favorites-list-item-tpl').html());
 
-	var favoritesDataSource = new kendo.data.DataSource({
-		type: "odata",
-		serverPaging: true,
-		pageSize: 3,
-		transport: {
-			read: {
-				url: WEB + 'tools/favorites/',
-				contentType: "application/json; charset=utf-8",
-				type: "GET",
-				dataType: "jsonp"
-			},
-			destroy: {
-				url: function () {
-					return WEB + 'tools/favorite/' + _currentWebyId + '/'
-				},
-				dataType: "json",
-				type: "POST"
-			}
-		},
-		schema: {
-			model: kendo.data.Model.define({
-				id: "id"
-			}),
-			data: function (response) {
-				return response.favorites;
-			},
-			total: function (response) {
-				return response.count;
-			}
-		},
-		requestStart: function (e) {
-			_loading.show();
-		},
-		requestEnd: function (e) {
-			_loading.hide().setMessage("Loading favorites...");
-			if(e.type == "destroy"){
-				if(this.data().length == 0){
-					var curPage = this.page();
-					if(curPage > 1){
-						this.page(--curPage);
-					} else {
-						_dialog.find(".empty-list").show();
-						_dialog.find("h1").hide();
-						_dialog.find(".favorites-pager").hide();
-					}
-				} else {
-					this.read();
-				}
-			}
-		}
-	});
+    /**
+     * Load data into DataSource
+     * @type {kendo.data.DataSource}
+     */
+    var favoritesDataSource = new kendo.data.DataSource({
+        type: "odata",
+        serverPaging: true,
+        pageSize: 3,
+        transport: {
+            read: {
+                url: WEB + 'tools/favorites',
+                contentType: "application/json; charset=utf-8",
+                type: "GET",
+                dataType: "jsonp"
+            },
+            destroy: {
+                url: function () {
+                    return WEB + 'tools/favorite/' + _currentWebyId + '/'
+                },
+                dataType: "json",
+                type: "POST"
+            }
+        },
+        schema: {
+            model: kendo.data.Model.define({
+                id: "id"
+            }),
+            data: function (response) {
+                return response.favorites;
+            },
+            total: function (response) {
+                return response.count;
+            }
+        },
+        sync: function () {
+            TimePassed.parse();
+        },
+        requestStart: function (e) {
+            _loading.show();
+        },
+        requestEnd: function (e) {
+            console.log('asdsad')
+            _loading.hide().setMessage("Loading favorites...")
+            console.log(e)
+            if (e.type == "read" && e.response.count == 0) {
+                _dialog.find(".empty-list").show();
+                _dialog.find("h1").hide();
+                _dialog.find(".favorites-pager").hide();
+            } else {
+                _dialog.find(".empty-list").hide();
+                _dialog.find("h1").show();
+                _dialog.find(".favorites-pager").show();
+            }
+            if (e.type == "destroy") {
+                if (this.data().length == 0) {
+                    var curPage = this.page();
+                    if (curPage > 1) {
+                        this.page(--curPage);
+                    } else {
+                        _dialog.find(".empty-list").show();
+                        _dialog.find("h1").hide();
+                        _dialog.find(".favorites-pager").hide();
+                    }
+                } else {
+                    this.read();
+                }
+            }
+        }
+    });
 
-	$("#my-favorites-dialog .favorites-pager").kendoPager({
-		dataSource: favoritesDataSource,
-		buttonCount: 10,
-		info: false
-	});
+    /**
+     * Returns data source
+     * @returns {kendo.data.DataSource}
+     */
+    this.refreshDataSource = function () {
+        favoritesDataSource.read();
+        favoritesDataSource.sync();
+    }
 
-	$("#my-favorites-dialog .favorites-list").kendoListView({
-		dataSource: favoritesDataSource,
-		template: _template
-	});
+    _dialog.find('.favorites-pager').kendoPager({
+        dataSource: favoritesDataSource,
+        buttonCount: 10,
+        info: false
+    });
 
-	_deleteDialog.find('[data-role="fav-btn-cancel"]').click(function(){
-		_deleteDialog.hide();
-	});
+    _dialog.find('.favorites-list').kendoListView({
+        dataSource: favoritesDataSource,
+        template: _template,
+        dataBound: function (e) {
+            TimePassed.parse();
+        }
+    });
 
-	_deleteDialog.find('[data-role="fav-btn-delete"]').click(function(){
-		_deleteDialog.hide();
-		favoritesDataSource.remove(favoritesDataSource.get(_currentWebyId));
-		_loading.setMessage("Removing Weby from favorites...");
-		favoritesDataSource.sync();
-	});
+    _deleteDialog.find('[data-role="fav-btn-cancel"]').click(function () {
+        _deleteDialog.hide();
+    });
 
-    $('#my-favorites-dialog .favorites-list').on('click', '.dialog-button.delete', function () {
+    _deleteDialog.find('[data-role="fav-btn-delete"]').click(function () {
+        console.log('current id je : ' + _currentWebyId)
+        _deleteDialog.hide();
+        favoritesDataSource.remove(favoritesDataSource.get(_currentWebyId));
+        _loading.setMessage("Removing Weby...");
+        favoritesDataSource.sync();
+    });
+
+    $('.favorites-list').on('click', '.button.delete', function () {
         var item = $(this).closest('.favorites-list-item');
         _currentWebyId = item.attr("data-id");
         _deleteDialog.show();
     });
 
-	// Bind 'My Favorites' dialog
-	$('[data-role="my-favorites"]').click(function (e) {
-		e.preventDefault();
-		$this.open();
-	});
+    // Bind My favorites
+    $('[data-role="favorites-dialog-open"]').click(function (e) {
+        e.preventDefault();
+        $this.open();
+    });
 
-    // Opens dialog
-	this.open = function (modal) {
-        $("time.timeago").timeago();
-		if (typeof modal == "undefined") {
-			modal = false;
-		}
+    this.open = function (modal) {
+        if (typeof modal == "undefined") {
+            modal = false;
+        }
 
-		$.fancybox($('#my-favorites-dialog'), {
-			modal: modal,
-			type: 'inline',
-			width: 772,
-			height: 456,
-			autoSize: false
-		});
-	}
+        $.fancybox($('#favorites-dialog'), {
+            modal: modal,
+            type: 'inline',
+            width: 772,
+            height: 456,
+            autoSize: false
+        });
+        TimePassed.parse();
+    }
 }

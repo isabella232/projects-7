@@ -90,6 +90,15 @@ class StatsStorage
     }
 
     /**
+     * @param UserEntity $user
+     * @return \App\Lib\DatabaseResult
+     */
+    protected function _sqlUpdateUsersLogin($user) {
+        $query = "UPDATE {$this->db()->w_user} SET signin_count=signin_count+1 WHERE id=?";
+        $bind = [$user];
+        return $this->db()->execute($query, $bind);
+    }
+    /**
      * SQL for getting top users (by number of Webies created)
      * @param $type
      * @param $value

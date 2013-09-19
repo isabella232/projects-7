@@ -1,4 +1,4 @@
-<div class="dialog webies-dialog" id="my-webies-dialog" style="display: none">
+<div class="dialog webies-dialog" id="dashboard-dialog" style="display: none">
 
     <div class="dialog-loading">
         <div class="overlay"></div>
@@ -32,7 +32,7 @@
 
 {literal}
     <script type="weby/tpl" id="webies-list-item-tpl">
-        <li class="webies-list-item">
+        <li class="webies-list-item" data-id="${id}">
             <img class="weby-thumbnail" src="${thumbnail}"/>
 
             <div class="weby-data left">
@@ -46,14 +46,13 @@
                 </ul>
             </div>
             <div class="weby-actions right">
-                <p>Edited: ${modified_on}</p>
-
+                <p>Edited <time class="passed" datetime="${modified_on}">${modified_on}</time></p>
                 <p>
                     <span class="tag-info">${hits} hits</span>
                     <span class="tag-info">${favorites} favorites</span></p>
 
                 <p class="buttons">
-                    <a href="${public_url}"><span class="button delete">Delete</span></a>
+                    <a href="javascript: void(0);"><span class="button delete">Delete</span></a>
                     <a href="${editor_url}"><span class="button edit">Edit</span></a>
                     <a href="${public_url}"><span class="button main view">View</span></a>
                 </p>

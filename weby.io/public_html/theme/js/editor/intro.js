@@ -13,7 +13,7 @@ function Intro() {
 
     // Steps, add as many as you like, the order is applied as elements are inserted into steps array
     var steps = [
-        {element: $('#smtg'), text: 'These are the widgets you can use, just pick one and drag it to the workspace! It\'s that easy!', position: 'bottom'},
+        {element: $('#toolbar'), text: 'These are the widgets you can use, just pick one and drag it to the workspace! It\'s that easy!', position: 'bottom'},
         {element: $('#toolbar-wrapper'), text: 'These are the widgets you can use, just pick one and drag it to the workspace! It\'s that easy!', position: 'right'},
         {element: $('#weby-toolbar-wrapper'), text: 'Once you insert a widget, you can manipulate them using these buttons.', position: 'left'},
         {element: $('div.header-middle'), text: 'This is your Weby name and URL which you can share with the rest of the world...', position: 'right'},

@@ -87,6 +87,7 @@ body.unselectable * {
 .header textarea.embed-code {
     font-size: 11px;
     height: 60px;
+    resize: none;
 }
 
 .header .header-right {

@@ -88,7 +88,7 @@ abstract class WebyEntityProperties extends WebyEntityStorage
      */
     public function getTitle()
     {
-        return $this->_title;
+        return $this->_title == '' ? 'Untitled' : $this->_title;
     }
     /**
      * @return string

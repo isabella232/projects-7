@@ -21,4 +21,9 @@
             </li>
         </ul>
     </li>
+    <script type="weby/tpl" id="no-widgets-dialog">
+        <div class="dialog">
+            <div style="padding: 10px; color: white;">Before sharing your Weby, please add some widgets!</div>
+        </div>
+    </script>
 {/if}

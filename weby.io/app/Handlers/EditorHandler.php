@@ -161,17 +161,6 @@ class EditorHandler extends AbstractHandler
     }
 
     /**
-     * Sanitizing input (strip slashes, trim, replace spaces
-     */
-    private function _sanitizeInput(&$input, $toLower = false) {
-        $input = $this->str($input)->trim()->stripTags()->val();
-        $input = preg_replace('/[ ]+/', ' ', $input);
-        if($toLower) {
-            $input = strtolower($input);
-        }
-    }
-
-    /**
      * Shows Weby editor
      */
     private function _editor()

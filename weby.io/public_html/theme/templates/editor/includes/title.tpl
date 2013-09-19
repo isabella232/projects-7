@@ -1,6 +1,6 @@
 <div class="header-middle header-middle-wrap">
     <div class="edit-title" data-role="weby-title">
-        <h2>{$weby.title}</h2>
+        <h2>{$weby.title|default:'Untitled'}</h2>
         <a href="javascript:void(0)">Edit title</a>
     </div>
     <p class="weby-url" data-role="weby-url"><a title="View my Weby" target="_blank" href="{$weby.publicUrl}">{$weby.publicUrl}</a></p>
@@ -10,7 +10,7 @@
             <fieldset>
                 <p>
                     <label>Full URL</label>
-                    <input type="text" data-role="weby-full-url" value="{$weby.publicUrl}">
+                    <input readonly type="text" data-role="weby-full-url" value="{$weby.publicUrl}">
                 </p>
                 <p>
                     <label>Embed Code</label>

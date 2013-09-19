@@ -14,28 +14,39 @@ function WebyTitleDialog() {
     var _tagsInput = $('#weby-tag-input');
     var _tagsData = $('.weby-tags');
     var _descriptionInput = $('#weby-description-field');
+    var _descriptionLength = $('#weby-description-length');
     var _tagsDropdown = $('#weby-tags-dropdown');
     var _tagsList = $('#tags-list');
     var _tagsLog = {};
     var _editing = false;
     var _timer = false;
 
+
+    // Tooltips
+    var _tooltips = _webyDialog.kendoTooltip({
+        showOn: false,
+        position: "top",
+        filter: ".has-tooltip",
+        animation: {
+            open: {
+                effects: "fade:in",
+                duration: 100
+            }
+        }
+    }).data("kendoTooltip");
+
     var init = function () {
         _bindDialogGeneralActions();
         _bindTagsFocus();
         _bindTagSearching();
         _bindRemoveTag();
-        _checkTitle();
+
+        _descriptionLength.text(_calculateDescriptionLength());
     }
 
-    /**
-     * If title is empty, then automatically show dialog to fill this information
-     * @private
-     */
-    var _checkTitle = function () {
-        if (App.getWeby().getTitle() == '') {
-            _dialogOpener.click();
-        }
+    // Calculates number of characters in description input field
+    var _calculateDescriptionLength = function () {
+        return (160 - _descriptionInput.val().length);
     }
 
     /**
@@ -61,12 +72,10 @@ function WebyTitleDialog() {
 
         // Closing dialog
         $('[data-role="weby-dialog-close"]').click(function () {
-            if (_titleInput.val() != '') {
-                $.fancybox.close();
-                _editing = false;
-                _clearTagsInput();
-                _cancelAllChanges();
-            }
+            $.fancybox.close();
+            _editing = false;
+            _clearTagsInput();
+            _cancelAllChanges();
         });
 
         // Save button
@@ -78,10 +87,11 @@ function WebyTitleDialog() {
                 App.getWeby().setDescription(_descriptionInput.val());
 
                 App.getWeby().save(false, {tagLog: _tagsLog});
+                App.getDashboard().refreshDataSource();
                 $.fancybox.close();
                 _clearTagsInput();
             } else {
-                console.log('save first!!')
+                _tooltips.show($('#weby-title-field'));
             }
         });
 
@@ -94,6 +104,14 @@ function WebyTitleDialog() {
     var _bindTagSearching = function () {
         _tagsInput.on('input', function () {
             var search = $(this).text();
+            if (search.length > 25) {
+                _tooltips.show(_tagsInput);
+                var restricted = search.substr(0, 25);
+                $(this).text(restricted);
+                setEndOfContenteditable(document.getElementById('weby-tag-input'));
+            } else {
+                _tooltips.hide(_tagsInput);
+            }
             if (_timer) {
                 clearTimeout(_timer);
             }
@@ -102,6 +120,31 @@ function WebyTitleDialog() {
                 _requestTags(search)
             }, 600)
         });
+    }
+
+
+    /**
+     * Sets cursor to the end of content editable (holy shit)
+     * @param contentEditableElement
+     */
+    var setEndOfContenteditable = function (contentEditableElement) {
+        var range, selection;
+        if (document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
+        {
+            range = document.createRange();//Create a range (a range is a like the selection but invisible)
+            range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
+            range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+            selection = window.getSelection();//get the selection object (allows you to change selection)
+            selection.removeAllRanges();//remove any selections already made
+            selection.addRange(range);//make the range you have just created the visible selection
+        }
+        else if (document.selection)//IE 8 and lower
+        {
+            range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
+            range.moveToElementText(contentEditableElement);//Select the entire contents of the element with the range
+            range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+            range.select();//Select the range (make it the visible selection
+        }
     }
 
     /**
@@ -148,7 +191,7 @@ function WebyTitleDialog() {
                     }
                 });
             } else {
-                console.log('Over 10')
+                _tooltips.show($('#weby-tags-wrapper'));
             }
         } else {
             if (search.length == 0) {
@@ -217,6 +260,10 @@ function WebyTitleDialog() {
             _decrementTag(tag.attr('data-tag'));
             tag.remove();
         })
+
+        _tagsData.on('click', 'span.weby-tag', function () {
+            $(this).remove();
+        })
     }
 
     /**
@@ -239,6 +286,11 @@ function WebyTitleDialog() {
         _checkTag(tag);
     }
 
+    /**
+     * Checks if given tag exists in _tagsLog property (if status is zero, then delete it)
+     * @param tag
+     * @private
+     */
     var _checkTag = function (tag) {
         if (typeof _tagsLog[tag] == 'undefined') {
             _tagsLog[tag] = 0;
@@ -250,21 +302,90 @@ function WebyTitleDialog() {
     }
 
     /**
+     * Cancel all changes (revert title, description and tags)
+     * @private
+     */
+    var _cancelAllChanges = function () {
+        _titleInput.val(App.getWeby().getTitle());
+        _descriptionInput.val(App.getWeby().getDescription());
+        _refreshTagData(App.getWeby().getTags());
+        _tagsLog = {};
+    }
+
+    _titleInput.on('input', function () {
+        if (_titleInput.val().length == 50) {
+            _tooltips.show(_titleInput);
+        }
+    });
+
+    /**
      * When user presses "Enter" on tags input, insert new tag into added list
      */
-    _tagsInput.keypress(function (e) {
+    _tagsInput.keydown(function (e) {
         var event = e || window.event;
         var charCode = event.which || event.keyCode;
         switch (charCode) {
             case 13:
                 if (_timer == false && _tagsList.find('li').length > 0) {
-                    addToList(_tagsList.find('li:first').data('id'), _tagsList.find('li:first').data('tag'));
+                    if (_tagsList.find('li.tag-selected').length == 0) {
+                        addToList(_tagsList.find('li:first').data('id'), _tagsList.find('li:first').data('tag'));
+                    } else {
+                        addToList(_tagsList.find('li.tag-selected').data('id'), _tagsList.find('li.tag-selected').data('tag'));
+                    }
                     _clearTagsInput();
                 } else {
                     e.preventDefault();
                 }
                 break;
+            case 40:
+                if (_tagsList.find('li').length > 0) {
+                    e.preventDefault();
+                    var suggestedTags = _tagsList.find('li');
+                    var currentPosition = -1;
+                    suggestedTags.each(function (i, e) {
+                        if ($(this).hasClass('tag-selected')) {
+                            currentPosition = i;
+                            return false;
+                        }
+                    });
+                    if ((currentPosition + 1) < suggestedTags.length) {
+                        $(suggestedTags[currentPosition]).removeClass('tag-selected');
+                        $(suggestedTags[currentPosition + 1]).addClass('tag-selected');
+                    }
+                }
+                break;
+            case 38:
+                if (_tagsList.find('li').length > 0) {
+                    e.preventDefault();
+                    var suggestedTags = _tagsList.find('li');
+                    var currentPosition = -1;
+                    suggestedTags.each(function (i, e) {
+                        if ($(this).hasClass('tag-selected')) {
+                            currentPosition = i;
+                            return false;
+                        }
+                    });
+                    if (currentPosition > 0) {
+                        $(suggestedTags[currentPosition]).removeClass('tag-selected');
+                        $(suggestedTags[currentPosition - 1]).addClass('tag-selected');
+                    }
+                }
+                break;
+            case 8:
+                if (_tagsInput.text() == '' && _tagsData.find('span.weby-tag').length > 0) {
+                    _tagsData.find('span.weby-tag:last').remove();
+                }
+                break;
         }
+    });
+
+
+    /**
+     * When user hovers over an item in list, add appropriate class
+     */
+    _tagsList.on('hover', 'li', function () {
+        _tagsList.find('li').removeClass('tag-selected');
+        $(this).addClass('tag-selected');
     });
 
     /**
@@ -275,12 +396,16 @@ function WebyTitleDialog() {
         _clearTagsInput();
     });
 
-    var _cancelAllChanges = function () {
-        _titleInput.val(App.getWeby().getTitle());
-        _descriptionInput.val(App.getWeby().getDescription());
-        _refreshTagData(App.getWeby().getTags());
-        _tagsLog = {};
-    }
+    /**
+     * When user clicks on tag in a dropdown list, add selected tag to added list
+     */
+    _descriptionInput.on('input', function (e) {
+        if (_calculateDescriptionLength == 0) {
+            e.preventDefault();
+        }
+        _descriptionLength.text(_calculateDescriptionLength());
+
+    });
 
     this.webyLoaded = function () {
         init();

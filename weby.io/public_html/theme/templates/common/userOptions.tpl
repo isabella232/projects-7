@@ -10,10 +10,10 @@
     <span class="dropdown-arrow"></span>
     <ul>
         <li>
-            <a href="javascript:void(0);" data-role="my-webies">Your Webies</a>
+            <a href="javascript:void(0);" data-role="dashboard-dialog-open">Your Webies</a>
         </li>
         <li>
-            <a href="javascript:void(0);" data-role="my-favorites">Your favorites</a>
+            <a href="javascript:void(0);" data-role="favorites-dialog-open">Your favorites</a>
         </li>
         <li>
             <a href="{$viewObject.webPath}logout">Sign out</a>

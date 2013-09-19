@@ -257,6 +257,10 @@ var AppClass = function () {
         return _weby;
     }
 
+    this.getDashboard = function() {
+        return _dashboard;
+    }
+
     /**
      * Unset current active widget
      */

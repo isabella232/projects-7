@@ -33,7 +33,7 @@ class SocialData
         }
 
         // If no data in cache, then try to load from social services
-        $data = $this->_requestAllData($weby->getPublicUrl());
+        $data = $this->_requestAllData($weby);
         if ($data) {
             // If it succeeds, update data in database and cache
             $weby->setShareCount($data)->save();
@@ -50,51 +50,57 @@ class SocialData
 
     /**
      * Requests all data from social services (Facebook, Google, Twitter)
-     * @param $url
+     * @param $weby
+     * @internal param $url
      * @return Array|Boolean
      */
-    private function _requestAllData($url)
+    private function _requestAllData($weby)
     {
-        $data[ServiceType::FACEBOOK] = $this->_getFacebookShareCount($url);
+        $data[ServiceType::FACEBOOK] = $this->_getFacebookShareCount($weby);
         if ($data[ServiceType::FACEBOOK] === false) {
             return false;
         }
 
-        $data[ServiceType::GOOGLE] = $this->_getGoogleShareCount($url);
-        if ($data[ServiceType::GOOGLE] === false) {
-            return false;
-        }
 
-        $data[ServiceType::TWITTER] = $this->_getTwitterShareCount($url);
+        $data[ServiceType::TWITTER] = $this->_getTwitterShareCount($weby);
         if ($data[ServiceType::TWITTER] === false) {
             return false;
         }
 
+        $data[ServiceType::GOOGLE] = $this->_getGoogleShareCount($weby);
+        if ($data[ServiceType::GOOGLE] === false) {
+            return false;
+        }
+
         return $data;
+        
     }
 
 
     /**
      * Gets number of shares made by Twitter
-     * @param $url
+     * @param $weby
+     * @internal param $url
      * @return int|string
      */
-    private function _getTwitterShareCount($url)
+    private function _getTwitterShareCount(WebyEntity $weby)
     {
-        $content = self::_parse("http://cdn.api.twitter.com/1/urls/count.json?url=" . $url);
+        $content = self::_parse("http://cdn.api.twitter.com/1/urls/count.json?url=" . urlencode($weby->getPublicUrl() . '?utm_source=share-twitter&utm_medium=social&utm_campaign=' . $weby->getSlug() . '-' . $weby->getId()));
         $json = json_decode($content, true);
+        
         $result['count'] = $json['count'];
         return isset($result['count']) ? $result['count'] : false;
     }
 
     /**
      * Gets number of shares made by Facebook
-     * @param $url
+     * @param $weby
+     * @internal param $url
      * @return int|string
      */
-    private function _getFacebookShareCount($url)
+    private function _getFacebookShareCount(WebyEntity $weby)
     {
-        $content = self::_parse("http://graph.facebook.com/?id=" . $url);
+        $content = self::_parse("http://graph.facebook.com/?id=" . urlencode($weby->getPublicUrl() . '?utm_source=share-facebook&utm_medium=social&utm_campaign=' . $weby->getSlug() . '-' . $weby->getId()));
         $json = json_decode($content, true);
         return isset($json['shares']) ? $json['shares'] : false;
     }
@@ -138,16 +144,18 @@ class SocialData
 
     /**
      * Gets number of shares made by Google
-     * @param $url
+     * @param $weby
+     * @internal param $url
      * @return int|string
      */
-    private function _getGoogleShareCount($url)
+    private function _getGoogleShareCount(WebyEntity $weby)
     {
         $curl = curl_init();
+
         curl_setopt($curl, CURLOPT_URL, "https://clients6.google.com/rpc");
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, '[{"method":"pos.plusones.get","id":"p","params":{"nolog":true,"id":"' . rawurldecode($url) . '","source":"widget","userId":"@viewer","groupId":"@self"},"jsonrpc":"2.0","key":"p","apiVersion":"v1"}]');
+        curl_setopt($curl, CURLOPT_POSTFIELDS, '[{"method":"pos.plusones.get","id":"p","params":{"nolog":true,"id":"' . $weby->getPublicUrl() . '?utm_source=share-google&utm_medium=social&utm_campaign=' . $weby->getSlug() . '-' . $weby->getId() . '","source":"widget","userId":"@viewer","groupId":"@self"},"jsonrpc":"2.0","key":"p","apiVersion":"v1"}]');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
         $curl_results = curl_exec($curl);
@@ -179,7 +187,7 @@ class SocialData
         $data = is_array($data) ? serialize($data) : $data;
 
         // Save into cache, TTL is given is used from configuration file
-        $ttl = $this->app()->getConfig()->app->caching_ttl->social_share_counts;
+        $ttl = $this->app()->getConfig()->caching_ttl->social_share_counts;
         $cache->save('weby.share.' . $webyId, $data, $ttl);
     }
 

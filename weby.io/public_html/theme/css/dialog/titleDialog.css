@@ -1,14 +1,15 @@
 .weby-tag {
-    background: #27b6ac url("../../images/tag-left-border.png") no-repeat left;
+    background: #27b6ac url("../../images/sprite3.png") no-repeat -6px -3px;
     border: none;
     color: white;
-    height: 19px;
+    height: 18px;
     font-style: normal;
-    padding: 1px 5px 0 15px;
+    padding: 0px 5px 0 15px;
     font-size: 13px;
     text-transform: uppercase;
     margin-top: 3px;
-    margin-left: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
     float: left;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -29,14 +30,16 @@
     display: inline-block;
     height: 9px;
     width: 9px;
-    background-image: url('../../images/delete-tag.png');
+    background: url('../../images/sprite3.png');
+    background-repeat: none;
+    background-position: 15px 12px;
     margin: 2px 0 0 3px;
 }
 
 #weby-tags-wrapper {
     width: 450px;
-    padding: 10px 10px 10px 10px;
-    margin: 10px 0;
+    padding: 10px;
+    margin: 10px 0 10px 0;
     border-style: none;
     border-bottom: 3px solid #dc420e;
     font-size: 16px;
@@ -45,15 +48,24 @@
     display: inline-block;
     background-color: white;
     height: auto;
+    min-height: 23px;
     position: relative;
 }
 
 #weby-tag-input {
     display: inline-block;
-    padding: 0 4px 0;
+    padding: 0 1px 0;
     width: auto;
     float: left;
     margin: 3px 0 0;
+}
+
+#weby-tags-wrapper .placeholder {
+    font-family: Arial, sans-serif;
+    color: #a2a2a2;
+    padding: 0;
+    margin: 0;
+
 }
 
 #weby-tags-dropdown {
@@ -78,13 +90,17 @@
     padding: 4px;
 }
 
+#tags-list .tag-selected {
+    background-color: #27b6ac;
+    color: white;
+}
+
 #tags-list li {
     color: black;
 }
 
 #tags-list li:hover {
     cursor: pointer;
-    color: #f57e2b;
 }
 
 .dialog h2 {
@@ -93,17 +109,6 @@
     color: #fff;
     margin: 0 0 7px 0;
     padding: 0;
-}
-
-.dialog h3 {
-    display: inline-block;
-    font-weight: 400;
-    font-size: 18px;
-    color: #fff;
-    margin: 0 3px 0;
-    padding: 0;
-    float: left;
-    line-height: 0.8;
 }
 
 .dialog .tag-info {
@@ -128,10 +133,27 @@
     top: 20px;
 }
 
+#weby-dialog #weby-description-length {
+    float: right;
+    width: auto;
+    padding: 0 5px 0 5px;
+    background-color: white;
+    color: #f25b2b;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 .dialog .dialog-loading .text {
     display: inline-block;
 }
 
-.dialog ul.k-pager-numbers li {
+.dialog .k-animation-container {
+    right: 0;
+}
 
+#weby-dialog #weby-description-field {
+    margin-top: 0px;
+    min-height: 60px;
+    font-size: 13px;
+    overflow: auto;
 }

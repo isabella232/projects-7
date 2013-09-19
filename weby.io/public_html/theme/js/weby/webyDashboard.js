@@ -1,5 +1,5 @@
 function DashboardLoading() {
-    var _el = $('#my-webies-dialog .dialog-loading');
+    var _el = $('#dashboard-dialog .dialog-loading');
     var _initialMessage = 'Loading Webies...';
 
     this.show = function () {
@@ -24,9 +24,8 @@ function WebyDashboard() {
 
     var $this = this;
     var _currentWebyId = '';
-    var _dialog = $("#my-webies-dialog");
+    var _dialog = $("#dashboard-dialog");
     var _deleteDialog = $('.delete-confirmation');
-    var _currentTagsLists = _dialog.find('.tags-list');
     var _loading = new DashboardLoading();
     var _template = kendo.template($('#webies-list-item-tpl').html());
 
@@ -60,13 +59,23 @@ function WebyDashboard() {
                 return response.count;
             }
         },
+        sync: function () {
+            TimePassed.parse();
+        },
         requestStart: function (e) {
             _loading.show();
         },
         requestEnd: function (e) {
-
             _loading.hide().setMessage("Loading Webies...");
-
+            if (e.type == "read" && e.response.count == 0) {
+                _dialog.find(".empty-list").show();
+                _dialog.find("h1").hide();
+                _dialog.find(".webies-pager").hide();
+            } else {
+                _dialog.find(".empty-list").hide();
+                _dialog.find("h1").show();
+                _dialog.find(".webies-pager").show();
+            }
             if (e.type == "destroy") {
                 if (this.data().length == 0) {
                     var curPage = this.page();
@@ -84,21 +93,26 @@ function WebyDashboard() {
         }
     });
 
+    /**
+     * Returns data source
+     * @returns {kendo.data.DataSource}
+     */
+    this.refreshDataSource = function () {
+        webiesDataSource.read();
+        webiesDataSource.sync();
+    }
+
     _dialog.find('.webies-pager').kendoPager({
         dataSource: webiesDataSource,
         buttonCount: 10,
-        info: false,
-        change: function () {
-            // TODO: Transform time
-        }
+        info: false
     });
-
 
     _dialog.find('.webies-list').kendoListView({
         dataSource: webiesDataSource,
         template: _template,
-        change: function () {
-            // TODO: Transform time
+        dataBound: function (e) {
+            TimePassed.parse();
         }
     });
 
@@ -113,14 +127,14 @@ function WebyDashboard() {
         webiesDataSource.sync();
     });
 
-    $('.webies-list').on('click', '.dialog-button.delete', function () {
+    $('.webies-list').on('click', '.button.delete', function () {
         var item = $(this).closest('.webies-list-item');
         _currentWebyId = item.attr("data-id");
         _deleteDialog.show();
     });
 
     // Bind My Webies
-    $('[data-role="my-webies"]').click(function (e) {
+    $('[data-role="dashboard-dialog-open"]').click(function (e) {
         e.preventDefault();
         $this.open();
     });
@@ -130,12 +144,13 @@ function WebyDashboard() {
             modal = false;
         }
 
-        $.fancybox($('#my-webies-dialog'), {
+        $.fancybox($('#dashboard-dialog'), {
             modal: modal,
             type: 'inline',
             width: 772,
             height: 456,
             autoSize: false
         });
+        TimePassed.parse();
     }
 }

@@ -34,6 +34,10 @@ class Stats extends StatsStorage
         $this->_currentMonthDaysNumber = date('t');
     }
 
+    public function updateUsersLoginCount(UserEntity $user) {
+        $this->_sqlUpdateUsersLogin($user->getId());
+    }
+
     /**
      * Upgrades statistics for total registered users (when new users login by Facebook or Google)
      */

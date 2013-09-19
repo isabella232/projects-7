@@ -1,0 +1,12 @@
+#feedback-dialog textarea {
+    height: 100px;
+    font-size: 13px;
+}
+
+#feedback-dialog .end-message {
+    display: none;
+}
+
+#feedback-dialog .end-message p {
+    text-align: center;
+}

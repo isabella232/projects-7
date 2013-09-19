@@ -65,7 +65,7 @@ class UserEntity extends UserEntityCrud
                     'thumbnail' => $weby->getImage('dashboard')->getUrl(),
                     'title' => $weby->getTitle(),
                     'slug' => $weby->getSlug(),
-                    'modified_on' => date('F d, Y \a\t h:m a', strtotime($weby->getModifiedOn())),
+                    'modified_on' => date('Y-m-d H:i:s', strtotime($weby->getModifiedOn())),
                     'public_url' => $weby->getPublicUrl(),
                     'editor_url' => $weby->getEditorUrl(),
                     'hits' => $weby->getTotalHits(),
@@ -119,6 +119,7 @@ class UserEntity extends UserEntityCrud
                     'hits' => $weby->getTotalHits(),
                     'favorites' => $weby->getFavoriteCount(),
                     'addedToFavoritesTime' => $weby->getAddedToFavoritesTime(),
+                    'tags' => $weby->getTags(true),
                 ];
             }
             return json_encode($tmp);

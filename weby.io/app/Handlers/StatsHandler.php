@@ -19,11 +19,6 @@ class StatsHandler extends AbstractHandler
      */
     public function index()
     {
-        /*        $query = "INSERT INTO {$this->db()->w_user} (email, service_name, username, last_login) VALUES (?,?,?, NOW())";
-                for($i = 1; $i<= 10000; $i++) {
-                    $bind = ['email_'.$i.'@net.hr', 'google', 'user_' . $i . '_name'];
-                    $this->db()->execute($query, $bind);
-                }*/
     }
 
     /**

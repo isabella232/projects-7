@@ -17,13 +17,15 @@ abstract class AbstractHandler
     private $_template = '';
     private $_templatePath = '';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_template = Router::getInstance()->getMethod();
         $handlerTemplate = Router::getInstance()->getHandler()->explode('\\')->last()->replace('Handler', '')->caseLower();
         $this->_templatePath = 'templates/' . $handlerTemplate;
     }
 
-    public function output() {
+    public function output()
+    {
         View::getInstance()->display($this->_template, $this->_dataContainer, $this->_templatePath);
     }
 
@@ -32,9 +34,10 @@ abstract class AbstractHandler
      * @param $dir String Final path will be theme_abs_path/$dir
      * @return $this
      */
-    public function setTemplatePath($dir) {
+    public function setTemplatePath($dir)
+    {
         $this->_templatePath = $dir;
-		return $this;
+        return $this;
     }
 
     /**
@@ -42,17 +45,20 @@ abstract class AbstractHandler
      * @param $template String Template name WITHOUT .tpl extension
      * @return $this
      */
-    public function setTemplate($template) {
+    public function setTemplate($template)
+    {
         $this->_template = $template;
-		return $this;
+        return $this;
     }
 
-    public function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->_dataContainer[$name] = $value;
     }
 
-    public function __get($name) {
-        if(isset($this->_dataContainer[$name])) {
+    public function __get($name)
+    {
+        if (isset($this->_dataContainer[$name])) {
             return $this->_dataContainer[$name];
         }
 
@@ -63,18 +69,31 @@ abstract class AbstractHandler
      * Ajax response
      *
      * @param Boolean $error
-     * @param String  $msg  (OPTIONAL)
-     * @param Array   $data (OPTIONAL)
+     * @param String $msg  (OPTIONAL)
+     * @param Array $data (OPTIONAL)
      */
-    public function ajaxResponse($error, $msg = '', $data = array()) {
+    public function ajaxResponse($error, $msg = '', $data = array())
+    {
         $response = array(
             'error' => $error,
-            'msg'   => $msg,
-            'data'  => $data
+            'msg' => $msg,
+            'data' => $data
         );
 
         header('Content-type: application/json; charset=utf-8;');
         die(json_encode($response));
+    }
+
+    /**
+     * Sanitizing input (strip slashes, trim, replace spaces
+     */
+    protected function _sanitizeInput(&$input, $toLower = false)
+    {
+        $input = $this->str($input)->trim()->stripTags()->val();
+        $input = preg_replace('/[ ]+/', ' ', $input);
+        if ($toLower) {
+            $input = strtolower($input);
+        }
     }
 
 }
