@@ -174,6 +174,15 @@ abstract class WebyEntityStorage extends EntityAbstract
         return $this->_getDb()->execute($query, $bind)->fetchValue();
     }
 
+    /**
+     * Finds all users that have this Weby in their favorites list
+     */
+    protected function _sqlGetUsersFavorited($limit) {
+        $query = "SELECT user FROM {$this->_getDb()->w_favorite} WHERE weby=? LIMIT $limit";
+        $bind = array($this->_id);
+        return self::_getDb()->execute($query, $bind)->fetchArray();
+    }
+
     protected static function _sqlGetWebiesByTags($tags)
     {
         $query = "SELECT id FROM " . self::_getDb()->w_weby;

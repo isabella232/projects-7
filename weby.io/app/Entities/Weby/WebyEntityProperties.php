@@ -137,6 +137,13 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     }
 
     /**
+     * Returns all users that put this Weby into their favorites list
+     */
+    public function getUsersFavorited($limit) {
+
+    }
+
+    /**
      * @return null
      */
     public function getHits()
