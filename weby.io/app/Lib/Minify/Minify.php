@@ -427,15 +427,19 @@ class Minify
 
         if ($processType == 'css') {
             preg_match('|theme/(.*)\/(.*)|', $this->cssRoot, $matches);
-			$rootPath = $this->themeWebPath.'/../'.$matches[1];
+		$rootPath = $this->themeWebPath.$matches[1];
 
-			//set web root
-	        $str = str_replace('src="../', 'src="'.$rootPath.'/../', $str);
+		//set web root
+		$str = str_replace('src="../', 'src="'.$rootPath.'/../', $str);
 	        $str = str_replace("src='../", "src='".$rootPath.'/../', $str);
 	        $str = str_replace('url("../', 'url("'.$rootPath.'/../', $str);
 	        $str = str_replace("url('../", "url('".$rootPath.'/../', $str);
 	        $str = str_replace("url(../", "url(".$rootPath.'/../', $str);
-			
+	
+                // convert to base path
+                $str = preg_replace('#(\.\./)+#', '../', $str);
+		
+	
 			if($this->minify){
 				$str = self::_minCSSString($str);
     		}
