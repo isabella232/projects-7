@@ -59,9 +59,9 @@
         <h2>
             Tags
         </h2>
-        {foreach from=$weby.tags item=tag}
+        {foreach from=$weby->getTags(true) item=tag}
             <span class="weby-tag-blue">
-                    tag.tag
+                    {$tag.tag|truncate:20}
                 </span>
         {/foreach}
         <a class="view-all" href="">view all tags</a>
