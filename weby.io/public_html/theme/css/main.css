@@ -218,6 +218,26 @@ body.unselectable * {
     vertical-align: bottom;
 }
 
+::-webkit-input-placeholder {
+    color: gray;
+    font-family: Arial, sans-serif;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: gray;
+    font-family: Arial, sans-serif;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    color: gray;
+    font-family: Arial, sans-serif;
+}
+
+:-ms-input-placeholder {
+    color: gray;
+    font-family: Arial, sans-serif;
+}
+
 .footer{
 	font-size: 16px;
 	background: #202020; /* Old browsers */
