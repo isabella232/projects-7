@@ -187,7 +187,7 @@
     float: left;
 }
 
-.weby-details .favorited-by ul li a.photo {
+.weby-details .favorited-by ul li a.photo img {
     width: 16px;
     height: 16px;
     display: inline-block;
@@ -221,6 +221,7 @@
     -moz-border-radius-topright: 2px;
     -moz-border-radius-bottomright: 2px;
     background-position: -97px -1950px;
+    text-transform: uppercase;
 }
 
 .weby-details .popular-related-btns {
