@@ -446,7 +446,7 @@ BaseWidget.prototype = {
 		} else {
 			// Make sure it's a valid URL
 			var regex = /^[http:\/\/|ftp:\/\/|https:\/\/]*?[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?$/;
-			if(!url.match(regex)){
+			if (!url.match(regex)) {
 				callback({urlExists: false});
 			}
 			$.get(BaseWidget.CONTENT_VALIDATOR + '/?url=' + encodeURIComponent($.trim(url)) + '&t=' + new Date().getTime(), function (data) {
@@ -481,7 +481,6 @@ BaseWidget.prototype = {
 	hideResizeHandle: function () {
 		this.html('span.resize-handle').css("visibility", "hidden");
 	},
-
 	/**
 	 * Get next highest z-index
 	 * @returns {number}
@@ -544,7 +543,7 @@ BaseWidget.prototype = {
 		}
 
 
-		if(this._loadingContent){
+		if (this._loadingContent) {
 			return;
 		}
 
@@ -611,7 +610,7 @@ BaseWidget.prototype = {
 		this.controls().css("visibility", "hidden");
 		this.html().removeClass('active editable');
 		this.html().draggable("disable");
-		if (this.html('.widget-disabled-overlay').length === 0) {
+		if (this.html('.widget-disabled-overlay').length === 0 && !this._loadingContent) {
 			// Append interaction layer and set it's line-height to height of the widget
 			this.addInteractionOverlay();
 		}
@@ -640,8 +639,8 @@ BaseWidget.prototype = {
 
 		this._isContentLoaded = true;
 
+		this.addInteractionOverlay();
 		if (this._isActive) {
-			this.addInteractionOverlay();
 			this.showTools();
 			App.getWeby().getToolbar().widgetActivated(this);
 		}
@@ -756,22 +755,24 @@ BaseWidget.prototype = {
 		}
 
 		if (fillContent) {
-			var paddingTop = (this.body()[0].scrollHeight - 10) / 2 - 18;
+			var paddingTop = (this.body()[0].scrollHeight - 10) / 2 - 28;
 			var style = {
 				width: (this.body().width() - 20) + 'px',
-				height: (this.body().height() - paddingTop) +'px',
+				height: (this.body().height() - paddingTop) + 'px',
 				paddingTop: paddingTop + 'px'
 			};
 		} else {
 			var style = {
 				width: '360px',
 				height: '70px',
-				paddingTop: '20px'
+				paddingTop: '12px'
 			};
 		}
 
 
-		var loading = $('<div class="loading"><p><span class="main-text">' + mainText + '</span><span class="secondary-text">' + secondaryText + '</span></p></div>');
+		var loading = $('<div class="loading"><p><span class="main-text">' + mainText + '</span>' +
+			'<span class="secondary-text">' + secondaryText + '</span>' +
+			'<span class="not-loading">Not loading? <a data-role="abort-loading" href="javascript:void(0)">Click to remove this item!</a></span></p></div>');
 		loading.css(style);
 
 		if (this.body('.loading').length > 0) {
@@ -783,7 +784,6 @@ BaseWidget.prototype = {
 	},
 
 	showTools: function () {
-
 		this.controls().css("visibility", "visible").show();
 		this.html('.widget-disabled-overlay').css("opacity", 1);
 		return this;
@@ -1022,8 +1022,13 @@ BaseWidget.prototype = {
 			}
 		}
 
+		var $this = this;
+
+		this.html().on("click", '[data-role="abort-loading"]', function () {
+			$this.remove();
+		});
+
 		if (this._isRotatable) {
-			var $this = this;
 			this.html().find('span.rotate-handle').unbind("mousedown mouseup dblclick").bind({
 				mousedown: function (e) {
 					$this._rotateStart = e.pageX;
@@ -1051,7 +1056,7 @@ BaseWidget.prototype = {
 			return;
 		}
 		var visible = this._isInteractive ? 'visibility:visible' : 'visibility:hidden';
-		this._html.prepend('<div class="widget-disabled-overlay"><span class="text" style="'+visible+'">Doubleclick to interact</span></div>');
+		this._html.prepend('<div class="widget-disabled-overlay"><span class="text" style="' + visible + '">Doubleclick to interact</span></div>');
 		this._resize();
 	},
 
