@@ -218,7 +218,9 @@ var BaseWidget = function () {
 	this._baseRotatableOptions = {
 		handle: '.rotate-handle',
 		opacity: 0.01,
-		helper: 'clone',
+		helper: function (event) {
+			return $('<div class="ui-widget-header"></div>');
+		},
 		drag: function (event, ui) {
 			var $this = $(this).data('widget');
 			var position = $this._rotateStart;
