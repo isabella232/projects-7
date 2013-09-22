@@ -3,7 +3,7 @@
 
     <h1>My Weby</h1>
         <input maxlength="50" type="text" id="weby-title-field" class="has-tooltip" title="Please enter your title."
-               placeholder="Weby title" value="{$weby.title}">
+               placeholder="Weby title" value="{if $weby.metaFollow == 1}{$weby.title}{/if}">
 
         <span id="weby-tags-wrapper" class="has-tooltip" title="Maximum 10 tags allowed.">
             <span class="weby-tags">
@@ -13,8 +13,10 @@
                     </span>
                 {/foreach}
             </span>
-            <div id="weby-tag-input" class="tags-editable has-tooltip"
-                 title="Your tag is too long (maximum 25 characters)" contenteditable="true"></div><span class="tags-placeholder">Enter tags</span>
+            <span style="display: none;" class="load-icon tags-loading"></span>
+            <div id="weby-tag-input" class="tags-editable has-tooltip" title="Your tag is too long (maximum 25 characters)" contenteditable="true"></div>
+            <span class="tags-placeholder">Enter tags</span>
+            <input type="hidden" id="tag-search-value">
             <div id="weby-tags-dropdown">
                 <ul id="tags-list"></ul>
             </div>

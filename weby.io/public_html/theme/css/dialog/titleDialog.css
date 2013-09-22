@@ -37,8 +37,8 @@
 }
 
 #weby-tags-wrapper {
-    width: 450px;
-    padding: 10px;
+    width: 435px;
+    padding: 10px 25px 10px 10px;
     margin: 10px 0 10px 0;
     border-style: none;
     border-bottom: 3px solid #dc420e;
@@ -60,12 +60,19 @@
     margin: 3px 0 0;
 }
 
+#weby-dialog .load-icon {
+    margin-left: 3px;
+    position: absolute;
+    right: 4px;
+    top: 15px;
+}
+
 #weby-tags-wrapper .tags-placeholder {
     font-family: Arial, sans-serif;
     color: gray;
     padding: 0;
     margin: 0;
-    width:200px;
+    width: 200px;
     position: absolute;
     left: 11px;
     top: 13px;

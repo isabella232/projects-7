@@ -86,6 +86,14 @@
     border-top-color: #27b6ac !important;
 }
 
+.k-callout-e {
+    border-left-color: #27b6ac !important;
+}
+
+.k-callout-n {
+    border-bottom-color: #27b6ac !important;
+}
+
 .k-popup {
     -webkit-box-shadow: 0 0 1px none !important;
 }

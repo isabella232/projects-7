@@ -13,7 +13,7 @@
                 </p>
                 <p>
                     <label>Embed Code</label>
-                    <textarea class="embed-code" data-role="weby-embed-code">{$weby.embedCode}</textarea>
+                    <textarea class="embed-code" data-role="weby-embed-code"></textarea>
                 </p>
                 <a href="javascript:void(0)" class="close-form"></a>
             </fieldset>
