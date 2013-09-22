@@ -179,12 +179,12 @@ function WebyBackground(settings) {
 			_resize(App.getContentWrapper(), "width", App.getViewportWidth() + 'px');
 		}
 
-		if (height <= App.getViewportHeight() - App.getHeader().height()) {
+		if (height <= App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset() - App.getWeby().getScrollBarOffset()) {
 			_resize(App.getContent(), "height", height + 'px');
 			_resize(App.getContentWrapper(), "height", height + App.getWeby().getScrollBarOffset() + 'px');
 		} else {
 			_resize(App.getContent(), "height", height + 'px');
-			_resize(App.getContentWrapper(), "height", App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset() + 'px');
+			_resize(App.getContentWrapper(), "height",App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset() + 'px');
 		}
 
 		return this;

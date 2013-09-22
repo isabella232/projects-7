@@ -667,9 +667,9 @@ BaseWidget.prototype = {
 	},
 
 	save: function () {
-		var type = this.constructor.name.replace('Widget', '').toLowerCase();
+		var type = this.getConstructorName().replace('Widget', '').toLowerCase();
 		var commonData = {
-			class: this.constructor.name,
+			class: this.getConstructorName(),
 			type: type,
 			top: this._top,
 			left: this._left,
@@ -1147,6 +1147,10 @@ BaseWidget.prototype = {
 		var newIndex = Math.max.apply(Math, indexes) - 1;
 		this.setZIndex(newIndex);
 		return this;
+	},
+
+	getConstructorName: function(){
+		return this.constructor.toString().match(/function ([A-Z]{1}[a-zA-Z]*)/)[1];
 	}
 };
 

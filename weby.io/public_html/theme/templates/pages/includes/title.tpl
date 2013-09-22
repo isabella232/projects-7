@@ -2,7 +2,7 @@
     <div class="edit-title" data-role="weby-title">
         <h2>{$weby.title}</h2>
     </div>
-    <p class="weby-url" data-role="weby-url">{$weby.publicUrl}</p>
+    <p class="weby-url" data-role="weby-url"><a href="{$weby.publicUrl}">{$weby.publicUrl}</a></p>
     <div class="share-drop" data-role="weby-title-share">
         <span class="share-url"></span>
         <form>

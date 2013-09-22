@@ -356,7 +356,7 @@ function Weby() {
     }
 
     this.widgetCreated = function (widget) {
-        var type = widget.constructor.name.replace('Widget', '').toLowerCase();
+        var type = widget.getConstructorName().replace('Widget', '').toLowerCase();
         if (!_counter.hasOwnProperty(type)) {
             _counter[type] = 0;
         }
@@ -364,7 +364,7 @@ function Weby() {
     };
 
     this.widgetDeleted = function (widget) {
-        var type = widget.constructor.name.replace('Widget', '').toLowerCase();
+        var type = widget.getConstructorName().replace('Widget', '').toLowerCase();
         if (!_counter.hasOwnProperty(type)) {
             _counter[type] = 0;
         }
