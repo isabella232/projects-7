@@ -10,10 +10,10 @@
         google.load('picker', '1');
     </script>
     <script type="text/javascript" id="initScript">
-        BaseWidget.CONTENT_VALIDATOR = '{$contentValidator}';
         var weby = {$weby->toJson()};
         $(function () {
             App = new AppClass();
+            App.setContentValidator('{$contentValidator}');
             {if !$viewObject.user->completedOnboarding()}
             App.addEventListener(new Intro());
             {/if}

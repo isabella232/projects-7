@@ -7,6 +7,8 @@
     <input id="widget-radius"/>
     <span class="title">Width:</span>
     <input id="widget-width"/>
+    <span class="title">Perspective:</span>
+    <input id="widget-perspective" value="0"/>
     <span class="title">Shadow distance:</span>
     <input id="widget-shadow-distance"/>
     <span class="title">Shadow spread:</span>

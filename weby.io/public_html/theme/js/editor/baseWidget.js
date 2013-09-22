@@ -247,6 +247,7 @@ var BaseWidget = function () {
 			App.fireEvent("widget.rotate", {element: $(this), event: event, ui: ui});
 		},
 		start: function (event, ui) {
+			$(this).css('-webkit-transform-origin', '50% 50%');
 			App.fireEvent("widget.rotate.start", {element: $(this), event: event, ui: ui});
 		},
 		stop: function (event, ui) {
@@ -774,7 +775,7 @@ BaseWidget.prototype = {
 
 		var loading = $('<div class="loading"><p><span class="main-text">' + mainText + '</span>' +
 			'<span class="secondary-text">' + secondaryText + '</span>' +
-			'<span class="not-loading">Not loading? <a data-role="abort-loading" href="javascript:void(0)">Click to remove this item!</a></span></p></div>');
+			'<span class="not-loading">Not loading?&nbsp;&nbsp;<a data-role="abort-loading" href="javascript:void(0)">Click to remove this item!</a></span></p></div>');
 		loading.css(style);
 
 		if (this.body('.loading').length > 0) {

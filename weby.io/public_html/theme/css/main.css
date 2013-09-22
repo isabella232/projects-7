@@ -307,3 +307,7 @@ body.unselectable * {
 .fancybox-inner {
 	overflow: hidden !important;
 }
+
+.k-widget k-tooltip k-slider-tooltip{
+	display:none !important;
+}

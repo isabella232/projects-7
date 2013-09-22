@@ -133,7 +133,7 @@ function WebyBackground(settings) {
 			$('#button-move-widgets').unbind('click').click(function () {
 				for (var i in outerWidgets) {
 					var data = outerWidgets[i];
-					data.widget.setPosition(data.maxLeft, data.maxTop, true);
+					data.widget.setPosition(data.maxLeft, data.maxTop);
 				}
 				$.fancybox.close();
 				_applyCanvasSize(width, height);
@@ -157,23 +157,16 @@ function WebyBackground(settings) {
 	 * @param type change|spin
 	 */
 	this.setContentSize = function (width, height, type) {
-		function _resize(el, dimension, size, duration) {
-			if (typeof duration == "undefined") {
-				duration = 500;
-			}
-			if (type == 'spin') {
-				duration = 0;
-			}
+		function _resize(el, dimension, size) {
 			var data = {};
 			data[dimension] = size;
 			if (el == App.getContentWrapper()) {
 				App.fireEvent("weby.background.before.resize");
-				el.animate(data, {duration: duration, queue: false, complete: function () {
-					App.getWeby().getBackground().setContainment(width, height);
-					App.fireEvent("weby.background.resized");
-				}});
+				el.css(data);
+				App.getWeby().getBackground().setContainment(width, height);
+				App.fireEvent("weby.background.resized");
 			} else {
-				el.animate(data, {duration: duration, queue: false});
+				el.css(data);
 			}
 		}
 
@@ -236,11 +229,11 @@ function WebyBackground(settings) {
 	};
 
 	this.webyBackgroundResized = function () {
-		/*if(App.getViewportWidth() < 1200 && App.getContentWrapper().width() > App.getViewportWidth()){
+		if(App.getViewportWidth() < 1200){
 			App.getContentWrapper().css("margin", "0");
 		} else {
 			App.getContentWrapper().css("margin", "0 auto");
-		}*/
+		}
 		for (var i in _backgrounds) {
 			if("webyBackgroundResized" in _backgrounds[i]){
 				_backgrounds[i].webyBackgroundResized();

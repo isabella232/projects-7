@@ -15,7 +15,7 @@
     introjs.min.css
 {/minify}
 
-{minify type="js"}
+{minify type="js" obfuscate="true"}
     mouseEvent.js,
     weby/weby.js,
     weby/webySave.js,

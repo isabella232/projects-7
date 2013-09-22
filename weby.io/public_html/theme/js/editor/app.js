@@ -236,6 +236,10 @@ var AppClass = function () {
         _weby.init();
     }
 
+	this.setContentValidator = function(url){
+		 BaseWidget.CONTENT_VALIDATOR = url;
+	}
+
     this.addEventListener = function (obj) {
         _eventListeners.push(obj);
         return this;
