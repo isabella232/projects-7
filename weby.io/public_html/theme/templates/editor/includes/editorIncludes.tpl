@@ -16,6 +16,7 @@
 {/minify}
 
 {minify type="js" obfuscate="true"}
+    editor/init.js,
     mouseEvent.js,
     weby/weby.js,
     weby/webySave.js,

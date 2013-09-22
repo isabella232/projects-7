@@ -311,3 +311,7 @@ body.unselectable * {
 .k-widget k-tooltip k-slider-tooltip{
 	display:none !important;
 }
+
+.bootstrap{
+	display:none;
+}

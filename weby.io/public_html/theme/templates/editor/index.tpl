@@ -5,22 +5,6 @@
 {block name="head"}
     {include file="templates/editor/includes/editorIncludes.tpl"}
     {include file="templates/editor/includes/editorRemoteIncludes.tpl"}
-    <!-- The standard Google Loader script. -->
-    <script type="text/javascript">
-        google.load('picker', '1');
-    </script>
-    <script type="text/javascript" id="initScript">
-        var weby = {$weby->toJson()};
-        $(function () {
-            App = new AppClass();
-            App.setContentValidator('{$contentValidator}');
-            {if !$viewObject.user->completedOnboarding()}
-            App.addEventListener(new Intro());
-            {/if}
-            App.init();
-            $('#initScript').remove();
-        });
-    </script>
 {/block}
 
 {block name="headerMiddle"}
@@ -40,6 +24,9 @@
 {/block}
 
 {block name="content"}
+    <div class="bootstrap" data-role="weby">{$weby->toJson()}</div>
+    <div class="bootstrap" data-role="content-validator">{$contentValidator}</div>
+    <div class="bootstrap" data-role="user-onboarding">{$viewObject.user->completedOnboarding()}</div>
     <div id="toolbar">
         <ul></ul>
     </div>
