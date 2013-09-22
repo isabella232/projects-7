@@ -6,7 +6,7 @@ function Registration() {
     _webyDetails.click(function() {
         $.fancybox(_authorizationDialog, {
             type: 'inline',
-            autoSize: true
+            autoSize: true,
         });
     });
 }

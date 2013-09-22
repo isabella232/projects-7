@@ -119,28 +119,6 @@
     cursor: pointer;
 }
 
-.dialog h2 {
-    font-size: 24px;
-    font-weight: 400;
-    color: #fff;
-    margin: 0 0 7px 0;
-    padding: 0;
-}
-
-.dialog .tag-info {
-    color: #f25b2b;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 1px 2px 0 2px;
-    padding: 0 4px 0 2px;
-    display: inline-block;
-    height: 16px;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    background-color: white;
-    line-height: normal;
-}
-
 .dialog .dialog-loading {
     position: absolute;
     width: 200px;

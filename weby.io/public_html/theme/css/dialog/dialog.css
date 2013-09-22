@@ -24,6 +24,14 @@
     margin: 0;
 }
 
+.dialog h2 {
+    font-size: 24px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+
 .dialog input, .dialog textarea {
     width: 450px;
     padding: 10px 10px 10px 10px;

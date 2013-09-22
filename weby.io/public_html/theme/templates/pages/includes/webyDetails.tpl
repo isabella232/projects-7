@@ -4,8 +4,12 @@
     </div>
     <div class="favorites">
         {if $viewObject.user}
-            <span data-role="add-to-favorites" data-tooltip="Add to favorites"
-                  class="favorites-icon has-tooltip {if $weby->inUsersFavorites()}added{/if} clickable"></span>
+            {if $viewObject.user.id != $weby.user.id}
+                <span data-role="add-to-favorites" data-tooltip="Add to favorites"
+                      class="favorites-icon has-tooltip {if $weby->inUsersFavorites()}added{/if} clickable"></span>
+            {else}
+                <span class="favorites-icon"></span>
+            {/if}
         {else}
             <span class="favorites-icon"></span>
         {/if}
