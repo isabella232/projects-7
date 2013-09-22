@@ -208,14 +208,6 @@ body.unselectable * {
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
 }
 
-.load-icon {
-	background-image: url(../images/load.gif);
-	width: 16px;
-	height: 16px;
-	display: inline-block;
-	vertical-align: bottom;
-}
-
 ::-webkit-input-placeholder {
 	color: gray;
 	font-family: Arial, sans-serif;

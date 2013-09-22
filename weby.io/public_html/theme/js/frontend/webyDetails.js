@@ -54,7 +54,13 @@ function WebyDetails() {
     _addToFavoritesButton.click(function () {
         $.ajax({
             url: WEB + 'tools/favorite/' + App.getWeby().getId(),
+            beforeSend: function() {
+                _addToFavoritesButton.addClass('favorites-working');
+                _webyDetails.find('.loading-favorites').show();
+            },
             success: function (r) {
+                _addToFavoritesButton.removeClass('favorites-working');
+                _webyDetails.find('.loading-favorites').hide();
                 _addToFavoritesButton.toggleClass('added');
 
                 // Change tooltip
@@ -80,6 +86,7 @@ function WebyDetails() {
                     _favoritedBy.show();
 
                 }
+
             }
         })
     });

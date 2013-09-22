@@ -2,10 +2,13 @@
     <div class="details-arrow">
         {if $weby.tags->count()}<a data-role="flip-weby-details" href="javascript:void(0);"></a>{/if}
     </div>
+
     <div class="favorites">
+        <div class="loading-favorites" style="display: none"></div>
         {if $viewObject.user}
             {if $viewObject.user.id != $weby.user.id}
-                <span data-role="add-to-favorites" data-tooltip="Add to favorites"
+                <span data-role="add-to-favorites"
+                      data-tooltip="{if !$weby->inUsersFavorites()}Add to favorites{else}Remove from favorites{/if} "
                       class="favorites-icon has-tooltip {if $weby->inUsersFavorites()}added{/if} clickable"></span>
             {else}
                 <span class="favorites-icon"></span>
@@ -44,22 +47,20 @@
         {/if}
     </div>
     <div class="flip-front">
-        {if $weby.favoriteCount>0}
-            <div class="favorited-by">
-                <h2>Favorited by</h2>
-                <ul>
-                    {foreach from=$weby.usersFavorited item=user}
-                        <li>
-                            <a class="photo" href="javascript:void();"><img src="{$user.avatarUrl}"/></a>
-                            <a class="name" href="javascript:void();">{$user.username}</a>
-                        </li>
-                    {/foreach}
-                </ul>
-                {if ({$weby.countOfMoreUsers} > 0)}
-                    <a class="view-all" href="javascript:void(0);">...and {$weby.countOfMoreUsers} more.</a>
-                {/if}
-            </div>
-        {/if}
+        <div class="favorited-by" {if $weby.favoriteCount==0}style='display:none'{/if}>
+            <h2>Favorited by</h2>
+            <ul>
+                {foreach from=$weby.usersFavorited item=user}
+                    <li>
+                        <a class="photo" href="javascript:void();"><img src="{$user.avatarUrl}"/></a>
+                        <a class="name" href="javascript:void();">{$user.username}</a>
+                    </li>
+                {/foreach}
+            </ul>
+            {if ({$weby.countOfMoreUsers} > 0)}
+                <a class="view-all" href="javascript:void(0);">...and {$weby.countOfMoreUsers} more.</a>
+            {/if}
+        </div>
     </div>
     <div class="tags flip-behind" style="display: none;">
         <h2>

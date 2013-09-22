@@ -88,6 +88,25 @@
     box-shadow: 1px 3px 3px 0px #000;
 }
 
+.weby-details .favorites-working {
+    opacity: 0.2;
+}
+
+.weby-details .favorites-working:hover {
+    opacity: 0.2 !important;
+}
+
+.weby-details .loading-favorites {
+    background-image: url(../images/load.gif);
+    width: 16px;
+    height: 16px;
+    vertical-align: bottom;
+    position: absolute;
+    top: 28px;
+    left: 17px;
+}
+
+
 .weby-details .favorites {
     border-bottom: 1px solid #323232;
     padding-bottom: 10px;

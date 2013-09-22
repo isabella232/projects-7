@@ -3,7 +3,13 @@
 
     <h1>My Weby</h1>
         <input maxlength="50" type="text" id="weby-title-field" class="has-tooltip" title="Please enter your title."
-               placeholder="Weby title" value="{if $weby.metaFollow == 1}{$weby.title}{/if}">
+               placeholder="Weby title" value="{if $weby.metaFollow}{$weby.title}{/if}">
+    {*
+        When Weby is created, by default, meta_follow is false. Also, by default every Weby has
+        title "Untitled", but that is just a default value so Weby links can work (user/slug/13-char-id).
+        When Weby meta_follow property is false, this means user hasn't saved Weby from this dialog
+        (title, tags and description), and then we set the title to empty string, so we force user to write his title.
+    *}
 
         <span id="weby-tags-wrapper" class="has-tooltip" title="Maximum 10 tags allowed.">
             <span class="weby-tags">
