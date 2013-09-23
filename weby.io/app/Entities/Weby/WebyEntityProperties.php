@@ -122,6 +122,16 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     }
 
     /**
+     * Returns tags in array or JSON form
+     * @internal param bool $rawArray
+     * @return string
+     */
+    public function getNumberOfTags()
+    {
+        return $this->_tags->count();
+    }
+
+    /**
      * @return string
      */
     public function getStorageFolder()
@@ -164,9 +174,9 @@ abstract class WebyEntityProperties extends WebyEntityStorage
                 $this->_usersFavorited = $tmp;
             }
         }
-        if($raw) {
+        if ($raw) {
             $tmp = [];
-            foreach($this->_usersFavorited as $u) {
+            foreach ($this->_usersFavorited as $u) {
                 $tmp[] = [
                     'id' => $u['id'],
                     'username' => $u['username'],
@@ -219,8 +229,9 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     /**
      * This just outputs "and x more users..." message (on frontend, Weby details bar)
      */
-    public function getCountOfMoreUsers() {
-        return $this->_favoriteCount-count($this->_usersFavorited);
+    public function getCountOfMoreUsers()
+    {
+        return $this->_favoriteCount - count($this->_usersFavorited);
     }
 
     /**

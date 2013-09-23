@@ -71,7 +71,7 @@
                     <span class="weby-tag-blue">
                     {$tag.tag|truncate:17}
                 </span>
-                    {if $smarty.foreach.tagsFront.index == 5}
+                    {if $smarty.foreach.tagsFront.index == 4 && $weby.numberOfTags > 5}
                         <a data-role="flip-weby-details" href="javascript: void(0);" class="view-all">view all tags</a>
                         {break}
                     {/if}
@@ -85,7 +85,7 @@
             {foreach from=$weby->getTags(true) item=tag}
                 <span class="weby-tag-blue">
             {$tag.tag|truncate:17}
-        </span>
+                </span>
             {/foreach}
             <a data-role="flip-weby-details" href="javascript: void(0);" class="view-all">view less tags</a>
         </div>
