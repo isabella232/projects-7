@@ -136,7 +136,7 @@
 
 #weby-dialog #weby-description-field {
     margin-top: 0px;
-    min-height: 60px;
-    font-size: 13px;
+    min-height: 95px;
+    font-size: 16px;
     overflow: auto;
 }

@@ -12,12 +12,11 @@
 {/block}
 
 {block name="headerRightTools"}
-        <li class="my-webies">
-            <a href="javascript:void(0)" data-role="dashboard-dialog-open"></a>
-        </li>
-        {include file="templates/common/socialShare.tpl"}
-        {include file="templates/common/userOptions.tpl"}
-        </div>
+    <li class="my-webies">
+        <a href="javascript:void(0)" data-role="dashboard-dialog-open"></a>
+    </li>
+    {include file="templates/common/socialShare.tpl"}
+    {include file="templates/common/userOptions.tpl"}
 {/block}
 
 {block name="content"}
