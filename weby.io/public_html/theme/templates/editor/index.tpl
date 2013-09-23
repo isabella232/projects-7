@@ -12,7 +12,6 @@
 {/block}
 
 {block name="headerRightTools"}
-    {assign var="editor" value="true"}
         <li class="my-webies">
             <a href="javascript:void(0)" data-role="dashboard-dialog-open"></a>
         </li>
