@@ -46,7 +46,7 @@ function TextWidget() {
 		App.deactivateTool();
 		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2);
 		if(this._firstActivate){
-			this.html(".text-editable").click();
+			this.makeEditable().body('.widget-disabled-overlay').remove();
 		}
 		this.contentLoaded();
 	}
