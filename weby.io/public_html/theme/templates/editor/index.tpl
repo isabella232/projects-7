@@ -40,7 +40,7 @@
         <button id="button-move-widgets">Yes, sure!</button>
         <button id="button-dont-move-widgets">No, leave them.</button>
     </div>
-    {include file="templates/common/favorites.tpl"}đ
+    {include file="templates/common/favorites.tpl"}
     {if !$viewObject.user->completedOnboarding()}
         {include file="templates/editor/includes/introDialog.tpl"}
     {/if}
