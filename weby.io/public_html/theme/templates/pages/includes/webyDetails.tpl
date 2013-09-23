@@ -1,50 +1,68 @@
-<div class="weby-details">
+<div class="weby-details" id="weby-details">
     <div class="details-arrow">
-        <a href=""></a>
-    </div>
-    <div class="favorites">
-        <p>
-            <span>
-                {$weby.favoriteCount}
-            </span>
-            favorites
-        </p>
-            <span class="views">
-                {$weby.hits} hits
-            </span>
+        {if $weby.tags->count()}<a data-role="flip-weby-details" href="javascript:void(0);"></a>{/if}
     </div>
 
+    <div class="favorites">
+        <div class="loading-favorites" style="display: none"></div>
+        {if $viewObject.user}
+            {if $viewObject.user.id != $weby.user.id}
+                <span data-role="add-to-favorites"
+                      data-tooltip="{if !$weby->inUsersFavorites()}Add to favorites{else}Remove from favorites{/if} "
+                      class="favorites-icon has-tooltip {if $weby->inUsersFavorites()}added{/if} clickable"></span>
+            {else}
+                <span class="favorites-icon"></span>
+            {/if}
+        {else}
+            <span class="favorites-icon"></span>
+        {/if}
+        <div class="weby-stats">
+            <p>
+            <span class="favorites-count">
+                {$weby.favoriteCount|formattedNumber}
+            </span>
+                favorites
+            </p>
+            <span class="views">
+                {$weby.hits|formattedNumber} hits
+            </span>
+        </div>
+    </div>
     <div class="user-info">
         <div>
             <span class="user-photo"><img src="{$weby.user.avatarUrl}"></span>
 
             <p class="user-name">{$weby.user.username}</p>
-            <p class="user-name"><b>4</b> followers</p>
+
+            <p class="user-name"><b class="followers-count">{$weby.user.followingUsersCount|formattedNumber}</b>
+                followers</p>
         </div>
-        {if $viewObject.user->isFollowing($weby.user)}
-            <a data-role="follow-user" data-id="{$weby.user.id}" class="unfollow-btn" href="javascript: void(0);">Unfollow</a>
-        {else}
-            <a data-role="follow-user" data-id="{$weby.user.id}" class="follow-btn" href="javascript: void(0);">Follow
-                me</a>
+        {if $viewObject.user.id != $weby.user.id && $viewObject.user}
+            {if $viewObject.user->isFollowing($weby.user)}
+                <a data-role="follow-user" data-id="{$weby.user.id}" class="unfollow-btn" href="javascript: void(0);">Unfollow</a>
+            {else}
+                <a data-role="follow-user" data-id="{$weby.user.id}" class="follow-btn" href="javascript: void(0);">Follow
+                    me</a>
+            {/if}
         {/if}
     </div>
-
-    <div class="favorited-by">
-        <h2>Favorited by</h2>
-        <ul>
-            {foreach from=$weby.usersFavorited item=user}
-                <li>
-                    <a class="photo" href="javascript:void();"><img src="{$user.avatarUrl}"/></a>
-                    <a class="name" href="javascript:void();">{$user.username}</a>
-                </li>
-            {/foreach}
-        </ul>
-        {if ({$weby.countOfMoreUsers} > 0)}
-            <a class="view-all" href="javascript:void(0);">...and {$weby.countOfMoreUsers} more.</a>
-        {/if}
+    <div class="flip-front">
+        <div class="favorited-by" {if $weby.favoriteCount==0}style='display:none'{/if}>
+            <h2>Favorited by</h2>
+            <ul>
+                {foreach from=$weby.usersFavorited item=user}
+                    <li>
+                        <a class="photo" href="javascript:void();"><img src="{$user.avatarUrl}"/></a>
+                        <a class="name" href="javascript:void();">{$user.username}</a>
+                    </li>
+                {/foreach}
+            </ul>
+            {if ({$weby.countOfMoreUsers} > 0)}
+                <a class="view-all" href="javascript:void(0);">...and {$weby.countOfMoreUsers} more.</a>
+            {/if}
+        </div>
     </div>
-
-    <div class="tags">
+    <div class="tags flip-behind" style="display: none;">
         <h2>
             Tags
         </h2>
@@ -55,3 +73,11 @@
         {/foreach}
     </div>
 </div>
+{literal}
+    <script type="weby/tpl" id="user-favorited">
+        <li>
+            <a class="photo" href="javascript:void();"><img src="{avatarUrl}"></a>
+            <a class="name" href="javascript:void(0);">{username}</a>
+        </li>
+    </script>
+{/literal}

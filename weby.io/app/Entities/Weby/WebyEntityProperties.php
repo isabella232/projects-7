@@ -144,8 +144,11 @@ abstract class WebyEntityProperties extends WebyEntityStorage
 
     /**
      * Returns all users that put this Weby into their favorites list
+     * @param bool $raw         Returns native array
+     * @param int $limit
+     * @return array|null
      */
-    public function getUsersFavorited($limit = 5)
+    public function getUsersFavorited($raw = false, $limit = 5)
     {
         if (is_null($this->_usersFavorited)) {
             $this->_usersFavorited = [];
@@ -160,6 +163,17 @@ abstract class WebyEntityProperties extends WebyEntityStorage
                 }
                 $this->_usersFavorited = $tmp;
             }
+        }
+        if($raw) {
+            $tmp = [];
+            foreach($this->_usersFavorited as $u) {
+                $tmp[] = [
+                    'id' => $u['id'],
+                    'username' => $u['username'],
+                    'avatarUrl' => $u['avatarUrl']
+                ];
+            }
+            return $tmp;
         }
         return $this->_usersFavorited;
     }
@@ -216,6 +230,16 @@ abstract class WebyEntityProperties extends WebyEntityStorage
     public function getAddedToFavoritesTime()
     {
         return $this->_addedToFavoritesTime;
+    }
+
+    /**
+     * Based on status of Weby, this flag can make Weby not available to the search engines by
+     * putting meta data in the head of Weby page (robots => nofollow, noindex)
+     * @return mixed
+     */
+    public function getMetaFollow()
+    {
+        return $this->_metaFollow;
     }
 
     /**
