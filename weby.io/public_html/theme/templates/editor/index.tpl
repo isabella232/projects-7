@@ -13,14 +13,12 @@
 
 {block name="headerRightTools"}
     {assign var="editor" value="true"}
-    {if $viewObject.user}
         <li class="my-webies">
             <a href="javascript:void(0)" data-role="dashboard-dialog-open"></a>
         </li>
         {include file="templates/common/socialShare.tpl"}
         {include file="templates/common/userOptions.tpl"}
         </div>
-    {/if}
 {/block}
 
 {block name="content"}

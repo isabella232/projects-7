@@ -18,8 +18,8 @@ $(function () {
 	// Initialize app
 	App = new AppClass();
 	App.setContentValidator(contentValidator);
-	if (!onboardingComplete) {
-		App.addEventListener(new Intro());
-	}
+    if (!onboardingComplete) {
+        App.addEventListener(new Intro());
+    }
 	App.init();
 });

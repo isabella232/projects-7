@@ -1,6 +1,7 @@
 function WebyDetails() {
 
     var _webyDetails = $('#weby-details');
+    var _showFullDetails = $('[data-role="show-full-details"]');
     var _followButton = $('[data-role="follow-user"]');
     var _flipDetailsButton = $('[data-role="flip-weby-details"]');
     var _favoritedBy = $('.favorited-by');
@@ -54,7 +55,7 @@ function WebyDetails() {
     _addToFavoritesButton.click(function () {
         $.ajax({
             url: WEB + 'tools/favorite/' + App.getWeby().getId(),
-            beforeSend: function() {
+            beforeSend: function () {
                 _addToFavoritesButton.addClass('favorites-working');
                 _webyDetails.find('.loading-favorites').show();
             },
@@ -77,7 +78,7 @@ function WebyDetails() {
                     _favoritedBy.hide().find('ul').empty();
                 } else {
                     _favoritedBy.find('ul').empty();
-                    for(var i in r.data.favoritedBy) {
+                    for (var i in r.data.favoritedBy) {
                         var tpl = $('script#user-favorited').html();
                         tpl = tpl.replace('{avatarUrl}', r.data.favoritedBy[i].avatarUrl);
                         tpl = tpl.replace('{username}', r.data.favoritedBy[i].username);
@@ -91,17 +92,18 @@ function WebyDetails() {
         })
     });
 
+    _showFullDetails.click(function () {
+        if (_showFullDetails.hasClass('shown')) {
+            $('.full-weby-data').slideUp(300);
+            _showFullDetails.removeClass('shown')
+        } else {
+            $('.full-weby-data').slideDown(300);
+            _showFullDetails.addClass('shown')
+        }
+    });
+
 }
 
 $(function () {
     new WebyDetails;
 });
-/*
-
-
- '-moz-transform':'rotate('+now+'deg)',
- '-webkit-transform':'rotate('+now+'deg)',
- '-o-transform':'rotate('+now+'deg)',
- '-ms-transform':'rotate('+now+'deg)',
- 'transform':'rotate('+now+'deg)'
- */

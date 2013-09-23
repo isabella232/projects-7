@@ -67,18 +67,13 @@
 .weby-details .details-arrow a {
     width: 16px;
     height: 15px;
-    background-image: url("../images/sprite2.png");
-    background-repeat: no-repeat;
-    background-position: 50% -1692px;
-    background-color: #303030;
+    background: #303030 url("../images/sprite2.png") no-repeat 50% -1692px;
     display: block;
     float: right;
 }
 
-.weby-details .details-arrow a.back {
-    background-image: url("../images/sprite2.png");
-    background-repeat: no-repeat;
-    background-position: -168px -1727px;
+.weby-details .details-arrow a.shown {
+    background: url("../images/sprite2.png") no-repeat -168px -1727px;
 }
 
 .weby-details .details-arrow a:hover {
