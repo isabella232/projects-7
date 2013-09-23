@@ -12,8 +12,8 @@ $(function () {
 	// Load config data
 	contentValidator = $('[data-role="content-validator"]').text();
 	onboardingComplete = $('[data-role="onboarding-complete"]').text();
-	weby = JSON.parse($('[data-role="weby"]').text());
-	$('.bootstrap').remove();
+	weby = JSON.parse($('[data-role="weby"]').html());
+	//$('.bootstrap').remove();
 
 	// Initialize app
 	App = new AppClass();
