@@ -97,7 +97,7 @@ function WebyTitle() {
     }
 
     this.setUrl = function(value) {
-        _url.text(value);
+        _url.html('<a target="_blank" href="' + value + '">' + value + '</a>');
 		return this;
     }
 
