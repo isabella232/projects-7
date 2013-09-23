@@ -75,10 +75,10 @@ class EditorHandler extends AbstractHandler
         $weby->setUser($this->user())->save();
 
         // Add to screenshot queue if requested
-        /*if ($this->request()->post('takeScreenshot', false)) {
+        if ($this->request()->post('takeScreenshot', false)) {
             $queue = new ScreenshotQueue();
             $queue->add($id)->processQueue();
-        }*/
+        }
 
         // If there were changes in widgets, then update widget counts stats
         if (isset($requestData['counter'])) {
