@@ -14,7 +14,7 @@
                 <span class="favorites-icon"></span>
             {/if}
         {else}
-            <span class="favorites-icon"></span>
+            <span class="favorites-icon pointer-cursor" data-role="create-weby"></span>
         {/if}
         <div class="weby-stats">
             <p>
@@ -33,20 +33,19 @@
             <div class="user-info">
                 <div style="display: none" class="loading-following"></div>
                 <div>
-                    <span class="user-photo"><img src="{$weby.user.avatarUrl}"></span>
-
+                    <span class="user-photo" {if $viewObject.user.avatarUrl != ''}
+                          style="background: url({$viewObject.user.avatarUrl}) top left; background-size: cover{/if}">
+                    </span>
                     <p class="user-name">{$weby.user.username}</p>
-
-                    <p class="user-name"><b class="followers-count">{$weby.user.followingUsersCount|formattedNumber}</b>
+                    <p class="user-name"><b class="followers-count">{$weby.user.usersFollowingCount}</b>
                         followers</p>
                 </div>
-                {if $viewObject.user.id != $weby.user.id && $viewObject.user}
+                {if $viewObject.user && $viewObject.user.id != $weby.user.id}
                     {if $viewObject.user->isFollowing($weby.user)}
                         <a data-role="follow-user" data-id="{$weby.user.id}" class="unfollow-btn"
                            href="javascript: void(0);">Unfollow</a>
                     {else}
-                        <a data-role="follow-user" data-id="{$weby.user.id}" class="follow-btn" href="javascript: void(0);">Follow
-                            me</a>
+                        <a data-role="follow-user" data-id="{$weby.user.id}" class="follow-btn" href="javascript: void(0);">Follow</a>
                     {/if}
                 {/if}
             </div>
@@ -69,9 +68,9 @@
                     Tags
                 </h2>
                 {foreach from=$weby->getTags(true) item=tag name=tagsFront}
-                    <span class="weby-tag-blue">
+                    <a href="{$viewObject.webPath}tags/{$tag.tag}"><span class="weby-tag-blue">
                     {$tag.tag|truncate:17}
-                </span>
+                    </span></a>
                     {if $smarty.foreach.tagsFront.index == 4 && $weby.numberOfTags > 5}
                         <a data-role="flip-weby-details" href="javascript: void(0);" class="view-all">view all tags &raquo;</a>
                         {break}
@@ -84,9 +83,9 @@
                 Tags
             </h2>
             {foreach from=$weby->getTags(true) item=tag}
-                <span class="weby-tag-blue">
+            <a href="{$viewObject.webPath}tags/{$tag.tag}"><span class="weby-tag-blue">
             {$tag.tag|truncate:17}
-                </span>
+                </span></a>
             {/foreach}
             <a data-role="flip-weby-details" href="javascript: void(0);" class="view-all">&laquo; view less tags</a>
         </div>
