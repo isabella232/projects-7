@@ -45,10 +45,10 @@ function TextWidget() {
 		this._createEditor();
 		App.deactivateTool();
 		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2);
-		if (this._firstActivate) {
-			this.makeEditable().body('.widget-disabled-overlay').remove();
-		}
 		this.contentLoaded();
+		if (this._firstActivate) {
+			this.makeEditable();
+		}
 	}
 
 	this.setData = function (data) {

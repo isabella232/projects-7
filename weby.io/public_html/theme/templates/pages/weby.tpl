@@ -11,8 +11,6 @@
     <link data-page-subject="true" href="{$weby->getImage('original-screenshot')}" rel="image_src"/>
     {include file="templates/pages/includes/appIncludes.tpl"}
     {include file="templates/pages/includes/appRemoteIncludes.tpl"}
-    {include file="templates/common/linkWidgetTemplates.tpl"}
-    {include file="templates/common/favorites.tpl"}
     <script type="text/javascript" id="initScript">
         var weby = {$weby->toJson()};
         $(function () {
@@ -40,6 +38,8 @@
     </div>
     {include file="templates/common/loading.tpl"}
     {include file="templates/common/dashboard.tpl"}
+    {include file="templates/common/favorites.tpl"}
+    {include file="templates/common/linkWidgetTemplates.tpl"}
 {/block}
 {block name="headerRightTools"}
     {if $viewObject.user}
