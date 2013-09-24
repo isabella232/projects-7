@@ -111,7 +111,7 @@ class UserEntity extends UserEntityCrud
                 /**@var $weby \App\Entities\Weby\WebyEntity */
                 $tmp[] = [
                     'id' => $weby->getId(),
-                    'thumbnail' => 'http://graph.facebook.com/1594713365/picture?type=large',
+                    'thumbnail' => $weby->getImage('dashboard')->getUrl(),
                     'title' => $weby->getTitle(),
                     'slug' => $weby->getSlug(),
                     'public_url' => $weby->getPublicUrl(),

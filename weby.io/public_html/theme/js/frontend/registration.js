@@ -7,7 +7,7 @@ function Registration() {
         $.fancybox(_authorizationDialog, {
             type: 'inline',
             autoSize: false,
-            width: 300,
+            width: 350,
             height: 300
         });
     });

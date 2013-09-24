@@ -55,6 +55,10 @@ class PagesHandler extends AbstractHandler
         Stats::getInstance()->updateWebyHits($weby);
     }
 
+    public function searchByTag() {
+        die('bmjhgjh');
+    }
+
     public function page404()
     {
     }
