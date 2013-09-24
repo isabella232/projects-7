@@ -159,7 +159,7 @@ class ToolsHandler extends AbstractHandler
         $referer = $this->request()->server()->httpReferer();
         $referer = $referer ? $this->str($referer) : false;
         if (!$referer || !$referer->startsWith($this->app()->getConfig()->app->web_path)) {
-            die('Invalid referer.');
+            die();
         }
 
         // If everything went okay, then check if we got valid Weby
