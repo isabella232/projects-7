@@ -9,7 +9,7 @@
             {if $viewObject.user.id != $weby.user.id}
                 <span data-role="add-to-favorites"
                       data-tooltip="{if !$weby->inUsersFavorites()}Add to favorites{else}Remove from favorites{/if} "
-                      class="favorites-icon has-tooltip {if $weby->inUsersFavorites()}added{/if} clickable"></span>
+                      class="favorites-icon has-tooltip-bottom {if $weby->inUsersFavorites()}added{/if} clickable"></span>
             {else}
                 <span class="favorites-icon"></span>
             {/if}
@@ -33,8 +33,8 @@
             <div class="user-info">
                 <div style="display: none" class="loading-following"></div>
                 <div>
-                    <span class="user-photo" {if $viewObject.user.avatarUrl != ''}
-                          style="background: url({$viewObject.user.avatarUrl}) top left; background-size: cover{/if}">
+                    <span class="user-photo" {if $weby.user.avatarUrl != ''}
+                          style="background: url({$weby.user.avatarUrl}) top left; background-size: cover{/if}">
                     </span>
                     <p class="user-name">{$weby.user.username}</p>
                     <p class="user-name"><b class="followers-count">{$weby.user.usersFollowingCount}</b>
@@ -53,9 +53,8 @@
                 <h2>Favorited by</h2>
                 <ul>
                     {foreach from=$weby.usersFavorited item=user}
-                        <li>
+                        <li class=" has-tooltip-top" data-tooltip="{$user.username}">
                             <a class="photo" href="javascript:void();"><img src="{$user.avatarUrl}"/></a>
-                            <a class="name" href="javascript:void();">{$user.username}</a>
                         </li>
                     {/foreach}
                 </ul>
@@ -93,9 +92,8 @@
 </div>
 {literal}
     <script type="weby/tpl" id="user-favorited">
-        <li>
+        <li class="has-tooltip-top" data-tooltip="{username}">
             <a class="photo" href="javascript:void();"><img src="{avatarUrl}"></a>
-            <a class="name" href="javascript:void(0);">{username}</a>
         </li>
     </script>
 {/literal}

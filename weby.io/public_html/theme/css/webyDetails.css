@@ -69,13 +69,13 @@
 .weby-details .details-arrow a {
     width: 16px;
     height: 15px;
-    background: #303030 url("../images/sprite2.png") no-repeat 50% -1692px;
+    background: url("../images/sprite2.png") no-repeat -166px -1722px;
     display: block;
     float: right;
 }
 
 .weby-details .details-arrow a.shown {
-    background: url("../images/sprite2.png") no-repeat -166px -1722px;
+    background: #303030 url("../images/sprite2.png") no-repeat 50% -1692px;
 }
 
 .weby-details .details-arrow a:hover {
@@ -239,11 +239,12 @@
 }
 
 .weby-details .favorited-by ul li a.photo img {
-    width: 16px;
-    height: 16px;
+    width: 26px;
+    height: 26px;
     display: inline-block;
     background-color: #555;
     float: left;
+    margin: 0 1px 0 2px;
 }
 
 .weby-details a.view-all {
