@@ -8,7 +8,6 @@
         var weby = {$weby->toJson()};
         $(function(){
             App = new AppClass(0);
-            WebyBackground.ANIMATE = false;
             App.noHeader(true).init();
             $('#initScript').remove();
         });

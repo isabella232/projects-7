@@ -267,7 +267,6 @@ function Weby() {
             method: 'POST',
             async: !takeScreenshot,
             success: function (data) {
-				_saveInProgress = false;
 				if(typeof data != 'object'){
 					window.location = WEB;
 					return;
@@ -293,6 +292,7 @@ function Weby() {
 
                     App.fireEvent('weby.saved', data.data);
                 }
+				_saveInProgress = false;
             }
         };
         _webySave.setMessage('Saving...').show();

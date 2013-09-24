@@ -133,6 +133,9 @@ function WebyToolbar() {
 		tooltip: {
 			enabled: false
 		},
+		change: function (e) {
+			_activeWidget.setOpacity(e.value / 100);
+		},
 		slide: function (e) {
 			_activeWidget.setOpacity(e.value / 100);
 		}
@@ -145,6 +148,9 @@ function WebyToolbar() {
 		tickPlacement: 'none',
 		tooltip: {
 			enabled: false
+		},
+		change: function (e) {
+			_activeWidget.setRadius(e.value);
 		},
 		slide: function (e) {
 			_activeWidget.setRadius(e.value);
@@ -175,6 +181,9 @@ function WebyToolbar() {
 		tooltip: {
 			enabled: false
 		},
+		change: function (e) {
+			_activeWidget.setShadowDistance(e.value);
+		},
 		slide: function (e) {
 			_activeWidget.setShadowDistance(e.value);
 		}
@@ -187,6 +196,9 @@ function WebyToolbar() {
 		tickPlacement: 'none',
 		tooltip: {
 			enabled: false
+		},
+		change: function (e) {
+			_activeWidget.setShadowSpread(e.value);
 		},
 		slide: function (e) {
 			_activeWidget.setShadowSpread(e.value);
