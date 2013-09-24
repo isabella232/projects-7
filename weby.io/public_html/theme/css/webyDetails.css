@@ -30,7 +30,7 @@
     padding: 0 10px;
     border-top: 3px solid #4e4e4e;
     border-bottom: 3px solid #2d2d2d;
-    z-index: 1000010;
+    z-index: 999999;
 }
 
 .weby-details .favorites-icon {
@@ -103,7 +103,6 @@
     left: 17px;
 }
 
-
 .weby-details .loading-following {
     background-image: url(../images/load.gif);
     width: 16px;
@@ -151,9 +150,9 @@
 .weby-details .user-info span.user-photo {
     width: 34px;
     height: 34px;
-    /* background-image: url("../images/sprite2.png");
-     background-repeat: no-repeat;
-     background-position: 50% -430px;*/
+    background-image: url("../images/sprite2.png");
+    background-repeat: no-repeat;
+    background-position: 50% -430px;
     display: inline-block;
     float: left;
 }
