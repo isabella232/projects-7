@@ -135,6 +135,7 @@
     -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    width: 400px;
 }
 
 .introjs-tooltipbuttons {
@@ -194,6 +195,12 @@
 }
 
 .introjs-nextbutton {
+}
+
+.introjs-tooltiptext h1{
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
 }
 
 .introjs-disabled, .introjs-disabled:hover, .introjs-disabled:focus {

@@ -40,7 +40,7 @@
         </p>
     </div>
     {include file="templates/common/favorites.tpl"}
-    {if !$viewObject.user->completedOnboarding()}
+    {if $viewObject.user->completedOnboarding()}
         {include file="templates/editor/includes/introDialog.tpl"}
     {/if}
 {/block}
