@@ -242,6 +242,8 @@ function WebyBackground(settings) {
 	};
 
 	this.webyBackgroundResized = function () {
+		$('#workspace').height(App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset());
+		$('#workspace').width(App.getViewportWidth());
 		if(App.getViewportWidth() < 1200){
 			App.getContentWrapper().css("margin", "0");
 		} else {

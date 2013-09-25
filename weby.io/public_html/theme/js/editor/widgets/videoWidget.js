@@ -4,8 +4,7 @@ function VideoWidget() {
 	this._videoId = false;
 	this._previewUrl = '';
 	this._widgetClass = 'video-widget';
-	this._resizableOptions['minHeight'] = 250;
-	this._resizableOptions['minWidth'] = 333;
+	this._resizableOptions['minHeight'] = 100;
 	this._loadingMessage = 'Loading your video...';
 	this._parseErrorMessage = "Looks like this video doesn't exist! Try a different URL.";
 	this._vimeoApiUrl = 'http://vimeo.com/api/v2/video/';

@@ -787,6 +787,12 @@ BaseWidget.prototype = {
 		return this;
 	},
 
+	showUnavailable: function(){
+		this.html().append('<div class="widget-unavailable-overlay"></div>');
+		this.body('*:not(".widget-unavailable-overlay")').remove();
+		this._resize();
+	},
+
 	showTools: function () {
 		this.controls().css("visibility", "visible").show();
 		this.html('.widget-disabled-overlay').css("opacity", 1);
@@ -1019,6 +1025,12 @@ BaseWidget.prototype = {
 			marginLeft: margin,
 			marginRight: margin,
 			marginTop: (this._html.outerHeight() / 2 - 20) + 'px'
+		});
+
+		// Resize unavailable overlay
+		this.html('.widget-unavailable-overlay').css({
+			width: this.body()[0].scrollWidth + 'px',
+			height: this.body()[0].scrollHeight + 'px'
 		});
 	},
 

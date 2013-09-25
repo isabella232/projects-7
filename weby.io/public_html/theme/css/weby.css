@@ -1,10 +1,9 @@
 #workspace{
-	/*height:100%;
-	width: 100%;*/
+	overflow:auto;
 }
 #wrapper {
 	position: relative;
-	overflow: scroll !important;
+	/*overflow: scroll !important;*/
 	margin: 0 auto;
 }
 
