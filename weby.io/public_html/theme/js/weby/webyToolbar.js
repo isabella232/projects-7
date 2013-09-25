@@ -273,7 +273,7 @@ function WebyToolbar() {
 	var _lastWidth = 0;
 	var _lastHeight = 0;
 
-	var _canvasSizeChange = function (type) {
+	var _canvasSizeChange = function () {
 		if (_canvasWidth.value() == _lastWidth && _canvasHeight.value() == _lastHeight) {
 			return;
 		}
@@ -283,7 +283,7 @@ function WebyToolbar() {
 		if (_canvasHeight.value() == null) {
 			_canvasHeight.value(App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset());
 		}
-		App.getWeby().getBackground().applyCanvasSize(_canvasWidth.value(), _canvasHeight.value(), type);
+		App.getWeby().getBackground().applyCanvasSize(_canvasWidth.value(), _canvasHeight.value());
 
 		_previousWidth = _lastWidth;
 		_lastWidth = _canvasWidth.value();
@@ -296,12 +296,8 @@ function WebyToolbar() {
 		step: 1,
 		decimals: 0,
 		format: "n0",
-		change: function (e) {
-			_canvasSizeChange('change');
-		},
-		spin: function (e) {
-			_canvasSizeChange('spin');
-		}
+		change:_canvasSizeChange,
+		spin: _canvasSizeChange
 	}).data("kendoNumericTextBox");
 
 	_canvasHeight = $("#canvas-height").kendoNumericTextBox({
@@ -309,12 +305,8 @@ function WebyToolbar() {
 		step: 1,
 		decimals: 0,
 		format: "n0",
-		change: function (e) {
-			_canvasSizeChange('change');
-		},
-		spin: function (e) {
-			_canvasSizeChange('spin');
-		}
+		change: _canvasSizeChange,
+		spin: _canvasSizeChange
 	}).data("kendoNumericTextBox");
 
 	// Select input value on focus

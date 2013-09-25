@@ -72,22 +72,17 @@ function WebyBackground(settings) {
 	 * @param type change|spin
 	 */
 	this.setContentSize = function (width, height) {
-		function _resize(el, dimension, size) {
-			var data = {};
-			data[dimension] = size;
-			el.css(data);
-			App.fireEvent("weby.background.resized");
+		App.getContent().css({
+			width: width + 'px',
+			height: height + 'px'
+		});
 
-		}
-
-		_resize(App.getContent(), "width", width + 'px');
-		_resize(App.getContent(), "height", height + 'px');
-
+		App.fireEvent("weby.background.resized");
 		return this;
 	}
 
 	this.recalculateContentSize = function () {
-		this.setContentSize(_canvasWidth, _canvasHeight, 'change');
+		this.setContentSize(_canvasWidth, _canvasHeight);
 	}
 
 	this.webyLoaded = function () {
@@ -96,6 +91,8 @@ function WebyBackground(settings) {
 	}
 
 	this.webyBackgroundResized = function () {
+		$('#workspace').height(App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset());
+		$('#workspace').width(App.getViewportWidth());
 		if(App.getViewportWidth() < 1200){
 			App.getContent().css("margin", "0");
 		} else {

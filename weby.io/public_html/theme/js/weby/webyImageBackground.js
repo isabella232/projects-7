@@ -87,8 +87,8 @@ function WebyImageBackground(el) {
 			backgroundRepeat: 'no-repeat',
 			backgroundSize: 'initial',
 			backgroundAttachment: 'inherit',
-			width: App.getContent()[0].scrollWidth + 'px',
-			height: App.getContent()[0].scrollHeight + 'px',
+			width: App.getContent().width() + 'px',
+			height: App.getContent().height() + 'px',
 			top: 0,
 			left: 0,
 			position: 'absolute'
@@ -102,8 +102,8 @@ function WebyImageBackground(el) {
 			backgroundRepeat: 'repeat',
 			backgroundSize: 'initial',
 			backgroundAttachment: 'inherit',
-			width: App.getContent()[0].scrollWidth + 'px',
-			height: App.getContent()[0].scrollHeight + 'px',
+			width: App.getContent().width() + 'px',
+			height: App.getContent().height() + 'px',
 			top: 0,
 			left: 0,
 			position: 'absolute'
@@ -118,8 +118,8 @@ function WebyImageBackground(el) {
 			backgroundSize: 'cover',
 			backgroundAttachment: 'initial',
 			backgroundPosition: "left top",
-			width: (App.getContent().width() - App.getWeby().getScrollBarOffset()) + 'px',
-			height: (App.getContent().height() - App.getWeby().getScrollBarOffset()) + 'px',
+			width: App.getContent().width() + 'px',
+			height: App.getContent().height() + 'px',
 			top: wp.top + 'px',
 			left: wp.left + 'px',
 			position: 'fixed'
@@ -135,8 +135,8 @@ function WebyImageBackground(el) {
 			position: 'absolute'
 		});
 		img.css({
-			width: App.getContent()[0].scrollWidth + 'px',
-			height: App.getContent()[0].scrollHeight + 'px'
+			width: App.getContent().width() + 'px',
+			height: App.getContent().height() + 'px'
 		});
 		_el.append(img);
 	}
@@ -164,8 +164,8 @@ function WebyImageBackground(el) {
 			_renderFixed();
 		} else {
 			var css = {
-				width: App.getContent()[0].scrollWidth + 'px',
-				height: App.getContent()[0].scrollHeight + 'px'
+				width: App.getContent().width() + 'px',
+				height: App.getContent().height() + 'px'
 			};
 			_el.css(css).find('img').css(css);
 		}

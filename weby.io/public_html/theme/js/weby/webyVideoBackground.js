@@ -8,8 +8,8 @@ function WebyVideoBackground(el) {
 	var _videoInput = $('[data-role="input-youtube"]');
 	var _applyBtn = $('[data-role="btn-youtube-apply"]');
 	var _removeBtn = $('[data-role="btn-youtube-remove"]');
-	var _errorMessage = $('#cnv-video .error-message');
-	var _infoMessage = $('#cnv-video .info-message');
+	var _errorMessage = $('#doc-video .error-message');
+	var _infoMessage = $('#doc-video .info-message');
 	var _volumeControl = $('[data-role="video-volume-control"]');
 	var _volumeSlider = $('[data-role="k-slider-video-volume"]');
 
