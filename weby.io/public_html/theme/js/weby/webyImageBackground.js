@@ -111,15 +111,15 @@ function WebyImageBackground(el) {
 	}
 
 	var _renderFixed = function () {
-		var wp = App.getContentWrapper().offset();
+		var wp = App.getContent().offset();
 		_el.find('img').remove();
 		_el.css({
 			backgroundImage: 'url(' + _image + ')',
 			backgroundSize: 'cover',
 			backgroundAttachment: 'initial',
 			backgroundPosition: "left top",
-			width: (App.getContentWrapper().width() - App.getWeby().getScrollBarOffset()) + 'px',
-			height: (App.getContentWrapper().height() - App.getWeby().getScrollBarOffset()) + 'px',
+			width: (App.getContent().width() - App.getWeby().getScrollBarOffset()) + 'px',
+			height: (App.getContent().height() - App.getWeby().getScrollBarOffset()) + 'px',
 			top: wp.top + 'px',
 			left: wp.left + 'px',
 			position: 'fixed'

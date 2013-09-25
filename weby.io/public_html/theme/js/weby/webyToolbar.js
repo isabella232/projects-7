@@ -278,10 +278,10 @@ function WebyToolbar() {
 			return;
 		}
 		if (_canvasWidth.value() == null) {
-			_canvasWidth.value(App.getViewportWidth() - App.getWeby().getScrollBarOffset());
+			_canvasWidth.value(App.getViewportWidth());
 		}
 		if (_canvasHeight.value() == null) {
-			_canvasHeight.value(App.getViewportHeight() - App.getTopOffset() - App.getWeby().getScrollBarOffset() - App.getBottomOffset());
+			_canvasHeight.value(App.getViewportHeight() - App.getTopOffset() - App.getBottomOffset());
 		}
 		App.getWeby().getBackground().applyCanvasSize(_canvasWidth.value(), _canvasHeight.value(), type);
 
@@ -358,6 +358,7 @@ function WebyToolbar() {
 
 	_documentColorPicker = $("#doc-color-picker").kendoFlatColorPicker({
 		preview: true,
+		opacity: true,
 		value: currentColor == null ? '#ffffff' : currentColor,
 		change: function (e) {
 			App.getWeby().getDocumentBackground().setColor(e.value).render();

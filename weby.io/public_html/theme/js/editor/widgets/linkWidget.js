@@ -260,16 +260,14 @@ function LinkWidget() {
 
 	/** This will render web link template */
 	this.generateLinkEmbed = function () {
+		console.log(this._linkUrl)
 		this._verifyUrl();
 		var tpl = $('script#link-widget-link-tpl').html();
 		tpl = tpl.replace(/{url}/g, this._linkUrl);
 		tpl = tpl.replace('{id}', this._id);
 		tpl = tpl.replace('{title}', this.truncate(this._title, 35, '...'));
 		tpl = tpl.replace('{description}', this.truncate(this._description, 140, '...'));
-		tpl = $(tpl.replace('{imageUrl}', this._imageUrl == "false" ? '' : this._imageUrl));
-		if (!this._imageUrl) {
-			tpl.find('img').remove();
-		}
+		tpl = $(tpl.replace('{imageUrl}', this._imageUrl == "false" || this._imageUrl == false ? THEME + 'images/link-icon.png' : this._imageUrl));
 		return tpl;
 	};
 

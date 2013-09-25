@@ -162,7 +162,7 @@ var AppToolbar = function () {
 				}
 				var activeTool = _tools[tool];
 
-				var box = App.getContentWrapper()[0].getBoundingClientRect();
+				var box = App.getContent()[0].getBoundingClientRect();
 				var validX = event.clientX > box.left && event.clientX < box.right;
 				var validY = event.clientY > box.top && event.clientY < box.bottom;
 
@@ -171,8 +171,8 @@ var AppToolbar = function () {
 					return;
 				}
 				
-				var x = event.clientX - box.left + App.getContentWrapper()[0].scrollLeft;
-				var y = event.clientY - box.top + App.getContentWrapper()[0].scrollTop;
+				var x = event.clientX - box.left + App.getContent()[0].scrollLeft;
+				var y = event.clientY - box.top + App.getContent()[0].scrollTop;
 				activeTool.createWidgetAt(x, y);
 			}
 		});
