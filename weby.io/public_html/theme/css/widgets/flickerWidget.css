@@ -2,3 +2,7 @@
 	float:left;
 	line-height:0;
 }
+
+.flicker-widget.widget-body a img{
+	position:absolute;
+}

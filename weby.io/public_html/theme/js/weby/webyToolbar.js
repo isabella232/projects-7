@@ -120,6 +120,9 @@ function WebyToolbar() {
 		opacity: true,
 		preview: true,
 		buttons: false,
+		change: function (e) {
+			_activeWidget.setColor(e.value);
+		},
 		select: function (e) {
 			_activeWidget.setColor(e.value);
 		}
@@ -209,6 +212,9 @@ function WebyToolbar() {
 		opacity: true,
 		preview: true,
 		buttons: false,
+		change: function (e) {
+			_activeWidget.setShadowColor(e.value);
+		},
 		select: function (e) {
 			_activeWidget.setShadowColor(e.value);
 		}
@@ -392,12 +398,16 @@ function WebyToolbar() {
 	 */
 
 	this.contentClick = function (e) {
+		_colorPicker.close();
+		_shadowColorPicker.close();
 		_widgetSettings.hide();
 		_canvasSettings.hide();
 		_documentBackgroundSettings.hide();
 	};
 
 	this.widgetClick = function (e) {
+		_colorPicker.close();
+		_shadowColorPicker.close();
 		_widgetSettings.hide();
 		_canvasSettings.hide();
 		_documentBackgroundSettings.hide();
@@ -425,6 +435,8 @@ function WebyToolbar() {
 
 	this.widgetDeactivated = function () {
 		_activeWidget = null;
+		_colorPicker.close();
+		_shadowColorPicker.close();
 		_widgetSettings.hide();
 		$('#weby-toolbar-wrapper a.tool-icon:not(".background, .document")').addClass('disabled');
 	}

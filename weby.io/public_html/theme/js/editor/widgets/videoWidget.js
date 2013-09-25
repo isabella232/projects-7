@@ -9,6 +9,7 @@ function VideoWidget() {
 	this._parseErrorMessage = "Looks like this video doesn't exist! Try a different URL.";
 	this._vimeoApiUrl = 'http://vimeo.com/api/v2/video/';
 	this._inputElement = 'textarea';
+	this._heightOffset = 0;
 
 	this.getHTML = function () {
 		this._html = '<textarea placeholder="Paste a Youtube or Vimeo link here">http://vimeo.com/58546834</textarea>' +

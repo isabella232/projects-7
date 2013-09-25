@@ -427,6 +427,10 @@
 	border: none !important;
 }
 
+.editor .k-widget.k-tooltip.k-slider-tooltip{
+	display:none;
+}
+
 #widget-settings span.k-widget {
 	float: left;
 	margin-top: 4px;
