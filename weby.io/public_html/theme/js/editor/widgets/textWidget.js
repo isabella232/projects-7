@@ -1,6 +1,7 @@
 function TextWidget() {
 
 	this._content = '';
+	this._textAlign = '';
 	this._firstActivate = true;
 	this._widgetClass = 'text-widget';
 	this._inputElement = '.text-editable';
@@ -140,13 +141,14 @@ function TextWidget() {
 	 */
 	this.getSaveData = function () {
 		return {
-			content: encodeURIComponent(this.body('.text-editable').data("kendoEditor").value())
+			content: encodeURIComponent(this.body('.text-editable').data("kendoEditor").value()),
+			textAlign: this.body('.text-editable').css('textAlign')
 		}
 	};
 
 	this.getEditHTML = function () {
 		this._firstActivate = false;
-		this._html = '<div style="width:' + (this._width - 2) + 'px; height:' + (this._height - 2) + 'px" id="text-editable-' + this._id + '" class="text-editable"></div>';
+		this._html = '<div style="text-align: '+this._textAlign+'; width:' + (this._width - 2) + 'px; height:' + (this._height - 2) + 'px" id="text-editable-' + this._id + '" class="text-editable"></div>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 

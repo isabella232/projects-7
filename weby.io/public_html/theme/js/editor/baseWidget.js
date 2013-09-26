@@ -362,6 +362,7 @@ BaseWidget.prototype = {
 
 		this._left = parseInt(x);
 		this._top = parseInt(y);
+		
 		if (typeof this._html != "undefined") {
 			var css = {top: this._top + 'px', left: this._left + 'px'};
 			if (animate) {
@@ -468,7 +469,7 @@ BaseWidget.prototype = {
 	onWidgetInserted: function () {
 		App.fireEvent("widget.created", this);
 		this._bindControls();
-		this._simulateDrag();
+		this._checkPosition();
 	},
 
 	/**
@@ -658,6 +659,7 @@ BaseWidget.prototype = {
 		}
 
 		this._resize();
+		this._checkPosition();
 		return this;
 	},
 
@@ -769,8 +771,8 @@ BaseWidget.prototype = {
 		if (fillContent) {
 			var paddingTop = (this.body()[0].scrollHeight - 10) / 2 - 28;
 			var style = {
-				width: (this.body().width() - 20) + 'px',
-				height: (this.body().height() - paddingTop) + 'px',
+				width: (this.html().width() - 20) + 'px',
+				height: (this.html().height() - paddingTop) + 'px',
 				paddingTop: paddingTop + 'px'
 			};
 		} else {
@@ -893,19 +895,27 @@ BaseWidget.prototype = {
 	},
 
 	moveUp: function (distance) {
-		this.setPosition(this._left, parseInt(this._top) - parseInt(distance));
+		if (this._isContentLoaded) {
+			this.setPosition(this._left, parseInt(this._top) - parseInt(distance));
+		}
 	},
 
 	moveRight: function (distance) {
-		this.setPosition(parseInt(this._left) + parseInt(distance), this._top);
+		if (this._isContentLoaded) {
+			this.setPosition(parseInt(this._left) + parseInt(distance), this._top);
+		}
 	},
 
 	moveLeft: function (distance) {
-		this.setPosition(parseInt(this._left) - parseInt(distance), this._top);
+		if (this._isContentLoaded) {
+			this.setPosition(parseInt(this._left) - parseInt(distance), this._top);
+		}
 	},
 
 	moveDown: function (distance) {
-		this.setPosition(this._left, parseInt(this._top) + parseInt(distance));
+		if (this._isContentLoaded) {
+			this.setPosition(this._left, parseInt(this._top) + parseInt(distance));
+		}
 	},
 
 	setOpacity: function (opacity) {
@@ -1045,12 +1055,13 @@ BaseWidget.prototype = {
 		});
 	},
 
-	_simulateDrag: function () {
-		this._html.draggable().simulate("drag", {
-			dx: 0,
-			dy: 0,
-			moves: 1
-		});
+	_checkPosition: function () {
+		var widgetBox = this.html()[0].getBoundingClientRect();
+		var contentBox = App.getContent()[0].getBoundingClientRect();
+
+		if(widgetBox.right > contentBox.right){
+			this.setPosition(contentBox.right - widgetBox.width - contentBox.left, this._top);
+		}
 	},
 
 	/**
@@ -1142,10 +1153,7 @@ BaseWidget.prototype = {
 				continue;
 			}
 			var rect2 = relativeWidget.getBoundingClientRect();
-			var overlap = !(rect1.right < rect2.left ||
-				rect1.left > rect2.right ||
-				rect1.bottom < rect2.top ||
-				rect1.top > rect2.bottom);
+			var overlap = !(rect1.right < rect2.left || rect1.left > rect2.right || rect1.bottom < rect2.top || rect1.top > rect2.bottom);
 			if (overlap) {
 				overlaps.push(App.getWeby().getWidget(widgetId));
 			}
@@ -1198,7 +1206,7 @@ BaseWidget.prototype = {
 		var indexes = [];
 		for (var i in overlaps) {
 			var ow = overlaps[i];
-			if (ow.getZIndex() < this.getZIndex()) {
+			if (ow.getZIndex() <= this.getZIndex()) {
 				indexes.push(ow.getZIndex());
 			}
 		}
