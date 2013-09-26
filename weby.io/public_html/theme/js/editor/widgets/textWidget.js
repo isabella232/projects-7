@@ -42,12 +42,13 @@ function TextWidget() {
 
 	this.onWidgetInserted = function () {
 		BaseWidget.prototype.onWidgetInserted.call(this);
-		this._createEditor();
+		var $this = this;
+		$this._createEditor();
 		App.deactivateTool();
-		this.html(".text-editable").width(this.html().width() - 2).height(this.html().height() - 2);
-		this.contentLoaded();
-		if (this._firstActivate) {
-			this.makeEditable();
+		$this.html(".text-editable").width($this.html().width() - 2).height($this.html().height() - 2);
+		$this.contentLoaded();
+		if ($this._firstActivate) {
+			$this.makeEditable();
 		}
 	}
 
@@ -139,19 +140,19 @@ function TextWidget() {
 	 */
 	this.getSaveData = function () {
 		return {
-			content: encodeURIComponent(this.body().find('.text-editable').html())
+			content: encodeURIComponent(this.body('.text-editable').data("kendoEditor").value())
 		}
 	};
 
 	this.getEditHTML = function () {
 		this._firstActivate = false;
-        this._content = $('<div/>').html(this._content).text();
-		this._html = '<div style="width:' + (this._width - 2) + 'px; height:' + (this._height - 2) + 'px" id="text-editable-' + this._id + '" class="text-editable">' + this._content + '</div>';
+		this._html = '<div style="width:' + (this._width - 2) + 'px; height:' + (this._height - 2) + 'px" id="text-editable-' + this._id + '" class="text-editable"></div>';
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
 	this.onEditWidgetInserted = function () {
 		this._createEditor();
+		this.body('.text-editable').data("kendoEditor").value(this._content);
 	}
 }
 

@@ -468,6 +468,7 @@ BaseWidget.prototype = {
 	onWidgetInserted: function () {
 		App.fireEvent("widget.created", this);
 		this._bindControls();
+		this._simulateDrag();
 	},
 
 	/**
@@ -638,7 +639,7 @@ BaseWidget.prototype = {
 		this._width = this.html('.widget-body')[0].scrollWidth;
 		this._height = this.html('.widget-body')[0].scrollHeight; // 3px hack
 
-		if(this._heightOffset){
+		if (this._heightOffset) {
 			this._height -= this._heightOffset;
 		}
 
@@ -794,7 +795,7 @@ BaseWidget.prototype = {
 		return this;
 	},
 
-	showUnavailable: function(){
+	showUnavailable: function () {
 		this.html().append('<div class="widget-unavailable-overlay"></div>');
 		this.body('*:not(".widget-unavailable-overlay")').remove();
 		this._resize();
@@ -873,8 +874,8 @@ BaseWidget.prototype = {
 			this._jWidgetControls = this.html('span.control');
 		}
 
-		if(selector){
-			return this.html('span.control'+selector);
+		if (selector) {
+			return this.html('span.control' + selector);
 		}
 		return this._jWidgetControls;
 	},
@@ -997,7 +998,7 @@ BaseWidget.prototype = {
 	 * @param data
 	 */
 	widgetResizeStop: function (data) {
-		if(data.element.data('widget').getId() != this._id){
+		if (data.element.data('widget').getId() != this._id) {
 			return;
 		}
 		this._width = parseInt(data.element.width());
@@ -1041,6 +1042,14 @@ BaseWidget.prototype = {
 		this.html('.widget-unavailable-overlay').css({
 			width: this.body()[0].scrollWidth + 'px',
 			height: this.body()[0].scrollHeight + 'px'
+		});
+	},
+
+	_simulateDrag: function () {
+		this._html.draggable().simulate("drag", {
+			dx: 0,
+			dy: 0,
+			moves: 1
 		});
 	},
 

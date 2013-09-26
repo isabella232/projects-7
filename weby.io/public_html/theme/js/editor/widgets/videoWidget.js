@@ -154,6 +154,9 @@ function VideoWidget() {
 		this.body().prepend(playOverlay);
 		this.html().resizable("option", "alsoResize", '#video-preview-' + this._id + ', .widget[data-id=' + this._id + '] .play-overlay');
 		this.contentLoaded().showResizeHandle();
+		setTimeout(function(){
+			$this._simulateDrag();
+		}, 1000);
 	}
 
 	this.getIframe = function () {
