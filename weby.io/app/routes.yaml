@@ -5,6 +5,7 @@ routes:
     # PUBLIC PAGES
     - ['', \App\Handlers\PagesHandler, index]
     - ['about', \App\Handlers\PagesHandler, about]
+    - ['/^tag\/(.*)\/(.*)$/', \App\Handlers\PagesHandler, listByTag]
 
     # USER
     - ['/^tools\/follow\/([0-9]*)$/', \App\Handlers\UsersHandler, ajaxToggleFollowing]
@@ -13,9 +14,10 @@ routes:
     # TOOLS
     - ['tools/webies', \App\Handlers\ToolsHandler, ajaxGetWebies]
     - ['tools/webies/tags', \App\Handlers\ToolsHandler, ajaxGetWebiesByTags] # Gets Webies by tags (used also by WP widget)
+
     - ['/^tools\/embedded-hit\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, ajaxEmbeddedHit]
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
-    - ['tools/tags', \App\Handlers\ToolsHandler, ajaxSearchTags]
+    - ['tools/tags', \App\Handlers\ToolsHandler, ajaxSearchTags] #searches tags when typing them into textbox
     - ['tools/feedback', \App\Handlers\ToolsHandler, ajaxSendFeedback]
     - ['tools/log', \App\Handlers\ToolsHandler, log]
     - ['tools/parse-link', \App\Handlers\LinksHandler, parse]

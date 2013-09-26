@@ -201,6 +201,9 @@ class ToolsHandler extends AbstractHandler
         $this->ajaxResponse(false);
     }
 
+    /**
+     * This searches tags when typing them in in tags textbox (eg. in editor - Weby dialog - title, tags, description)
+     */
     public function ajaxSearchTags()
     {
         $search = $this->request()->post('search');
@@ -218,7 +221,7 @@ class ToolsHandler extends AbstractHandler
     public function ajaxGetWebiesByTags()
     {
         $tags = $this->request()->query('q');
-        $webiesIds = WebyEntity::getWebiesByTags($tags);
+        $webiesIds = WebyEntity::listWebiesByTag($tags);
         $json = [];
         $weby = new WebyEntity();
         foreach ($webiesIds as $id) {

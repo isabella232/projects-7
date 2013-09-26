@@ -1,0 +1,15 @@
+.header-middle.webies-list {
+    height: 60px;
+    background: url(../images/sprite2.png) no-repeat -140px -2447px;
+    padding-left: 58px;
+}
+
+.header-middle.webies-list h2 {
+    padding-top: 25px;
+}
+
+li.weby-list-item {
+    border: 1px solid black;
+    height: 40px;
+    width: 100px;
+}

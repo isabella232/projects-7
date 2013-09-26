@@ -220,6 +220,25 @@ body.unselectable * {
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
 }
 
+
+.header-right ul li.register-btn {
+    padding-left: 30px;
+}
+
+.header-right ul li.register-btn a {
+    width: 182px;
+    height: 47px;
+    background-image: url("../images/sprite2.png");
+    background-repeat: no-repeat;
+    background-position: 50% -1455px;
+    display: block;
+}
+
+.header-right ul li.register-btn a:hover {
+    opacity: 0.85;
+}
+
+
 ::-webkit-input-placeholder {
 	color: gray;
 	font-family: Arial, sans-serif;

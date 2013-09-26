@@ -19,6 +19,7 @@
         socialShare.css,
         headerMiddle.css,
         weby.css,
+        jquery.fancybox.css,
         dialog/dialog.css,
         dialog/dashboardDialog.css,
         dialog/favoritesDialog.css,
@@ -32,9 +33,11 @@
         jquery.fancybox.pack.js,
         time.js,
         timePassed.js,
-        weby/feedback.js
+        weby/feedback.js,
+        weby/webyDashboard.js,
+        weby/webyFavorites.js,
     {/minify}
-
+    <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>
     <script type="text/javascript">
         var THEME = '{$viewObject.themeWebPath}';
         var WEB = '{$viewObject.webPath}';

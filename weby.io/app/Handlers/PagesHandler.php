@@ -44,19 +44,51 @@ class PagesHandler extends AbstractHandler
 
         // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
-		$this->shareCount = $weby->getShareCount();
+        $this->shareCount = $weby->getShareCount();
 
         if ($this->request()->query('embed', false, true)) {
             $this->setTemplate('embed');
             return;
         }
 
-		$this->setTemplate('weby');
+        $this->setTemplate('weby');
         Stats::getInstance()->updateWebyHits($weby);
     }
 
-    public function searchByTag() {
-        die('bmjhgjh');
+    /**
+     * Searching Webies by a single tag (eg. when clicking on a tag that directly leads to this action)
+     * @param $tag
+     * @param int $page
+     * @internal param $json
+     */
+    public function listByTag($tag, $page = 1)
+    {
+        $this->tag = $tag;
+        $this->webies = [];
+        $this->webiesCount = 0;
+
+        $json = $this->request()->post('json');
+        $result = WebyEntity::listWebiesByTag($tag, 3);
+
+        if ($result->count()) {
+            $this->webiesCount = $result[0]['total_count'];
+            $weby = new WebyEntity();
+            foreach ($result as $w) {
+                $weby->load($w['id']);
+                $webies[] = clone $weby;
+            }
+            if ($json) {
+                $tmp = [];
+                foreach($webies as $w) {
+                    $tmp[] = $w->toArray();
+                }
+                header('Content-type: application/json; charset=utf-8;');
+                die(json_encode($tmp));
+            }
+            $this->webies = $webies;
+
+        }
+
     }
 
     public function page404()
