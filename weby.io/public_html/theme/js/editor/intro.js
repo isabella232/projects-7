@@ -63,7 +63,7 @@ function Intro() {
             modal: true,
             type: 'inline',
             autoSize: false,
-            width: 500,
+            width: 490,
             height: 'auto'
         });
     };

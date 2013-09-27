@@ -19,10 +19,12 @@
         socialShare.css,
         headerMiddle.css,
         weby.css,
+        jquery.fancybox.css,
         dialog/dialog.css,
         dialog/dashboardDialog.css,
         dialog/favoritesDialog.css,
-        dialog/feedbackDialog.css
+        dialog/feedbackDialog.css,
+        dialog/keyboardShortcutsDialog.css
     {/minify}
 
     {minify type="js"}
@@ -32,9 +34,11 @@
         jquery.fancybox.pack.js,
         time.js,
         timePassed.js,
-        weby/feedback.js
+        weby/feedback.js,
+        weby/webyDashboard.js,
+        weby/webyFavorites.js,
     {/minify}
-
+    <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>
     <script type="text/javascript">
         var THEME = '{$viewObject.themeWebPath}';
         var WEB = '{$viewObject.webPath}';
@@ -64,23 +68,24 @@
 <div class="footer">
     <ul>
         <li>
-            <a href="">Help</a>
+            <a href="#">Help</a>
         </li>
         <li>
-            <a href="">About</a>
+            <a href="#">About</a>
         </li>
         <li>
-            <a href="">Terms of Service</a>
+            <a href="#">Terms of Service</a>
         </li>
         <li >
-            <a class="footer-keyboard-shortcuts" href="">Keyboard Shortcuts</a>
+            <a class="footer-keyboard-shortcuts" href="javascript:void(0);" data-role="keyboard-shortcuts-open">Keyboard Shortcuts</a>
         </li>
-        <li>
+        <li class="feedback">
             <a class="footer-feedback" href="javascript:void(0);" data-role="feedback-open">Feedback</a>
         </li>
     </ul>
     <span><a href="http://www.webiny.com" target="_blank"></a></span>
     {include file="templates/common/feedback.tpl"}
+    {include file="templates/common/keyboardShortcuts.tpl"}
 </div>
 {include file="templates/common/ga.tpl"}
 </body>
