@@ -7,7 +7,7 @@ use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Screenshot;
-use App\Lib\Stats;
+use App\Lib\Stats\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Cache\CacheTrait;
@@ -74,6 +74,13 @@ class ToolsHandler extends AbstractHandler
         }
         die();
     }
+
+	public function mustacheWeby($webyId) {
+		$weby = new WebyEntity();
+		$weby->load($webyId);
+		Stats::getInstance()->updateWebyHits($weby);
+		die(json_encode($weby->getSummaryData()));
+	}
 
     private function _createSize($weby, $storage, $width, $height, $tag)
     {
@@ -169,7 +176,7 @@ class ToolsHandler extends AbstractHandler
         }
 
         // Finally, update hit stats
-        Stats\Stats::getInstance()->updateWebyEmbeddedHits($weby);
+        Stats::getInstance()->updateWebyEmbeddedHits($weby);
         die();
     }
 

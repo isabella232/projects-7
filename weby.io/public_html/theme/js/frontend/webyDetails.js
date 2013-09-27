@@ -140,8 +140,12 @@ function WebyDetails() {
         }
     });
 
+	$('#weby-details').draggable({
+		containment: [0, 98],
+		handle: $('#weby-details')
+	});
 }
 
-$(function () {
-    new WebyDetails;
+$(function(){
+	new WebyDetails();
 });

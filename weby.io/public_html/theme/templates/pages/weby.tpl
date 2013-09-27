@@ -12,14 +12,6 @@
     <link data-page-subject="true" href="{$weby->getImage('original-screenshot')}" rel="image_src"/>
     {include file="templates/pages/includes/appIncludes.tpl"}
     {include file="templates/pages/includes/appRemoteIncludes.tpl"}
-    <script type="text/javascript" id="initScript">
-        var weby = {$weby->toJson()};
-        $(function () {
-            App = new AppClass();
-            App.init();
-            $('#initScript').remove();
-        });
-    </script>
 {/block}
 {block name="headerMiddle"}
     {include file="templates/pages/includes/title.tpl"}
@@ -31,6 +23,26 @@
     {include file="templates/common/dashboard.tpl"}
     {include file="templates/common/favorites.tpl"}
     {include file="templates/common/linkWidgetTemplates.tpl"}
+    <script type="text/javascript" id="initScript">
+        var weby = {$weby->toJson()};
+        var data = {$weby->getSummaryData()};
+        {*
+        {if $viewObject.mode}
+        var data = {$weby->getSummaryData()};
+        {else}
+        var data = {literal}<esi:include src="/tools/mustache/weby/{/literal}{$weby->getId()}{literal}"/>{/literal}
+        {/if}
+        *}
+
+        var html = new kendo.template($('#weby-details-tpl').html());
+        $('body').append(html(data));
+
+        $(function () {
+            App = new AppClass();
+            App.init();
+            $('#initScript').remove();
+        });
+    </script>
 {/block}
 {block name="headerRightTools"}
     {if $viewObject.user}
