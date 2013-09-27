@@ -10,9 +10,9 @@ use App\Lib\Screenshot;
 use App\Lib\Stats;
 use App\Lib\UserTrait;
 use App\Lib\View;
+use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Image\ImageTrait;
-use Webiny\Component\Logger\Logger;
 use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\Storage\StorageTrait;
@@ -21,7 +21,7 @@ use App\Lib\Logger as WebyLogger;
 
 class ToolsHandler extends AbstractHandler
 {
-    use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait, AppTrait;
+	use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait, AppTrait, CacheTrait;
 
     /**
      * Log JS exception
