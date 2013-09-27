@@ -1,11 +1,3 @@
-<script type="text/javascript">
-    $(function () {
-        $('#weby-details').draggable({
-            containment: [0, 98],
-            handle: $('#weby-details .details-arrow')
-        });
-    });
-</script>
 <div class="weby-details" id="weby-details">
     <div class="details-arrow">
         <span class="handler"></span>

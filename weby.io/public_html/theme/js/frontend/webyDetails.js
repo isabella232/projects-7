@@ -123,10 +123,10 @@ function WebyDetails() {
         })
     });
 
-    _webyUser.hover(function() {
+    _webyUser.hover(function () {
         _topTooltips.show(_webyUser);
     });
-    _webyUser.mouseout(function() {
+    _webyUser.mouseout(function () {
         _topTooltips.hide(_webyUser);
     });
 
@@ -138,6 +138,11 @@ function WebyDetails() {
             $('.full-weby-data').slideDown(300);
             _showFullDetails.addClass('shown')
         }
+    });
+
+    _webyDetails.draggable({
+        containment: [0, 98],
+        handle: $('#weby-details .details-arrow')
     });
 
 }
