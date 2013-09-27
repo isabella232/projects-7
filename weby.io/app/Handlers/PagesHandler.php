@@ -50,23 +50,17 @@ class PagesHandler extends AbstractHandler
 
         // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
-		$this->shareCount = $weby->getShareCount();
+        $this->shareCount = $weby->getShareCount();
 
-		$this->setTemplate('weby');
+        if ($this->request()->query('embed', false, true)) {
+            $this->setTemplate('embed');
+            return;
+        }
+
+        $this->setTemplate('weby');
         Stats::getInstance()->updateWebyHits($weby);
     }
 
-	/**
-	 * Used for viewing Weby pages (public area)
-	 * @param $user
-	 * @param $slug
-	 * @param $id
-	 */
-	public function viewWebyEmbed($user, $slug, $id)
-	{
-		// Try to load Weby
-		$weby = new WebyEntity();
-		$weby->load($id);
     /**
      * Shows 404 page
      */
@@ -74,20 +68,6 @@ class PagesHandler extends AbstractHandler
     {
     }
 
-		// Will check if requested Weby and URL params are valid
-		$this->_checkRequest($weby, $user, $slug, $id);
-
-		// Assign whole weby to $this, so we can pass it to view
-		$this->weby = $weby;
-		$this->shareCount = $weby->getShareCount();
-		$this->setTemplate('embed');
-		Stats::getInstance()->updateWebyHits($weby);
-	}
-
-    /**
-     * Shows 404 page
-     */
-    public function page404()
     /**
      * Shows about page
      */
@@ -134,6 +114,9 @@ class PagesHandler extends AbstractHandler
     {
         $json = $this->request()->post('json');
         $this->page = $page;
+        if (!$this->user()) {
+            $this->request()->redirect($this->app()->getConfig()->app->web_path);
+        }
         if ($json) {
             $result = WebyEntity::listFollowingWebies($this->user()->getId(), $page, $this->_listLimit);
             if ($result->count()) {
