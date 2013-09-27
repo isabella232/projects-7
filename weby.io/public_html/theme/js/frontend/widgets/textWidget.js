@@ -1,15 +1,16 @@
 function TextWidget() {
 
 	this._content = '';
+	this._textAlign = '';
 	this._widgetClass = 'text-widget';
 
 	this.getHTML = function () {
-		this._html = decodeURIComponent(this._content);
+		this._html = this._content;
 		return BaseWidget.prototype.getHTML.call(this);
 	};
 
 	this.onWidgetInserted = function(){
-		this.body().css({height: this._height+'px', width: this._width+'px'});
+		this.body().css({textAlign: this._textAlign, height: this._height+'px', width: this._width+'px'});
 	}
 }
 
