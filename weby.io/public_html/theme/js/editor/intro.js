@@ -82,7 +82,6 @@ function Intro() {
                 })
             }).onchange(function (e) {
                 var step = parseInt($(e).attr('data-step'));
-                console.log(step)
                 switch (step) {
                     case 0:
                         $('.introjs-helperLayer').removeClass('highlighted');

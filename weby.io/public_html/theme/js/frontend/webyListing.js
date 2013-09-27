@@ -142,7 +142,6 @@ function ListingClass() {
      * Constructor methods
      */
     _pageContent.scroll(function () {
-        console.log(_pageContent.scrollTop() + ' i scrolheight' + _pageContent[0].scrollHeight)
         if (_pageContent.scrollTop()+ _pageContent.height() + 100 > _pageContent[0].scrollHeight) {
             _loadMoreWebies(_search, 1);
 
