@@ -292,7 +292,6 @@ function WebyTitleDialog(parent) {
                 $('.tags-placeholder').show();
             }
 
-            console.log(_tagsLog);
         })
 
         _tagsData.on('click', '.weby-tag', function () {
@@ -302,7 +301,6 @@ function WebyTitleDialog(parent) {
             if (_tagsData.find('span.weby-tag').length == 0) {
                 $('.tags-placeholder').show();
             }
-            console.log(_tagsLog);
 
         })
     }
@@ -434,8 +432,6 @@ function WebyTitleDialog(parent) {
                     if (_tagsData.find('span.weby-tag').length == 0) {
                         _tagsWrapper.find('.tags-placeholder').show();
                     }
-                    console.log(_tagsLog);
-
                 }
                 break;
             case 27: // Esc key

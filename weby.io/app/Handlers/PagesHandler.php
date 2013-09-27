@@ -67,6 +67,12 @@ class PagesHandler extends AbstractHandler
 		// Try to load Weby
 		$weby = new WebyEntity();
 		$weby->load($id);
+    /**
+     * Shows 404 page
+     */
+    public function page404()
+    {
+    }
 
 		// Will check if requested Weby and URL params are valid
 		$this->_checkRequest($weby, $user, $slug, $id);
@@ -82,9 +88,6 @@ class PagesHandler extends AbstractHandler
      * Shows 404 page
      */
     public function page404()
-    {
-    }
-
     /**
      * Shows about page
      */

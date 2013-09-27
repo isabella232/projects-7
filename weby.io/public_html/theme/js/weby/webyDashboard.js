@@ -55,10 +55,8 @@ function WebyDashboard() {
             data: function (response) {
                     for (var i in response.webies) {
                         if (typeof App == 'undefined') {
-                            console.log('nije editor')
                             response.webies[i].isEditor = false
                         } else {
-                            console.log('editor je' + App.isEditor())
                             response.webies[i].isEditor = App.isEditor();
                             response.webies[i].currentWeby = App.getWeby().getId();
                         }
