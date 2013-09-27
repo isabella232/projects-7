@@ -2,11 +2,13 @@
 
 var url = null;
 var searchValue = null;
+var searchPage = null;
 
 $(function () {
     // Load config data
     searchUrl = $('[data-role="search-url"]').text();
     searchValue = $('[data-role="search-value"]').text();
+    searchPage = $('[data-role="search-page"]').text();
 });
 
 /**
@@ -22,7 +24,7 @@ function ListingClass() {
     var _tplHolder = $('.tpl-holder');
     var _search = searchValue;
     var _loading = false;
-    var _page = 1;
+    var _page = searchPage;
     var _pagination = $('.pagination');
 
     var _imageDimensionsMap = {
@@ -40,7 +42,7 @@ function ListingClass() {
     var _loadMoreWebies = function () {
         if (!_loading) {
             _loading = true;
-            var fullSearchUrl = _search ? searchUrl + _search + '/' + _page : searchUrl + _page;
+            var fullSearchUrl = _search != '' ? searchUrl + _search + '/' + _page : searchUrl + _page;
             $.ajax({
                 url: fullSearchUrl,
                 method: 'post',
@@ -56,7 +58,7 @@ function ListingClass() {
     };
 
     var handleSearchResponse = function (data) {
-        if (data.webies) {
+        if (data) {
             var webies = data.webies;
             var newTplId = _currentTplId = _randomTplNumber(1, 5, _currentTplId);
 
@@ -89,15 +91,17 @@ function ListingClass() {
             });
 
             TimePassed.parse();
+
+            if (data.length < 9) {
+                _loading = true; // Set this to true so we permanently disable sending of ajax requests
+                _pagination.html('End of results')
+            } else {
+                _pagination.html(data.pagination);
+                _loading = false;
+                _page++;
+            }
         }
-        if (data.length < 9) {
-            _loading = true;
-            _pagination.html('End of results')
-        } else {
-            _pagination.html(data.pagination);
-            _loading = false;
-            _page++;
-        }
+
     }
 
     function _insert(i, webies) {

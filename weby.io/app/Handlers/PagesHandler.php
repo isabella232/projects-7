@@ -88,6 +88,7 @@ class PagesHandler extends AbstractHandler
     public function listRecentWebies($page = 1)
     {
         $json = $this->request()->post('json');
+        $this->page = $page;
         if ($json) {
             $result = WebyEntity::listRecentWebies($page, $this->_listLimit);
             if ($result->count()) {
@@ -116,6 +117,10 @@ class PagesHandler extends AbstractHandler
     public function listFollowingWebies($page = 1)
     {
         $json = $this->request()->post('json');
+        $this->page = $page;
+        if (!$this->user()) {
+            $this->request()->redirect($this->app()->getConfig()->app->web_path);
+        }
         if ($json) {
             $result = WebyEntity::listFollowingWebies($this->user()->getId(), $page, $this->_listLimit);
             if ($result->count()) {
@@ -144,6 +149,7 @@ class PagesHandler extends AbstractHandler
     public function listWebiesByUser($username, $page = 1)
     {
         $json = $this->request()->post('json');
+        $this->page = $page;
         if ($json) {
             $result = WebyEntity::listWebiesByUser($username, $page, $this->_listLimit);
             if ($result->count()) {
@@ -174,6 +180,7 @@ class PagesHandler extends AbstractHandler
     public function listWebiesByTag($tag, $page = 1)
     {
         $this->tag = $tag;
+        $this->page = $page;
         $json = $this->request()->post('json');
         if ($json) {
             $result = WebyEntity::listWebiesByTag($tag, $page, $this->_listLimit);

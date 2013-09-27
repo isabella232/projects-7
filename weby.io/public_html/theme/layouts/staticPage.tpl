@@ -7,9 +7,16 @@
         var WEB = '{$viewObject.webPath}';
     </script>
     {minify type="css"}
+        font.css,
         main.css,
         headerMiddle.css,
-        staticPage.css
+        staticPage.css,
+        jquery.fancybox.css,
+        dialog/dialog.css,
+        dialog/dashboardDialog.css,
+        dialog/favoritesDialog.css,
+        dialog/feedbackDialog.css,
+        dialog/keyboardShortcutsDialog.css
     {/minify}
     {minify type="js"}
         jquery-2.0.3.min.js,
