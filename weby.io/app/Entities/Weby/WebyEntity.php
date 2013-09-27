@@ -12,6 +12,28 @@ class WebyEntity extends WebyEntityCrud
 
     use AppTrait, UserTrait;
 
+
+    /**
+     * Gets Weby in form of an array - used when listing webies (by tag, user, recent etc.)
+     */
+    public function toListArray()
+    {
+        return [
+            'username' => $this->getUser()->getUsername(),
+            'avatarUrl' => $this->getUser()->getAvatarUrl(),
+            'title' => $this->getTitle(),
+            'favoritedCount' => $this->getFavoriteCount(),
+            'hitsCount' => $this->getTotalHits(),
+            'publicUrl' => $this->getPublicUrl(),
+            'createdOn' => $this->getCreatedOn(),
+            'images' => [
+                'square' => $this->getImage('frontend-square')->getUrl(),
+                'vertical' => $this->getImage('frontend-vertical')->getUrl(),
+                'horizontal' => $this->getImage('frontend-horizontal')->getUrl()
+            ]
+        ];
+    }
+
     /**
      * Gets all Webies for given user
      *
@@ -32,11 +54,35 @@ class WebyEntity extends WebyEntityCrud
     }
 
     /**
-     * Searches database for Webies with given tags attached
+     * Searches database for Webies with given single tag attached
      */
-    public static function listWebiesByTag($tags, $limit = 9)
+    public static function listWebiesByTag($tag, $page, $limit = 9)
     {
-        return self::_sqlGetWebiesByTag($tags, $limit);
+        return self::_sqlGetWebiesByTag($tag, $page, $limit);
+    }
+
+    /**
+     * Searches database for Webies from given user
+     */
+    public static function listWebiesByUser($user, $page, $limit = 9)
+    {
+        return self::_sqlGetWebiesByUser($user, $page, $limit);
+    }
+
+    /**
+     * Searches database for Webies from given user
+     */
+    public static function listRecentWebies($userId, $page, $limit = 9)
+    {
+        return self::_sqlGetRecentWebies($userId, $page, $limit);
+    }
+
+    /**
+     * Searches database for Webies from given user
+     */
+    public static function listFollowingWebies($page, $limit = 9)
+    {
+        return self::_sqlGetFollowingWebies($page, $limit);
     }
 
     /**

@@ -1,21 +1,54 @@
-<div class="dialog" id="feedback-dialog" style="display: none">
-    <div class="enter-message" data-show-all="{if !$viewObject.user}1{else}0{/if}">
-    <h1>Your Feedback</h1>
-
-    <p>If you have anything to tell us, please leave us a message! We would be glad to hear from you!</p>
-
-        {if !$viewObject.user}
-            <input class="has-tooltip name" title="Please enter your name." placeholder="Name"/>
-            <input class="has-tooltip email" title="Please enter valid email address."  placeholder="E-mail""/>
-        {/if}
-        <textarea class="has-tooltip" title="Please enter your message" placeholder="Enter your message here"></textarea>
-
-    <p class="buttons">
-        <span class="button main" data-role="feedback-send">Send</span>
-    </p>
-    </div>
-    <div class="end-message">
-        <p>Thank you for your feedback, see you soon!</p>
-        <p><b>Weby.io team</b></p>
+<div class="dialog" id="keyboard-shortcuts-dialog" style="display: none">
+    <div class="keyboard-shortcuts-dialog">
+        <a href="" class="close-dialog"></a>
+        <h1>Keyboard shortcuts</h1>
+        <ul>
+            <li>
+                <p>
+                    Save Weby
+                </p>
+                <span class="ctrl"></span>
+                <span class="equal"></span>
+                <span class="save"></span>
+            </li>
+            <li>
+                <p>
+                    Paste content
+                </p>
+                <span class="ctrl"></span>
+                <span class="equal"></span>
+                <span class="paste"></span>
+            </li>
+            <li>
+                <p>
+                    Duplicate selected widget
+                </p>
+                <span class="ctrl"></span>
+                <span class="equal"></span>
+                <span class="duplicate"></span>
+            </li>
+            <li>
+                <p>
+                    Maintain aspect ratio
+                </p>
+                <span class="shift"></span>
+                <span class="equal"></span>
+                <p class="key">Resize</p>
+            </li>
+            <li>
+                <p>
+                    Move selected widget by 10px
+                </p>
+                <span class="shift"></span>
+                <span class="equal"></span>
+                <p class="key">Arrow Keys</p>
+            </li>
+            <li>
+                <p>
+                    Move selected widget by 1px
+                </p>
+                <p class="key">Arrow Keys</p>
+            </li>
+        </ul>
     </div>
 </div>

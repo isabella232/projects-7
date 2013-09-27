@@ -165,7 +165,8 @@ abstract class WebyEntityStorage extends EntityAbstract
     /**
      * Finds all users that have this Weby in their favorites list
      */
-    protected function _sqlGetUsersFavorited($limit) {
+    protected function _sqlGetUsersFavorited($limit)
+    {
         $query = "SELECT \"user\", count(*) OVER() total_count FROM {$this->_getDb()->w_favorite}
                     WHERE weby=? ORDER BY created_on DESC LIMIT $limit";
         $bind = [$this->_id];
@@ -175,7 +176,36 @@ abstract class WebyEntityStorage extends EntityAbstract
 
     /**
      * Searches database for Webies with given tags
+     * @param $page
+     * @param int $limit
+     * @internal param $tag
+     * @internal param $tagSlug
+     * @internal param $slug
+     * @internal param $tag
+     * @internal param $tags
+     * @return Array|bool
+     */
+    protected static function _sqlGetRecentWebies($page, $limit = 9)
+    {
+        $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
+        $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_weby . " w
+                    ORDER BY w.created_on DESC {$limitOffset}";
+        return self::_getDb()->execute($query, [])->fetchAll();
+    }
+
+    protected static function _sqlGetFollowingWebies($userId, $page, $limit = 9)
+    {
+        $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
+        $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_follow . " f
+                    JOIN " . self::_getDb()->w_weby . " w ON w.user = f.followed_user
+                    WHERE f.user = ? ORDER BY w.created_on DESC {$limitOffset}";
+        return self::_getDb()->execute($query, [$userId])->fetchAll();
+    }
+
+    /**
+     * Searches database for Webies with given tags
      * @param $tag
+     * @param $page
      * @param int $limit
      * @internal param $tagSlug
      * @internal param $slug
@@ -183,13 +213,36 @@ abstract class WebyEntityStorage extends EntityAbstract
      * @internal param $tags
      * @return Array|bool
      */
-    protected static function _sqlGetWebiesByTag($tag, $limit=9)
+    protected static function _sqlGetWebiesByTag($tag, $page, $limit = 9)
     {
         $bind = [self::_toSlug($tag)];
+        $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
         $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_tags . " t
 	                JOIN " . self::_getDb()->w_weby2tag . " w2t ON w2t.tag = t.id
 	                JOIN " . self::_getDb()->w_weby . " w ON w.id = w2t.weby
-                    WHERE t.slug= ? ORDER BY modified_on DESC LIMIT {$limit}";
+                    WHERE t.slug= ? ORDER BY created_on DESC {$limitOffset}";
+        return self::_getDb()->execute($query, $bind)->fetchAll();
+    }
+
+    /**
+     * Searches database for Webies from given user
+     * @param $username
+     * @param $page
+     * @param int $limit
+     * @internal param $tag
+     * @internal param $tagSlug
+     * @internal param $slug
+     * @internal param $tag
+     * @internal param $tags
+     * @return Array|bool
+     */
+    protected static function _sqlGetWebiesByUser($username, $page, $limit = 9)
+    {
+        $bind = [$username];
+        $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
+        $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_user . " u
+	                JOIN " . self::_getDb()->w_weby . " w ON w.user = u.id
+                    WHERE u.username = ? ORDER BY w.created_on DESC {$limitOffset}";
         return self::_getDb()->execute($query, $bind)->fetchAll();
     }
 
@@ -237,7 +290,7 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected function _sqlLoadTags()
     {
-        $query = "SELECT t.id, t.tag FROM {$this->_getDb()->w_weby2tag} w2t
+        $query = "SELECT * FROM {$this->_getDb()->w_weby2tag} w2t
                     LEFT JOIN {$this->_getDb()->w_tags} t ON t.id = w2t.tag WHERE weby =?";
         $bind = [$this->_id];
         return $this->_getDb()->execute($query, $bind)->fetchAll();
@@ -271,7 +324,8 @@ abstract class WebyEntityStorage extends EntityAbstract
      * Removes tags associations with Weby
      * @return bool|ArrayObject
      */
-    protected function _sqlRemoveTags() {
+    protected function _sqlRemoveTags()
+    {
         $query = "DELETE FROM {$this->_getDb()->w_weby2tag} WHERE weby = ?";
         $bind = [$this->_id];
         return $this->_getDb()->execute($query, $bind);
