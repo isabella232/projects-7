@@ -798,7 +798,14 @@ BaseWidget.prototype = {
 	},
 
 	showUnavailable: function () {
-		this.html().append('<div class="widget-unavailable-overlay"></div>');
+		this.html().append('<div class="widget-unavailable-overlay"><p>This service is currently unavailable!<br/>A page reload may fix it. If not, let us know using \'Feedback\' form. <span class="smiley-face"></span></p></div>');
+		this.body('*:not(".widget-unavailable-overlay")').remove();
+		this._resize();
+
+	},
+
+	showFailedToLoad: function () {
+		this.html().append('<div class="widget-unavailable-overlay"><p><span class="smiley-face"></span>We couldn\'t load this content!<br/>Try reloading the page.</p></div>');
 		this.body('*:not(".widget-unavailable-overlay")').remove();
 		this._resize();
 	},
@@ -1050,8 +1057,13 @@ BaseWidget.prototype = {
 
 		// Resize unavailable overlay
 		this.html('.widget-unavailable-overlay').css({
-			width: this.body()[0].scrollWidth + 'px',
-			height: this.body()[0].scrollHeight + 'px'
+			width: '100%',
+			height: '100%',
+			margin: -this._padding + 'px 0 0 -' + this._padding + 'px'
+		});
+
+		this.html('.widget-unavailable-overlay p').css({
+			marginTop: ((this._html.outerHeight() / 2) - 70) + 'px'
 		});
 	},
 

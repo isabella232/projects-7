@@ -45,7 +45,7 @@ class ToolsHandler extends AbstractHandler
 
     public function takeScreenshot($webyId)
     {
-        if ($this->request()->getClientIp() != '127.0.0.1' && $this->request()->getClientIp() != '192.241.180.184') {
+        if ($this->request()->getClientIp() != $this->app()->getConfig()->screenshots->ip || !$this->app()->getConfig()->screenshots->enabled) {
             $this->request()->redirect($this->app()->getConfig()->app->web_path);
         }
         $weby = new WebyEntity();
@@ -75,7 +75,7 @@ class ToolsHandler extends AbstractHandler
         die();
     }
 
-	public function mustacheWeby($webyId) {
+	public function webySummary($webyId) {
 		$weby = new WebyEntity();
 		$weby->load($webyId);
 		Stats::getInstance()->updateWebyHits($weby);
@@ -220,7 +220,7 @@ class ToolsHandler extends AbstractHandler
         die($result);
     }
 
-    // TODO: this isn't finished as some parts are still needed to complete this (image and tags)
+    // TODO: add TAGs to resultset
     /**
      * Gets Webies from given tags
      * Also used by Wordpress Webies widget
@@ -235,7 +235,7 @@ class ToolsHandler extends AbstractHandler
             $weby->load($id);
             $temp['id'] = $weby->getId();
             $temp['title'] = $weby->getTitle();
-            $temp['thumbnail'] = 'http://www.hdwallpaperstop.com/wp-content/uploads/2013/02/Cute-Puppy-Black-Eyes-Wallpaper.jpg';
+            $temp['thumbnail'] = $weby->getImage('dashboard')->getUrl();
             $temp['author'] = $weby->getUser()->getFirstName() . ' ' . $weby->getUser()->getLastName();
             $temp['hits'] = $weby->getTotalHits();
             $temp['favorites'] = $weby->getFavoriteCount();
