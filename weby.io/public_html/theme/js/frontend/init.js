@@ -12,6 +12,7 @@ $(function () {
 	var html = new kendo.template($('#weby-details-tpl').html());
 	$('body').append(html(data));
 	$('#weby-details-tpl').remove();
+	new WebyDetails();
 
 	$('[data-role="facebook-share"] .social-counter').text(data.shareCount.facebook);
 	$('[data-role="twitter-share"] .social-counter').text(data.shareCount.twitter);

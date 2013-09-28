@@ -99,7 +99,7 @@ function WebyBackground(settings) {
 		}
 
 		// Remove margin if no header is shown (means we're taking screenshot)
-		if(App.noHeader()){
+		if(typeof screenshot != "undefined" && screenshot){
 			App.getContent().css("margin", "0");
 		}
 
