@@ -1,4 +1,4 @@
-function Registration() {
+function Authorization() {
 
     var _webyDetails = $('[data-role=create-weby]');
     var _authorizationDialog = $('#authorization-dialog');
@@ -14,5 +14,5 @@ function Registration() {
 }
 
 $(function () {
-    new Registration;
+    new Authorization();
 });

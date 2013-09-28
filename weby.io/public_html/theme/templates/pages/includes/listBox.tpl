@@ -4,7 +4,7 @@
     </script>
     <script type="weby/tpl" id="listing-box-tpl">
         <div id="box-{pageNumber}-{boxNumber}" class="box{boxNumber} box">
-            <div class="content" style="background: url({screenshot}) no-repeat top left">
+            <div class="content" style="{screenshot}">
                 <a class="image-weby-link" href="{publicUrl}"></a>
                 <div class="author">
                     <a class="author-photo" href="{userUrl}"><img src="{authorAvatarUrl}"></a>
@@ -13,7 +13,7 @@
             </div>
 
             <div class="weby-info">
-                <h2><a class="header-url" href="{publicUrl}">{webyTitle}</a></h2>
+                <h2><a class="header-url" href="{publicUrl}">{webyTitle}</h2>
                 <ul>
                     <li class="favs">
                              <span>

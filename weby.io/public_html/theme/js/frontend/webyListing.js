@@ -1,11 +1,13 @@
 /** This is listing bootstrap process */
 
-var url = null;
+var initialResult = null;
+var searchUrl = null;
 var searchValue = null;
 var searchPage = null;
 
 $(function () {
     // Load config data
+    initialResult = $('[data-role="initial-result"]').text();
     searchUrl = $('[data-role="search-url"]').text();
     searchValue = $('[data-role="search-value"]').text();
     searchPage = $('[data-role="search-page"]').text();
@@ -18,6 +20,7 @@ $(function () {
 function ListingClass() {
 
     var _pageContent = $('#page-content');
+    var _initialResult = JSON.parse(initialResult);
     var _listingTpl = $('script#listing-tpl').html();
     var _currentTplId = false;
     var _listingBoxTpl = $('script#listing-box-tpl').html();
@@ -26,6 +29,14 @@ function ListingClass() {
     var _loading = false;
     var _page = searchPage;
     var _pagination = $('.pagination');
+
+    var boxMap = {
+        1: [1, 3, 4, 5, 2, 6, 7, 8, 9],
+        2: [1, 4, 3, 5, 6, 2, 8, 9 , 7],
+        3: [3, 1, 6, 2, 7, 8, 4, 5, 9],
+        4: [1, 6, 5, 2, 3, 8, 9, 4, 7],
+        5: [1, 6, 3, 2, 5, 4, 8, 7, 9]
+    };
 
     var _imageDimensionsMap = {
         1: 'square',
@@ -39,7 +50,11 @@ function ListingClass() {
         9: 'square'
     };
 
-    var _loadMoreWebies = function () {
+    /**
+     * Sends ajax - requests more Webies
+     * @private
+     */
+    var _requestMoreWebies = function () {
         if (!_loading) {
             _loading = true;
             var fullSearchUrl = _search != '' ? searchUrl + _search + '/' + _page : searchUrl + _page;
@@ -51,68 +66,106 @@ function ListingClass() {
                     _pagination.text('Loading...')
                 },
                 success: function (r) {
-                    handleSearchResponse(r.data);
+                    if (r.data) {
+                        handleSearchResponse(r.data);
+                    }
                 }
             });
         }
     };
 
+    /**
+     * Inserts given response data into screen (takes care of layout positions, animations, generating tpl numbers etc.)
+     * @param data
+     */
     var handleSearchResponse = function (data) {
-        if (data) {
-            var webies = data.webies;
-            var newTplId = _currentTplId = _randomTplNumber(1, 5, _currentTplId);
+        var webies = data.webies;
+        _currentTplId = _randomTplNumber(1, 5, _currentTplId);
 
-            var page = _listingTpl.replace('{templateNumber}', newTplId);
-            page = page.replace('{pageNumber}', _page);
-            _tplHolder.append(page);
-            for (var i in webies) {
-                _insert(i, webies);
-            }
+        var page = _listingTpl.replace('{templateNumber}', _currentTplId);
+        page = page.replace('{pageNumber}', _page);
+        _tplHolder.append(page);
 
-            // Animation goes here
-            $('#page' + _page).find('.box').each(function (index) {
-                $(this).delay((index + 1) * 100).animate({
-                    deg: 10,
-                    opacity: 1
-                }, {
-                    duration: 400,
-                    step: function (now, tween) {
-                        if (tween.prop == "deg") {
-                            $(this).css({
-                                transform: 'rotate(' + (-10 + now ) + 'deg)'
-                            });
-                        } else {
-                            $(this).css({
-                                opacity: now
-                            });
-                        }
-                    }
-                });
-            });
+        _appendSearchResult(webies);
 
-            TimePassed.parse();
-
-            if (data.length < 9) {
-                _loading = true; // Set this to true so we permanently disable sending of ajax requests
-                _pagination.html('End of results')
-            } else {
-                _pagination.html(data.pagination);
-                _loading = false;
-                _page++;
-            }
+        if (data.length < 9) {
+            _loading = true; // Set this to true so we permanently disable sending of ajax requests
+            _pagination.html('End of results')
+        } else {
+            _pagination.html(data.pagination);
+            _loading = false;
+            _page++;
         }
-
     }
 
-    function _insert(i, webies) {
+    /**
+     * Appends search results to the page
+     * @private
+     */
+    var _appendSearchResult = function (data) {
+        for (var i in data) {
+            _insert(i, _currentTplId, data);
+        }
+        TimePassed.parse();
+        _animateResult();
+
+        var scrollValue = _pageContent[0].scrollHeight - 1200;
+        _pageContent.animate({ scrollTop: scrollValue }, "slow");
+    }
+
+    /**
+     * Fades in and rotates given result of Webies
+     * @private
+     */
+    var _animateResult = function () {
+        // Animation goes here
+        $('#page' + _page).find('.box').each(function (index) {
+            $(this).delay((index + 1) * 100).animate({
+                deg: 10,
+                opacity: 1
+            }, {
+                duration: 400,
+                step: function (now, tween) {
+                    if (tween.prop == "deg") {
+                        $(this).css({
+                            transform: 'rotate(' + (-10 + now ) + 'deg)'
+                        });
+                    } else {
+                        $(this).css({
+                            opacity: now
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    /**
+     * Inserts content onto users screen (but not visible, it's later then animated)
+     * @param i
+     * @param tplId
+     * @param webies
+     * @private
+     */
+    function _insert(i, tplId, webies) {
         var tmp = _listingBoxTpl;
-        var boxNumber = parseInt(i) + 1;
+        var boxNumber = boxMap[tplId][i];
+
         tmp = tmp.replace(/{boxNumber}/g, boxNumber);
         tmp = tmp.replace('{pageNumber}', _page);
         tmp = tmp.replace('{authorAvatarUrl}', webies[i].avatarUrl);
         tmp = tmp.replace('{authorName}', webies[i].username);
         tmp = tmp.replace('{webyTitle}', webies[i].title);
-        tmp = tmp.replace('{screenshot}', webies[i].images[_imageDimensionsMap[boxNumber]]);
+
+        tmp = !webies[i].images[_imageDimensionsMap[boxNumber]] ?
+            tmp.replace('{screenshot}', webies[i].images[_imageDimensionsMap[boxNumber]]) 
+        if (webies[i].images[_imageDimensionsMap[boxNumber]]) {
+            tmp = tmp.replace('{screenshot}', webies[i].images[_imageDimensionsMap[boxNumber]]);
+        } else {
+
+        }
+
+
         tmp = tmp.replace(/{userUrl}/g, WEB + 'user/' + webies[i].username);
         tmp = tmp.replace(/{publicUrl}/g, webies[i].publicUrl);
         tmp = tmp.replace('{favoritedCount}', webies[i].favoritedCount);
@@ -143,19 +196,27 @@ function ListingClass() {
     }
 
     /**
+     * Shows initial content that was sent from action in handler
+     * @private
+     */
+    var _showInitialResult = function () {
+        handleSearchResponse(_initialResult);
+    }
+
+    /**
      * Constructor methods
      */
     _pageContent.scroll(function () {
-        if (_pageContent.scrollTop()+ _pageContent.height() + 100 > _pageContent[0].scrollHeight) {
-            _loadMoreWebies(_search, 1);
+        if (_pageContent.scrollTop() + _pageContent.height() + 100 > _pageContent[0].scrollHeight) {
+            _requestMoreWebies(_search, 1);
 
         }
     });
 
     /**
-     * Instantly load first page for given search
+     * Instantly load content (sent from action in handler)
      */
-    _loadMoreWebies(_search, _page);
+    _showInitialResult();
 }
 
 $(function () {

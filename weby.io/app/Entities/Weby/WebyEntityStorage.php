@@ -189,7 +189,7 @@ abstract class WebyEntityStorage extends EntityAbstract
     {
         $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
         $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_weby . " w
-                    ORDER BY w.created_on DESC {$limitOffset}";
+                    WHERE w.deleted = 0::bit AND meta_follow = 1::bit ORDER BY w.created_on DESC {$limitOffset}";
         return self::_getDb()->execute($query, [])->fetchAll();
     }
 

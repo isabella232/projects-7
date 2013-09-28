@@ -126,7 +126,7 @@ function FeedbackClass() {
 
     _keyboardShortcutsOpener.click(function() {
         $.fancybox($('#keyboard-shortcuts-dialog'), {
-            type: 'inline',
+            type: 'inline'
         });
     });
 

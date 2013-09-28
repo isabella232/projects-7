@@ -50,34 +50,30 @@ class PagesHandler extends AbstractHandler
 
         // Assign whole weby to $this, so we can pass it to view
         $this->weby = $weby;
-		$this->shareCount = $weby->getShareCount();
+        $this->shareCount = $weby->getShareCount();
 
-		$this->setTemplate('weby');
+        if ($this->request()->query('embed', false, true)) {
+            $this->setTemplate('embed');
+            return;
+        }
+
+        $this->setTemplate('weby');
         Stats::getInstance()->updateWebyHits($weby);
     }
 
-	/**
-	 * Used for viewing Weby pages (public area)
-	 * @param $user
-	 * @param $slug
-	 * @param $id
-	 */
-	public function viewWebyEmbed($user, $slug, $id)
-	{
-		// Try to load Weby
-		$weby = new WebyEntity();
-		$weby->load($id);
+    /**
+     * Shows 404 page
+     */
+    public function page404()
+    {
+    }
 
-		// Will check if requested Weby and URL params are valid
-		$this->_checkRequest($weby, $user, $slug, $id);
-
-		// Assign whole weby to $this, so we can pass it to view
-		$this->weby = $weby;
-		$this->shareCount = $weby->getShareCount();
-		$this->setTemplate('embed');
-		Stats::getInstance()->updateWebyHits($weby);
-	}
-
+    /**
+     * Shows about page
+     */
+    public function about()
+    {
+    }
 
     /**
      * Gets recent Webies
