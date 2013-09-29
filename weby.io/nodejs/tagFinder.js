@@ -5,6 +5,7 @@ var pg = require('pg');
 var http = require('http');
 var url = require('url');
 
+var REQUEST_REFERER = 'homeftp.net';
 // Database config
 var DB_USER = "root";
 var DB_PASS = "paveL!";
@@ -57,7 +58,7 @@ var server = http.createServer(function (request, response) {
 
 	// Make sure request came from domain name that is allowed to use this service
 	if('referer' in request.headers){
-		if(request.headers['referer'].indexOf('homeftp.net') > -1){
+		if(request.headers['referer'].indexOf(REQUEST_REFERER) > -1){
 			// Parse request and get QUERY parameters
 			var urlParts = url.parse(request.url, true);
 
