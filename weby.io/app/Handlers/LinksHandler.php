@@ -19,7 +19,9 @@ class LinksHandler extends AbstractHandler
 
 		$title = $this->readTitle($doc);
 		$description = $this->readDescription($doc);
-		$imageUrl = $this->parseImages($this->readImages($url, $doc));
+		$images = $this->readImages($url, $doc);
+		// If og:image was found - a single string will be returned
+		$imageUrl = !is_array($images) ? $images : $this->parseImages($images);
 
 		$data = [
 			'title'       => is_string($title) ? $title : $url,
@@ -53,6 +55,16 @@ class LinksHandler extends AbstractHandler
 
 	private function readDescription($doc) {
 		$metas = $doc->getElementsByTagName('meta');
+
+		// First try searching for og:description
+		for ($i = 0; $i < $metas->length; $i++) {
+			$meta = $metas->item($i);
+			if(strtolower($meta->getAttribute('property')) == 'og:description') {
+				return $meta->getAttribute('content');
+			}
+		}
+
+		// Try finding regular description tag
 		for ($i = 0; $i < $metas->length; $i++) {
 			$meta = $metas->item($i);
 			if(strtolower($meta->getAttribute('name')) == 'description') {
@@ -64,6 +76,17 @@ class LinksHandler extends AbstractHandler
 	}
 
 	private function readImages($url, $doc) {
+		// First check og:image tag
+		$metas = $doc->getElementsByTagName('meta');
+		for ($i = 0; $i < $metas->length; $i++) {
+			$meta = $metas->item($i);
+			$metaName = strtolower($meta->getAttribute('property'));
+			if($metaName == 'og:image') {
+				return $meta->getAttribute('content');
+			}
+		}
+
+		// If no og:image exists - find suitable image
 		$images = $doc->getElementsByTagName('img');
 
 		$imageUrls = [];

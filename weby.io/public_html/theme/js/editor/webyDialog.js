@@ -175,9 +175,7 @@ function WebyTitleDialog(parent) {
                 var duplicateTag, maxTags = 5, totalTags = 0;
                 _tagsWrapper.find('.load-icon').show();
                 $.ajax({
-                    url: WEB + 'tools/tags/?search=',
-                    method: 'post',
-                    data: {search: $.trim(search)},
+                    url: WebyTitleDialog.TAG_FINDER + '?tag='+$.trim(search),
                     success: function (response) {
                         _tagsWrapper.find('.load-icon').hide();
                         if (response) {

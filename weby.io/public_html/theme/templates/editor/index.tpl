@@ -23,6 +23,7 @@
     <div class="bootstrap" data-role="weby">{$weby->toJson()}</div>
     <div class="bootstrap" data-role="disabled-tools">{$disabledTools}</div>
     <div class="bootstrap" data-role="content-validator">{$contentValidator}</div>
+    <div class="bootstrap" data-role="tag-finder">{$tagFinder}</div>
     <div class="bootstrap" data-role="user-onboarding">{$viewObject.user->completedOnboarding()}</div>
     <div id="toolbar">
         <ul></ul>

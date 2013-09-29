@@ -1195,44 +1195,49 @@ BaseWidget.prototype = {
 
 	bringForward: function () {
 		var overlaps = this._getOverlappingWidgets();
-		var indexes = [];
+		var lowestWidget = null;
 		for (var i in overlaps) {
 			var ow = overlaps[i];
 			if (ow.getZIndex() > this.getZIndex()) {
-				indexes.push(ow.getZIndex());
+				if(lowestWidget != null){
+					lowestWidget = ow.getZIndex() < lowestWidget.getZIndex() ? ow : lowestWidget;
+				} else {
+					lowestWidget = ow;
+				}
 			}
 		}
 
-		if (indexes.length == 0) {
+		if (lowestWidget == null) {
 			return;
 		}
 
-		var newIndex = Math.min.apply(Math, indexes) + 1;
-
-		if (newIndex > 900000) {
-			return;
-		}
-
-		this.setZIndex(newIndex);
+		var currentZIndex = this.getZIndex();
+		this.setZIndex(lowestWidget.getZIndex());
+		lowestWidget.setZIndex(currentZIndex);
 		return this;
 	},
 
 	sendBackward: function () {
 		var overlaps = this._getOverlappingWidgets();
-		var indexes = [];
+		var highestWidget = null;
 		for (var i in overlaps) {
 			var ow = overlaps[i];
-			if (ow.getZIndex() <= this.getZIndex()) {
-				indexes.push(ow.getZIndex());
+			if (ow.getZIndex() < this.getZIndex()) {
+				if(highestWidget != null){
+					highestWidget = ow.getZIndex() > highestWidget.getZIndex() ? ow : highestWidget;
+				} else {
+					highestWidget = ow;
+				}
 			}
 		}
 
-		if (indexes.length == 0) {
+		if (highestWidget == null) {
 			return;
 		}
 
-		var newIndex = Math.max.apply(Math, indexes) - 1;
-		this.setZIndex(newIndex);
+		var currentZIndex = this.getZIndex();
+		this.setZIndex(highestWidget.getZIndex());
+		highestWidget.setZIndex(currentZIndex);
 		return this;
 	},
 

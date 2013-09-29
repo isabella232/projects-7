@@ -11,6 +11,8 @@ app:
     mode: development
     content_validators: #will be randomly switched by the app
         - http://mrcina.ath.cx:8080
+    tag_finders: #will be randomly switched by the app
+            - http://mrcina.ath.cx:8085
 
 screenshots:
     enabled: false
