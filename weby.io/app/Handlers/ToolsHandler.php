@@ -82,16 +82,6 @@ class ToolsHandler extends AbstractHandler
 		die(json_encode($weby->getSummaryData()));
 	}
 
-    private function _createSize($weby, $storage, $width, $height, $tag)
-    {
-        $key = $weby->getStorageFolder() . '/' . $tag . '-' . time() . '.jpg';
-        $imageObj = $this->image($weby->getImage('original-screenshot')->getFile());
-        $thumbImage = new LocalFile($key, $storage);
-        if ($imageObj->thumbnail($width, $height, 'crop')->save($thumbImage)) {
-            $weby->getImage($tag)->setKey($key)->save();
-        }
-    }
-
     /**
      * Sends general feedback to email (addresses are in config.yaml)
      */
@@ -258,5 +248,15 @@ class ToolsHandler extends AbstractHandler
 
         return $webies;
     }
+
+	private function _createSize($weby, $storage, $width, $height, $tag)
+	{
+		$key = $weby->getStorageFolder() . '/' . $tag . '-' . time() . '.jpg';
+		$imageObj = $this->image($weby->getImage('original-screenshot')->getFile());
+		$thumbImage = new LocalFile($key, $storage);
+		if ($imageObj->thumbnail($width, $height, 'crop')->save($thumbImage)) {
+			$weby->getImage($tag)->setKey($key)->save();
+		}
+	}
 
 }

@@ -323,7 +323,8 @@ class PagesHandler extends AbstractHandler
     }
 
     /**
-     * Used for checking request, if user has edited an URL, we will automatically redirect them to correct one
+     * Used for checking request, if user has edited a URL, we will automatically redirect them to correct one
+	 *
      * @param $weby WebyEntity
      * @param $user String
      * @param $slug String
