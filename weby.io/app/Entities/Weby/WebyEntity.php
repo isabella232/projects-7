@@ -39,8 +39,6 @@ class WebyEntity extends WebyEntityCrud
 
 		if(!$data) {
 			$data = [
-				'favoritedBy'        => $this->getUsersFavorited(true),
-				'favoriteCount'      => $this->getFavoriteCount(),
 				'otherFavoriteCount' => $this->getCountOfMoreUsers(),
 				'hits'               => $this->getTotalHits(),
 				'webyUser'           => [
@@ -50,7 +48,6 @@ class WebyEntity extends WebyEntityCrud
 					'followers' => $this->getUser()->getFollowingUsersCount()
 				],
 				'tags'               => $this->getTags(true),
-				'isFavorited'        => $this->inUsersFavorites(),
 				'shareCount'         => $this->getShareCount()
 			];
 
@@ -69,6 +66,12 @@ class WebyEntity extends WebyEntityCrud
 		} else {
 			$data['currentUser'] = false;
 		}
+
+		// This must not be cached
+		$data['favoritedBy'] = $this->getUsersFavorited(true);
+		$data['favoriteCount'] = $this->getFavoriteCount();
+		$data['isFavorited'] = $this->inUsersFavorites();
+
 
 		return json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
@@ -94,7 +97,7 @@ class WebyEntity extends WebyEntityCrud
 	/**
 	 * Searches database for Webies with given single tag attached
 	 */
-	public static function listWebiesByTag($tag, $page, $limit = 9) {
+	public static function listWebiesByTag($tag, $page=1, $limit = 9) {
 		return self::_sqlGetWebiesByTag($tag, $page, $limit);
 	}
 

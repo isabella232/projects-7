@@ -145,7 +145,3 @@ function WebyDetails() {
 		handle: $('#weby-details')
 	});
 }
-
-$(function(){
-	new WebyDetails();
-});

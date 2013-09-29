@@ -53,6 +53,7 @@
     frontend/widgets/googlePlusWidget.js,
     frontend/widgets/webyWidget.js,
     editor/baseTool.js,
-    editor/tools/linkTool.js
+    editor/tools/linkTool.js,
+    frontend/init.js
 {/minify}
 <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>

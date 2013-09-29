@@ -30,7 +30,7 @@ routes:
     - ['/^tools\/delete-weby\/([a-z0-9]{13})$/', \App\Handlers\ToolsHandler, deleteWeby]
     - ['/^tools\/take-screenshot\/([a-z0-9]{13})$/', \App\Handlers\ToolsHandler, takeScreenshot]
     - ['/^tools\/screenshot\/([a-z0-9]{13})$/', \App\Handlers\ToolsHandler, viewWeby] # render Weby for screenshot
-    - ['/^tools\/mustache\/weby\/([a-z0-9]{13})$/', \App\Handlers\ToolsHandler, mustacheWeby] # render Weby for screenshot
+    - ['/^tools\/weby-summary\/([a-z0-9]{13})$/', \App\Handlers\ToolsHandler, webySummary] # get Weby summary data
 
     # EDITOR
     - ['editor/save', \App\Handlers\EditorHandler, save]
@@ -62,7 +62,7 @@ routes:
     - ['backend/stats/ajax-get-active-users-stats', \App\Handlers\StatsHandler, ajaxGetActiveUsersStats]
 
     # GLOBAL ROUTES
-    - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})\/embed$/', \App\Handlers\PagesHandler, viewWebyEmbed] #embed Weby
+    - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})\/embed/', \App\Handlers\PagesHandler, viewWebyEmbed] #embed Weby
     - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby
     - ['/^([\.a-z0-9_-]*)\/([a-z0-9]{13})$/', \App\Handlers\EditorHandler, route] #backend editor router
     - ['/^([\.a-z0-9_-]*)$/', \App\Handlers\EditorHandler, route] #backend editor router
