@@ -9,7 +9,7 @@ var REQUEST_REFERER = false;
 // Database config
 var DB_USER = "root";
 var DB_PASS = "paveL!";
-var DB_NAME = "weby.io";
+var DB_NAME = "postgres";
 
 // Get hostIp and hostPort
 var temp = arguments[0].split(':');
