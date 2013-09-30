@@ -142,6 +142,7 @@ function WebyDetails() {
 
 	$('#weby-details').draggable({
 		containment: [0, 98],
-		handle: $('#weby-details')
+        start: $(this).addClass('dragging'),
+        stop: $(this).removeClass('dragging')
 	});
 }

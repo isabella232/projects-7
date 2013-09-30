@@ -1,10 +1,10 @@
 {literal}
     <script type="weby/tpl" id="listing-tpl">
-        <div id="page{pageNumber}" class="tpl{templateNumber}"></div>
+        <div id="page{pageNumber}" class="tpl{templateNumber} box-tpl"></div>
     </script>
     <script type="weby/tpl" id="listing-box-tpl">
         <div id="box-{pageNumber}-{boxNumber}" class="box{boxNumber} box">
-            <div class="content" style="{screenshot}">
+            <div class="content" style="background: url({screenshot}) no-repeat top left">
                 <a class="image-weby-link" href="{publicUrl}"></a>
                 <div class="author">
                     <a class="author-photo" href="{userUrl}"><img src="{authorAvatarUrl}"></a>

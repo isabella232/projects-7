@@ -146,6 +146,18 @@ class ToolsHandler extends AbstractHandler
         die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
     }
 
+    /**
+     * Get user's followers
+     */
+    public function ajaxGetFollowers()
+    {
+        $followers = $this->user()->getFollowers(true);
+        $data = [
+            'followers' => json_decode($followers, true),
+            'count' => $this->user()->getUsersFollowingCount()
+        ];
+        die($this->request()->query("\$callback") . '(' . json_encode($data) . ')');
+    }
 
     /**
      * Used to update number of hits of a given Weby

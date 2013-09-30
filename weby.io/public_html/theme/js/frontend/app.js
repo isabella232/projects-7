@@ -5,6 +5,7 @@ var AppClass = function (topOffset) {
 	var _header = $('#header');
 	var _dashboard = null;
 	var _favorites = null;
+	var _followers = null;
 	var _weby = false;
 	var _webyDrag;
 	var _viewportHeight;
@@ -30,6 +31,7 @@ var AppClass = function (topOffset) {
 		if("WebyDashboard" in window && "WebyFavorites" in window){
 			_dashboard = new WebyDashboard();
 			_favorites = new WebyFavorites();
+			_followers = new WebyFollowers();
 		}
 
 		_workspace.bind({

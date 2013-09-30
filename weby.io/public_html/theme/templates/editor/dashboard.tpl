@@ -19,4 +19,9 @@
     {include file="templates/common/dashboard.tpl"}
     {include file="templates/common/favorites.tpl"}
     {include file="templates/common/unsupportedBrowser.tpl"}
+    {include file="templates/common/followers.tpl"}
+{/block}
+
+{block name="footer"}
+    {include file="layouts/includes/editorFooter.tpl"}
 {/block}

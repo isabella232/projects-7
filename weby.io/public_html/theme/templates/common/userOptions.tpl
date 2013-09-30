@@ -11,6 +11,9 @@
             <a href="javascript:void(0);" data-role="favorites-dialog-open">My favorites</a>
         </li>
         <li>
+            <a href="javascript:void(0);" data-role="followers-dialog-open">My followers</a>
+        </li>
+        <li>
             <a href="{$viewObject.webPath}recent" data-role="">Recent Webies</a>
         </li>
         <li>

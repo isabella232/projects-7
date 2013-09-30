@@ -17,7 +17,8 @@
         </li>
     </ul>
     <span><a href="http://www.webiny.com" target="_blank"></a></span>
-    {include file="templates/common/feedback.tpl"}
-    {include file="templates/common/keyboardShortcuts.tpl"}
 </div>
+{include file="templates/common/feedback.tpl"}
+{include file="templates/common/keyboardShortcuts.tpl"}
 {include file="templates/common/ga.tpl"}
+{block name="outerTemplates"}{/block}

@@ -41,9 +41,13 @@
         </p>
     </div>
     {include file="templates/common/favorites.tpl"}
+    {include file="templates/common/followers.tpl"}
     {if !$viewObject.user->completedOnboarding()}
         {include file="templates/editor/includes/introDialog.tpl"}
     {/if}
     {include file="templates/common/linkWidgetTemplates.tpl"}
 {/block}
 
+{block name="footer"}
+    {include file="layouts/includes/editorFooter.tpl"}
+{/block}

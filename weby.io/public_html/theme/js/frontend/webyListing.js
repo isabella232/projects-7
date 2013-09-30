@@ -1,16 +1,17 @@
 /** This is listing bootstrap process */
 
-var initialResult = null;
 var searchUrl = null;
 var searchValue = null;
+var initialResultCount = null;
 var searchPage = null;
 
 $(function () {
     // Load config data
-    initialResult = $('[data-role="initial-result"]').text();
     searchUrl = $('[data-role="search-url"]').text();
     searchValue = $('[data-role="search-value"]').text();
     searchPage = $('[data-role="search-page"]').text();
+    initialResultCount = $('.box').length;
+
 });
 
 /**
@@ -20,7 +21,6 @@ $(function () {
 function ListingClass() {
 
     var _pageContent = $('#page-content');
-    var _initialResult = JSON.parse(initialResult);
     var _listingTpl = $('script#listing-tpl').html();
     var _currentTplId = false;
     var _listingBoxTpl = $('script#listing-box-tpl').html();
@@ -28,6 +28,7 @@ function ListingClass() {
     var _search = searchValue;
     var _loading = false;
     var _page = searchPage;
+    var _currentPageContainer = null;
     var _pagination = $('.pagination');
 
     var boxMap = {
@@ -50,6 +51,14 @@ function ListingClass() {
         9: 'square'
     };
 
+    var _pageHolderHeights = {
+        1: { 1: 335, 2: 665, 3: 665, 4: 665, 5: 665, 6: 665, 7: 995, 8: 995, 9: 995 },
+        2: { 1: 335, 2: 335, 3: 665, 4: 665, 5: 665, 6: 665, 7: 995, 8: 995, 9: 995 },
+        3: { 1: 665, 2: 665, 3: 665, 4: 665, 5: 665, 6: 995, 7: 995, 8: 995, 9: 995 },
+        4: { 1: 335, 2: 335, 3: 335, 4: 665, 5: 995, 6: 995, 7: 995, 8: 995, 9: 995 },
+        5: { 1: 335, 2: 335, 3: 665, 4: 665, 5: 665, 6: 665, 7: 995, 8: 995, 9: 995 }
+    };
+
     /**
      * Sends ajax - requests more Webies
      * @private
@@ -63,7 +72,7 @@ function ListingClass() {
                 method: 'post',
                 data: {json: true},
                 beforeSend: function () {
-                    _pagination.text('Loading...')
+                    _pagination.html('<span class="load-icon green"></span>Loading...');
                 },
                 success: function (r) {
                     if (r.data) {
@@ -79,18 +88,23 @@ function ListingClass() {
      * @param data
      */
     var handleSearchResponse = function (data) {
+
         var webies = data.webies;
-        _currentTplId = _randomTplNumber(1, 5, _currentTplId);
+        if (webies.length > 0) {
+            _currentTplId = _randomTplNumber(1, 5, _currentTplId);
 
-        var page = _listingTpl.replace('{templateNumber}', _currentTplId);
-        page = page.replace('{pageNumber}', _page);
-        _tplHolder.append(page);
+            var page = _listingTpl.replace('{templateNumber}', _currentTplId);
+            page = page.replace('{pageNumber}', _page);
+            _tplHolder.append(page);
 
-        _appendSearchResult(webies);
+            _currentPageContainer = $('#page' + _page);
+            _currentPageContainer.height(_pageHolderHeights[_currentTplId][webies.length]);
+            _appendSearchResult(webies);
+        }
 
-        if (data.length < 9) {
+        if (webies.length < 9) {
             _loading = true; // Set this to true so we permanently disable sending of ajax requests
-            _pagination.html('End of results')
+            _pagination.html('No more Webies')
         } else {
             _pagination.html(data.pagination);
             _loading = false;
@@ -109,7 +123,7 @@ function ListingClass() {
         TimePassed.parse();
         _animateResult();
 
-        var scrollValue = _pageContent[0].scrollHeight - 1200;
+        var scrollValue = _pageContent[0].scrollHeight - _pageHolderHeights[_currentTplId][data.length]- 200;
         _pageContent.animate({ scrollTop: scrollValue }, "slow");
     }
 
@@ -156,28 +170,21 @@ function ListingClass() {
         tmp = tmp.replace('{authorAvatarUrl}', webies[i].avatarUrl);
         tmp = tmp.replace('{authorName}', webies[i].username);
         tmp = tmp.replace('{webyTitle}', webies[i].title);
-
-        tmp = !webies[i].images[_imageDimensionsMap[boxNumber]] ?
-            tmp.replace('{screenshot}', webies[i].images[_imageDimensionsMap[boxNumber]]) 
-        if (webies[i].images[_imageDimensionsMap[boxNumber]]) {
-            tmp = tmp.replace('{screenshot}', webies[i].images[_imageDimensionsMap[boxNumber]]);
-        } else {
-
-        }
-
-
+        tmp = tmp.replace('{screenshot}', webies[i].images[_imageDimensionsMap[boxNumber]]);
         tmp = tmp.replace(/{userUrl}/g, WEB + 'user/' + webies[i].username);
         tmp = tmp.replace(/{publicUrl}/g, webies[i].publicUrl);
         tmp = tmp.replace('{favoritedCount}', webies[i].favoritedCount);
         tmp = tmp.replace('{hitsCount}', webies[i].hitsCount);
         tmp = $(tmp.replace(/{createdOn}/g, webies[i].createdOn));
 
+
         // Append and animate
         tmp.css({
             '-webkit-transform': 'rotate(-20deg)',
             opacity: 0
         });
-        $('#page' + _page).append(tmp);
+        _currentPageContainer.append(tmp);
+
     }
 
     /**
@@ -193,15 +200,21 @@ function ListingClass() {
             var newNumber = Math.floor(Math.random() * (to - from + 1) + from);
         } while (newNumber == except);
         return newNumber;
-    }
+    };
 
     /**
      * Shows initial content that was sent from action in handler
      * @private
      */
-    var _showInitialResult = function () {
-        handleSearchResponse(_initialResult);
-    }
+    var _init = function () {
+        _animateResult();
+        if (initialResultCount>0 && initialResultCount < 9) {
+            _loading = true;
+            _pagination.html('End of results')
+        } else {
+            _page++;
+        }
+    };
 
     /**
      * Constructor methods
@@ -216,7 +229,7 @@ function ListingClass() {
     /**
      * Instantly load content (sent from action in handler)
      */
-    _showInitialResult();
+    _init();
 }
 
 $(function () {

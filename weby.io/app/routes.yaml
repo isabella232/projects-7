@@ -23,6 +23,7 @@ routes:
 
     - ['/^tools\/embedded-hit\/([a-z0-9]*)$/', \App\Handlers\ToolsHandler, ajaxEmbeddedHit]
     - ['tools/favorites', \App\Handlers\ToolsHandler, ajaxGetFavorites]
+    - ['tools/followers', \App\Handlers\ToolsHandler, ajaxGetFollowers]
     - ['tools/tags', \App\Handlers\ToolsHandler, ajaxSearchTags] #searches tags when typing them into textbox
     - ['tools/feedback', \App\Handlers\ToolsHandler, ajaxSendFeedback]
     - ['tools/log', \App\Handlers\ToolsHandler, log]

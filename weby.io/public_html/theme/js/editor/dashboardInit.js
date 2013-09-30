@@ -34,4 +34,12 @@ $(function () {
 			dashboard.open(true);
 		}, 50);
 	});
+
+    // After closing feedback, return to dashboard
+    Feedback.onClose(function () {
+        setTimeout(function () {
+            dashboard.open(true);
+        }, 50);
+    });
+
 });

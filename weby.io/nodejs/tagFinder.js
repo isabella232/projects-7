@@ -7,9 +7,9 @@ var url = require('url');
 var REQUEST_REFERER = false;
 
 // Database config
-var DB_USER = "root";
-var DB_PASS = "paveL!";
-var DB_NAME = "postgres";
+var DB_USER = "adrian";
+var DB_PASS = "4ndr055!";
+var DB_NAME = "weby.io";
 
 // Get hostIp and hostPort
 var temp = arguments[0].split(':');
@@ -54,7 +54,18 @@ function findTags(query, response) {
 			}
 			if(result.rowCount == 0){
 				result.rows = [{id:0, tag: query}];
-			}
+			} else {
+                var inRes = false;
+                for(var i in result.rows){
+                    if(result.rows[i].tag == query){
+                        inRes = true;
+                        break;
+                    }
+                }
+                if(!inRes){
+                    result.rows.push({id:0, tag: query});
+                }
+            }
 			return sendResponse(result.rows, response);
 		});
 	});

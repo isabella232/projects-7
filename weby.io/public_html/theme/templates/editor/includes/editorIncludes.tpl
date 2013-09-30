@@ -28,8 +28,6 @@
     weby/webyImageMode.js,
     weby/webyTitle.js,
     weby/webyToolbar.js,
-    weby/webyDashboard.js,
-    weby/webyFavorites.js,
     weby/webyBackground.js,
     weby/webyDocumentBackground.js,
     weby/webyColorBackground.js,
