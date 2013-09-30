@@ -13,6 +13,7 @@ use App\Lib\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\Http\HttpTrait;
+use Webiny\Component\Image\ImageLoader;
 use Webiny\Component\Logger\LoggerTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
 use Webiny\Component\Security\SecurityTrait;
@@ -152,7 +153,12 @@ class EditorHandler extends AbstractHandler
 		if($webyFile->setContents($file->asFileObject()->getFileContent()) !== false) {
 			$weby->getImage('background')->setKey($key)->save();
 		}
-		die(json_encode(['url' => $webyFile->getUrl()]));
+
+		$image = new ImageLoader();
+		$source = $weby->getImage('background')->getFile();
+		list($width, $height) = $image->open($source)->getSize()->values();
+
+		die(json_encode(['url' => $webyFile->getUrl(), 'width' => $width, 'height' => $height]));
 	}
 
 	private function _removeImage($webyId) {
