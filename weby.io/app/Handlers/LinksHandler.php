@@ -6,6 +6,11 @@ use App\AppTrait;
 use Webiny\Component\Http\HttpTrait;
 use App\Lib\AbstractHandler;
 
+/**
+ * Class LinksHandler is responsible for parsing given URL and retrieving  title, description and image
+ *
+ * @package App\Handlers
+ */
 class LinksHandler extends AbstractHandler
 {
 	use AppTrait, HttpTrait;

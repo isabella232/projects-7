@@ -32,6 +32,7 @@
         jquery-ui-1.9.2.webyio.js,
         jQueryFix.js,
         jquery.fancybox.pack.js,
+        browserDetect.js,
         time.js,
         timePassed.js,
         weby/feedback.js,

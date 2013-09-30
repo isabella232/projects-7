@@ -17,6 +17,7 @@
 {/minify}
 
 {minify type="js" obfuscate="true"}
+    browserDetect.js,
     editor/init.js,
     mouseEvent.js,
     weby/weby.js,

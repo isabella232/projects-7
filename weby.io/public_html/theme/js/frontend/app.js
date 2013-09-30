@@ -32,7 +32,7 @@ var AppClass = function (topOffset) {
 			_favorites = new WebyFavorites();
 		}
 
-		_content.bind({
+		_workspace.bind({
 			mouseleave: function () {
 				_webyDrag.stopDrag();
 			},
@@ -70,11 +70,9 @@ var AppClass = function (topOffset) {
 			}
 		});
 
-
 		_content.on('mousedown', '.widget', function (e) {
 			e.stopPropagation();
 		});
-
 
 		// Recalculate editor dimensions when window is resized
 		$(window).resize(function () {

@@ -168,9 +168,11 @@ class EditorHandler extends AbstractHandler
 	private function _editor() {
 		if($this->_weby == null) {
 			$this->setTemplate('dashboard');
-
 			return;
 		}
+
+		$this->setTemplate('index');
+
 		$this->weby = $this->_weby;
 		$this->editor = true;
 
@@ -180,14 +182,15 @@ class EditorHandler extends AbstractHandler
 		}
 
 		$this->disabledTools = json_encode($tmp);
+
 		// Assign content validator
 		$validators = $this->app()->getConfig()->app->content_validators->toArray(true);
 		$vIndex = rand(0, $validators->count() - 1);
 		$this->contentValidator = $validators[$vIndex];
-		// Assign tag search
+
+		// Assign tag finder
 		$tagFinders = $this->app()->getConfig()->app->tag_finders->toArray(true);
 		$tIndex = rand(0, $tagFinders->count() - 1);
 		$this->tagFinder = $tagFinders[$tIndex];
-		$this->setTemplate('index');
 	}
 }
