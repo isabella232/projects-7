@@ -173,6 +173,11 @@
     font-size: 11px;
 }
 
+.weby-details .user-info p.user-name a {
+    color: white;
+    text-decoration: none;
+}
+
 .weby-details .user-info a.follow-btn, .weby-details .user-info a.unfollow-btn {
     width: 88px;
     height: 28px;

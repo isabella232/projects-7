@@ -1,3 +1,7 @@
+<div class="bootstrap">
+    <div class="bootstrap" data-role="weby-searcher">{$viewObject.webySearcher}</div>
+</div>
+
 <div class="search-btn" data-role="open-search-field">
     <a class="search-icon" href="javascript:void(0);"></a>
 

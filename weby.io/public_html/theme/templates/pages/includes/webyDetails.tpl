@@ -45,7 +45,7 @@
                             <p class="user-name" #if (data.webyUser.name.length > 14) {# data-role="weby-user"
                             data-tooltip="#= data.webyUser.name #" class="has-tooltip-top" #}#>
                             #if (data.webyUser.name.length > 14) {# #= data.webyUser.name.substring(0, 14) #... #} else
-                            {# #= data.webyUser.name# #}#</p>
+                            {# <a href="#= WEB+'user/'+ data.webyUser.name #"> #= data.webyUser.name# </a> #}#</p>
                             <p class="user-name"><b class="followers-count">#= data.webyUser.followers #</b> followers
                             </p>
                         </div>
