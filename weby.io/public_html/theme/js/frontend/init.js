@@ -4,6 +4,7 @@ var weby = null;
 var data = null;
 
 $(function () {
+
 	// Load config data
 	weby = JSON.parse($('[data-role="weby"]').html());
 	data = JSON.parse($('[data-role="json-data"]').html());
@@ -17,7 +18,7 @@ $(function () {
 	$('[data-role="twitter-share"] .social-counter').text(data.shareCount.twitter);
 	$('[data-role="gplus-share"] .social-counter').text(data.shareCount.google);
 	$('.username').text(data.currentUser.name);
-	$('.header-right .user-photo').css({background: 'url('+data.currentUser.avatar+') top left', backgroundSize: 'cover'});
+	$('.header-right .user-photo').css({background: 'url(' + data.currentUser.avatar + ') top left', backgroundSize: 'cover'});
 
 	$(function () {
 		App = new AppClass();

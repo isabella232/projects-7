@@ -43,7 +43,7 @@ class LinksHandler extends AbstractHandler
 	private function file_get_contents_utf8($fn) {
 		$string = shell_exec('wget -O - "' . $fn . '"');
 
-		if(!$string || empty(trim($string))) {
+		if(!$string || empty($string)) {
 			return false;
 		}
 
@@ -161,6 +161,8 @@ class LinksHandler extends AbstractHandler
 		}
 
 		// Parse base URL and convert to local variables: $scheme, $host, $path
+		$scheme = $host = $path = '';
+
 		extract(parse_url($base));
 
 		// If no path, use /
