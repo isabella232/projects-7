@@ -113,6 +113,7 @@ function WebyDetails() {
                         var tpl = $('script#user-favorited').html();
                         tpl = tpl.replace('{avatarUrl}', r.data.favoritedBy[i].avatarUrl);
                         tpl = tpl.replace('{username}', r.data.favoritedBy[i].username);
+                        tpl = tpl.replace('{userUrl}', WEB + r.data.favoritedBy[i].username);
                         _favoritedBy.find('ul').append(tpl);
                     }
                     _favoritedBy.show();

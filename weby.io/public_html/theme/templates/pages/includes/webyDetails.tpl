@@ -113,7 +113,7 @@
     </script>
     <script type="weby/tpl" id="user-favorited">
         <li class="has-tooltip-top" data-tooltip="{username}">
-            <a class="photo" href="javascript:void();"><img src="{avatarUrl}"></a>
+            <a class="photo" href="{userUrl}"><img src="{avatarUrl}"></a>
         </li>
     </script>
 {/literal}

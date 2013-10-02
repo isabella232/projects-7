@@ -54,6 +54,8 @@ function WebySearchClass() {
         _searchResultsHolder.empty();
     }
 
+
+
     _searchInput.on('keyup', function (e) {
         var event = e || window.event;
         var charCode = event.which || event.keyCode;
