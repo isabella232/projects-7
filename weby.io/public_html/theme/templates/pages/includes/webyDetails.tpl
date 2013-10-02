@@ -18,7 +18,7 @@
                 <span class="favorites-icon"></span>
                 #}#
                 #}else{#
-                <span class="favorites-icon pointer-cursor" data-role="create-weby"></span>
+                <span class="favorites-icon pointer-cursor" data-role="add-to-favorites"></span>
                 #}#
                 <div class="weby-stats">
                     <p>

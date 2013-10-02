@@ -23,6 +23,7 @@ function DashboardLoading() {
 function WebyDashboard() {
 
     var $this = this;
+
     var _currentWebyId = '';
     var _dialog = $("#dashboard-dialog");
     var _deleteDialog = $('.delete-confirmation');
@@ -74,6 +75,10 @@ function WebyDashboard() {
             _loading.show();
         },
         requestEnd: function (e) {
+            if (!e.response.user) {
+                window.location = WEB;
+            }
+
             _loading.hide().setMessage("Loading Webies...");
             if (e.type == "read" && e.response.count == 0) {
                 _dialog.find(".empty-list").show();
@@ -162,7 +167,6 @@ function WebyDashboard() {
         });
         TimePassed.parse();
     }
-
 
     this.close = function () {
         $.fancybox.close();

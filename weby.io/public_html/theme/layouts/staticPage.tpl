@@ -30,7 +30,7 @@
         jquery-ui-1.9.2.webyio.js,
         jQueryFix.js,
         jquery.fancybox.pack.js
-        {/minify}
+    {/minify}
     <script src="{$viewObject.themeWebPath}js/kendo.web.min.js" charset="utf-8"></script>
     {minify type="js"}
         time.js,
@@ -58,20 +58,21 @@
     {/block}
     <div class="header-right">
         <ul>
-                {if $viewObject.user}
-                    {include file="templates/common/searchWebies.tpl"}
-                {/if}
+            {if $viewObject.user}
+                {include file="templates/common/searchWebies.tpl"}
+            {/if}
 
-                {if $viewObject.user}
-                    {include file="templates/common/userOptions.tpl"}
-                {else}
-                    {include file="templates/pages/includes/authorization.tpl"}
-                {/if}
+            {if $viewObject.user}
+                {include file="templates/common/userOptions.tpl"}
+            {else}
+                {include file="templates/pages/includes/authorization.tpl"}
+            {/if}
         </ul>
     </div>
 </div>
 <div id="page-content">
     {block name="content"}{/block}
+    <div class="bootstrap" data-role="user-logged-in">{if $viewObject.user}true{else}false{/if}</div>
 </div>
 {block name="footer"}
     {include file="layouts/includes/frontendFooter.tpl"}

@@ -78,10 +78,15 @@ function WebyDetails() {
         });
     });
 
-    _addToFavoritesButton.click(function () {
+    _addToFavoritesButton.on('click', function () {
         if (_processingFavorites) {
             return false;
         }
+
+        if (!App.userLoggedIn()) {
+            return new Authorization(true);
+        }
+        
         _processingFavorites = true;
         $.ajax({
             url: WEB + 'tools/favorite/' + App.getWeby().getId(),
