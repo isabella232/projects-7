@@ -9,7 +9,7 @@
     <tbody>
     <tr>
         <td valign="top" style="width:170px; float:left; vertical-align:baseline;">
-            <a href="http://weby.io/" style="display: inline-block;"><img src="http://mailer.weby.io/uploads/logo.png"
+            <a href="http://www.weby.io/" style="display: inline-block;"><img src="http://mailer.weby.io/uploads/logo.png"
                                                                           alt="Weby" border="0"></a>
         </td>
         <td valign="top" style="float:right; vertical-align:baseline;">
