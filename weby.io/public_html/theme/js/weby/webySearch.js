@@ -54,8 +54,6 @@ function WebySearchClass() {
         _searchResultsHolder.empty();
     }
 
-
-
     _searchInput.on('keyup', function (e) {
         var event = e || window.event;
         var charCode = event.which || event.keyCode;
@@ -64,25 +62,8 @@ function WebySearchClass() {
             case 27: // Esc key
                 _closeSearchField();
                 break;
-            case 38: // Arrow key (down)
-                if (_searchField.find('li').length > 0) {
-                    e.preventDefault();
-                    var suggestedTags = _searchField.find('li');
-                    var currentPosition = -1;
-                    suggestedTags.each(function (i, e) {
-                        if ($(this).hasClass('tag-selected')) {
-                            currentPosition = i;
-                            return false;
-                        }
-                    });
-                    if (currentPosition > 0) {
-                        $(suggestedTags[currentPosition]).removeClass('tag-selected');
-                        $(suggestedTags[currentPosition - 1]).addClass('tag-selected');
-                    }
-                }
-                break;
         }
-    })
+    });
 
     _searchInput.on('input', function (e) {
         if (_searchInput.val().length > 2) {
