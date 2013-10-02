@@ -30,7 +30,7 @@ class PagesHandler extends AbstractHandler
     public function index()
     {
         $user = $this->security()->getUser();
-        if ($user && $user->isAuthenticated()) {
+        if ($user && $user->isAuthenticated() && $this->user()) {
             $this->request()->redirect($this->user()->getProfileUrl());
         }
     }
