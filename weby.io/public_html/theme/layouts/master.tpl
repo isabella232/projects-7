@@ -72,6 +72,8 @@
         </ul>
     </div>
 </div>
+<div class="bootstrap" data-role="user-logged-in">{if $viewObject.user}1{else}0{/if}</div>
+
 {block name="content"}{/block}
 {block name="footer"}
     {include file="layouts/includes/frontendFooter.tpl"}
