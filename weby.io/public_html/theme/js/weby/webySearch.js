@@ -11,8 +11,8 @@ function WebySearchClass() {
     var _searchResultsHolder = $('ul.search-results');
     var _searchField = $('#search-field');
 
-    var _defaultImageSrc = 'http://weby.com/theme/images/default/frontend_square.jpg';
-    var _screenshotRoot = 'http://weby.com/uploads/webies/';
+    var _defaultImageSrc = WEB + 'theme/images/default/frontend_square.jpg';
+    var _screenshotRoot = WEB + 'uploads/webies/';
 
     var _timer = false;
 
