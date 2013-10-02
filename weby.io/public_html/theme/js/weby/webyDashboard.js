@@ -85,6 +85,10 @@ function WebyDashboard() {
                 _dialog.find(".webies-pager").show();
             }
             if (e.type == "destroy") {
+				if(_currentWebyId == App.getWeby().getId()){
+					window.location = USER_DASHBOARD;
+					return;
+				}
                 if (this.data().length == 0) {
                     var curPage = this.page();
                     if (curPage > 1) {
@@ -139,6 +143,9 @@ function WebyDashboard() {
     $('.webies-list').on('click', '.button.delete', function () {
         var item = $(this).closest('.webies-list-item');
         _currentWebyId = item.attr("data-id");
+		if(_currentWebyId == App.getWeby().getId()){
+			App.getWeby().disableSave();
+		}
         _deleteDialog.show();
     });
 
