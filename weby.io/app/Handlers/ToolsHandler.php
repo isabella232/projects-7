@@ -21,7 +21,7 @@ use App\Lib\Logger as WebyLogger;
 
 class ToolsHandler extends AbstractHandler
 {
-    use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait, AppTrait, CacheTrait;
+	use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait, AppTrait, CacheTrait;
 
     /**
      * Log JS exception
@@ -46,11 +46,11 @@ class ToolsHandler extends AbstractHandler
     public function takeScreenshot($webyId)
     {
 
-        if (!$this->app()->getConfig()->screenshots->enabled) {
-            $this->request()->redirect($this->app()->getConfig()->app->web_path);
-        }
+		if(!$this->app()->getConfig()->screenshots->enabled){
+			$this->request()->redirect($this->app()->getConfig()->app->web_path);
+		}
 
-        $ips = $this->app()->getConfig()->screenshots->ip->toArray(true);
+		$ips = $this->app()->getConfig()->screenshots->ip->toArray(true);
 
         if (!$ips->inArray($this->request()->getClientIp())) {
             $this->request()->redirect($this->app()->getConfig()->app->web_path);
@@ -83,13 +83,12 @@ class ToolsHandler extends AbstractHandler
         die();
     }
 
-    public function webySummary($webyId)
-    {
-        $weby = new WebyEntity();
-        $weby->load($webyId);
-        Stats::getInstance()->updateWebyHits($weby);
-        die($weby->getSummaryData());
-    }
+	public function webySummary($webyId) {
+		$weby = new WebyEntity();
+		$weby->load($webyId);
+		Stats::getInstance()->updateWebyHits($weby);
+		die($weby->getSummaryData());
+	}
 
     /**
      * Sends general feedback to email (addresses are in config.yaml)
@@ -284,14 +283,14 @@ class ToolsHandler extends AbstractHandler
         return $webies;
     }
 
-    private function _createSize($weby, $storage, $width, $height, $tag)
-    {
-        $key = $weby->getStorageFolder() . '/' . $tag . '-' . time() . '.jpg';
-        $imageObj = $this->image($weby->getImage('original-screenshot')->getFile());
-        $thumbImage = new LocalFile($key, $storage);
-        if ($imageObj->thumbnail($width, $height, 'crop')->save($thumbImage)) {
-            $weby->getImage($tag)->setKey($key)->save();
-        }
-    }
+	private function _createSize($weby, $storage, $width, $height, $tag)
+	{
+		$key = $weby->getStorageFolder() . '/' . $tag . '-' . time() . '.jpg';
+		$imageObj = $this->image($weby->getImage('original-screenshot')->getFile());
+		$thumbImage = new LocalFile($key, $storage);
+		if ($imageObj->thumbnail($width, $height, 'crop')->save($thumbImage)) {
+			$weby->getImage($tag)->setKey($key)->save();
+		}
+	}
 
 }

@@ -47,6 +47,13 @@ class PagesHandler extends AbstractHandler
 		$weby = new WebyEntity();
 		$weby->load($id);
 
+		if(!$weby->getId() || $weby->isDeleted()){
+			header("HTTP/1.0 404 Not Found");
+			$this->recentTags = WebyEntity::getRecentTags(10);
+			$this->setTemplate('page404');
+			return;
+		}
+
 		// Will check if requested Weby and URL params are valid
 		$this->_checkRequest($weby, $user, $slug, $id);
 
