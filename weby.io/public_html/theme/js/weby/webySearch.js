@@ -11,8 +11,8 @@ function WebySearchClass() {
     var _searchResultsHolder = $('ul.search-results');
     var _searchField = $('#search-field');
 
-    var _defaultImageSrc = 'http://weby.com/theme/images/default/frontend_square.jpg';
-    var _screenshotRoot = 'http://weby.com/uploads/webies/';
+    var _defaultImageSrc = WEB + 'theme/images/default/frontend_square.jpg';
+    var _screenshotRoot = WEB + 'uploads/webies/';
 
     var _timer = false;
 
@@ -54,13 +54,30 @@ function WebySearchClass() {
         _searchResultsHolder.empty();
     }
 
-
     _searchInput.on('keyup', function (e) {
         var event = e || window.event;
         var charCode = event.which || event.keyCode;
+
         switch (charCode) {
             case 27: // Esc key
                 _closeSearchField();
+                break;
+            case 38: // Arrow key (down)
+                if (_searchField.find('li').length > 0) {
+                    e.preventDefault();
+                    var suggestedTags = _searchField.find('li');
+                    var currentPosition = -1;
+                    suggestedTags.each(function (i, e) {
+                        if ($(this).hasClass('tag-selected')) {
+                            currentPosition = i;
+                            return false;
+                        }
+                    });
+                    if (currentPosition > 0) {
+                        $(suggestedTags[currentPosition]).removeClass('tag-selected');
+                        $(suggestedTags[currentPosition - 1]).addClass('tag-selected');
+                    }
+                }
                 break;
         }
     })
