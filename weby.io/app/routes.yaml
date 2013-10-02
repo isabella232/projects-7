@@ -66,7 +66,7 @@ routes:
     - ['backend/stats/ajax-get-active-users-stats', \App\Handlers\StatsHandler, ajaxGetActiveUsersStats]
 
     # GLOBAL ROUTES
-    - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})\/embed/', \App\Handlers\PagesHandler, viewWebyEmbed] #embed Weby
-    - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby
-    - ['/^([\.a-z0-9_-]*)\/([a-z0-9]{13})$/', \App\Handlers\EditorHandler, route] #backend editor router
-    - ['/^([\.a-z0-9_-]*)$/', \App\Handlers\EditorHandler, route] #backend editor router
+    - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})\/embed\/?$/', \App\Handlers\PagesHandler, viewWebyEmbed] #embed Weby
+    - ['/^([\.a-z0-9_-]*)\/([a-z0-9_-]*)\/([a-z0-9]{13})\/?$/', \App\Handlers\PagesHandler, viewWeby] #frontend Weby
+    - ['/^([\.a-z0-9_-]*)\/([a-z0-9]{13})\/?$/', \App\Handlers\EditorHandler, route] #backend editor router
+    - ['/^([\.a-z0-9_-]*)\/?$/', \App\Handlers\EditorHandler, route] #backend editor router

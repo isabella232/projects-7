@@ -1,6 +1,5 @@
 $(function () {
     searchUrl = $('[data-role="weby-searcher"]').text();
-    //$('.bootstrap').remove();
 });
 
 function WebySearchClass() {
@@ -89,5 +88,5 @@ function WebySearchClass() {
 }
 
 $(function () {
-    WebySearch = new WebySearchClass();
+    new WebySearchClass();
 });

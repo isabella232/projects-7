@@ -549,9 +549,20 @@ body.unselectable * {
     display: block;
 }
 
-.header a.close-form.close-search {
+.header .close-form.close-search {
     top: 10px;
     right: 13px;
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-image: url("../images/sprite2.png");
+    background-repeat: no-repeat;
+    background-position: 50% -742px;
+}
+
+.header .close-form.close-search:hover {
+    cursor: pointer;
 }
 
 /* Static page container */

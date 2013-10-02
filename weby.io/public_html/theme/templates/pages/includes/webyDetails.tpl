@@ -23,12 +23,12 @@
                 <div class="weby-stats">
                     <p>
                 <span class="favorites-count">
-                    #= data.favoriteCount #
+                    #= formatNumber(data.favoriteCount) #
                 </span>
                         favorites
                     </p>
                 <span class="views">
-                    #= data.hits # hits
+                    #= formatNumber(data.hits) # hits
                 </span>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                             data-tooltip="#= data.webyUser.name #" class="has-tooltip-top" #}#>
                             #if (data.webyUser.name.length > 14) {# #= data.webyUser.name.substring(0, 14) #... #} else
                             {# <a href="#= WEB+'user/'+ data.webyUser.name #"> #= data.webyUser.name# </a> #}#</p>
-                            <p class="user-name"><b class="followers-count">#= data.webyUser.followers #</b> followers
+                            <p class="user-name"><b class="followers-count">#= formatNumber(data.webyUser.followers) #</b> followers
                             </p>
                         </div>
                         # if (data.currentUser && data.currentUser.id != data.webyUser.id) {#
@@ -71,7 +71,7 @@
                         #}#
                     </ul>
                     # if (data.otherFavoriteCount > 0){#
-                    <a class="view-all" href="javascript:void(0);">...and #= data.otherFavoriteCount # more.</a>
+                    <a class="view-all" href="javascript:void(0);">...and #= formatNumber(data.otherFavoriteCount) # more.</a>
                     #}#
                 </div>
                 <div class="tags flip-behind"
