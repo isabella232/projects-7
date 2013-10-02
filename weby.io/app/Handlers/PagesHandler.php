@@ -112,9 +112,12 @@ class PagesHandler extends AbstractHandler
      */
     public function listWebiesByUser($username, $page = 1)
     {
+        $this->searchValue = $username;
+
         $webyUser = UserEntity::getByUsername($username);
         $this->user = $webyUser;
         if (!$webyUser) {
+            $this->page = 1;
             $this->html = View::getInstance()->fetch('templates/pages/includes/smartyListEmpty.tpl');
         } else {
             $data = WebyEntity::listWebiesByUser($username, $page, $this->_listLimit);
