@@ -18,6 +18,7 @@ $(function () {
     // Load config data
     weby = JSON.parse($('[data-role="weby"]').html());
     data = JSON.parse($('[data-role="json-data"]').html());
+	$('[data-role="user-logged-in"]').text(data.currentUser ? 1 : 0);
 
     // Add and fill weby details field
     var webyDetails = new kendo.template($('#weby-details-tpl').html());
@@ -73,11 +74,7 @@ $(function () {
         }
     }
 
-    //$('.bootstrap').remove();
-
-
-    $(function () {
-        App = new AppClass();
-        App.init();
-    });
+	App = new AppClass();
+	App.init();
+	$('.bootstrap').remove();
 });

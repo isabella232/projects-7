@@ -101,7 +101,7 @@ class EditorHandler extends AbstractHandler
 		}
 
 		$data = [
-			'time'        => date('Y-m-d H:i:s'),
+			'time'        => strtotime(date('Y-m-d H:i:s')),
 			'title'       => $weby->getTitle(),
 			'description' => $weby->getDescription(),
 			'publicUrl'   => $weby->getPublicUrl(),
@@ -168,17 +168,11 @@ class EditorHandler extends AbstractHandler
 		$source = $weby->getImage('background')->getFile();
 		list($width, $height) = $image->open($source)->getSize()->values();
 
-		die(json_encode(['url'   => $webyFile->getUrl(),
+		$url = $webyFile->getUrl();
+		die(json_encode(['url'   => $this->url($url)->getPath(),
 						'width'  => $width,
 						'height' => $height
 						]));
-	}
-
-	private function _removeImage($webyId) {
-		$userDir = new LocalDirectory($this->user()->getUsername(), $this->storage('local'));
-		foreach ($userDir->filter($webyId . '-background*') as $file) {
-			$file->delete();
-		}
 	}
 
 	/**

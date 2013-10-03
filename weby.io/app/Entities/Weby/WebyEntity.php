@@ -26,6 +26,7 @@ class WebyEntity extends WebyEntityCrud
 			'hitsCount'      => $this->getTotalHits(),
 			'publicUrl'      => $this->getPublicUrl(),
 			'createdOn'      => date('Y-m-d H:i:s', strtotime($this->getCreatedOn())),
+			'createdOnUnix'  => strtotime($this->getCreatedOn()),
 			'images'         => [
 				'square'     => $this->getImage('frontend-square')->getUrl(),
 				'vertical'   => $this->getImage('frontend-vertical')->getUrl(),
