@@ -664,7 +664,7 @@ body.unselectable * {
 }
 
 span.weby-tag-blue {
-    background-image: url(http://dev.weby.io/theme/css/../images/sprite2.png);
+    background-image: url(../images/sprite2.png);
     background-repeat: no-repeat;
     color: #fff;
     font-size: 12px;
