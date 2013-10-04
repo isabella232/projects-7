@@ -14,7 +14,7 @@ class Helper
 	/**
 	 * Sanitizing input (strip slashes, trim, replace spaces
 	 */
-	public static function sanitizeInput(&$input, $toLower = false)
+	public function sanitizeInput(&$input, $toLower = false)
 	{
 		$input = self::str($input)->trim()->stripTags()->val();
 		$input = preg_replace('/[ ]+/', ' ', $input);
@@ -32,7 +32,7 @@ class Helper
 	 * @param bool $returnArray
 	 * @return array|string
 	 */
-	public static function getNavigation($count, $page, $diplaynum, $hasP1 = TRUE, $returnArray = false)
+	public function getNavigation($count, $page, $diplaynum, $hasP1 = TRUE, $returnArray = false)
 	{
 		$links = array('prev' => '', 'next' => '', 'pages' => array());
 		if ($count < $diplaynum || $diplaynum < 1) {
@@ -152,7 +152,7 @@ class Helper
 	 * @internal  param array $options
 	 * @return string
 	 */
-	public static function toSlug($str)
+	public function toSlug($str)
 	{
 		// Make sure string is in UTF-8 and strip invalid UTF-8 characters
 		$str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
