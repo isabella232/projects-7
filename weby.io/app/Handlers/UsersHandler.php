@@ -153,8 +153,7 @@ class UsersHandler extends AbstractHandler
     private function _notifyLoginNode($id, $ip)
     {
         try {
-            $errno = false;
-            $fp = fsockopen($this->app()->getConfig()->app->node_geo_ip, $errno, $errstr);
+            $fp = @fsockopen($this->app()->getConfig()->app->node_geo_ip, $errno, $errstr);
             if (!$fp) {
                 return;
             }
