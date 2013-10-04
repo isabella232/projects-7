@@ -5,13 +5,14 @@ namespace App\Entities\Weby;
 use App\Entities\EntityAbstract;
 use App\Entities\User\ServiceType;
 use App\Entities\User\UserEntity;
+use App\Lib\Traits\HelperTrait;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 use Webiny\Component\StdLib\StdObject\ArrayObject\ArrayObject;
 
 abstract class WebyEntityStorage extends EntityAbstract
 {
-    use HttpTrait, StdLibTrait;
+    use HttpTrait, StdLibTrait, HelperTrait;
 
     protected $_id = '';
     protected $_title = 'Untitled';
@@ -226,7 +227,7 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected static function _sqlGetWebiesByTag($tag, $page, $limit = 9)
     {
-        $bind = [self::_toSlug($tag)];
+        $bind = [self::helper()->toSlug($tag)];
         $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
         $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_tags . " t
 	                JOIN " . self::_getDb()->w_weby2tag . " w2t ON w2t.tag = t.id
@@ -289,7 +290,7 @@ abstract class WebyEntityStorage extends EntityAbstract
     protected static function _sqlInsertTag($tag)
     {
         $query = "INSERT INTO " . self::_getDb()->w_tags . " (tag, slug) VALUES (?, ?) RETURNING id";
-        $bind = [$tag, self::_toSlug($tag)];
+        $bind = [$tag, self::helper()->toSlug($tag)];
         return self::_getDb()->execute($query, $bind)->fetchValue();
     }
 

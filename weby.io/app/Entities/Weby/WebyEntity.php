@@ -4,7 +4,7 @@ namespace App\Entities\Weby;
 
 use App\AppTrait;
 use App\Entities\User\UserEntity;
-use App\Lib\UserTrait;
+use App\Lib\Traits\UserTrait;
 use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\StdLib;
 

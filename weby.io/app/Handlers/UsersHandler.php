@@ -7,7 +7,7 @@ use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Stats\Stats;
-use App\Lib\UserTrait;
+use App\Lib\Traits\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Mailer\MailerTrait;

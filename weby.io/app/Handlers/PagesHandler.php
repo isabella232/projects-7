@@ -5,10 +5,10 @@ namespace App\Handlers;
 use App\AppTrait;
 use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
-use App\HelperTrait;
+use App\Lib\Traits\HelperTrait;
 use App\Lib\AbstractHandler;
 use App\Lib\Stats\Stats;
-use App\Lib\UserTrait;
+use App\Lib\Traits\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Http\HttpTrait;
 use Webiny\Component\Security\Authentication\Providers\Http\Http;
@@ -198,7 +198,7 @@ class PagesHandler extends AbstractHandler
             $data['count'] = $result->count();
 
             $data['count'] = $result[0]['total_count'];
-            $data['pagination'] = $this->_getNavigation($data['count'], $page, $this->_listLimit);
+            $data['pagination'] = $this->helper()->getNavigation($data['count'], $page, $this->_listLimit);
             $data['webPath'] = $this->app()->getConfig()->app->web_path;
             foreach ($result as $w) {
                 $weby = new WebyEntity();

@@ -8,7 +8,8 @@ use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
 use App\Lib\Screenshot;
 use App\Lib\Stats\Stats;
-use App\Lib\UserTrait;
+use App\Lib\Traits\HelperTrait;
+use App\Lib\Traits\UserTrait;
 use App\Lib\View;
 use Webiny\Component\Cache\CacheTrait;
 use Webiny\Component\Http\HttpTrait;
@@ -21,7 +22,7 @@ use App\Lib\Logger as WebyLogger;
 
 class ToolsHandler extends AbstractHandler
 {
-	use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait, AppTrait, CacheTrait;
+	use HttpTrait, LoggerTrait, UserTrait, StorageTrait, StdLibTrait, ImageTrait, AppTrait, CacheTrait, HelperTrait;
 
     /**
      * Log JS exception
@@ -245,7 +246,7 @@ class ToolsHandler extends AbstractHandler
     public function ajaxSearchTags()
     {
         $search = $this->request()->post('search');
-        $this->_sanitizeInput($search, true);
+		$this->helper()->sanitizeInput($search, true);
         $result = WebyEntity::searchTags($search, true, true);
         header('Content-type: application/json; charset=utf-8;');
         die($result);
