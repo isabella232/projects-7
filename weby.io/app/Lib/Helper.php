@@ -1,6 +1,8 @@
 <?php
 namespace App\Lib;
 
+use App\AppTrait;
+use App\Entities\Weby\WebyEntity;
 use Webiny\Component\StdLib\SingletonTrait;
 use Webiny\Component\StdLib\StdLibTrait;
 
@@ -9,7 +11,18 @@ use Webiny\Component\StdLib\StdLibTrait;
  */
 class Helper
 {
-	use SingletonTrait, StdLibTrait;
+	use SingletonTrait, StdLibTrait, AppTrait;
+
+	/**
+	 * Flush varnish cache for given Weby
+	 * @param WebyEntity $weby
+	 */
+	public function flushWebyCache(WebyEntity $weby){
+		if($this->app()->getConfig()->varnish->enabled) {
+			$varnishFlush = $this->str($this->app()->getConfig()->varnish->flush_weby);
+			system($varnishFlush->replace('{webyUrl}', $weby->getPublicUrl())->val());
+		}
+	}
 
 	/**
 	 * Sanitizing input (strip slashes, trim, replace spaces

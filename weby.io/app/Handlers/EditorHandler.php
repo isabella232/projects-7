@@ -81,10 +81,7 @@ class EditorHandler extends AbstractHandler
 
 			// Clear cache
 			$this->cache()->delete('weby.json.' . $id);
-			if($this->app()->getConfig()->varnish->enabled) {
-				$varnishFlush = $this->str($this->app()->getConfig()->varnish->flush_weby);
-				system($varnishFlush->replace('{webyUrl}', $weby->getPublicUrl())->val());
-			}
+			$this->helper()->flushWebyCache($weby);
 		} catch (\Exception $e) {
 			$this->ajaxResponse(true, 'Failed to save Weby!');
 		}

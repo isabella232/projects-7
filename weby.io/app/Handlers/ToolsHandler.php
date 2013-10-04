@@ -6,7 +6,7 @@ use App\AppTrait;
 use App\Entities\User\UserEntity;
 use App\Entities\Weby\WebyEntity;
 use App\Lib\AbstractHandler;
-use App\Lib\Screenshot;
+use App\Lib\Screenshot\Photographer;
 use App\Lib\Stats\Stats;
 use App\Lib\Traits\HelperTrait;
 use App\Lib\Traits\UserTrait;
@@ -47,7 +47,9 @@ class ToolsHandler extends AbstractHandler
     public function takeScreenshot($webyId)
     {
 
-		if(!$this->app()->getConfig()->screenshots->enabled){
+		// Check if screenshooting is enabled and the IP is allowed to make this request
+
+		/*if(!$this->app()->getConfig()->screenshots->enabled){
 			$this->request()->redirect($this->app()->getConfig()->app->web_path);
 		}
 
@@ -55,33 +57,18 @@ class ToolsHandler extends AbstractHandler
 
         if (!$ips->inArray($this->request()->getClientIp())) {
             $this->request()->redirect($this->app()->getConfig()->app->web_path);
-        }
+        }*/
 
+		// Load Weby and take screenshots
         $weby = new WebyEntity();
         $weby->load($webyId);
 
-        $screenshot = new Screenshot\Screenshot();
-        $queue = new Screenshot\ScreenshotQueue();
-
-        $storage = $this->storage('local');
-
-        $key = $weby->getStorageFolder() . '/original-screenshot-' . time() . '.jpg';
-        $path = $storage->getAbsolutePath($key);
-        try {
-            $screenshot->takeScreenshot($weby, $path);
-            $weby->getImage('original-screenshot')->setKey($key)->save();
-
-            // Create different image sizes
-            $this->_createSize($weby, $storage, 90, 81, 'dashboard');
-            $this->_createSize($weby, $storage, 215, 180, 'frontend-square');
-            $this->_createSize($weby, $storage, 215, 512, 'frontend-vertical');
-            $this->_createSize($weby, $storage, 515, 180, 'frontend-horizontal');
-            $this->_createSize($weby, $storage, 398, 208, 'open-graph');
-
-            $queue->complete($webyId)->processQueue();
-        } catch (\Exception $e) {
-            $queue->abort($webyId, $e->getMessage())->processQueue();
-        }
+		// Make Weby images
+		$storage = $this->storage('local');
+		$photographer = new Photographer($weby, $storage);
+		if($photographer->takeScreenshots()){
+			$this->helper()->flushWebyCache($weby);
+		}
         die();
     }
 
@@ -290,15 +277,4 @@ class ToolsHandler extends AbstractHandler
 
         return $webies;
     }
-
-	private function _createSize($weby, $storage, $width, $height, $tag)
-	{
-		$key = $weby->getStorageFolder() . '/' . $tag . '-' . time() . '.jpg';
-		$imageObj = $this->image($weby->getImage('original-screenshot')->getFile());
-		$thumbImage = new LocalFile($key, $storage);
-		if ($imageObj->thumbnail($width, $height, 'crop')->save($thumbImage)) {
-			$weby->getImage($tag)->setKey($key)->save();
-		}
-	}
-
 }
