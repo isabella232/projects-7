@@ -1,5 +1,5 @@
 /** This is a Dashboard  bootstrap process */
-/*var observer = setInterval(function () {
+var observer = setInterval(function () {
 	if (!$('.fancybox-overlay').length || $('.fancybox-overlay').css('display') == 'none' || $('.fancybox-overlay').css('visibility') == 'hidden') {
 		clearInterval(observer);
 
@@ -15,7 +15,7 @@
 		}, 3000);
 
 	}
-}, 500);*/
+}, 500);
 
 var dashboard = null;
 
