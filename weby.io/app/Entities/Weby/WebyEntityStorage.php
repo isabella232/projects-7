@@ -121,7 +121,7 @@ abstract class WebyEntityStorage extends EntityAbstract
     }
 
     /**
-     * Loads weby for given user
+     * Loads recent Tags
      *
      * @param $limit
      * @internal param \App\Entities\User\UserEntity $user
@@ -130,9 +130,10 @@ abstract class WebyEntityStorage extends EntityAbstract
      */
     protected static function _sqlGetRecentTags($limit)
     {
-        $query = "SELECT tag, slug FROM " . self::_getDb()->w_tags . " ORDER BY id DESC LIMIT {$limit}";
+        $query = "SELECT tag, slug FROM " . self::_getDb()->w_tags . " WHERE count>0 ORDER BY id DESC LIMIT {$limit}";
         return self::_getDb()->execute($query)->fetchAll();
     }
+
 
     /**
      * Loads weby for given user
@@ -205,6 +206,29 @@ abstract class WebyEntityStorage extends EntityAbstract
         $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
         $query = "SELECT w.id, count(*) OVER() total_count FROM " . self::_getDb()->w_weby . " w
                     WHERE w.deleted = 0::bit AND meta_follow = 1::bit ORDER BY w.created_on DESC {$limitOffset}";
+        return self::_getDb()->execute($query, [])->fetchAll();
+    }
+
+
+    /**
+     * Searches database for Webies with given tags
+     * @param $page
+     * @param int $limit
+     * @internal param $tag
+     * @internal param $tagSlug
+     * @internal param $slug
+     * @internal param $tag
+     * @internal param $tags
+     * @return Array|bool
+     */
+    protected static function _sqlGetPopularWebies($page, $limit = 9)
+    {
+        $limitOffset = "LIMIT " . $limit . " OFFSET " . ($page - 1) * $limit;
+        $query = "SELECT w.id, w.title, w.hits, COUNT(f.user) favorited_count,
+                    (((w.hits / 15) + COUNT(f.user)) - ((extract(epoch from NOW()) - extract(epoch from w.created_on)) / 1000)) popularity_score,
+                    COUNT(*) OVER() total_count FROM " . self::_getDb()->w_weby . " w 
+                    JOIN " . self::_getDb()->w_favorite . " f ON f.weby = w.id
+                    WHERE w.deleted = 0::bit AND meta_follow = 1::bit GROUP BY w.id ORDER BY popularity_score DESC {$limitOffset}";
         return self::_getDb()->execute($query, [])->fetchAll();
     }
 

@@ -46,7 +46,6 @@ class WebyEntity extends WebyEntityCrud
 					'id'        => $this->getUser()->getId(),
 					'name'      => $this->getUser()->getUsername(),
 					'avatar'    => $this->getUser()->getAvatarUrl(),
-					'followers' => $this->getUser()->getFollowingUsersCount()
 				],
 				'tags'               => $this->getTags(true),
 				'shareCount'         => $this->getShareCount()
@@ -72,7 +71,7 @@ class WebyEntity extends WebyEntityCrud
 		$data['favoritedBy'] = $this->getUsersFavorited(true);
 		$data['favoriteCount'] = $this->getFavoriteCount();
 		$data['isFavorited'] = $this->inUsersFavorites();
-
+        $data['webyUser']['followers'] = $this->getUser()->getFollowingUsersCount();
 
 		return json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
 	}
@@ -132,6 +131,14 @@ class WebyEntity extends WebyEntityCrud
     public static function listRecentWebies($page, $limit = 9)
     {
         return self::_sqlGetRecentWebies($page, $limit);
+    }
+
+    /**
+     * Searches database for recent Webies
+     */
+    public static function listPopularWebies($page, $limit = 9)
+    {
+        return self::_sqlGetPopularWebies($page, $limit);
     }
 
     /**
