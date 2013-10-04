@@ -18,9 +18,11 @@ var observer = setInterval(function () {
 }, 500);
 
 var dashboard = null;
+var favorites = null;
+var followers = null;
 
 $(function () {
-	dashboard = new WebyDashboard();
+	dashboard = new WebyDashboard(true);
 	favorites = new WebyFavorites(true);
 	followers = new WebyFollowers(true);
 
@@ -36,12 +38,5 @@ $(function () {
 			dashboard.open(true);
 		}, 50);
 	});
-
-    // After closing feedback, return to dashboard
-    Feedback.onClose(function () {
-        setTimeout(function () {
-            dashboard.open(true);
-        }, 50);
-    });
 
 });
