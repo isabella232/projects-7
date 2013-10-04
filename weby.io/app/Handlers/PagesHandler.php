@@ -98,6 +98,16 @@ class PagesHandler extends AbstractHandler
     }
 
     /**
+     * Lists Webies from certain user
+     * @param int $page
+     */
+    public function listPopularWebies($page = 1)
+    {
+        $data = WebyEntity::listPopularWebies($page, $this->_listLimit);
+        $this->_listWebies($data, $page);
+    }
+
+    /**
      * Lists Webies from users that this user is following
      * @param int $page
      */

@@ -355,8 +355,8 @@ class UserEntity extends UserEntityCrud
 	 */
 	public
 	function getFollowingUsersCount($limit = 5) {
+        
 		$this->getUsersFollowing($limit);
-
 		return $this->_usersFollowingCount;
 	}
 
