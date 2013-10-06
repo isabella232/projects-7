@@ -15,7 +15,7 @@ class Helper
 {
 	use SingletonTrait, StdLibTrait, AppTrait, HttpTrait;
 
-	public function logUserAction(UserEntity $user) {
+	public function logUserLogin(UserEntity $user) {
 		try {
 			$fp = @fsockopen($this->app()->getConfig()->app->node_geo_ip, $errno, $errstr);
 			if(!$fp) {
@@ -23,9 +23,33 @@ class Helper
 			}
 
 			fwrite($fp, json_encode([
+									'action' => 'user.login',
 									'userId' => $user->getId(),
-									'ip'     => $user->getLoginIp(),
 									'url'    => $this->request()->query('r')
+									]));
+			fclose($fp);
+		} catch (Exception $e) {
+			return;
+		}
+	}
+
+	public function logUserAction(UserEntity $user, $logMessage) {
+		if(!$user){
+			return;
+		}
+		try {
+			$fp = @fsockopen($this->app()->getConfig()->app->node_geo_ip, $errno, $errstr);
+			if(!$fp) {
+				return;
+			}
+
+			fwrite($fp, json_encode([
+									'action' => 'page.view',
+									'message' => $logMessage,
+									'userId' => $user->getId(),
+									'url'    => $this->request()->query('r'),
+									'avatar' => $user->getAvatarUrl(),
+									'username' => $user->getUsername(),
 									]));
 			fclose($fp);
 		} catch (Exception $e) {

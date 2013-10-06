@@ -51,7 +51,7 @@ class UsersHandler extends AbstractHandler
             Stats::getInstance()->updateRegisteredUsersCount();
             Stats::getInstance()->updateWebiesStats($user);
 
-            $this->helper()->logUserAction($user);
+            $this->helper()->logUserLogin($user);
 
             // Redirect to editor (if this is new user)
             $this->request()->redirect($weby->getEditorUrl());
@@ -61,7 +61,7 @@ class UsersHandler extends AbstractHandler
             // Saving, so we can sync the data with our database data
             $user->populate($serviceData)->save();
             Stats::getInstance()->updateUsersLoginCount($user);
-			$this->helper()->logUserAction($user);
+			$this->helper()->logUserLogin($user);
 
             // Redirect to last visited URL
             if (isset($_COOKIE['weby_login_ref'])) {
@@ -78,6 +78,7 @@ class UsersHandler extends AbstractHandler
      */
     public function markOnboardingDone()
     {
+		$this->helper()->logUserAction($this->user(), 'Completed his onboarding!');
         $this->user()->markOnboardingDone();
         die();
     }
@@ -94,9 +95,11 @@ class UsersHandler extends AbstractHandler
 
         // If we got a valid favorite, that means we are deleting it
         if ($this->user()->inFavorites($weby)) {
+			$this->helper()->logUserAction($this->user(), 'Unfavorited <strong><a target="_blank" href="'.$weby->getPublicUrl().'">'.$weby->getTitle().'</a></strong>');
             $this->user()->deleteFromFavorites($weby);
         } else {
             // In other case, we are creating a new favorite
+			$this->helper()->logUserAction($this->user(), 'Favorited <strong><a target="_blank" href="'.$weby->getPublicUrl().'">'.$weby->getTitle().'</a></strong>');
             $this->user()->addToFavorites($weby);
         }
 
