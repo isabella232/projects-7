@@ -24,6 +24,7 @@ class Debugger(QObject):
 
         time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
         self.log += '[' + time + '][' + levels[level] + '] ' + message + '\n'
+        #print '[' + time + '][' + levels[level] + '] ' + message + '\n'
         self.emit(QtCore.SIGNAL('newDebuggerLog'))
 
     @staticmethod

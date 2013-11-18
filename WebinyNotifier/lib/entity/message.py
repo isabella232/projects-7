@@ -98,7 +98,8 @@ class Message(object):
         for key in keys:
             if key not in data:
                 Debugger.log("Key '" + key + "' is missing in Message data!", 'error')
-                valid = False
+                data[key] = ''
+                #valid = False
         return valid
 
     def _populateFromNodeJs(self, data):
